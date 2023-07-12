@@ -3,13 +3,17 @@
 ## 구조 설명
 
 기본적으로 멀티모듈을 활용해 앱을 구성하며
+
 [찰스의 앱 모듈화 가이드](https://www.charlezz.com/?p=46545)를 참고하여 구성하였습니다.
+
 app - domain - data 모듈로 구성되며 다음과 같은 레이어 층을 유지 합니다.
 
 ![img.png](images/multimodule.png)
 
 [Jetpack Compose로 디자인 시스템 만들기(우와콘)](https://www.youtube.com/watch?v=O1yPOr7J3gY&t=2412s)을 참고하여 
+
 코어 디자인 시스템 모듈을 분리하여 디자인을 컴포넌트 단위로 관리합니다.
+
 [core_design_system 모듈](./core_design_system)
 
 ## 깃 컨벤션
