@@ -1,3 +1,5 @@
+> 지라 연동 테스트용 커밋입니다!!
+
 # 나만의 와인을 찾는 여행 Winey의 안드로이드 레포지토리입니다.
 
 ## 구조 설명
@@ -10,7 +12,7 @@ app - domain - data 모듈로 구성되며 다음과 같은 레이어 층을 유
 
 ![img.png](images/multimodule.png)
 
-[Jetpack Compose로 디자인 시스템 만들기(우와콘)](https://www.youtube.com/watch?v=O1yPOr7J3gY&t=2412s)을 참고하여 
+[Jetpack Compose로 디자인 시스템 만들기(우와콘)](https://www.youtube.com/watch?v=O1yPOr7J3gY&t=2412s)을 참고하여
 
 코어 디자인 시스템 모듈을 분리하여 디자인을 컴포넌트 단위로 관리합니다.
 
@@ -32,10 +34,10 @@ Remove : 파일 삭제만 한 경우
 
 ### 개발 환경
 
-* [버전 정보](./buildSrc/src/main/java/Versions.kt)
-* [사용 라이브러리](./buildSrc/src/main/java/Dependency.kt)
+- [버전 정보](./buildSrc/src/main/java/Versions.kt)
+- [사용 라이브러리](./buildSrc/src/main/java/Dependency.kt)
 
 ### 빌드 조건
 
-* 그래들 버전 8.0.0 이상
-* JDK 17
+- 그래들 버전 8.0.0 이상
+- JDK 17
