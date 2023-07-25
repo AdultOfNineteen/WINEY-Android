@@ -17,7 +17,7 @@ import com.teamwiney.core_design_system.theme.Header1
 
 @Preview
 @Composable
-fun Button(
+fun WButton(
     onClick: () -> Unit = {},
     enabled: Boolean = true,
     text: String = "Button",
