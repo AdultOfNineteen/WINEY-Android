@@ -3,8 +3,10 @@ package com.teamwiney.core_design_system.signup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,7 +15,7 @@ import com.teamwiney.core_design_system.R
 import com.teamwiney.core_design_system.theme.Background_1
 
 @Composable
-fun SplashBackground(content: @Composable () -> Unit) {
+fun SplashBackground(content: @Composable BoxScope.() -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -25,6 +27,13 @@ fun SplashBackground(content: @Composable () -> Unit) {
             modifier = Modifier
                 .fillMaxHeight()
                 .align(Alignment.TopStart)
+        )
+        Image(
+            painter = painterResource(id = R.mipmap.img_splash_background),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
         )
         content()
     }
