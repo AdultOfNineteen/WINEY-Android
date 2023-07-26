@@ -12,31 +12,34 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core_design_system.theme.ButtonTextColor
-import com.teamwiney.core_design_system.theme.Header1
+import com.teamwiney.core_design_system.theme.Main_1
 
 @Preview
 @Composable
 fun WButton(
     onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     text: String = "Button",
-    backgroundColor:Color = Color.Transparent
+    border: BorderStroke? = null,
+    enableTextColor: Color = Color.White,
+    disableTextColor: Color = Color.White,
+    enableBackgroundColor: Color = Main_1,
+    disableBackgroundColor: Color = Main_1,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier.fillMaxWidth(),
-        border = BorderStroke(1.dp, ButtonTextColor),
+        modifier = modifier.fillMaxWidth(),
+        border = border,
         colors = ButtonDefaults.buttonColors(
-            containerColor = backgroundColor,
+            containerColor = if (enabled) enableBackgroundColor else disableBackgroundColor,
         ),
         shape = RoundedCornerShape(11.dp)
     ) {
         Text(
             text = text,
-            style = Header1,
-            color = ButtonTextColor,
+            color = if (enabled) enableTextColor else disableTextColor,
             modifier = Modifier.padding(vertical = 4.dp)
         )
     }
