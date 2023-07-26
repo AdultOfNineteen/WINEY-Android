@@ -1,6 +1,6 @@
 plugins {
     with(Plugins) {
-        id(ANDROID_APPLICATION)
+        id(ANDROID_LIBRARY)
         id(JETBRAINS_KOTLIN_ANDROID)
     }
 }
@@ -10,11 +10,6 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.teamwiney.core_design_system"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         vectorDrawables {
             useSupportLibrary = true
