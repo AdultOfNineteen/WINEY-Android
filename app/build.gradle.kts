@@ -56,20 +56,23 @@ dependencies {
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
+        implementation(APPCOMPAT)
+        implementation(ACTIVITY_COMPOSE)
+        implementation(COMPOSE_BOM)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_UI)
-        implementation(COMPOSE_UI_PREVIEW)
-    }
+        implementation(LIFECYCLE_RUNTIME_KTX)
+        implementation(KOTLIN_BOM)
+        implementation(COMPOSE_BOM)
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
+        androidTestImplementation(TEST_EXT_JUNIT)
+        androidTestImplementation(TEST_ESPRESSO_CORE)
+        androidTestImplementation(COMPOSE_BOM)
+
+        testImplementation(JUNIT)
+
+        debugImplementation(COMPOSE_UI_TOOLING)
+        debugImplementation(COMPOSE_UI_TEST_MANIFEST)
+    }
 }
