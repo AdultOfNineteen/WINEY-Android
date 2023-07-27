@@ -1,7 +1,6 @@
 package com.teamwiney.winey.ui.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,8 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core_design_system.R
 import com.teamwiney.core_design_system.components.SocialLoginButton
 import com.teamwiney.core_design_system.signup.SplashBackground
-import com.teamwiney.core_design_system.theme.Gray_700
-import com.teamwiney.core_design_system.theme.Main_1
+import com.teamwiney.core_design_system.theme.WineyTheme
 
 @Composable
 fun LoginScreen() {
@@ -49,7 +46,7 @@ fun LoginScreen() {
                     // Dashed Border
                     .border(
                         width = 1.dp,
-                        color = Main_1,
+                        color = WineyTheme.colors.main_1,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .padding(7.dp, 4.dp)
@@ -68,7 +65,7 @@ fun LoginScreen() {
                     // TODO 구글 로그인 진행
                 }
             }
-            Text(text = "첫 로그인 시, 서비스 이용약관에 동의한 것으로 간주합니다.", color = Gray_700)
+            Text(text = "첫 로그인 시, 서비스 이용약관에 동의한 것으로 간주합니다.", color = WineyTheme.colors.gray_700)
         }
     }
 }
