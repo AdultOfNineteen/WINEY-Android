@@ -23,19 +23,18 @@ fun WButton(
     text: String = "Button",
     border: BorderStroke? = null,
     enableTextColor: Color = Color.White,
-    disableTextColor: Color = Color.White,
+    disableTextColor: Color = WineyTheme.colors.gray_600,
     enableBackgroundColor: Color = WineyTheme.colors.main_1,
-    disableBackgroundColor: Color = WineyTheme.colors.main_1,
+    disableBackgroundColor: Color = WineyTheme.colors.gray_900,
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled,
         modifier = modifier.fillMaxWidth(),
         border = border,
         colors = ButtonDefaults.buttonColors(
             containerColor = if (enabled) enableBackgroundColor else disableBackgroundColor,
         ),
-        shape = RoundedCornerShape(11.dp)
+        shape = RoundedCornerShape(5.dp)
     ) {
         Text(
             text = text,
