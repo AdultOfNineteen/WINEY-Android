@@ -1,0 +1,79 @@
+package com.teamwiney.winey.ui.signup
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import com.teamwiney.core_design_system.components.HeightSpacer
+import com.teamwiney.core_design_system.components.PhoneNumberVisualTransformation
+import com.teamwiney.core_design_system.components.SignUpTopBar
+import com.teamwiney.core_design_system.components.WButton
+import com.teamwiney.core_design_system.components.WTextField
+import com.teamwiney.core_design_system.theme.WineyTheme
+
+@Composable
+fun SignUpPhoneScreen() {
+
+    var phoneNumber by remember {
+        mutableStateOf("")
+    }
+    var errorState by remember {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(phoneNumber) {
+        errorState = !(phoneNumber.length == 11 || phoneNumber.isEmpty())
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        SignUpTopBar {
+            // TODO : Add back button Event
+        }
+        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+            Text(
+                text = "휴대폰 번호를 입력해주세요.",
+                color = Color.White,
+                style = WineyTheme.typography.title1
+            )
+            HeightSpacer(54.dp)
+            Text(
+                text = if (errorState) "올바른 번호를 입력해주세요." else " 전화번호 ",
+                color = if (errorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
+                style = WineyTheme.typography.bodyB2
+            )
+            HeightSpacer(10.dp)
+            WTextField(
+                value = phoneNumber,
+                onvalueChanged = { phoneNumber = it },
+                placeholderText = "11자리 입력",
+                maxLength = 11,
+                visualTransformation = PhoneNumberVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onErrorState = errorState
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            WButton(
+                text = "다음",
+                onClick = {
+                    // TODO : Add next button Event
+                },
+                enabled = phoneNumber.length == 11,
+                modifier = Modifier.padding(bottom = 54.dp)
+            )
+        }
+    }
+}
+
