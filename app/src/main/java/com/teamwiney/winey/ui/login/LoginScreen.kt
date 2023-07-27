@@ -1,7 +1,6 @@
 package com.teamwiney.winey.ui.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -13,17 +12,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core_design_system.R
 import com.teamwiney.core_design_system.components.SocialLoginButton
+import com.teamwiney.core_design_system.components.dashedBorder
 import com.teamwiney.core_design_system.signup.SplashBackground
 import com.teamwiney.core_design_system.theme.WineyTheme
 
@@ -44,14 +47,20 @@ fun LoginScreen() {
             Box(
                 modifier = Modifier
                     // Dashed Border
-                    .border(
-                        width = 1.dp,
-                        color = WineyTheme.colors.main_1,
-                        shape = RoundedCornerShape(10.dp)
-                    )
+                    .dashedBorder(1.dp, WineyTheme.colors.main_3, 32.dp)
                     .padding(7.dp, 4.dp)
             ) {
-                Text(text = "최근에 카카오톡으로 로그인 했습니다.", color = Color.White)
+                Text(
+                    text = buildAnnotatedString {
+                        append("최근에 ")
+                        withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                            append("카카오톡")
+                        }
+                        append("으로 로그인 했습니다.")
+                    },
+                    color = WineyTheme.colors.point_2,
+                    style = WineyTheme.typography.captionM1
+                )
             }
             Row(
                 modifier = Modifier
@@ -65,7 +74,21 @@ fun LoginScreen() {
                     // TODO 구글 로그인 진행
                 }
             }
-            Text(text = "첫 로그인 시, 서비스 이용약관에 동의한 것으로 간주합니다.", color = WineyTheme.colors.gray_700)
+            Text(
+                text = buildAnnotatedString {
+                    append("첫 로그인 시, ")
+                    withStyle(
+                        style = SpanStyle(
+                            color = WineyTheme.colors.point_2,
+                            textDecoration = TextDecoration.Underline)
+                        ) {
+                            append("서비스 이용약관")
+                    }
+                    append("에 동의한 것으로 간주합니다.")
+                },
+                color = WineyTheme.colors.gray_700,
+                style = WineyTheme.typography.captionM1
+            )
         }
     }
 }
