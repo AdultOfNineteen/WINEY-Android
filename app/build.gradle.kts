@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.teamwiney.winey"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.teamwiney.winey"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core_design_system"))
+    implementation(project(":core:design"))
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)

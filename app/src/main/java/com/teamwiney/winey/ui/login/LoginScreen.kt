@@ -24,11 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core_design_system.R
-import com.teamwiney.core_design_system.components.SocialLoginButton
-import com.teamwiney.core_design_system.components.dashedBorder
-import com.teamwiney.core_design_system.signup.SplashBackground
-import com.teamwiney.core_design_system.theme.WineyTheme
+import com.teamwiney.core.design.R
+import com.teamwiney.ui.components.SocialLoginButton
+import com.teamwiney.ui.components.dashedBorder
+import com.teamwiney.ui.signup.SplashBackground
+import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun LoginScreen() {

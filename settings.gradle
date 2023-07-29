@@ -14,4 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "winey"
 include ':app'
-include ':core_design_system'
+include ':core:design'
+include ':feature:home'
+include ':feature:login'
+include ':feature:createNote'
+include ':feature:noteCollection'
+include ':feature:mypage'
+include ':feature:signup'

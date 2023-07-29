@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core_design_system.components.HeightSpacer
-import com.teamwiney.core_design_system.components.PhoneNumberVisualTransformation
-import com.teamwiney.core_design_system.components.SignUpTopBar
-import com.teamwiney.core_design_system.components.WButton
-import com.teamwiney.core_design_system.components.WTextField
-import com.teamwiney.core_design_system.theme.WineyTheme
+import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.PhoneNumberVisualTransformation
+import com.teamwiney.ui.components.SignUpTopBar
+import com.teamwiney.ui.components.WButton
+import com.teamwiney.ui.components.WTextField
+import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun SignUpPhoneScreen() {
