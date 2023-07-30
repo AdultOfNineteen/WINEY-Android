@@ -28,21 +28,21 @@ import com.teamwiney.ui.theme.WineyTheme
 
 /**
  * @param onErrorState 해당 값이 true라면 밑줄이 색이 빨개집니다.
- * @param onFocuseChange 포커스 값을 외부에서 관찰할 때 사용
+ * @param onFocusChanged 포커스 값을 외부에서 관찰할 때 사용
  */
 @Composable
 fun WTextField(
     value: String,
-    onvalueChanged: (String) -> Unit,
+    onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    leadingIcon: @Composable() (() -> Unit)? = null,
-    trailingIcon: @Composable() (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     placeholderText: String = "",
     fontSize: TextUnit = 16.sp,
     focusRequest: FocusRequester? = null,
     keyboardOptions: KeyboardOptions? = null,
     keyboardActions: KeyboardActions? = null,
-    onFocuseChange: (Boolean) -> Unit = {},
+    onFocusedChange: (Boolean) -> Unit = {},
     onErrorState: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     maxLength: Int = 25,
@@ -56,7 +56,7 @@ fun WTextField(
         BasicTextField(
             modifier = Modifier
                 .onFocusChanged {
-                    onFocuseChange(it.isFocused)
+                    onFocusedChange(it.isFocused)
                     if (it.isFocused) {
                         bottomLineColor.value = localColors.gray_50
                     } else {
@@ -67,7 +67,7 @@ fun WTextField(
                 .focusRequester(focusRequest ?: FocusRequester()),
             value = value,
             onValueChange = {
-                if (it.length <= maxLength) onvalueChanged(it)
+                if (it.length <= maxLength) onValueChanged(it)
             },
             singleLine = true,
             cursorBrush = SolidColor(Color.White),

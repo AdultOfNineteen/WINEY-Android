@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
@@ -47,20 +46,20 @@ fun SignUpPhoneScreen(
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
-                text = "휴대폰 번호를 입력해주세요.",
-                color = Color.White,
+                text = "휴대폰 번호를 입력해주세요",
+                color = WineyTheme.colors.gray_50,
                 style = WineyTheme.typography.title1
             )
             HeightSpacer(54.dp)
             Text(
-                text = if (errorState) "올바른 번호를 입력해주세요." else " 전화번호 ",
+                text = if (errorState) "올바른 번호를 입력해주세요." else "전화번호",
                 color = if (errorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
                 style = WineyTheme.typography.bodyB2
             )
             HeightSpacer(10.dp)
             WTextField(
                 value = phoneNumber,
-                onvalueChanged = { phoneNumber = it },
+                onValueChanged = { phoneNumber = it },
                 placeholderText = "11자리 입력",
                 maxLength = 11,
                 visualTransformation = PhoneNumberVisualTransformation(),
