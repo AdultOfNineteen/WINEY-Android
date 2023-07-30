@@ -1,4 +1,4 @@
-package com.teamwiney.winey.ui.login
+package com.busymodernpeople.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,10 @@ import com.teamwiney.ui.signup.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onKaKaoLogin: () -> Unit,
+    onGoogleLogin: () -> Unit
+) {
 
     SplashBackground {
         LoginTitle()
@@ -69,9 +72,11 @@ fun LoginScreen() {
             ) {
                 SocialLoginButton(drawable = R.mipmap.img_kakao_login) {
                     // TODO 카카오 로그인 진행
+                    onKaKaoLogin()
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     // TODO 구글 로그인 진행
+                    onGoogleLogin()
                 }
             }
             Text(

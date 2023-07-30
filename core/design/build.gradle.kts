@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)

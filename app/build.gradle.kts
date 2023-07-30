@@ -53,15 +53,24 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:createNote"))
+    implementation(project(":feature:noteCollection"))
+    implementation(project(":feature:mypage"))
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(APPCOMPAT)
         implementation(ACTIVITY_COMPOSE)
+        implementation(NAVIGATION_COMPOSE)
         implementation(COMPOSE_BOM)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_UI)
         implementation(LIFECYCLE_RUNTIME_KTX)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
+        implementation(COROUTINES_ANDROID)
         implementation(KOTLIN_BOM)
         implementation(COMPOSE_BOM)
 

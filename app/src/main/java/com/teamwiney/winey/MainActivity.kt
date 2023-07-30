@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.teamwiney.ui.theme.WineyTheme
-import com.teamwiney.winey.ui.signup.SignUpPhoneScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +17,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = WineyTheme.colors.background_1
                 ) {
-                    SignUpPhoneScreen()
+                    WineyApp()
                 }
             }
         }

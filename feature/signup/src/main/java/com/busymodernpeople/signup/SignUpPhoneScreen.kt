@@ -1,4 +1,4 @@
-package com.teamwiney.winey.ui.signup
+package com.busymodernpeople.signup
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +24,10 @@ import com.teamwiney.ui.components.WTextField
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun SignUpPhoneScreen() {
+fun SignUpPhoneScreen(
+    onBack: () -> Unit,
+    onConfirm: () -> Unit
+) {
 
     var phoneNumber by remember {
         mutableStateOf("")
@@ -40,7 +43,7 @@ fun SignUpPhoneScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         SignUpTopBar {
-            // TODO : Add back button Event
+            onBack()
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
@@ -66,9 +69,10 @@ fun SignUpPhoneScreen() {
             )
             Spacer(modifier = Modifier.weight(1f))
             WButton(
-                text = "다음",
+                text = "확인",
                 onClick = {
                     // TODO : Add next button Event
+                    onConfirm()
                 },
                 enabled = phoneNumber.length == 11,
                 modifier = Modifier.padding(bottom = 54.dp)

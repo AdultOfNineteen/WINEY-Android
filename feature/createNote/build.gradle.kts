@@ -32,14 +32,22 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {
+    implementation(project(":core:design"))
 
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    with(Dependency) {
+        implementation(ANDROID_CORE_KTX)
+        implementation(COMPOSE_MATERIAL3)
+        implementation(COMPOSE_UI)
+        implementation(COMPOSE_UI_TOOLING)
+        implementation(COMPOSE_UI_PREVIEW)
+    }
 }
