@@ -4,7 +4,7 @@
 
 기본적으로 멀티모듈을 활용해 앱을 구성하며 [일반적인 모듈화 패턴](https://developer.android.com/topic/modularization/patterns?hl=ko)과 [Now in Android](https://github.com/android/nowinandroid)를 참고하여 구성했습니다.
 
-![WINEY 의존성 그래프 drawio (1)](https://github.com/DongChyeon/WINEY-Android/assets/64844115/fec531d7-3d0f-41a2-b5f8-735fa7202754)
+![WINEY 의존성 그래프](https://github.com/AdultOfNineteen/WINEY-Android/assets/64844115/664b2c38-babc-4cfa-a42d-a77603fe9704)
 
 ## 모듈 설명
 
