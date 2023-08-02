@@ -2,33 +2,36 @@
 
 ## 구조 설명
 
-기본적으로 멀티모듈을 활용해 앱을 구성하며
+기본적으로 멀티모듈을 활용해 앱을 구성하며 [일반적인 모듈화 패턴](https://developer.android.com/topic/modularization/patterns?hl=ko)과 [Now in Android](https://github.com/android/nowinandroid)를 참고하여 구성했습니다.
 
-[찰스의 앱 모듈화 가이드](https://www.charlezz.com/?p=46545)를 참고하여 구성하였습니다.
+![WINEY 의존성 그래프 drawio (1)](https://github.com/DongChyeon/WINEY-Android/assets/64844115/fec531d7-3d0f-41a2-b5f8-735fa7202754)
 
-app - domain - data 모듈로 구성되며 다음과 같은 레이어 층을 유지 합니다.
+## 모듈 설명
 
-![img.png](images/multimodule.png)
+- app: 앱 수준과 전체 코드베이스를 바인딩하는 계층으로, MainActivity, WineyApp 등 포함. feature 모듈의 navigation을 통합하여 관리
 
-[Jetpack Compose로 디자인 시스템 만들기(우와콘)](https://www.youtube.com/watch?v=O1yPOr7J3gY&t=2412s)을 참고하여 
+- domain: data와 feature의 중간 계층으로 model, mapper, usecase 포함
+- data: 직접 데이터를 받아오는 계층으로 api, model, datasource, repository 포함
+- feature: 각 기능 화면을 직접 표시하는 계층으로 uiState, viewmodel, screen, 그리고 해당 기능에 대한 navigation 포함
+- core: 다른 모듈에서 자주 사용하는 코드가 포함
 
-코어 디자인 시스템 모듈을 분리하여 디자인을 컴포넌트 단위로 관리합니다.
-
-[core_design_system 모듈](./core_design_system)
+각 모듈에 대한 DI, 리소스는 해당 모듈에서 관리합니다.
 
 ## 깃 컨벤션
 
-Feat : 새 기능 (new feature)
-Fix : 버그 수정
-Docs : 문서 수정
-Style : 코드 스타일 관련 수정 (포맷팅 등 실제 코드 변화는 아닌 경우)
-Refactor : 리팩토링 작업
-Test : 테스트 코드의 추가나 테스트 코드에 대한 리팩토링 작업 (메인 코드는 변경 X)
-Chore : 빌드와 관련된 것들을 업데이트하는 경우
-Design : UI 변경 작업
-Comment : 주석의 작성이나 변경
-Rename : 파일, 폴더, 패키지 등의 이름만 수정하거나 옮기기만 한 경우
-Remove : 파일 삭제만 한 경우
+|접두사|설명|
+|------|---|
+|Feat|새 기능 (new feature)|
+|Fix|버그 수정|
+|Docs|문서 수정|
+|Style|코드 스타일 관련 수정 (포맷팅 등 실제 코드 변화는 아닌 경우)|
+|Refactor|리팩토링 작업|
+|Test|테스트 코드의 추가나 테스트 코드에 대한 리팩토링 작업 (메인 코드는 변경 X)|
+|Chore|빌드와 관련된 것들을 업데이트하는 경우|
+|Design|UI 변경 작업|
+|Comment|주석의 작성이나 변경|
+|Rename|파일, 폴더, 패키지 등의 이름만 수정하거나 옮기기만 한 경우|
+|Remove|파일 삭제만 한 경우|
 
 ### 개발 환경
 
