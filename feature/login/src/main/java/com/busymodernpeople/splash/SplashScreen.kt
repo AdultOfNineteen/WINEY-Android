@@ -1,4 +1,4 @@
-package com.teamwiney.winey.ui.splash
+package com.busymodernpeople.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

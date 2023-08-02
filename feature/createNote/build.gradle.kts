@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.busymodernpeople.signup"
+    namespace = "com.busymodernpeople.createNote"
     compileSdk = 34
 
     defaultConfig {
