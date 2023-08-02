@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
-import com.teamwiney.ui.signup.SplashBackground
+import com.teamwiney.ui.splash.SplashBackground
 import kotlinx.coroutines.delay
 
 @Composable
