@@ -3,7 +3,10 @@ package com.busymodernpeople.signup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +42,11 @@ fun SignUpPhoneScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         SignUpTopBar {
             onBack()
@@ -74,7 +81,7 @@ fun SignUpPhoneScreen(
                     onConfirm()
                 },
                 enabled = phoneNumber.length == 11,
-                modifier = Modifier.padding(bottom = 54.dp)
+                modifier = Modifier.padding(bottom = 20.dp)
             )
         }
     }

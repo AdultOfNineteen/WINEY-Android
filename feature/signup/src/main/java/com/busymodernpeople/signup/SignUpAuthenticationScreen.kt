@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,7 +63,11 @@ fun SignUpAuthenticationScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         SignUpTopBar {
             onBack()
@@ -73,7 +80,7 @@ fun SignUpAuthenticationScreen(
             )
             HeightSpacer(height = 54.dp)
             Text(
-                text = if (errorState) "인증번호 6자리를 입력해주세요." else  "인증번호",
+                text = if (errorState) "인증번호 6자리를 입력해주세요." else "인증번호",
                 color = if (errorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
                 style = WineyTheme.typography.bodyB2
             )
@@ -81,13 +88,13 @@ fun SignUpAuthenticationScreen(
             WTextField(
                 value = authenticationNumber,
                 onValueChanged = { authenticationNumber = it },
-                placeholderText = "",
+                placeholderText = "인증번호를 입력해주세요.",
                 trailingIcon = {
-                   Text(
-                       text = remainingTime.toMinuteSeconds(),
-                       color = WineyTheme.colors.gray_50,
-                       style = WineyTheme.typography.captionM1
-                   )
+                    Text(
+                        text = remainingTime.toMinuteSeconds(),
+                        color = WineyTheme.colors.gray_50,
+                        style = WineyTheme.typography.captionM1
+                    )
                 },
                 maxLength = 6,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -121,13 +128,13 @@ fun SignUpAuthenticationScreen(
                     onConfirm()
                 },
                 enabled = authenticationNumber.length == 6,
-                modifier = Modifier.padding(bottom = 54.dp)
+                modifier = Modifier.padding(bottom = 20.dp)
             )
         }
     }
 }
 
-private fun Int.toMinuteSeconds() : String {
+private fun Int.toMinuteSeconds(): String {
     val minutes = this / 60
     val remainingSeconds = this % 60
 
