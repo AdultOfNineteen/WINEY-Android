@@ -28,14 +28,14 @@ import com.teamwiney.ui.signup.state.SignUpFavoriteItemUiState
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SignUpFavoriteTasteScreen(
     onBack: () -> Unit = {},
-    onConfirm: () -> Unit = {}
+    onConfirm: () -> Unit = {},
+    onSelectionComplete: () -> Unit = {}
 ) {
-
-    val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     val favoriteTastes = remember {
         mutableStateListOf(
@@ -87,6 +87,7 @@ fun SignUpFavoriteTasteScreen(
             )
         )
     }
+    val pagerState = rememberPagerState(pageCount = { favoriteTastes.size })
 
     Column(
         modifier = Modifier
@@ -96,7 +97,13 @@ fun SignUpFavoriteTasteScreen(
     ) {
         Box {
             SignUpTopBar {
-                onBack()
+                if (pagerState.currentPage == 0) {
+                    onBack()
+                } else {
+                    scope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    }
+                }
             }
             Text(
                 text = "${pagerState.currentPage + 1}/${favoriteTastes.size}",
@@ -121,10 +128,7 @@ fun SignUpFavoriteTasteScreen(
             )
             HeightSpacer(77.dp)
 
-            HorizontalPager(
-                pageCount = favoriteTastes.size,
-                state = pagerState
-            ) {
+            HorizontalPager(state = pagerState) {
                 SignUpFavoriteItemContainer(
                     favoriteTastes[it],
                     updateSignUpFavoriteItemUiState = { signUpFavoriteCategoryiState ->
@@ -141,6 +145,7 @@ fun SignUpFavoriteTasteScreen(
                             }
                         } else {
                             // TODO 3개다 선택됐을 때 행동 추가
+                            onSelectionComplete()
                         }
                     }
                 )
