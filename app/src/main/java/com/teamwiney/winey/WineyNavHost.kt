@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.busymodernpeople.login.LoginScreen
 import com.busymodernpeople.signup.SignUpAuthenticationScreen
+import com.busymodernpeople.signup.SignUpCompleteScreen
 import com.busymodernpeople.signup.SignUpFavoriteTasteScreen
 import com.busymodernpeople.signup.SignUpPhoneScreen
 import com.busymodernpeople.splash.SplashScreen
@@ -16,6 +17,7 @@ object WineyDestinations {
     const val SIGNUP_PHONE = "signUpPhone"
     const val SIGNUP_AUTHENTICATION = "signUpAuthentication"
     const val SIGNUP_FAVORITE_TASTE = "signUpFavoriteTaste"
+    const val SIGNUP_COMPLETE = "signUpComplete"
 }
 
 @Composable
@@ -58,7 +60,15 @@ fun WineyNavHost() {
         composable(route = WineyDestinations.SIGNUP_FAVORITE_TASTE) {
             SignUpFavoriteTasteScreen(
                 onBack = { navController.navigateUp() },
-                onConfirm = {}
+                onConfirm = {},
+                onSelectionComplete = { navController.navigate(WineyDestinations.SIGNUP_COMPLETE)}
+            )
+        }
+
+        composable(route = WineyDestinations.SIGNUP_COMPLETE) {
+            SignUpCompleteScreen(
+                onBack = { navController.navigateUp() },
+                onConfirm = { /*TODO*/ }
             )
         }
     }
