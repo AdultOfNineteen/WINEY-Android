@@ -57,7 +57,7 @@ fun SignUpAuthenticationScreen(
     LaunchedEffect(isTimerRunning) {
         while (isTimerRunning && remainingTime > 0) {
             delay(1000)
-            remainingTime--;
+            remainingTime--
         }
         if (isTimerRunning) isTimerRunning = false
     }
@@ -87,7 +87,11 @@ fun SignUpAuthenticationScreen(
             HeightSpacer(10.dp)
             WTextField(
                 value = authenticationNumber,
-                onValueChanged = { authenticationNumber = it },
+                onValueChanged = {
+                    authenticationNumber = it.filter { symbol ->
+                        symbol.isDigit()
+                    }
+                },
                 placeholderText = "인증번호를 입력해주세요.",
                 trailingIcon = {
                     Text(
