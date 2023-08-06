@@ -59,7 +59,7 @@ fun LoginScreen(
                         withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
                             append("카카오톡")
                         }
-                        append("으로 로그인 했습니다.")
+                        append("으로 로그인 했어요")
                     },
                     color = WineyTheme.colors.point_2,
                     style = WineyTheme.typography.captionM1

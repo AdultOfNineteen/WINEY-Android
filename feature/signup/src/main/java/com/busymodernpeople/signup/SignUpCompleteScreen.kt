@@ -10,15 +10,21 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.SignUpTopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    backgroundColor = 0xFF1F2126
+)
 @Composable
 fun SignUpCompleteScreen(
-    onBack: () -> Unit,
-    onConfirm: () -> Unit
+    onBack: () -> Unit = { },
+    onConfirm: () -> Unit = { }
 ) {
 
     Column(

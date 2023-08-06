@@ -29,7 +29,11 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    backgroundColor = 0xFF1F2126
+)
 @Composable
 fun SignUpFavoriteTasteScreen(
     onBack: () -> Unit = {},
