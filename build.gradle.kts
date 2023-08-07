@@ -5,5 +5,4 @@ plugins {
         id(ANDROID_LIBRARY) version Versions.AGP apply false
         id(JETBRAINS_KOTLIN_ANDROID) version Versions.KOTLIN apply false
     }
-    `kotlin-dsl`
 }

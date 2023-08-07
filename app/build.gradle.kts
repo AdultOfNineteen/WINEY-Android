@@ -74,6 +74,8 @@ dependencies {
         implementation(KOTLIN_BOM)
         implementation(COMPOSE_BOM)
 
+        implementation(HILT_ANDROID)
+
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
