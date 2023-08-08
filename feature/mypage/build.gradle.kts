@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.busymodernpeople.signup"
+    namespace = "com.teamwiney.signup"
     compileSdk = 34
 
     defaultConfig {
@@ -50,5 +50,9 @@ dependencies {
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        androidTestImplementation(TEST_EXT_JUNIT)
+        androidTestImplementation(TEST_ESPRESSO_CORE)
+        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
+        testImplementation(JUNIT)
     }
 }

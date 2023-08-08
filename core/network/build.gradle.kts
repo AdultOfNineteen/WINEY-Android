@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.busymodernpeople.core.network"
+    namespace = "com.teamwiney.core.network"
     compileSdk = 34
 
     defaultConfig {
