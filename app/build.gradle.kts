@@ -1,8 +1,14 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_APPLICATION)
         id(JETBRAINS_KOTLIN_ANDROID)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -16,10 +22,19 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties["kakao.native.app.key"] as String
+        )
+        resValue(
+            "string",
+            "KAKAO_NATIVE_APP_KEY_FULL",
+            properties["kakao.native.app.key.full"] as String
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -59,6 +74,7 @@ dependencies {
     implementation(project(":feature:createNote"))
     implementation(project(":feature:noteCollection"))
     implementation(project(":feature:mypage"))
+    implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
