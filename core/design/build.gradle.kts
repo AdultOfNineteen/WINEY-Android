@@ -45,6 +45,7 @@ dependencies {
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
+        implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
