@@ -32,9 +32,11 @@ fun WButton(
         modifier = modifier.fillMaxWidth(),
         border = border,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (enabled) enableBackgroundColor else disableBackgroundColor,
+            containerColor = enableBackgroundColor,
+            disabledContainerColor = disableBackgroundColor,
         ),
-        shape = RoundedCornerShape(5.dp)
+        shape = RoundedCornerShape(5.dp),
+        enabled = enabled
     ) {
         Text(
             text = text,
