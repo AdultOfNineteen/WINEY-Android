@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
-import com.teamwiney.ui.components.SocialLoginButton
+import com.teamwiney.ui.splash.SocialLoginButton
 import com.teamwiney.ui.components.dashedBorder
 import com.teamwiney.ui.splash.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme

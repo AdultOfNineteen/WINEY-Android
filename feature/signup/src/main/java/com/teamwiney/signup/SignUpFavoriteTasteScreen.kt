@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.SignUpTopBar
+import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.signup.SignUpFavoriteItemContainer
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import com.teamwiney.ui.signup.state.SignUpFavoriteItemUiState
