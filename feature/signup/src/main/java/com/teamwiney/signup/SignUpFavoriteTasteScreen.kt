@@ -160,7 +160,10 @@ fun SignUpFavoriteTasteScreen(
                 )
                 HeightSpacer(77.dp)
 
-                HorizontalPager(state = pagerState) {
+                HorizontalPager(
+                    state = pagerState,
+                    userScrollEnabled = false,
+                ) {
                     SignUpFavoriteItemContainer(
                         favoriteTastes[it],
                         updateSignUpFavoriteItemUiState = { signUpFavoriteCategoryiState ->
