@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.graphs.LOGIN_ROUTE
 
 const val SIGNUP_ROUTE = "signUpRoute"
 
@@ -33,7 +34,11 @@ fun NavGraphBuilder.signUpGraph(
 
         composable(route = SIGNUP_AUTHENTICATION) {
             SignUpAuthenticationScreen(
-                onBack = { navController.navigateUp() },
+                onBack = {
+                    navController.navigate(LOGIN_ROUTE) {
+                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    }
+                },
                 onSend = { },
                 onConfirm = { navController.navigate(SIGNUP_FAVORITE_TASTE) }
             )
@@ -41,7 +46,11 @@ fun NavGraphBuilder.signUpGraph(
 
         composable(route = SIGNUP_FAVORITE_TASTE) {
             SignUpFavoriteTasteScreen(
-                onBack = { navController.navigateUp() },
+                onBack = {
+                    navController.navigate(LOGIN_ROUTE) {
+                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    }
+                },
                 onConfirm = {},
                 onSelectionComplete = { navController.navigate(SIGNUP_COMPLETE) }
             )
