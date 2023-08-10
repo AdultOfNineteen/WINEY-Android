@@ -4,11 +4,19 @@ plugins {
     with(Plugins) {
         id(ANDROID_APPLICATION)
         id(JETBRAINS_KOTLIN_ANDROID)
+        id(DAGGER_HILT_PLUGIN)
+        id(KOTLIN_KAPT)
     }
 }
 
 val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 android {
@@ -64,6 +72,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -93,7 +102,9 @@ dependencies {
         implementation(COMPOSE_BOM)
 
         implementation(HILT_ANDROID)
-
+        implementation(DAGGER)
+        kapt(DAGGER_COMPILER)
+        kapt(HILT_ANDROID_COMPILER)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)

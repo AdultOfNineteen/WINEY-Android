@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":core:common"))
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
@@ -51,6 +52,9 @@ dependencies {
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(HILT_ANDROID)
+        implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha02")
+        implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)

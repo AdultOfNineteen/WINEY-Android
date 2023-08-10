@@ -6,5 +6,5 @@ object Plugins {
     const val GOOGLE_SERVICES = "com.google.gms.google-services"
     const val FIREBASE_CRASHLYTICS = "com.google.firebase.crashlytics"
     const val KOTLIN_KAPT = "kotlin-kapt"
-    const val DAGGER_HILT_PLUGIN = "dagger.hilt.android.plugin"
+    const val DAGGER_HILT_PLUGIN = "com.google.dagger.hilt.android"
 }

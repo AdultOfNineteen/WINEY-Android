@@ -21,6 +21,12 @@ object Dependency {
     const val LIFECYCLE_RUNTIME_COMPOSE =
         "androidx.lifecycle:lifecycle-runtime-compose:${Versions.LIFECYCLE}"
     const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
+    const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
+    const val DAGGER = "com.google.dagger:dagger:2.37"
+    const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.HILT}"
+    const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
+    const val HILT_ANDROID_GRADLE_PLUGIN =
+        "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT2}"
     const val CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT2}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP3}"
