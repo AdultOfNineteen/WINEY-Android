@@ -1,4 +1,4 @@
-package com.teamwiney.ui.components
+package com.teamwiney.ui.splash
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

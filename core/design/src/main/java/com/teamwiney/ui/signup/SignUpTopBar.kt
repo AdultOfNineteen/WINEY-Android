@@ -1,4 +1,4 @@
-package com.teamwiney.ui.components
+package com.teamwiney.ui.signup
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

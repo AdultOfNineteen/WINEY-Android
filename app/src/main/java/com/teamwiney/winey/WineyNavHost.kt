@@ -19,7 +19,7 @@ fun WineyNavHost() {
         startDestination = SPLASH
     ) {
         splashComposable(
-            navigateToLoginGraph = { navController.navigateToLoginGraph() }
+            navController = navController,
         )
         loginGraph(
             navigateToJoinGraph = { navController.navigateToSignUpGraph() }

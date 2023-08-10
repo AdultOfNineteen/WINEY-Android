@@ -1,4 +1,4 @@
-package com.teamwiney.ui.components
+package com.teamwiney.ui.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,14 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,53 +29,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignUpBottomSheet(
-    onDismissRequest: () -> Unit,
-    sheetState: SheetState = rememberModalBottomSheetState(),
-    dragHandle: @Composable (() -> Unit)? = { },
+    bottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     containerColor: Color = WineyTheme.colors.gray_950,
+    bottomsheetContent: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
-    ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-        dragHandle = dragHandle,
-        containerColor = containerColor
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            HeightSpacer(height = 10.dp)
-            Spacer(
+    ModalBottomSheetLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(containerColor),
+        sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetContent = {
+            Column(
                 modifier = Modifier
-                    .width(66.dp)
-                    .height(5.dp)
-                    .background(
-                        color = WineyTheme.colors.gray_900,
-                        shape = RoundedCornerShape(6.dp)
-                    )
-            )
-            HeightSpacer(height = 20.dp)
-            Image(
-                painter = painterResource(id = R.mipmap.img_lock),
-                contentDescription = null
-            )
-            HeightSpacer(height = 16.dp)
-            content()
+                    .fillMaxWidth()
+                    .background(containerColor)
+                    .padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                HeightSpacer(height = 10.dp)
+                Spacer(
+                    modifier = Modifier
+                        .width(66.dp)
+                        .height(5.dp)
+                        .background(
+                            color = WineyTheme.colors.gray_900,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                )
+                HeightSpacer(height = 20.dp)
+                Image(
+                    painter = painterResource(id = R.mipmap.img_lock),
+                    contentDescription = null
+                )
+                HeightSpacer(height = 16.dp)
+                bottomsheetContent()
+            }
         }
+    ) {
+        content()
     }
 }
 
 @Composable
 fun BottomSheetSelectionButton(
-    onConfirm : () -> Unit,
+    onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
     HorizontalDivider(
