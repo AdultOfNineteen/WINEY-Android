@@ -19,22 +19,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.domain.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PhoneNumberVisualTransformation
-import com.teamwiney.ui.signup.SignUpBottomSheet
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
+import com.teamwiney.ui.signup.SignUpBottomSheet
+import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
@@ -46,17 +46,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpPhoneScreen(
     onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    onConfirm: () -> Unit = { },
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
-    var phoneNumber by remember {
-        mutableStateOf("")
-    }
-    var errorState by remember {
-        mutableStateOf(false)
-    }
-    LaunchedEffect(phoneNumber) {
-        errorState = !(phoneNumber.length == 11 || phoneNumber.isEmpty())
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.phoneNumber) {
+        viewModel.updatePhoneNumberErrorState(
+            !(uiState.phoneNumber.length == PHONE_NUMBER_LENGTH || uiState.phoneNumber.isEmpty())
+        )
     }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -70,6 +69,14 @@ fun SignUpPhoneScreen(
                 }
                 true
             })
+
+    val sendVericationCode = {
+        viewModel.senVericiationCode {
+            scope.launch {
+                bottomSheetState.show()
+            }
+        }
+    }
 
     SignUpBottomSheet(
         bottomSheetState = bottomSheetState,
@@ -118,38 +125,34 @@ fun SignUpPhoneScreen(
                 )
                 HeightSpacer(54.dp)
                 Text(
-                    text = if (errorState) "올바른 번호를 입력해주세요" else "전화번호",
-                    color = if (errorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
+                    text = if (uiState.phoneNumberErrorState) "올바른 번호를 입력해주세요" else "전화번호",
+                    color = if (uiState.phoneNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
                     style = WineyTheme.typography.bodyB2
                 )
                 HeightSpacer(10.dp)
                 WTextField(
-                    value = phoneNumber,
-                    onValueChanged = { phoneNumber = it },
-                    placeholderText = "11자리 입력",
-                    maxLength = 11,
+                    value = uiState.phoneNumber,
+                    onValueChanged = { viewModel.updatePhoneNumber(it) },
+                    placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
+                    maxLength = PHONE_NUMBER_LENGTH,
                     visualTransformation = PhoneNumberVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            scope.launch {
-                                keyboardController?.hide()
-                                bottomSheetState.show()
-                            }
+                            keyboardController?.hide()
+                            sendVericationCode()
                         }
                     ),
-                    onErrorState = errorState
+                    onErrorState = uiState.phoneNumberErrorState
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 WButton(
                     text = "확인",
                     onClick = {
-                        scope.launch {
-                            keyboardController?.hide()
-                            bottomSheetState.show()
-                        }
+                        keyboardController?.hide()
+                        sendVericationCode()
                     },
-                    enabled = phoneNumber.length == 11,
+                    enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
             }

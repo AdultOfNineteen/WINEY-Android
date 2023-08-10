@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
@@ -24,7 +25,8 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun SignUpCompleteScreen(
     onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    onConfirm: () -> Unit = { },
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     Column(

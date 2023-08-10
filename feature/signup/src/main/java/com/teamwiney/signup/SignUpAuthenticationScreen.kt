@@ -34,6 +34,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.domain.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.ui.signup.BottomSheetSelectionButton
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.signup.SignUpBottomSheet
@@ -53,45 +56,35 @@ import kotlinx.coroutines.launch
 fun SignUpAuthenticationScreen(
     onBack: () -> Unit = { },
     onSend: () -> Unit = { },
-    onConfirm: () -> Unit = { }
+    onConfirm: () -> Unit = { },
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
-    var authenticationNumber by remember {
-        mutableStateOf("")
-    }
-    var errorState by remember {
-        mutableStateOf(false)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val SEND_MESSAGE_BOTTOM_SHEET = 0
+    val RETURN_TO_LOGIN_BOTTOM_SHEET = 1
+
+    LaunchedEffect(uiState.verifyNumber) {
+        viewModel.updateVerifyNumberErrorState(!(uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty()))
     }
 
-    // TODO : 실제 구현에서는 isTimerRunning, remainingTime을 ViewModel에서 관리
-    var isTimerRunning by remember {
-        mutableStateOf(true)
-    }
-    var remainingTime by remember {
-        mutableIntStateOf(180)
-    }
-
-    LaunchedEffect(authenticationNumber) {
-        errorState = !(authenticationNumber.length == 6 || authenticationNumber.isEmpty())
-    }
-
-    LaunchedEffect(isTimerRunning) {
-        while (isTimerRunning && remainingTime > 0) {
+    LaunchedEffect(uiState.isTimerRunning) {
+        while (uiState.isTimerRunning && uiState.remainingTime > 0) {
             delay(1000)
-            remainingTime--
+            viewModel.updateRemainingTime(uiState.remainingTime - 1)
         }
-        if (isTimerRunning) isTimerRunning = false
+        if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
     }
     val scope = rememberCoroutineScope()
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    var bottomSheetSelection by remember { mutableIntStateOf(0) }
+    var bottomSheetSelection by remember { mutableIntStateOf(SEND_MESSAGE_BOTTOM_SHEET) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     SignUpBottomSheet(
         bottomSheetState = bottomSheetState,
         bottomsheetContent = {
-            if (bottomSheetSelection == 0) {
+            if (bottomSheetSelection == SEND_MESSAGE_BOTTOM_SHEET) {
                 Text(
                     text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
                     style = WineyTheme.typography.bodyB1,
@@ -135,7 +128,7 @@ fun SignUpAuthenticationScreen(
         ) {
             SignUpTopBar {
                 scope.launch { bottomSheetState.show() }
-                bottomSheetSelection = 1
+                bottomSheetSelection = RETURN_TO_LOGIN_BOTTOM_SHEET
             }
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
                 Text(
@@ -145,33 +138,33 @@ fun SignUpAuthenticationScreen(
                 )
                 HeightSpacer(height = 54.dp)
                 Text(
-                    text = if (errorState) "인증번호 6자리를 입력해주세요" else "인증번호",
-                    color = if (errorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
+                    text = if (uiState.verifyNumberErrorState) "인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요" else "인증번호",
+                    color = if (uiState.verifyNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
                     style = WineyTheme.typography.bodyB2
                 )
                 HeightSpacer(10.dp)
                 WTextField(
-                    value = authenticationNumber,
+                    value = uiState.verifyNumber,
                     onValueChanged = {
-                        authenticationNumber = it.filter { symbol ->
+                        viewModel.updateVerifyNumber(it.filter { symbol ->
                             symbol.isDigit()
-                        }
+                        })
                     },
                     placeholderText = "인증번호를 입력해주세요",
                     trailingIcon = {
                         Text(
-                            text = remainingTime.toMinuteSeconds(),
+                            text = uiState.remainingTime.toMinuteSeconds(),
                             color = WineyTheme.colors.gray_50,
                             style = WineyTheme.typography.captionM1
                         )
                     },
-                    maxLength = 6,
+                    maxLength = VERIFY_NUMBER_LENGTH,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     keyboardActions = KeyboardActions(onDone = {
                         keyboardController?.hide()
-                        if (authenticationNumber.length == 6) onConfirm()
+                        if (uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH) onConfirm()
                     }),
-                    onErrorState = errorState
+                    onErrorState = uiState.verifyNumberErrorState
                 )
                 HeightSpacer(15.dp)
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -185,10 +178,9 @@ fun SignUpAuthenticationScreen(
                             onSend()
                             keyboardController?.hide()
                             // TODO: 실제 구현에서는 ViewModel의 타이머 시작 함수를 onSend에 람다로 넘겨받음
-                            isTimerRunning = true
-                            remainingTime = 180
+                            viewModel.resetTimer()
                             scope.launch { bottomSheetState.show() }
-                            bottomSheetSelection = 0
+                            bottomSheetSelection = SEND_MESSAGE_BOTTOM_SHEET
                         },
                         text = "인증번호 재전송",
                         color = WineyTheme.colors.gray_700,
@@ -204,7 +196,7 @@ fun SignUpAuthenticationScreen(
                         keyboardController?.hide()
                         onConfirm()
                     },
-                    enabled = authenticationNumber.length == 6,
+                    enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
             }
