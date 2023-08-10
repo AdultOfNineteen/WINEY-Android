@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.login"
+    namespace = "com.teamwiney.feature.login"
     compileSdk = 34
 
     defaultConfig {
@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:design"))
 
     with(Dependency) {
@@ -50,6 +51,7 @@ dependencies {
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(HILT_ANDROID)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)

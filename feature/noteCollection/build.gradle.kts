@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.noteCollection"
+    namespace = "com.teamwiney.feature.noteCollection"
     compileSdk = 34
 
     defaultConfig {

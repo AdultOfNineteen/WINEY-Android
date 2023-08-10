@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.createNote"
+    namespace = "com.teamwiney.feature.createNote"
     compileSdk = 34
 
     defaultConfig {

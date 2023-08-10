@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.signup"
+    namespace = "com.teamwiney.feature.signup"
     compileSdk = 34
 
     defaultConfig {

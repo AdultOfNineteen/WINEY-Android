@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.home"
+    namespace = "com.teamwiney.feature.home"
     compileSdk = 34
 
     defaultConfig {

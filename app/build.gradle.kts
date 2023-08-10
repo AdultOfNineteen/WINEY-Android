@@ -53,6 +53,7 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":core:common"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:login"))
     implementation(project(":feature:home"))
