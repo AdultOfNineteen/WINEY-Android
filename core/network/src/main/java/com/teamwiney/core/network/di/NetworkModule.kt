@@ -1,6 +1,7 @@
 package com.teamwiney.core.network.di
 
 import com.teamwiney.core.network.BuildConfig
+import com.teamwiney.core.network.calladapter.ApiResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +36,7 @@ object NetworkModule {
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
+            .addCallAdapterFactory(ApiResultCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 }
