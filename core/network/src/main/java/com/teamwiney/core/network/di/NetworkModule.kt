@@ -1,7 +1,8 @@
 package com.teamwiney.core.network.di
 
 import com.teamwiney.core.network.BuildConfig
-import com.teamwiney.core.network.calladapter.ApiResultCallAdapterFactory
+import com.teamwiney.core.network.adapter.ApiResultCallAdapterFactory
+import com.teamwiney.core.network.converter.EnumConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,6 +38,8 @@ object NetworkModule {
             .client(okHttpClient)
             .baseUrl(BuildConfig.BASE_URL)
             .addCallAdapterFactory(ApiResultCallAdapterFactory())
+            .addConverterFactory(EnumConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    
 }
