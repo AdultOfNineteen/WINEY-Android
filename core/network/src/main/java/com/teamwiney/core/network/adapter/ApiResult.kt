@@ -1,4 +1,4 @@
-package com.teamwiney.core.network.calladapter
+package com.teamwiney.core.network.adapter
 
 sealed class ApiResult<T> {
 

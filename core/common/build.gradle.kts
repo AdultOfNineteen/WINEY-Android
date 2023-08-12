@@ -37,6 +37,7 @@ android {
 dependencies {
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
+        implementation(COROUTINES_ANDROID)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
         testImplementation(JUNIT)
         androidTestImplementation(TEST_EXT_JUNIT)

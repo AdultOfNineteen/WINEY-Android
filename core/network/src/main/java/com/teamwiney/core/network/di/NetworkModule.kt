@@ -41,5 +41,5 @@ object NetworkModule {
             .addConverterFactory(EnumConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    
+
 }

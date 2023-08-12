@@ -1,4 +1,4 @@
-package com.teamwiney.core.network.calladapter
+package com.teamwiney.core.network.adapter
 
 import retrofit2.Call
 import retrofit2.CallAdapter
