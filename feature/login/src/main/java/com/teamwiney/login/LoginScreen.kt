@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,16 +26,32 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
-import com.teamwiney.ui.splash.SocialLoginButton
 import com.teamwiney.ui.components.dashedBorder
+import com.teamwiney.ui.splash.SocialLoginButton
 import com.teamwiney.ui.splash.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
+    effectFlow: Flow<LoginContract.Effect>,
     onKaKaoLogin: () -> Unit,
-    onGoogleLogin: () -> Unit
+    onGoogleLogin: () -> Unit,
+    navigateToJoin: () -> Unit,
 ) {
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is LoginContract.Effect.NavigateToHome -> {
+                    navigateToJoin()
+                }
+                is LoginContract.Effect.ShowSnackbar -> {
+                    // TODO : 스낵바에 에러 메시지 보여주기
+                }
+            }
+        }
+    }
 
     SplashBackground {
         LoginTitle()
