@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     with (Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(APPCOMPAT)

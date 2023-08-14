@@ -39,6 +39,7 @@ dependencies {
         implementation(ANDROID_CORE_KTX)
         implementation(COROUTINES_ANDROID)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
+        implementation(CONVERTER_GSON)
         testImplementation(JUNIT)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)

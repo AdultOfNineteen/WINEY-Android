@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
 
     fun socialLogin(socialType: SocialType) {
         viewModelScope.launch {
-            authRepository.socialLogin(socialType)
+            authRepository.socialLogin(socialType, "")
                 .onStart {
                     updateState(currentState.copy(isLoading = true))
                 }
@@ -44,9 +44,11 @@ class LoginViewModel @Inject constructor(
                         }
                         is ApiResult.NetworkError -> {
                             updateState(currentState.copy(error = "네트워크 에러"))
+                            postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
                         }
                         is ApiResult.ApiError -> {
                             updateState(currentState.copy(error = result.message))
+                            postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
                         }
                     }
                 }
