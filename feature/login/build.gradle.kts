@@ -2,6 +2,7 @@ plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(JETBRAINS_KOTLIN_ANDROID)
+        id(KOTLIN_KAPT)
     }
 }
 
@@ -26,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -43,14 +44,19 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:design"))
+    implementation(project(":core:network"))
+    implementation(project(":data:auth"))
 
     with(Dependency) {
+        kapt(HILT_ANDROID_COMPILER)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(DAGGER_COMPILER)
+        implementation(HILT_NAVIGATION_COMPOSE)
         implementation(HILT_ANDROID)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)

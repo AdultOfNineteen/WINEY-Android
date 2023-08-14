@@ -35,6 +35,11 @@ android {
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao.native.app.key"] as String
         )
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties["base.url"] as String
+        )
         resValue(
             "string",
             "KAKAO_NATIVE_APP_KEY_FULL",
@@ -78,6 +83,8 @@ android {
 dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(project(":data:auth"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:login"))
     implementation(project(":feature:home"))

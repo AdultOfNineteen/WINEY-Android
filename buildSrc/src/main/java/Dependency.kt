@@ -27,6 +27,8 @@ object Dependency {
     const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
     const val HILT_ANDROID_GRADLE_PLUGIN =
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}"
+    const val KOTLIN_GRADLE_PLUGIN =
+        "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
     const val HILT_NAVIGATION_COMPOSE =
         "androidx.hilt:hilt-navigation-compose:${Versions.HILT_NAVIGATION_COMPOSE}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT2}"
