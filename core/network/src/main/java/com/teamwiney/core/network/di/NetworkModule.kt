@@ -3,6 +3,7 @@ package com.teamwiney.core.network.di
 import com.teamwiney.core.network.BuildConfig
 import com.teamwiney.core.network.adapter.ApiResultCallAdapterFactory
 import com.teamwiney.core.network.converter.EnumConverterFactory
+import com.teamwiney.core.network.service.AuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,5 +42,10 @@ object NetworkModule {
             .addConverterFactory(EnumConverterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+    @Provides
+    @Singleton
+    fun providesAuthService(retrofit: Retrofit) =
+        retrofit.create(AuthService::class.java)
 
 }

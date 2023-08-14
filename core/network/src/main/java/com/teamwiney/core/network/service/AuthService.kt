@@ -3,7 +3,7 @@ package com.teamwiney.core.network.service
 import com.google.gson.annotations.SerializedName
 import com.teamwiney.core.network.adapter.ApiResult
 import com.teamwiney.core.network.model.response.ResponseWrapper
-import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 enum class SocialType {
@@ -17,7 +17,7 @@ enum class SocialType {
 
 interface AuthService {
 
-    @GET("/login/{social}")
+    @POST("/login/{social}")
     suspend fun socialLogin(
         @Path("social") social: SocialType
     ) : ApiResult<ResponseWrapper<String>>
