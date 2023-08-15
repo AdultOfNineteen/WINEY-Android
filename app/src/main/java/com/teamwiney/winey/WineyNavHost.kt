@@ -35,6 +35,8 @@ fun WineyNavHost() {
         mutableStateOf<() -> Unit>({})
     }
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         confirmValueChange = {
@@ -49,11 +51,13 @@ fun WineyNavHost() {
     val scope = rememberCoroutineScope()
 
     val showBottomSheet: (SheetContent) -> Unit = { content: SheetContent ->
+        keyboardController?.hide()
         bottomSheetContent = content
         scope.launch { bottomSheetState.show() }
     }
     val hideBottomSheet: () -> Unit = {
         scope.launch {
+            keyboardController?.hide()
             bottomSheetState.hide()
             bottomSheetContent = null
         }
