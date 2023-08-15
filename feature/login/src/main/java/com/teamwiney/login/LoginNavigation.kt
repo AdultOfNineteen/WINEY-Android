@@ -22,7 +22,8 @@ fun NavGraphBuilder.loginGraph(
                 effectFlow = viewModel.effect,
                 onKaKaoLogin = { viewModel.socialLogin(socialType = SocialType.KAKAO) },
                 onGoogleLogin = { viewModel.socialLogin(socialType = SocialType.GOOGLE) },
-                navController = navController
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }

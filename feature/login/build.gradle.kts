@@ -61,5 +61,6 @@ dependencies {
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
         testImplementation(JUNIT)
+        implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
     }
 }

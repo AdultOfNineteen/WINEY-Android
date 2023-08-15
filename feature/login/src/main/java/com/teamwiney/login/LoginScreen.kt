@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -43,17 +44,22 @@ fun LoginScreen(
     onKaKaoLogin: () -> Unit,
     onGoogleLogin: () -> Unit,
     showBottomSheet: (SheetContent) -> Unit = { },
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateToSignUp -> {
                     navController.navigate(SignUpDestinations.ROUTE)
                 }
+
                 is LoginContract.Effect.NavigateToHome -> {
                     navController.navigate(HomeDestinations.ROUTE)
                 }
+
                 is LoginContract.Effect.ShowSnackbar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
@@ -97,7 +103,9 @@ fun LoginScreen(
             ) {
                 SocialLoginButton(drawable = R.mipmap.img_kakao_login) {
                     // TODO 카카오 로그인 진행
-                    onKaKaoLogin()
+                    viewModel.kakaoLogin(context) {
+                        onKaKaoLogin()
+                    }
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     // TODO 구글 로그인 진행
