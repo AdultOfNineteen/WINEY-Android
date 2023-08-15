@@ -61,14 +61,17 @@ fun SignUpPhoneScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
     val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
             confirmValueChange = {
                 if (it == ModalBottomSheetValue.Hidden) {
                     // 핸드폰 번호 입력했을 때는 올라갔다가 내려가면 다음화면으로 넘어가게 설정
                     onConfirm()
                 }
                 true
-            })
+            },
+            skipHalfExpanded = true
+        )
 
     val sendVericationCode = {
         viewModel.senVericiationCode {
@@ -80,7 +83,7 @@ fun SignUpPhoneScreen(
 
     SignUpBottomSheet(
         bottomSheetState = bottomSheetState,
-        bottomsheetContent = {
+        bottomSheetContent = {
             Text(
                 text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
                 style = WineyTheme.typography.bodyB1,
@@ -93,9 +96,8 @@ fun SignUpPhoneScreen(
                 style = WineyTheme.typography.captionM2,
                 color = WineyTheme.colors.gray_600
             )
-            HeightSpacer(height = 26.dp)
+            HeightSpacer(height = 40.dp)
             WButton(
-                modifier = Modifier.padding(bottom = 20.dp),
                 text = "확인",
                 onClick = {
                     scope.launch {
@@ -104,6 +106,7 @@ fun SignUpPhoneScreen(
                     }
                 }
             )
+            HeightSpacer(height = 40.dp)
         },
     ) {
         Column(

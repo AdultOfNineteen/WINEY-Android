@@ -29,12 +29,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.signup.BottomSheetSelectionButton
 import com.teamwiney.ui.signup.SignUpBottomSheet
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.signup.SignUpFavoriteItemContainer
+import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -51,12 +51,14 @@ fun SignUpFavoriteTasteScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { uiState.favoriteTastes.size })
 
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        )
 
     SignUpBottomSheet(
         bottomSheetState = bottomSheetState,
-        bottomsheetContent = {
+        bottomSheetContent = {
             Text(
                 text = "진행을 중단하고 처음으로\n되돌아가시겠어요?",
                 style = WineyTheme.typography.bodyB1,
@@ -68,6 +70,7 @@ fun SignUpFavoriteTasteScreen(
                 onConfirm = { onBack() },
                 onCancel = { scope.launch { bottomSheetState.hide() } }
             )
+            HeightSpacer(height = 40.dp)
         }) {
         Column(
             modifier = Modifier

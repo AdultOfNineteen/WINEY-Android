@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -37,16 +36,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.domain.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
-import com.teamwiney.ui.signup.BottomSheetSelectionButton
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.signup.SignUpBottomSheet
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
+import com.teamwiney.ui.signup.BottomSheetSelectionButton
+import com.teamwiney.ui.signup.SignUpBottomSheet
+import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -76,14 +76,16 @@ fun SignUpAuthenticationScreen(
         if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
     }
     val scope = rememberCoroutineScope()
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        )
     var bottomSheetSelection by remember { mutableIntStateOf(SEND_MESSAGE_BOTTOM_SHEET) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     SignUpBottomSheet(
         bottomSheetState = bottomSheetState,
-        bottomsheetContent = {
+        bottomSheetContent = {
             if (bottomSheetSelection == SEND_MESSAGE_BOTTOM_SHEET) {
                 Text(
                     text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
@@ -97,12 +99,12 @@ fun SignUpAuthenticationScreen(
                     style = WineyTheme.typography.captionM2,
                     color = WineyTheme.colors.gray_600
                 )
-                HeightSpacer(height = 26.dp)
+                HeightSpacer(height = 40.dp)
                 WButton(
-                    modifier = Modifier.padding(bottom = 20.dp),
                     text = "확인",
                     onClick = { scope.launch { bottomSheetState.hide() } }
                 )
+                HeightSpacer(height = 40.dp)
             } else {
                 Text(
                     text = "진행을 중단하고 처음으로\n되돌아가시겠어요?",
@@ -115,6 +117,7 @@ fun SignUpAuthenticationScreen(
                     onConfirm = { onBack() },
                     onCancel = { scope.launch { bottomSheetState.hide() } }
                 )
+                HeightSpacer(height = 40.dp)
             }
         },
     ) {
@@ -136,7 +139,7 @@ fun SignUpAuthenticationScreen(
                     color = WineyTheme.colors.gray_50,
                     style = WineyTheme.typography.title1
                 )
-                HeightSpacer(height = 54.dp)
+                HeightSpacer(height = 40.dp)
                 Text(
                     text = if (uiState.verifyNumberErrorState) "인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요" else "인증번호",
                     color = if (uiState.verifyNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,

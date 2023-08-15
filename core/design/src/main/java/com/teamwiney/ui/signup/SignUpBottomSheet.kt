@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -37,7 +38,7 @@ import com.teamwiney.ui.theme.WineyTheme
 fun SignUpBottomSheet(
     bottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     containerColor: Color = WineyTheme.colors.gray_950,
-    bottomsheetContent: @Composable () -> Unit,
+    bottomSheetContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
     ModalBottomSheetLayout(
@@ -45,16 +46,15 @@ fun SignUpBottomSheet(
             .fillMaxSize()
             .background(containerColor),
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp),
         sheetContent = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(containerColor)
-                    .padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
+                    .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 40.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                HeightSpacer(height = 10.dp)
                 Spacer(
                     modifier = Modifier
                         .width(66.dp)
@@ -70,7 +70,7 @@ fun SignUpBottomSheet(
                     contentDescription = null
                 )
                 HeightSpacer(height = 16.dp)
-                bottomsheetContent()
+                bottomSheetContent()
             }
         }
     ) {
