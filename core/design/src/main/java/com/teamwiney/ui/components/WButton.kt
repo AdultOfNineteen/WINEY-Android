@@ -41,7 +41,8 @@ fun WButton(
         Text(
             text = text,
             color = if (enabled) enableTextColor else disableTextColor,
-            modifier = Modifier.padding(vertical = 4.dp)
+            style = WineyTheme.typography.headline,
+            modifier = Modifier.padding(vertical = 14.dp)
         )
     }
 }
