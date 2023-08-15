@@ -14,7 +14,8 @@ import com.teamwiney.ui.signup.SheetContent
 fun NavGraphBuilder.signUpGraph(
     navController: NavController,
     showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit
+    hideBottomSheet: () -> Unit,
+    setOnHideBottomSheet: (() -> Unit) -> Unit
 ) {
     navigation(
         route = SignUpDestinations.ROUTE,
@@ -29,6 +30,7 @@ fun NavGraphBuilder.signUpGraph(
             SignUpPhoneScreen(
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
+                onHideBottomSheet = setOnHideBottomSheet,
                 navController = navController,
                 viewModel = hiltViewModel(backStackEntry)
             )

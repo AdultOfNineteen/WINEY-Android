@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -46,10 +47,21 @@ fun SignUpPhoneScreen(
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
     navController: NavController = rememberNavController(),
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onHideBottomSheet: (() -> Unit) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+
+    DisposableEffect(true) {
+        onHideBottomSheet {
+            hideBottomSheet()
+            navController.navigate(SignUpDestinations.AUTHENTICATION)
+        }
+        onDispose {
+            onHideBottomSheet { }
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -57,6 +69,7 @@ fun SignUpPhoneScreen(
                 is SignUpContract.Effect.ShowSnackbar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
+
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.SendMessage -> {
@@ -85,10 +98,14 @@ fun SignUpPhoneScreen(
                                     HeightSpacer(height = 40.dp)
                                 }
                             }
-                        } else -> { }
+
+                        }
+
+                        else -> {}
                     }
                 }
-                else -> { }
+
+                else -> {}
             }
         }
     }

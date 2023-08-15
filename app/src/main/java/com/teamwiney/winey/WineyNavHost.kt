@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.teamwiney.core.common.SplashDestinations
@@ -30,8 +31,18 @@ fun WineyNavHost() {
     val appState = rememberWineyAppState()
     val navController = appState.navController
 
+    var onHideBottomSheet by remember {
+        mutableStateOf<() -> Unit>({})
+    }
+
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = {
+            if (it == ModalBottomSheetValue.Hidden) {
+                onHideBottomSheet()
+            }
+            true
+        },
         skipHalfExpanded = true
     )
     var bottomSheetContent: SheetContent? by remember { mutableStateOf(null) }
@@ -77,9 +88,14 @@ fun WineyNavHost() {
                 signUpGraph(
                     navController = navController,
                     showBottomSheet = showBottomSheet,
-                    hideBottomSheet = hideBottomSheet
+                    hideBottomSheet = hideBottomSheet,
+                    setOnHideBottomSheet = { event ->
+                        onHideBottomSheet = event
+                    }
                 )
             }
         }
     }
 }
+
+
