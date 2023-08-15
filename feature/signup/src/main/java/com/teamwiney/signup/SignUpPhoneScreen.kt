@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
@@ -123,6 +124,7 @@ fun SignUpPhoneScreen(
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
             .statusBarsPadding()
+            .navigationBarsPadding()
             .imePadding()
     ) {
         SignUpTopBar {
@@ -166,7 +168,6 @@ fun SignUpPhoneScreen(
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            HeightSpacer(height = 40.dp)
         }
     }
 }

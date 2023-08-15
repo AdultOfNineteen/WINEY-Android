@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
@@ -63,6 +64,7 @@ fun SignUpAuthenticationScreen(
                 is SignUpContract.Effect.ShowSnackbar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
+
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.SendMessage -> {
@@ -89,6 +91,7 @@ fun SignUpAuthenticationScreen(
                                 }
                             }
                         }
+
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             showBottomSheet {
                                 SignUpBottomSheet {
@@ -103,7 +106,9 @@ fun SignUpAuthenticationScreen(
                                         onConfirm = {
                                             hideBottomSheet()
                                             navController.navigate(LoginDestinations.ROUTE) {
-                                                popUpTo(SignUpDestinations.ROUTE) { inclusive = true }
+                                                popUpTo(SignUpDestinations.ROUTE) {
+                                                    inclusive = true
+                                                }
                                             }
                                         },
                                         onCancel = { hideBottomSheet() }
@@ -112,10 +117,12 @@ fun SignUpAuthenticationScreen(
                                 }
                             }
                         }
-                        else -> { }
+
+                        else -> {}
                     }
                 }
-                else -> { }
+
+                else -> {}
             }
         }
     }
@@ -132,11 +139,13 @@ fun SignUpAuthenticationScreen(
         if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
             .statusBarsPadding()
+            .navigationBarsPadding()
             .imePadding()
     ) {
         SignUpTopBar {
@@ -211,7 +220,6 @@ fun SignUpAuthenticationScreen(
                 enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            HeightSpacer(height = 40.dp)
         }
     }
 }
@@ -220,5 +228,5 @@ private fun Int.toMinuteSeconds(): String {
     val minutes = this / 60
     val remainingSeconds = this % 60
 
-    return String.format("%d:%02d", minutes, remainingSeconds)
+    return if (this < 0) "-:--" else String.format("%d:%02d", minutes, remainingSeconds)
 }
