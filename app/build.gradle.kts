@@ -4,7 +4,7 @@ plugins {
     with(Plugins) {
         id(ANDROID_APPLICATION)
         id(JETBRAINS_KOTLIN_ANDROID)
-        id(DAGGER_HILT_PLUGIN)
+        id(DAGGER_HILT_ANDROID)
         id(KOTLIN_KAPT)
     }
 }
@@ -34,11 +34,6 @@ android {
             "String",
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao.native.app.key"] as String
-        )
-        buildConfigField(
-            "String",
-            "BASE_URL",
-            properties["base.url"] as String
         )
         resValue(
             "string",
@@ -83,8 +78,7 @@ android {
 dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:common"))
-    implementation(project(":core:network"))
-    implementation(project(":data:auth"))
+    implementation(project(":data"))
     implementation(project(":feature:signup"))
     implementation(project(":feature:login"))
     implementation(project(":feature:home"))

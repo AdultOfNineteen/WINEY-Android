@@ -13,4 +13,3 @@ plugins {
         id(DAGGER_HILT_PLUGIN) version Versions.HILT apply false
     }
 }
-

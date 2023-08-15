@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.teamwiney.core.network.service.SocialType
+import com.teamwiney.data.network.service.SocialType
 
 const val LOGIN_ROUTE = "loginRoute"
 

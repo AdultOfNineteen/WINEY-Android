@@ -16,9 +16,8 @@ dependencyResolutionManagement {
 rootProject.name = "winey"
 include ':app'
 include ':core:design'
-include ':core:network'
 include ':core:common'
-include ':data:auth'
+include ':data'
 include ':feature:home'
 include ':feature:login'
 include ':feature:createNote'

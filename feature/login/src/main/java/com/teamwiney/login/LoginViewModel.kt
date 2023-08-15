@@ -2,9 +2,9 @@ package com.teamwiney.login
 
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
-import com.teamwiney.core.network.adapter.ApiResult
-import com.teamwiney.core.network.service.SocialType
-import com.teamwiney.data.auth.repository.AuthRepository
+import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.service.SocialType
+import com.teamwiney.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch

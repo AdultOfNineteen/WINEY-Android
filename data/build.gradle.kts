@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
@@ -6,12 +8,22 @@ plugins {
     }
 }
 
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
+}
+
 android {
-    namespace = "com.teamwiney.feature.login"
+    namespace = "com.teamwiney.data"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties["base.url"] as String
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,33 +45,21 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
 }
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:design"))
-    implementation(project(":data"))
 
-    with(Dependency) {
+    with (Dependency) {
         kapt(HILT_ANDROID_COMPILER)
-        implementation(ANDROID_CORE_KTX)
-        implementation(COMPOSE_MATERIAL3)
-        implementation(COMPOSE_UI)
-        implementation(COMPOSE_UI_TOOLING)
-        implementation(COMPOSE_UI_PREVIEW)
-        implementation(NAVIGATION_COMPOSE)
-        implementation(DAGGER_COMPILER)
-        implementation(HILT_NAVIGATION_COMPOSE)
+        implementation(COROUTINES_ANDROID)
         implementation(HILT_ANDROID)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
+        implementation(RETROFIT)
+        implementation(CONVERTER_GSON)
+        implementation(OKHTTP)
+        implementation(LOGGING_INTERCEPTOR)
         testImplementation(JUNIT)
     }
 }
