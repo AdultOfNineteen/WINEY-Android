@@ -3,34 +3,28 @@ package com.teamwiney.login
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.core.common.LoginDestinations
+import com.teamwiney.core.common.SignUpDestinations
 import com.teamwiney.data.network.service.SocialType
 
-const val LOGIN_ROUTE = "loginRoute"
-
-const val LOGIN = "login"
-
-fun NavController.navigateToLoginGraph(navOptions: NavOptions? = null) {
-    this.navigate(LOGIN_ROUTE, navOptions)
-}
-
 fun NavGraphBuilder.loginGraph(
-    navigateToJoinGraph: () -> Unit = { }
+    navController: NavController
 ) {
     navigation(
-        route = LOGIN_ROUTE,
-        startDestination = LOGIN
+        route = LoginDestinations.ROUTE,
+        startDestination = LoginDestinations.LOGIN
     ) {
-        composable(route = LOGIN) {
+        composable(route = LoginDestinations.LOGIN) {
             val viewModel: LoginViewModel = hiltViewModel()
 
             LoginScreen(
                 effectFlow = viewModel.effect,
                 onKaKaoLogin = { viewModel.socialLogin(socialType = SocialType.KAKAO) },
                 onGoogleLogin = { viewModel.socialLogin(socialType = SocialType.GOOGLE) },
-                navigateToJoin = navigateToJoinGraph
+                navigateToSignUp = { navController.navigate(SignUpDestinations.ROUTE) },
+                navigateToHome = { navController.navigate(SignUpDestinations.ROUTE) }
             )
         }
     }

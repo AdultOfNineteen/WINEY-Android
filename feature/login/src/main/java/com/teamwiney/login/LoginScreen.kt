@@ -38,13 +38,17 @@ fun LoginScreen(
     effectFlow: Flow<LoginContract.Effect>,
     onKaKaoLogin: () -> Unit,
     onGoogleLogin: () -> Unit,
-    navigateToJoin: () -> Unit,
+    navigateToSignUp: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
+                is LoginContract.Effect.NavigateToSignUp -> {
+                    navigateToSignUp()
+                }
                 is LoginContract.Effect.NavigateToHome -> {
-                    navigateToJoin()
+                    navigateToHome()
                 }
                 is LoginContract.Effect.ShowSnackbar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
@@ -93,7 +97,8 @@ fun LoginScreen(
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     // TODO 구글 로그인 진행
-                    onGoogleLogin()
+                    // onGoogleLogin()
+                    navigateToSignUp()
                 }
             }
             Text(

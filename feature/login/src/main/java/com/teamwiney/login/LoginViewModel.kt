@@ -21,11 +21,8 @@ class LoginViewModel @Inject constructor(
             is LoginContract.Event.KaKaoLoginButtonClicked -> {
                 socialLogin(SocialType.KAKAO)
             }
-            is LoginContract.Event.NaverLoginButtonClicked -> {
-                // 미구현
-            }
             is LoginContract.Event.GoogleLoginButtonClicked -> {
-                socialLogin(SocialType.GOOGLE)
+                // socialLogin(SocialType.GOOGLE)
             }
         }
     }
