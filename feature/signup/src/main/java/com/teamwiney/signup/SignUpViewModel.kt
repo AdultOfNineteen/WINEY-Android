@@ -1,6 +1,7 @@
 package com.teamwiney.signup
 
 import androidx.lifecycle.viewModelScope
+import com.teamwiney.core.common.SignUpDestinations
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.domain.SignUpContract
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
@@ -14,23 +15,45 @@ class SignUpViewModel @Inject constructor(
 ) : BaseViewModel<SignUpContract.State, SignUpContract.Event, SignUpContract.Effect>(
     initialState = SignUpContract.State()
 ) {
+
+    // TODO : 이벤트의 범위를 어디까지 해야할지 모르겠다....
     override fun reduceState(event: SignUpContract.Event) {
         when (event) {
-            SignUpContract.Event.GoogleLoginButtonClicked -> TODO()
-            SignUpContract.Event.KaKaoLoginButtonClicked -> TODO()
-            SignUpContract.Event.NaverLoginButtonClicked -> TODO()
+            is SignUpContract.Event.SendAuthenticationCode -> {
+                viewModelScope.launch {
+                    postEffect(
+                        SignUpContract.Effect.ShowBottomSheet(
+                            SignUpContract.BottomSheet.SendMessage
+                        )
+                    )
+                }
+            }
+            is SignUpContract.Event.CancelAuthenticationCode -> {
+                viewModelScope.launch {
+                    postEffect(
+                        SignUpContract.Effect.ShowBottomSheet(
+                            SignUpContract.BottomSheet.ReturnToLogin
+                        )
+                    )
+                }
+            }
+            is SignUpContract.Event.CancelTasteSelection -> {
+                viewModelScope.launch {
+                    postEffect(
+                        SignUpContract.Effect.ShowBottomSheet(
+                            SignUpContract.BottomSheet.CancelTasteSelection
+                        )
+                    )
+                }
+            }
+            is SignUpContract.Event.SignUp -> {
+                viewModelScope.launch {
+                    postEffect(
+                        SignUpContract.Effect.NavigateTo(SignUpDestinations.COMPLETE)
+                    )
+                }
+            }
         }
-    }
-
-    fun senVericiationCode(onSuccess: () -> Unit) = viewModelScope.launch {
-        // TODO : sendVerificationCode
-        //      제가 하던 콜백방식이라 원하시면 바꾸셔도됩니다.
-        onSuccess()
-    }
-
-    fun signUp(onSuccess: () -> Unit) = viewModelScope.launch {
-        // TODO("회원가입 진행하기")
-        onSuccess()
     }
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {

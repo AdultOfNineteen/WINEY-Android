@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
@@ -13,8 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamwiney.ui.signup.SignUpTopBar
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
+import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 
 @Preview(
@@ -24,8 +26,7 @@ import com.teamwiney.ui.theme.WineyTheme
 )
 @Composable
 fun SignUpCompleteScreen(
-    onBack: () -> Unit = { },
-    onConfirm: () -> Unit = { },
+    navController: NavController = rememberNavController(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
@@ -33,11 +34,10 @@ fun SignUpCompleteScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .navigationBarsPadding()
             .imePadding()
     ) {
         SignUpTopBar {
-            onBack()
+            navController.navigateUp()
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
@@ -51,10 +51,11 @@ fun SignUpCompleteScreen(
                 text = "시작하기",
                 onClick = {
                     // TODO : Add next button Event
-                    onConfirm()
+
                 },
                 modifier = Modifier.padding(bottom = 20.dp)
             )
+            HeightSpacer(height = 40.dp)
         }
     }
 }

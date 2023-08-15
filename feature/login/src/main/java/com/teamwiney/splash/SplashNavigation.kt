@@ -1,15 +1,19 @@
 package com.teamwiney.splash
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.teamwiney.core.common.LoginDestinations
 import com.teamwiney.core.common.SplashDestinations
 
 fun NavGraphBuilder.splashComposable(
-    onCompleted : () -> Unit
+    navController: NavController
 ) {
     composable(route = SplashDestinations.ROUTE) {
         SplashScreen(onCompleted = {
-            onCompleted()
+            navController.navigate(LoginDestinations.ROUTE) {
+                popUpTo(SplashDestinations.ROUTE) { inclusive = true }
+            }
         })
     }
 }

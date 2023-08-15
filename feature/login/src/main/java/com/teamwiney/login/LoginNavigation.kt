@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.teamwiney.core.common.LoginDestinations
-import com.teamwiney.core.common.SignUpDestinations
 import com.teamwiney.data.network.service.SocialType
 
 fun NavGraphBuilder.loginGraph(
@@ -23,8 +22,7 @@ fun NavGraphBuilder.loginGraph(
                 effectFlow = viewModel.effect,
                 onKaKaoLogin = { viewModel.socialLogin(socialType = SocialType.KAKAO) },
                 onGoogleLogin = { viewModel.socialLogin(socialType = SocialType.GOOGLE) },
-                navigateToSignUp = { navController.navigate(SignUpDestinations.ROUTE) },
-                navigateToHome = { navController.navigate(SignUpDestinations.ROUTE) }
+                navController = navController
             )
         }
     }

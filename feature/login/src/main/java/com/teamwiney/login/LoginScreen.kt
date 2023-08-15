@@ -25,8 +25,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.SignUpDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
+import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.splash.SocialLoginButton
 import com.teamwiney.ui.splash.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme
@@ -38,17 +42,17 @@ fun LoginScreen(
     effectFlow: Flow<LoginContract.Effect>,
     onKaKaoLogin: () -> Unit,
     onGoogleLogin: () -> Unit,
-    navigateToSignUp: () -> Unit,
-    navigateToHome: () -> Unit
+    showBottomSheet: (SheetContent) -> Unit = { },
+    navController: NavController
 ) {
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateToSignUp -> {
-                    navigateToSignUp()
+                    navController.navigate(SignUpDestinations.ROUTE)
                 }
                 is LoginContract.Effect.NavigateToHome -> {
-                    navigateToHome()
+                    navController.navigate(HomeDestinations.ROUTE)
                 }
                 is LoginContract.Effect.ShowSnackbar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
@@ -98,7 +102,7 @@ fun LoginScreen(
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     // TODO 구글 로그인 진행
                     // onGoogleLogin()
-                    navigateToSignUp()
+                    navController.navigate(SignUpDestinations.ROUTE)
                 }
             }
             Text(

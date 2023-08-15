@@ -14,11 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,47 +28,36 @@ import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
-@OptIn(ExperimentalMaterialApi::class)
+typealias SheetContent = @Composable ColumnScope.() -> Unit
+
 @Composable
 fun SignUpBottomSheet(
-    bottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
+    modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
-    bottomSheetContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
-    ModalBottomSheetLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(containerColor),
-        sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp),
-        sheetContent = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(containerColor)
-                    .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 40.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .width(66.dp)
-                        .height(5.dp)
-                        .background(
-                            color = WineyTheme.colors.gray_900,
-                            shape = RoundedCornerShape(6.dp)
-                        )
-                )
-                HeightSpacer(height = 20.dp)
-                Image(
-                    painter = painterResource(id = R.mipmap.img_lock),
-                    contentDescription = null
-                )
-                HeightSpacer(height = 16.dp)
-                bottomSheetContent()
-            }
-        }
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(containerColor)
+            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 40.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(
+            modifier = Modifier
+                .width(66.dp)
+                .height(5.dp)
+                .background(
+                    color = WineyTheme.colors.gray_900,
+                    shape = RoundedCornerShape(6.dp)
+                )
+        )
+        HeightSpacer(height = 20.dp)
+        Image(
+            painter = painterResource(id = R.mipmap.img_lock),
+            contentDescription = null
+        )
+        HeightSpacer(height = 16.dp)
         content()
     }
 }

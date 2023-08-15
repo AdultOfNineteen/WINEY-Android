@@ -94,6 +94,7 @@ dependencies {
         implementation(ACTIVITY_COMPOSE)
         implementation(NAVIGATION_COMPOSE)
         implementation(COMPOSE_BOM)
+        implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_UI)
         implementation(LIFECYCLE_RUNTIME_KTX)

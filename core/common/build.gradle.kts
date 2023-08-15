@@ -37,6 +37,7 @@ android {
 dependencies {
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
+        implementation(COMPOSE_UI)
         implementation(COROUTINES_ANDROID)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
         implementation(CONVERTER_GSON)

@@ -3,6 +3,7 @@ package com.teamwiney.domain
 import androidx.compose.runtime.mutableStateListOf
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
+import com.teamwiney.core.common.base.UiSheet
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import com.teamwiney.ui.signup.state.SignUpFavoriteItemUiState
@@ -69,14 +70,23 @@ class SignUpContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        object KaKaoLoginButtonClicked : Event()
-        object NaverLoginButtonClicked : Event()
-        object GoogleLoginButtonClicked : Event()
+        object SendAuthenticationCode : Event()
+        object CancelAuthenticationCode : Event()
+        object CancelTasteSelection : Event()
+        object SignUp : Event()
     }
 
     sealed class Effect : UiEffect {
-        object NavigateToHome : Effect()
+        data class NavigateTo(val destination: String) : Effect()
         data class ShowSnackbar(val message: String) : Effect()
+
+        data class ShowBottomSheet(val bottomSheet: BottomSheet) : Effect()
+    }
+
+    sealed class BottomSheet : UiSheet {
+        object SendMessage : BottomSheet()
+        object ReturnToLogin : BottomSheet()
+        object CancelTasteSelection : BottomSheet()
     }
 
     companion object {

@@ -8,11 +8,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.teamwiney.core.common.LoginDestinations
 import com.teamwiney.core.common.SignUpDestinations
+import com.teamwiney.ui.signup.SheetContent
 
 fun NavGraphBuilder.signUpGraph(
-    navController: NavController
+    navController: NavController,
+    showBottomSheet: (SheetContent) -> Unit,
+    hideBottomSheet: () -> Unit
 ) {
     navigation(
         route = SignUpDestinations.ROUTE,
@@ -25,8 +27,9 @@ fun NavGraphBuilder.signUpGraph(
                 graph = SignUpDestinations.ROUTE
             )
             SignUpPhoneScreen(
-                onBack = { navController.navigateUp() },
-                onConfirm = { navController.navigate(SignUpDestinations.AUTHENTICATION) },
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet,
+                navController = navController,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -38,13 +41,9 @@ fun NavGraphBuilder.signUpGraph(
                 graph = SignUpDestinations.ROUTE
             )
             SignUpAuthenticationScreen(
-                onBack = {
-                    navController.navigate(LoginDestinations.ROUTE) {
-                        popUpTo(SignUpDestinations.ROUTE) { inclusive = true }
-                    }
-                },
-                onSend = { },
-                onConfirm = { navController.navigate(SignUpDestinations.FAVORITE_TASTE) },
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet,
+                navController = navController,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -56,13 +55,9 @@ fun NavGraphBuilder.signUpGraph(
                 graph = SignUpDestinations.ROUTE
             )
             SignUpFavoriteTasteScreen(
-                onBack = {
-                    navController.navigate(LoginDestinations.ROUTE) {
-                        popUpTo(SignUpDestinations.ROUTE) { inclusive = true }
-                    }
-                },
-                onConfirm = {},
-                onSelectionComplete = { navController.navigate(SignUpDestinations.COMPLETE) },
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet,
+                navController = navController,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -74,8 +69,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = SignUpDestinations.ROUTE
             )
             SignUpCompleteScreen(
-                onBack = { navController.navigateUp() },
-                onConfirm = { /*TODO*/ },
+                navController = navController,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
