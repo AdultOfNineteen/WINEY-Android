@@ -1,7 +1,6 @@
 package com.teamwiney.winey
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
@@ -28,7 +27,7 @@ fun WineyNavHost() {
             onCompleted = {
                 navController.navigateToLoginGraph(
                     navOptions = navOptions {
-                        NavOptionsBuilder().popUpTo(
+                        popUpTo(
                             route = SPLASH,
                             popUpToBuilder = { inclusive = true }
                         )
