@@ -21,4 +21,9 @@ object SignUpDestinations {
 
 object HomeDestinations {
     const val ROUTE = "homeRoute"
+
+    const val HOME = "home"
+    const val MAP = "map"
+    const val NOTE = "note"
+    const val MY_PAGE = "myPage"
 }

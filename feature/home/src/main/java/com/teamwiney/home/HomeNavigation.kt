@@ -2,78 +2,60 @@ package com.teamwiney.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.teamwiney.core.common.SignUpDestinations
+import com.teamwiney.core.common.HomeDestinations
 import com.teamwiney.ui.signup.SheetContent
 
-fun NavGraphBuilder.homeGraph(
+// TODO 메인 그래프라고 생각하고 만들었는데 Mypage, Note 모듈이 따로
+//  있어서 이걸 어떻게 처리할까유
+fun NavGraphBuilder.mainGraph(
     navController: NavController,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     setOnHideBottomSheet: (() -> Unit) -> Unit
 ) {
     navigation(
-        route = SignUpDestinations.ROUTE,
-        startDestination = SignUpDestinations.PHONE
+        route = HomeDestinations.ROUTE,
+        startDestination = HomeDestinations.HOME
     ) {
-        composable(route = SignUpDestinations.PHONE) {
+        composable(route = HomeDestinations.HOME) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = navController,
-                graph = SignUpDestinations.ROUTE
+                graph = HomeDestinations.ROUTE
             )
-            SignUpPhoneScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
-                onHideBottomSheet = setOnHideBottomSheet,
-                navController = navController,
-                viewModel = hiltViewModel(backStackEntry)
-            )
+            HomeScreen()
         }
 
-        composable(route = SignUpDestinations.AUTHENTICATION) {
+        composable(route = HomeDestinations.MAP) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = navController,
-                graph = SignUpDestinations.ROUTE
+                graph = HomeDestinations.ROUTE
             )
-            SignUpAuthenticationScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
-                navController = navController,
-                viewModel = hiltViewModel(backStackEntry)
-            )
+            MapScreen()
         }
 
-        composable(route = SignUpDestinations.FAVORITE_TASTE) {
+        composable(route = HomeDestinations.NOTE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = navController,
-                graph = SignUpDestinations.ROUTE
+                graph = HomeDestinations.ROUTE
             )
-            SignUpFavoriteTasteScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
-                navController = navController,
-                viewModel = hiltViewModel(backStackEntry)
-            )
+            NoteScreen()
         }
 
-        composable(route = SignUpDestinations.COMPLETE) {
+        composable(route = HomeDestinations.MY_PAGE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = navController,
-                graph = SignUpDestinations.ROUTE
+                graph = HomeDestinations.ROUTE
             )
-            SignUpCompleteScreen(
-                navController = navController,
-                viewModel = hiltViewModel(backStackEntry)
-            )
+            // MyPageScreen()
         }
     }
 }

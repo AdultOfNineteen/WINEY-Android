@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.teamwiney.core.common.SplashDestinations
+import com.teamwiney.home.mainGraph
 import com.teamwiney.login.loginGraph
 import com.teamwiney.signup.signUpGraph
 import com.teamwiney.splash.splashComposable
@@ -90,6 +91,14 @@ fun WineyNavHost() {
                     navController = navController
                 )
                 signUpGraph(
+                    navController = navController,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet,
+                    setOnHideBottomSheet = { event ->
+                        onHideBottomSheet = event
+                    }
+                )
+                mainGraph(
                     navController = navController,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,
