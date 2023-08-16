@@ -23,8 +23,6 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
-
-    private val TAG = "LoginViewModel"
     override fun reduceState(event: LoginContract.Event) {
         viewModelScope.launch {
             when (event) {
@@ -52,7 +50,9 @@ class LoginViewModel @Inject constructor(
         if (error != null) {
             processEvent(LoginContract.Event.LoginFailed("카카오톡으로 로그인 실패"))
         } else if (token != null) {
-            processEvent(LoginContract.Event.KakaoLoginSuccess(token.accessToken))
+            Log.i("LoginViewModel", "kakao token: ${token.accessToken}")
+            Log.i("LoginViewModel", "kakao idToken: ${token.idToken}")
+            socialLogin(SocialType.KAKAO, token.accessToken)
         }
     }
 
@@ -69,6 +69,8 @@ class LoginViewModel @Inject constructor(
                     }
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
+                    Log.i("LoginViewModel", "kakao token: ${token.accessToken}")
+                    Log.i("LoginViewModel", "kakao idToken: ${token.idToken}")
                     socialLogin(SocialType.KAKAO, token.accessToken)
                 }
             }
@@ -77,7 +79,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun socialLogin(socialType: SocialType, token: String) {
+    private fun socialLogin(socialType: SocialType, token: String) {
         viewModelScope.launch {
             authRepository.socialLogin(socialType, token)
                 .onStart {
