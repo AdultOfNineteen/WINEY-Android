@@ -41,8 +41,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun LoginScreen(
     effectFlow: Flow<LoginContract.Effect>,
-    onKaKaoLogin: () -> Unit,
-    onGoogleLogin: () -> Unit,
     showBottomSheet: (SheetContent) -> Unit = { },
     navController: NavController,
     viewModel: LoginViewModel
@@ -102,13 +100,9 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.spacedBy(21.dp, Alignment.CenterHorizontally),
             ) {
                 SocialLoginButton(drawable = R.mipmap.img_kakao_login) {
-                    // TODO 카카오 로그인 진행
-                    viewModel.kakaoLogin(context) {
-                        onKaKaoLogin()
-                    }
+                    viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
-                    // TODO 구글 로그인 진행
                     // onGoogleLogin()
                     navController.navigate(SignUpDestinations.ROUTE)
                 }

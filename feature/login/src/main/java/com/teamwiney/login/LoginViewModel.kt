@@ -3,6 +3,7 @@ package com.teamwiney.login
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -25,41 +26,50 @@ class LoginViewModel @Inject constructor(
 
     private val TAG = "LoginViewModel"
     override fun reduceState(event: LoginContract.Event) {
-        when (event) {
-            is LoginContract.Event.KaKaoLoginButtonClicked -> {
-                socialLogin(SocialType.KAKAO)
-            }
+        viewModelScope.launch {
+            when (event) {
+                is LoginContract.Event.KakaoLoginButtonClicked -> {
+                    kakaoLogin(event.context)
+                }
 
-            is LoginContract.Event.GoogleLoginButtonClicked -> {
-                // socialLogin(SocialType.GOOGLE)
+                is LoginContract.Event.GoogleLoginButtonClicked -> {
+                }
+
+                is LoginContract.Event.KakaoLoginSuccess -> {
+                    // TODO 엑세스 토큰 저장 로직 필요
+                    postEffect(LoginContract.Effect.NavigateToHome)
+                }
+
+                is LoginContract.Event.LoginFailed -> {
+                    updateState(currentState.copy(error = event.message))
+                    postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
+                }
             }
         }
     }
 
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            processEvent(LoginContract.Event.LoginFailed("카카오톡으로 로그인 실패"))
         } else if (token != null) {
-            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            processEvent(LoginContract.Event.KakaoLoginSuccess(token.accessToken))
         }
     }
 
-    // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-    fun kakaoLogin(context: Context, onSuccess: () -> Unit) {
+    private fun kakaoLogin(context: Context) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
-                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
-                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        viewModelScope.launch {
+                            updateState(currentState.copy(error = "카카오톡으로 로그인 실패"))
+                            postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
+                        }
                         return@loginWithKakaoTalk
                     }
-                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
-                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    socialLogin(SocialType.KAKAO)
+                    socialLogin(SocialType.KAKAO, token.accessToken)
                 }
             }
         } else {
@@ -67,9 +77,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun socialLogin(socialType: SocialType) {
+    fun socialLogin(socialType: SocialType, token: String) {
         viewModelScope.launch {
-            authRepository.socialLogin(socialType, "")
+            authRepository.socialLogin(socialType, token)
                 .onStart {
                     updateState(currentState.copy(isLoading = true))
                 }

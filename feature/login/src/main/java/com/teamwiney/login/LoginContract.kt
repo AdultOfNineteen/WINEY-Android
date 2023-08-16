@@ -1,5 +1,6 @@
 package com.teamwiney.login
 
+import android.content.Context
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
@@ -13,8 +14,11 @@ class LoginContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        object KaKaoLoginButtonClicked : Event()
+        class KakaoLoginButtonClicked(val context: Context) : Event()
+        class KakaoLoginSuccess(val token: String) : Event()
+        class LoginFailed(val message: String) : Event()
         object GoogleLoginButtonClicked : Event()
+
     }
 
     sealed class Effect : UiEffect {
