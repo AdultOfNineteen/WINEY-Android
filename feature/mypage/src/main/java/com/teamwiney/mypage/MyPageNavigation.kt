@@ -1,4 +1,4 @@
-package com.teamwiney.home
+package com.teamwiney.mypage
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -7,35 +7,35 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.MyPageDestinations
 import com.teamwiney.ui.signup.SheetContent
 
-// TODO 메인 그래프라고 생각하고 만들었는데 Mypage, Note 모듈이 따로
-//  있어서 이걸 어떻게 처리할까유
-fun NavGraphBuilder.homeGraph(
+fun NavGraphBuilder.myPageGraph(
     navController: NavController,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     setOnHideBottomSheet: (() -> Unit) -> Unit
 ) {
     navigation(
-        route = HomeDestinations.ROUTE,
-        startDestination = HomeDestinations.HOME
+        route = MyPageDestinations.ROUTE,
+        startDestination = MyPageDestinations.MY_PAGE
     ) {
-        composable(route = HomeDestinations.HOME) {
+        composable(route = MyPageDestinations.MY_PAGE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = navController,
-                graph = HomeDestinations.ROUTE
+                graph = MyPageDestinations.ROUTE
             )
-            HomeScreen()
+            MyPageScreen()
         }
 
-        // TODO : 오늘의 와인 추천
+        // TODO : 프로필
 
-        // TODO : 와인 초보를 위한 TIP
+        // TODO : 설정
 
-        // TODO : 와인 취향 분석하기
+        // TODO : 버전 정보
+
+        // TODO : 고객센터
     }
 }
 

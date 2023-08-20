@@ -1,4 +1,4 @@
-package com.teamwiney.home
+package com.teamwiney.createnote
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NoteScreen() {
+fun MapScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         Text(text = "Map")
     }

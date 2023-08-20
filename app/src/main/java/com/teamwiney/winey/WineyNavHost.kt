@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.home.mainGraph
+import com.teamwiney.createnote.mapGraph
+import com.teamwiney.home.homeGraph
+import com.teamwiney.mypage.myPageGraph
+import com.teamwiney.notecollection.noteGraph
 import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
@@ -90,7 +93,31 @@ fun WineyNavHost() {
                         onHideBottomSheet = event
                     }
                 )
-                mainGraph(
+                homeGraph(
+                    navController = navController,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet,
+                    setOnHideBottomSheet = { event ->
+                        onHideBottomSheet = event
+                    }
+                )
+                mapGraph(
+                    navController = navController,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet,
+                    setOnHideBottomSheet = { event ->
+                        onHideBottomSheet = event
+                    }
+                )
+                noteGraph(
+                    navController = navController,
+                    showBottomSheet = showBottomSheet,
+                    hideBottomSheet = hideBottomSheet,
+                    setOnHideBottomSheet = { event ->
+                        onHideBottomSheet = event
+                    }
+                )
+                myPageGraph(
                     navController = navController,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,

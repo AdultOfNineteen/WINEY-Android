@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.teamwiney.feature.createNote"
+    namespace = "com.teamwiney.feature.map"
     compileSdk = 34
 
     defaultConfig {
@@ -42,6 +42,8 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":core:common"))
+    implementation(project(":data"))
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
@@ -50,6 +52,9 @@ dependencies {
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(HILT_ANDROID)
+        implementation(HILT_NAVIGATION_COMPOSE)
+        implementation(LIFECYCLE_RUNTIME_COMPOSE)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)

@@ -7,9 +7,10 @@ plugins {
 
 android {
     namespace = "com.teamwiney.core.design"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
+        minSdk = 21
 
         vectorDrawables {
             useSupportLibrary = true

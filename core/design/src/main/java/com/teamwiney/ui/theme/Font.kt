@@ -12,3 +12,11 @@ val Pretendard = FontFamily(
     Font(R.font.pretendard_medium, FontWeight.Medium, FontStyle.Normal),
     Font(R.font.pretendard_semi_bold, FontWeight.SemiBold, FontStyle.Normal),
 )
+
+val Chaviera = FontFamily(
+    Font(R.font.chaviera, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.chaviera, FontWeight.Normal, FontStyle.Normal), // Regular을 Normal로 취급
+    Font(R.font.chaviera, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.chaviera, FontWeight.SemiBold, FontStyle.Normal),
+)
+
