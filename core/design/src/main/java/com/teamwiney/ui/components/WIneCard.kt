@@ -2,6 +2,7 @@ package com.teamwiney.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
@@ -58,16 +60,35 @@ fun WineCard(
     origin: String,
     price: String
 ) {
-    Surface(
+    Box(
         modifier = modifier
+            .fillMaxWidth()
             .width(IntrinsicSize.Min)
-            .height(IntrinsicSize.Min),
-        color = WineyTheme.colors.gray_50.copy(alpha = 0.3f),
-        shape = TicketShape(
-            circleRadius = 38.dp,
-            circleOffsetY = 20.dp,
-            cornerSize = CornerSize(4.dp)
-        )
+            .height(IntrinsicSize.Min)
+            .clip(
+                TicketShape(
+                    circleRadius = 38.dp,
+                    circleOffsetY = 20.dp,
+                    cornerSize = CornerSize(4.dp)
+                )
+            )
+            .background(
+                brush = Brush.verticalGradient(
+                    listOf(Color(0xFF212327), WineyTheme.colors.gray_900)
+                ),
+            )
+            .border(
+                width = 1.dp,
+                brush = Brush.verticalGradient(
+                    listOf(Color.White.copy(alpha = 0.3f), WineyTheme.colors.background_1)
+                ),
+                shape = TicketShape(
+                    circleRadius = 38.dp,
+                    circleOffsetY = 20.dp,
+                    cornerSize = CornerSize(4.dp)
+                )
+            )
+        ,
     ) {
         // 여기는 그냥 배경 원 그라데이션 코드상으로 넣은거예요
         // 이미지 받으면은 이미지 Box 내에 넣고 Box 블러 처리하면 될 거 같아요
@@ -276,14 +297,22 @@ class TicketShape(
     private val cornerSize: CornerSize
 ) : Shape {
 
-    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
         return Outline.Generic(path = getPath(size, density))
     }
 
     private fun getPath(size: Size, density: Density): Path {
         val roundedRect = RoundRect(size.toRect(), CornerRadius(cornerSize.toPx(size, density)))
         val roundedRectPath = Path().apply { addRoundRect(roundedRect) }
-        return Path.combine(operation = PathOperation.Intersect, path1 = roundedRectPath, path2 = getTicketPath(size, density))
+        return Path.combine(
+            operation = PathOperation.Intersect,
+            path1 = roundedRectPath,
+            path2 = getTicketPath(size, density)
+        )
     }
 
     private fun getTicketPath(size: Size, density: Density): Path {

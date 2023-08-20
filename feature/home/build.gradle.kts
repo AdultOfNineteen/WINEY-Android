@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:common"))
     implementation(project(":data"))
+    implementation("androidx.compose.ui:ui-util:$${Versions.COMPOSE}")
 
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
