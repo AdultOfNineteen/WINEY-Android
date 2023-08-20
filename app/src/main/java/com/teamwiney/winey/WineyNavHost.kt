@@ -17,11 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import com.teamwiney.core.common.SplashDestinations
+import com.teamwiney.auth.authGraph
+import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.home.mainGraph
-import com.teamwiney.login.loginGraph
-import com.teamwiney.signup.signUpGraph
-import com.teamwiney.splash.splashComposable
 import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
@@ -82,15 +80,9 @@ fun WineyNavHost() {
             NavHost(
                 modifier = Modifier.padding(it),
                 navController = navController,
-                startDestination = SplashDestinations.ROUTE
+                startDestination = AuthDestinations.ROUTE
             ) {
-                splashComposable(
-                    navController = navController
-                )
-                loginGraph(
-                    navController = navController
-                )
-                signUpGraph(
+                authGraph(
                     navController = navController,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,

@@ -1,29 +1,46 @@
 package com.teamwiney.core.common
 
-object SplashDestinations {
-    const val ROUTE = "splashRoute"
-}
+object AuthDestinations {
+    const val ROUTE = "authRoute"
 
-object LoginDestinations {
-    const val ROUTE = "loginRoute"
+    const val SPLASH = "splash"
 
-    const val LOGIN = "login"
-}
+    object Login {
+        const val ROUTE = "loginRoute"
 
-object SignUpDestinations {
-    const val ROUTE = "signUpRoute"
+        const val LOGIN = "login"
+    }
 
-    const val PHONE = "signUpPhone"
-    const val AUTHENTICATION = "signUpAuthentication"
-    const val FAVORITE_TASTE = "signUpFavoriteTaste"
-    const val COMPLETE = "signUpComplete"
+    object SignUp {
+        const val ROUTE = "signUpRoute"
+
+        const val PHONE = "signUpPhone"
+        const val AUTHENTICATION = "signUpAuthentication"
+        const val FAVORITE_TASTE = "signUpFavoriteTaste"
+        const val COMPLETE = "signUpComplete"
+    }
 }
 
 object HomeDestinations {
     const val ROUTE = "homeRoute"
 
     const val HOME = "home"
+}
+
+object MapDestinations {
+    const val ROUTE = "mapRoute"
+
     const val MAP = "map"
+}
+
+object NoteDestinations {
+    const val ROUTE = "noteRoute"
+
     const val NOTE = "note"
+}
+
+object MyPageDestinations {
+    const val ROUTE = "myPageRoute"
+
     const val MY_PAGE = "myPage"
 }
