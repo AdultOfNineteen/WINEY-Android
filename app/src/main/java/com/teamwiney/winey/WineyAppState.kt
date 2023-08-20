@@ -7,6 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.MapDestinations
+import com.teamwiney.core.common.MyPageDestinations
+import com.teamwiney.core.common.NoteDestinations
 
 @Composable
 fun rememberWineyAppState(
@@ -16,16 +19,19 @@ fun rememberWineyAppState(
 }
 
 class WineyAppState(val navController: NavHostController) {
-    val currentDestinations: NavDestination?
+    val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
     val topLevelDestination = listOf(
-        HomeDestinations.ROUTE
+        HomeDestinations.ROUTE,
+        MapDestinations.ROUTE,
+        NoteDestinations.ROUTE,
+        MyPageDestinations.ROUTE
     )
 
     // 탭의 각 최상단에 해당할 때만 바텀 바를 노출
     val shouldShowBottomBar: Boolean
         @Composable get() = topLevelDestination
-            .contains(currentDestinations?.route)
+            .contains(currentDestination?.route)
 }
