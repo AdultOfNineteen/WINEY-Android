@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,9 +61,10 @@ fun WineCard(
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
+            .height(IntrinsicSize.Max)
+            // LazyRow 사용 시 주석 처리
+            //.fillMaxWidth()
             .width(IntrinsicSize.Min)
-            .height(IntrinsicSize.Min)
             .clip(
                 TicketShape(
                     circleRadius = 38.dp,
@@ -88,7 +88,6 @@ fun WineCard(
                     cornerSize = CornerSize(4.dp)
                 )
             )
-        ,
     ) {
         // 여기는 그냥 배경 원 그라데이션 코드상으로 넣은거예요
         // 이미지 받으면은 이미지 Box 내에 넣고 Box 블러 처리하면 될 거 같아요
@@ -142,6 +141,7 @@ private fun WineCardContent(
 
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .width(IntrinsicSize.Max)
             .padding(30.dp)
     ) {
@@ -211,7 +211,7 @@ private fun WineCardContent(
 
                 Column(modifier = Modifier.padding(10.dp)) {
                     Text(
-                        text = "Varities",
+                        text = "Varieties",
                         style = TextStyle(
                             fontSize = 8.sp,
                             fontFamily = FontFamily(Font(R.font.chaviera)),

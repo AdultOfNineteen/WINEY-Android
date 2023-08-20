@@ -5,6 +5,7 @@ package com.teamwiney.home
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,13 +16,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -71,13 +72,14 @@ fun HomeScreen() {
             .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
-        HomeRecommandWine()
-        HomeRecommandNewbie()
+        LazyRowRecommendWine()
+        //HomeRecommendWine()
+        HomeRecommendNewbie()
     }
 }
 
 @Composable
-fun HomeRecommandNewbie() {
+fun HomeRecommendNewbie() {
 
     val configuration = LocalConfiguration.current
     val itemWidth = configuration.screenWidthDp.dp * 0.45f
@@ -152,7 +154,71 @@ fun HomeRecommandNewbie() {
 }
 
 @Composable
-private fun HomeRecommandWine() {
+private fun LazyRowRecommendWine() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    text = "오늘의 와인",
+                    style = WineyTheme.typography.title1,
+                    color = Color.White
+                )
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_home_title_wine),
+                    contentDescription = "IC_HOME_TITLE_WINE",
+                    modifier = Modifier.size(14.dp, 22.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_info_24),
+                    contentDescription = "IC_BASELINE_INFO_24",
+                    modifier = Modifier.size(15.dp),
+                    tint = WineyTheme.colors.gray_300
+                )
+            }
+            HeightSpacer(height = 12.dp)
+            Text(
+                text = "매일 나의 취향에 맞는 와인을 추천해 드려요!",
+                style = WineyTheme.typography.captionM1,
+                color = WineyTheme.colors.gray_600,
+            )
+            HeightSpacer(height = 28.dp)
+        }
+
+        val state = rememberLazyListState()
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            state = state,
+            flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
+        ) {
+            repeat(5) {
+                item {
+                    WineCard(
+                        color = "RED",
+                        name = "캄포 마리나 프리미티도 디 만두리아",
+                        origin = "이탈리아",
+                        price = "8.80"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeRecommendWine() {
 
     val pagerState = rememberPagerState(pageCount = { 5 })
 
@@ -195,41 +261,47 @@ private fun HomeRecommandWine() {
             )
             HeightSpacer(height = 28.dp)
         }
-        HorizontalPager(
-            state = pagerState,
+
+        Box(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 24.dp)
-        ) { page ->
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 5.dp)
-                    .graphicsLayer {
-                        val pageOffset = (
-                                (pagerState.currentPage - page) + pagerState
-                                    .currentPageOffsetFraction
-                                ).absoluteValue
-                        alpha = lerp(
-                            start = 0.8f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
-                        scaleY = lerp(
-                            start = 0.8f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
-                    }) {
-                WineCard(
-                    color = "RED",
-                    name = "캄포 마리나 프리미티도 디 만두리아",
-                    origin = "이탈리아",
-                    price = "8.80"
-                )
+            contentAlignment = Alignment.Center
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                beyondBoundsPageCount = 2,
+                contentPadding = PaddingValues(horizontal = 24.dp),
+                pageSpacing = 16.dp
+            ) { page ->
+                Box(
+                    Modifier
+                        //.fillMaxWidth()
+                        .graphicsLayer {
+                            val pageOffset = (
+                                    (pagerState.currentPage - page) + pagerState
+                                        .currentPageOffsetFraction
+                                    ).absoluteValue
+                            alpha = lerp(
+                                start = 0.8f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
+                            scaleY = lerp(
+                                start = 0.8f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    WineCard(
+                        color = "RED",
+                        name = "캄포 마리나 프리미티도 디 만두리아",
+                        origin = "이탈리아",
+                        price = "8.80"
+                    )
+                }
             }
         }
-        Text(text = "adsasd")
-
     }
 }
 
