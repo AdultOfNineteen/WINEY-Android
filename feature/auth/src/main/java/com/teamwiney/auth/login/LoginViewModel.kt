@@ -49,8 +49,7 @@ class LoginViewModel @Inject constructor(
         if (error != null) {
             processEvent(LoginContract.Event.LoginFailed("카카오톡으로 로그인 실패"))
         } else if (token != null) {
-            Log.i("LoginViewModel", "kakao token: ${token.accessToken}")
-            Log.i("LoginViewModel", "kakao idToken: ${token.idToken}")
+            Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
             socialLogin(SocialType.KAKAO, token.accessToken)
         }
     }
@@ -68,8 +67,7 @@ class LoginViewModel @Inject constructor(
                     }
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
-                    Log.i("LoginViewModel", "kakao token: ${token.accessToken}")
-                    Log.i("LoginViewModel", "kakao idToken: ${token.idToken}")
+                    Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
                     socialLogin(SocialType.KAKAO, token.accessToken)
                 }
             }
@@ -80,7 +78,7 @@ class LoginViewModel @Inject constructor(
 
     private fun socialLogin(socialType: SocialType, token: String) {
         viewModelScope.launch {
-            authRepository.socialLogin(socialType, token)
+            authRepository.kakaoLogin(token)
                 .onStart {
                     updateState(currentState.copy(isLoading = true))
                 }
@@ -102,6 +100,28 @@ class LoginViewModel @Inject constructor(
                         }
                     }
                 }
+//            authRepository.socialLogin(socialType, token)
+//                .onStart {
+//                    updateState(currentState.copy(isLoading = true))
+//                }
+//                .collect { result ->
+//                    updateState(currentState.copy(isLoading = false))
+//                    when (result) {
+//                        is ApiResult.Success -> {
+//                            postEffect(LoginContract.Effect.NavigateToHome)
+//                        }
+//
+//                        is ApiResult.NetworkError -> {
+//                            updateState(currentState.copy(error = "네트워크 에러"))
+//                            postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
+//                        }
+//
+//                        is ApiResult.ApiError -> {
+//                            updateState(currentState.copy(error = result.message))
+//                            postEffect(LoginContract.Effect.ShowSnackbar(currentState.error!!))
+//                        }
+//                    }
+//                }
         }
     }
 }

@@ -6,6 +6,7 @@ import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -29,9 +30,9 @@ interface AuthService {
         @Body socialLoginRequest: SocialLoginRequest
     ): ApiResult<BaseResponse>
 
-    @POST("/auth/kakao")
+    @GET("/auth/kakao")
     suspend fun kakaoLogin(
-        @Query("code") code: String
+        @Query("code") accessToken: String
     ): ApiResult<BaseResponse>
 
 }
