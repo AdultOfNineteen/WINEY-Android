@@ -9,11 +9,13 @@ import com.google.gson.annotations.SerializedName
  * @property code
  * @property message
  */
-open class BaseResponse(
+open class ResponseWrapper<out T>(
     @SerializedName("isSuccess")
     val isSuccess: Boolean = false,
     @SerializedName("code")
     val code: String = "",
     @SerializedName("message")
-    val message: String = ""
+    val message: String = "",
+    @SerializedName("result")
+    val result: T? = null
 )
