@@ -17,12 +17,15 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun providesAuthDataSource(authService: AuthService) : AuthDataSource =
-        AuthDataSourceImpl(authService)
+    fun providesAuthDataSource(
+        authService: AuthService,
+        @DispatcherModule.IoDispatcher ioDispatcher: kotlinx.coroutines.CoroutineDispatcher
+    ): AuthDataSource =
+        AuthDataSourceImpl(authService, ioDispatcher)
 
     @Provides
     @Singleton
-    fun providesAuthRepository(authDataSource: AuthDataSource) : AuthRepository =
+    fun providesAuthRepository(authDataSource: AuthDataSource): AuthRepository =
         AuthRepositoryImpl(authDataSource)
 
 }

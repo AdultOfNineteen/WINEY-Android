@@ -1,5 +1,6 @@
 package com.teamwiney.data.datasource
 
+import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.SocialType
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthDataSource {
 
     override fun socialLogin(
@@ -21,4 +22,9 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.socialLogin(socialType, socialLoginRequest))
     }.flowOn(ioDispatcher)
 
+    override fun kakaoLogin(
+        accessToken: String
+    ) = flow {
+        emit(authService.kakaoLogin(accessToken))
+    }.flowOn(ioDispatcher)
 }

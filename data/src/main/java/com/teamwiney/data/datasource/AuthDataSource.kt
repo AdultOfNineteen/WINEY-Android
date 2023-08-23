@@ -1,5 +1,6 @@
 package com.teamwiney.data.datasource
 
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.service.SocialType
@@ -10,6 +11,7 @@ interface AuthDataSource {
     fun socialLogin(
         socialType: SocialType,
         socialLoginRequest: SocialLoginRequest
-    ): Flow<ApiResult<SocialLoginResponse>>
+    ): Flow<ApiResult<BaseResponse>>
 
+    fun kakaoLogin(accessToken: String): Flow<ApiResult<BaseResponse>>
 }
