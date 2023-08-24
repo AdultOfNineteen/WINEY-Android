@@ -44,7 +44,11 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
     }
 
     protected abstract fun reduceState(event: Event)
-    protected suspend fun postEffect(effect: Effect) = _effect.send(effect)
+    protected suspend fun postEffect(effect: Effect) {
+        viewModelScope.launch {
+            _effect.send(effect)
+        }
+    }
 
     private fun subscribeEvents() {
         viewModelScope.launch {

@@ -1,6 +1,7 @@
 package com.teamwiney.auth.login
 
 import android.content.Context
+import androidx.navigation.NavOptions
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
@@ -15,16 +16,16 @@ class LoginContract {
 
     sealed class Event : UiEvent {
         class KakaoLoginButtonClicked(val context: Context) : Event()
-        class KakaoLoginSuccess(val token: String) : Event()
-        class LoginFailed(val message: String) : Event()
         object GoogleLoginButtonClicked : Event()
 
     }
 
     sealed class Effect : UiEffect {
-        object NavigateToHome : Effect()
-        object NavigateToSignUp : Effect()
-        data class ShowSnackbar(val message: String) : Effect()
+        data class NavigateTo(
+            val destination: String,
+            val navOptions: NavOptions? = null
+        ) : Effect()
+        data class ShowSnackBar(val message: String) : Effect()
     }
 
 }

@@ -28,7 +28,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.HomeDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
 import com.teamwiney.ui.signup.SheetContent
@@ -50,15 +49,11 @@ fun LoginScreen(
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
-                is LoginContract.Effect.NavigateToSignUp -> {
-                    navController.navigate(AuthDestinations.SignUp.ROUTE)
+                is LoginContract.Effect.NavigateTo -> {
+                    navController.navigate(effect.destination, effect.navOptions)
                 }
 
-                is LoginContract.Effect.NavigateToHome -> {
-                    navController.navigate(HomeDestinations.ROUTE)
-                }
-
-                is LoginContract.Effect.ShowSnackbar -> {
+                is LoginContract.Effect.ShowSnackBar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
             }
