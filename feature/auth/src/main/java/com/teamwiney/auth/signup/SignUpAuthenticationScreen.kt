@@ -59,7 +59,7 @@ fun SignUpAuthenticationScreen(
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
-                is SignUpContract.Effect.ShowSnackbar -> {
+                is SignUpContract.Effect.ShowSnackBar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
 
@@ -147,7 +147,7 @@ fun SignUpAuthenticationScreen(
             .imePadding()
     ) {
         SignUpTopBar {
-            viewModel.processEvent(SignUpContract.Event.CancelAuthenticationCode)
+            viewModel.processEvent(SignUpContract.Event.BackToLoginButtonClicked)
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
@@ -199,7 +199,7 @@ fun SignUpAuthenticationScreen(
                         keyboardController?.hide()
                         // TODO: 실제 구현에서는 ViewModel의 타이머 시작 함수를 onSend에 람다로 넘겨받음
                         viewModel.resetTimer()
-                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationCode)
+                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
                     },
                     text = "인증번호 재전송",
                     color = WineyTheme.colors.gray_700,

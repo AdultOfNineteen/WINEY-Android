@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -57,9 +58,9 @@ fun SignUpFavoriteTasteScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateTo -> {
-                    navController.navigate(effect.destination)
+                    navController.navigate(effect.destination, effect.navOptions)
                 }
-                is SignUpContract.Effect.ShowSnackbar -> {
+                is SignUpContract.Effect.ShowSnackBar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
                 is SignUpContract.Effect.ShowBottomSheet -> {
@@ -99,11 +100,12 @@ fun SignUpFavoriteTasteScreen(
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         Box {
             SignUpTopBar {
                 if (pagerState.currentPage == 0) {
-                    scope.launch { viewModel.processEvent(SignUpContract.Event.CancelTasteSelection) }
+                    viewModel.processEvent(SignUpContract.Event.CancelTasteSelectionButtonClicked)
                 } else {
                     scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
                 }
@@ -146,8 +148,7 @@ fun SignUpFavoriteTasteScreen(
                                 pagerState.animateScrollToPage(it + 1)
                             }
                         } else {
-                            // TODO 회원가입 진행
-                            viewModel.processEvent(SignUpContract.Event.SignUp)
+                            viewModel.processEvent(SignUpContract.Event.TasteSelectionLastItemClicked)
                         }
                     }
                 )

@@ -1,6 +1,7 @@
 package com.teamwiney.auth.signup
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.navigation.NavOptions
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiSheet
@@ -70,15 +71,18 @@ class SignUpContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        object SendAuthenticationCode : Event()
-        object CancelAuthenticationCode : Event()
-        object CancelTasteSelection : Event()
-        object SignUp : Event()
+        object SendAuthenticationButtonClicked : Event()
+        object BackToLoginButtonClicked : Event()
+        object CancelTasteSelectionButtonClicked : Event()
+        object TasteSelectionLastItemClicked : Event()
     }
 
     sealed class Effect : UiEffect {
-        data class NavigateTo(val destination: String) : Effect()
-        data class ShowSnackbar(val message: String) : Effect()
+        data class NavigateTo(
+            val destination: String,
+            val navOptions: NavOptions? = null
+        ) : Effect()
+        data class ShowSnackBar(val message: String) : Effect()
 
         data class ShowBottomSheet(val bottomSheet: BottomSheet) : Effect()
     }

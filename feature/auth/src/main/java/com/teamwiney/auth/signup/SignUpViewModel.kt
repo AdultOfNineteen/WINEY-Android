@@ -18,39 +18,31 @@ class SignUpViewModel @Inject constructor(
     // TODO : 이벤트의 범위를 어디까지 해야할지 모르겠다....
     override fun reduceState(event: SignUpContract.Event) {
         when (event) {
-            is SignUpContract.Event.SendAuthenticationCode -> {
-                viewModelScope.launch {
-                    postEffect(
-                        SignUpContract.Effect.ShowBottomSheet(
-                            SignUpContract.BottomSheet.SendMessage
-                        )
+            is SignUpContract.Event.SendAuthenticationButtonClicked -> {
+                postEffect(
+                    SignUpContract.Effect.ShowBottomSheet(
+                        SignUpContract.BottomSheet.SendMessage
                     )
-                }
+                )
             }
-            is SignUpContract.Event.CancelAuthenticationCode -> {
-                viewModelScope.launch {
-                    postEffect(
-                        SignUpContract.Effect.ShowBottomSheet(
-                            SignUpContract.BottomSheet.ReturnToLogin
-                        )
+            is SignUpContract.Event.BackToLoginButtonClicked -> {
+                postEffect(
+                    SignUpContract.Effect.ShowBottomSheet(
+                        SignUpContract.BottomSheet.ReturnToLogin
                     )
-                }
+                )
             }
-            is SignUpContract.Event.CancelTasteSelection -> {
-                viewModelScope.launch {
-                    postEffect(
-                        SignUpContract.Effect.ShowBottomSheet(
-                            SignUpContract.BottomSheet.CancelTasteSelection
-                        )
+            is SignUpContract.Event.CancelTasteSelectionButtonClicked -> {
+                postEffect(
+                    SignUpContract.Effect.ShowBottomSheet(
+                        SignUpContract.BottomSheet.CancelTasteSelection
                     )
-                }
+                )
             }
-            is SignUpContract.Event.SignUp -> {
-                viewModelScope.launch {
-                    postEffect(
-                        SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE)
-                    )
-                }
+            is SignUpContract.Event.TasteSelectionLastItemClicked -> {
+                postEffect(
+                    SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE)
+                )
             }
         }
     }

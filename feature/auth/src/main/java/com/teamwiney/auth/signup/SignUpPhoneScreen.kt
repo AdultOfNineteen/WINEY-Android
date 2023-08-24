@@ -66,7 +66,7 @@ fun SignUpPhoneScreen(
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
-                is SignUpContract.Effect.ShowSnackbar -> {
+                is SignUpContract.Effect.ShowSnackBar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
                 }
 
@@ -152,7 +152,7 @@ fun SignUpPhoneScreen(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
-                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationCode)
+                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
                     }
                 ),
                 onErrorState = uiState.phoneNumberErrorState
@@ -162,7 +162,7 @@ fun SignUpPhoneScreen(
                 text = "확인",
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.processEvent(SignUpContract.Event.SendAuthenticationCode)
+                    viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)
