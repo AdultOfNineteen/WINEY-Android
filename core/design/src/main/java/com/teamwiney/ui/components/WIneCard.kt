@@ -63,8 +63,7 @@ fun WineCard(
         modifier = modifier
             .height(IntrinsicSize.Max)
             // LazyRow 사용 시 주석 처리
-            //.fillMaxWidth()
-            .width(IntrinsicSize.Min)
+            .fillMaxWidth()
             .clip(
                 TicketShape(
                     circleRadius = 38.dp,
@@ -174,7 +173,7 @@ private fun WineCardContent(
 
         HorizontalGradientDivider(colorStops = dividerColorSteps)
 
-        Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+        Row {
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center

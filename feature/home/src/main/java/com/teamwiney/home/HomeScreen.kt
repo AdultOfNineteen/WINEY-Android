@@ -2,6 +2,7 @@
 
 package com.teamwiney.home
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
@@ -31,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -38,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -47,6 +51,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -72,8 +78,8 @@ fun HomeScreen() {
             .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
-        LazyRowRecommendWine()
-        //HomeRecommendWine()
+        //LazyRowRecommendWine()
+        HomeRecommendWine()
         HomeRecommendNewbie()
     }
 }
@@ -196,6 +202,7 @@ private fun LazyRowRecommendWine() {
         }
 
         val state = rememberLazyListState()
+        val density = LocalDensity.current
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -203,14 +210,31 @@ private fun LazyRowRecommendWine() {
             state = state,
             flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
         ) {
-            repeat(5) {
+            val selectedItemIndex = calculateCenterVisibleIndex(state, 2, 280.dp, density)
+
+            repeat(5) { index ->
+                val isSelected = index == selectedItemIndex
+
                 item {
-                    WineCard(
-                        color = "RED",
-                        name = "캄포 마리나 프리미티도 디 만두리아",
-                        origin = "이탈리아",
-                        price = "8.80"
-                    )
+                    val scale by animateFloatAsState(if (isSelected) 1.0f else 0.8f)
+
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .graphicsLayer {
+                                scaleX = scale
+                                scaleY = scale
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        WineCard(
+                            modifier = Modifier.width(280.dp),
+                            color = "RED",
+                            name = "캄포 마리나 프리미티도 디 만두리아",
+                            origin = "이탈리아",
+                            price = "8.80"
+                        )
+                    }
                 }
             }
         }
@@ -272,9 +296,8 @@ private fun HomeRecommendWine() {
                 contentPadding = PaddingValues(horizontal = 24.dp),
                 pageSpacing = 16.dp
             ) { page ->
-                Box(
-                    Modifier
-                        //.fillMaxWidth()
+                WineCard(
+                    modifier = Modifier
                         .graphicsLayer {
                             val pageOffset = (
                                     (pagerState.currentPage - page) + pagerState
@@ -291,15 +314,11 @@ private fun HomeRecommendWine() {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         },
-                    contentAlignment = Alignment.Center
-                ) {
-                    WineCard(
-                        color = "RED",
-                        name = "캄포 마리나 프리미티도 디 만두리아",
-                        origin = "이탈리아",
-                        price = "8.80"
-                    )
-                }
+                    color = "RED",
+                    name = "캄포 마리나 프리미티도 디 만두리아",
+                    origin = "이탈리아",
+                    price = "8.80"
+                )
             }
         }
     }
@@ -317,4 +336,13 @@ private fun HomeLogo() {
         ),
         modifier = Modifier.padding(horizontal = 24.dp)
     )
+}
+
+fun calculateCenterVisibleIndex(listState: LazyListState, itemCount: Int, itemWidth: Dp, density: Density): Int {
+    val totalScrollOffset = listState.firstVisibleItemScrollOffset + (listState.layoutInfo.viewportEndOffset - listState.layoutInfo.viewportStartOffset) / 2
+    val itemWidthPx = density.run { itemWidth.toPx() }
+
+    // Calculate the index of the item that's nearest to the estimated center position
+    val centerItemIndexFloat = (totalScrollOffset + itemWidthPx / 2) / itemWidthPx
+    return centerItemIndexFloat.coerceIn(0f, itemCount - 1f).toInt()
 }
