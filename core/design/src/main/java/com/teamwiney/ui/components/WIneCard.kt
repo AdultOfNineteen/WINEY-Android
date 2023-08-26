@@ -1,8 +1,8 @@
 package com.teamwiney.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,18 +13,18 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
@@ -37,17 +37,11 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
@@ -57,71 +51,57 @@ fun WineCard(
     color: String,
     name: String,
     origin: String,
+    varieties: String,
     price: String
 ) {
-    Box(
-        modifier = modifier
-            .height(IntrinsicSize.Max)
-            // LazyRow 사용 시 주석 처리
-            .fillMaxWidth()
-            .clip(
-                TicketShape(
-                    circleRadius = 38.dp,
-                    circleOffsetY = 20.dp,
-                    cornerSize = CornerSize(4.dp)
-                )
-            )
-            .background(
-                brush = Brush.verticalGradient(
-                    listOf(Color(0xFF212327), WineyTheme.colors.gray_900)
-                ),
-            )
-            .border(
-                width = 1.dp,
-                brush = Brush.verticalGradient(
-                    listOf(Color.White.copy(alpha = 0.3f), WineyTheme.colors.background_1)
-                ),
-                shape = TicketShape(
-                    circleRadius = 38.dp,
-                    circleOffsetY = 20.dp,
-                    cornerSize = CornerSize(4.dp)
-                )
-            )
-    ) {
-        // 여기는 그냥 배경 원 그라데이션 코드상으로 넣은거예요
-        // 이미지 받으면은 이미지 Box 내에 넣고 Box 블러 처리하면 될 거 같아요
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .blur(50.dp)
-        ) {
-            BlurredCircle(
-                modifier = Modifier
-                    .padding(start = 23.dp, top = 63.dp)
-                    .size(157.dp),
-                colors = listOf(Color(0xFF6F0303), Color(0xFF6F036400))
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .blur(50.dp),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            BlurredCircle(
-                modifier = Modifier
-                    .padding(end = 20.dp, bottom = 48.dp)
-                    .size(178.dp),
-                colors = listOf(Color(0xFF6F0303), Color(0xFF6F036400))
-            )
-        }
 
-        WineCardContent(
-            color = color,
-            name = name,
-            origin = origin,
-            price = price
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+    ) {
+        Box {
+            // TODO : 블러 처리 안된 영역 (원) 처리
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(440.dp)
+                        .blur(70.dp)
+                        .offset(y = 10.dp)
+                        .padding(horizontal = 10.dp)
+                        .background(color = Color(0xFF310909))
+                )
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .padding(horizontal = 18.dp)
+                        .background(color = Color(0xFF310909))
+                )
+            }
+        }
+        Surface(
+            modifier = modifier
+                .height(IntrinsicSize.Max)
+                .fillMaxWidth(),
+            shape = TicketShape(
+                circleRadius = 38.dp,
+                circleOffsetY = 10.dp,
+                cornerSize = CornerSize(5.dp)
+            ),
+            color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
+            border = BorderStroke(1.dp, WineyTheme.colors.gray_900)
+        ) {
+            WineCardContent(
+                color = color,
+                name = name,
+                origin = origin,
+                varieties = varieties,
+                price = price
+            )
+        }
     }
 }
 
@@ -130,6 +110,7 @@ private fun WineCardContent(
     color: String,
     name: String,
     origin: String,
+    varieties: String,
     price: String
 ) {
     val dividerColorSteps = arrayOf(
@@ -142,7 +123,8 @@ private fun WineCardContent(
         modifier = Modifier
             .fillMaxWidth()
             .width(IntrinsicSize.Max)
-            .padding(30.dp)
+            .height(440.dp)
+            .padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 58.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -150,26 +132,23 @@ private fun WineCardContent(
         ) {
             Text(
                 text = color,
-                style = TextStyle(
-                    fontSize = 54.sp,
-                    fontFamily = FontFamily(Font(R.font.chaviera)),
-                    fontWeight = FontWeight(400),
-                    color = WineyTheme.colors.gray_50,
-                    textAlign = TextAlign.Center,
-                )
+                style = WineyTheme.typography.display1,
+                color = WineyTheme.colors.gray_50
             )
             Icon(
+                modifier = Modifier.offset(y = (-5).dp),
                 painter = painterResource(id = R.drawable.ic_thismooth),
                 contentDescription = null,
                 tint = Color.Unspecified
             )
         }
         Text(
+            modifier = Modifier.offset(y = (-10).dp),
             text = name,
             style = WineyTheme.typography.bodyM2,
             color = WineyTheme.colors.gray_50
         )
-        HeightSpacer(height = 10.dp)
+        HeightSpacer(height = 25.dp)
 
         HorizontalGradientDivider(colorStops = dividerColorSteps)
 
@@ -179,7 +158,8 @@ private fun WineCardContent(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    modifier = Modifier.padding(start = 8.dp, end = 18.dp),
+                    painter = painterResource(id = R.drawable.ic_red_wine),
                     contentDescription = null
                 )
             }
@@ -187,15 +167,11 @@ private fun WineCardContent(
             VerticalGradientDivider(colorStops = dividerColorSteps)
 
             Column {
-                Column(modifier = Modifier.padding(10.dp)) {
+                Column(modifier = Modifier.padding(12.dp)) {
                     Text(
                         text = "national anthems",
-                        style = TextStyle(
-                            fontSize = 8.sp,
-                            fontFamily = FontFamily(Font(R.font.chaviera)),
-                            fontWeight = FontWeight(400),
-                            color = WineyTheme.colors.gray_50,
-                        )
+                        style = WineyTheme.typography.captionM3,
+                        color = WineyTheme.colors.gray_50
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
@@ -204,40 +180,34 @@ private fun WineCardContent(
                         style = WineyTheme.typography.bodyB1,
                         color = WineyTheme.colors.gray_50
                     )
+                    HeightSpacer(height = 5.dp)
                 }
 
                 HorizontalGradientDivider(colorStops = dividerColorSteps)
 
-                Column(modifier = Modifier.padding(10.dp)) {
+                Column(modifier = Modifier.padding(12.dp)) {
                     Text(
                         text = "Varieties",
-                        style = TextStyle(
-                            fontSize = 8.sp,
-                            fontFamily = FontFamily(Font(R.font.chaviera)),
-                            fontWeight = FontWeight(400),
-                            color = WineyTheme.colors.gray_50,
-                        )
+                        style = WineyTheme.typography.captionM3,
+                        color = WineyTheme.colors.gray_50
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
                         modifier = Modifier,
-                        text = "프리미티보",
+                        text = varieties,
                         style = WineyTheme.typography.bodyB1,
                         color = WineyTheme.colors.gray_50
                     )
+                    HeightSpacer(height = 5.dp)
                 }
 
                 HorizontalGradientDivider(colorStops = dividerColorSteps)
 
-                Column(modifier = Modifier.padding(10.dp)) {
+                Column(modifier = Modifier.padding(12.dp)) {
                     Text(
                         text = "Purchase Price",
-                        style = TextStyle(
-                            fontSize = 8.sp,
-                            fontFamily = FontFamily(Font(R.font.chaviera)),
-                            fontWeight = FontWeight(400),
-                            color = WineyTheme.colors.gray_50,
-                        )
+                        style = WineyTheme.typography.captionM3,
+                        color = WineyTheme.colors.gray_50
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
@@ -246,6 +216,7 @@ private fun WineCardContent(
                         style = WineyTheme.typography.bodyB1,
                         color = WineyTheme.colors.gray_50
                     )
+                    HeightSpacer(height = 5.dp)
                 }
             }
         }
@@ -316,13 +287,12 @@ class TicketShape(
 
     private fun getTicketPath(size: Size, density: Density): Path {
         val middleX = size.width.div(other = 2)
-        val circleRadiusInPx = with(density) { circleRadius.toPx() }
-        val circleOffsetYInPx = with(density) { circleOffsetY.toPx() }
+        val circleRadiusInPx = density.run { circleRadius.toPx() }
+        val circleOffsetYInPx = density.run { circleOffsetY.toPx() }
         return Path().apply {
             reset()
 
             lineTo(x = 0F, y = 0F)
-            lineTo(middleX, y = 0F)
             lineTo(x = size.width, y = 0F)
             lineTo(x = size.width, y = size.height)
             lineTo(middleX, y = size.height)
@@ -356,6 +326,7 @@ fun PreviewWineCard() {
             WineCard(
                 color = "RED",
                 name = "캄포 마리나 프리미티도 디 만두리아",
+                varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",
                 price = "8.80"
             )
