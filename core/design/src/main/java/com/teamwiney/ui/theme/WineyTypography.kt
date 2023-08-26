@@ -8,6 +8,34 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 
 data class WineyTypography(
+    val display1: TextStyle = TextStyle(
+        fontFamily = Chaviera,
+        fontWeight = FontWeight.Normal,
+        fontSize = 54.sp,
+        lineHeight = 54.sp,
+        letterSpacing = 0.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val display2: TextStyle = TextStyle(
+        fontFamily = Chaviera,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
     val largeTitle: TextStyle = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Bold,
@@ -164,6 +192,20 @@ data class WineyTypography(
     ),
     val captionM2: TextStyle = TextStyle(
         fontFamily = Pretendard,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
+    val captionM3: TextStyle = TextStyle(
+        fontFamily = Chaviera,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 18.sp,
