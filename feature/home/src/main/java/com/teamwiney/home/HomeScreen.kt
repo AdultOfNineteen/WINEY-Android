@@ -2,11 +2,9 @@
 
 package com.teamwiney.home
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -33,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -41,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -78,7 +72,6 @@ fun HomeScreen() {
             .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
-        //LazyRowRecommendWine()
         HomeRecommendWine()
         HomeRecommendNewbie()
     }
@@ -156,89 +149,6 @@ fun HomeRecommendNewbie() {
             Spacer(modifier = Modifier.width(16.dp))
         }
     }
-
-}
-
-@Composable
-private fun LazyRowRecommendWine() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                Text(
-                    text = "오늘의 와인",
-                    style = WineyTheme.typography.title1,
-                    color = Color.White
-                )
-                Image(
-                    painter = painterResource(id = R.mipmap.ic_home_title_wine),
-                    contentDescription = "IC_HOME_TITLE_WINE",
-                    modifier = Modifier.size(14.dp, 22.dp)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_info_24),
-                    contentDescription = "IC_BASELINE_INFO_24",
-                    modifier = Modifier.size(15.dp),
-                    tint = WineyTheme.colors.gray_300
-                )
-            }
-            HeightSpacer(height = 12.dp)
-            Text(
-                text = "매일 나의 취향에 맞는 와인을 추천해 드려요!",
-                style = WineyTheme.typography.captionM1,
-                color = WineyTheme.colors.gray_600,
-            )
-            HeightSpacer(height = 28.dp)
-        }
-
-        val state = rememberLazyListState()
-        val density = LocalDensity.current
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 24.dp),
-            state = state,
-            flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
-        ) {
-            val selectedItemIndex = calculateCenterVisibleIndex(state, 2, 280.dp, density)
-
-            repeat(5) { index ->
-                val isSelected = index == selectedItemIndex
-
-                item {
-                    val scale by animateFloatAsState(if (isSelected) 1.0f else 0.8f)
-
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .graphicsLayer {
-                                scaleX = scale
-                                scaleY = scale
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        WineCard(
-                            modifier = Modifier.width(280.dp),
-                            color = "RED",
-                            name = "캄포 마리나 프리미티도 디 만두리아",
-                            origin = "이탈리아",
-                            price = "8.80"
-                        )
-                    }
-                }
-            }
-        }
-    }
 }
 
 @Composable
@@ -269,12 +179,6 @@ private fun HomeRecommendWine() {
                     painter = painterResource(id = R.mipmap.ic_home_title_wine),
                     contentDescription = "IC_HOME_TITLE_WINE",
                     modifier = Modifier.size(14.dp, 22.dp)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_info_24),
-                    contentDescription = "IC_BASELINE_INFO_24",
-                    modifier = Modifier.size(15.dp),
-                    tint = WineyTheme.colors.gray_300
                 )
             }
             HeightSpacer(height = 12.dp)
@@ -317,6 +221,7 @@ private fun HomeRecommendWine() {
                     color = "RED",
                     name = "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
+                    varieties = "모스까델 데 알레한드리아",
                     price = "8.80"
                 )
             }
