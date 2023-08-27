@@ -28,6 +28,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.HomeDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
 import com.teamwiney.ui.signup.SheetContent
@@ -45,6 +46,14 @@ fun LoginScreen(
     viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
+
+    val onLoginComplete = {
+        navController.navigate(HomeDestinations.ROUTE) {
+            popUpTo(AuthDestinations.SignUp.ROUTE) {
+                inclusive = true
+            }
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->

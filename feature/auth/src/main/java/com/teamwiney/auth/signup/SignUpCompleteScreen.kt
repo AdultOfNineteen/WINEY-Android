@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.HomeDestinations
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
@@ -31,6 +32,14 @@ fun SignUpCompleteScreen(
     navController: NavController = rememberNavController(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
+
+    val onSignUpComplete = {
+        navController.navigate(HomeDestinations.ROUTE) {
+            popUpTo(AuthDestinations.SignUp.ROUTE) {
+                inclusive = true
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -52,10 +61,7 @@ fun SignUpCompleteScreen(
             Spacer(modifier = Modifier.weight(1f))
             WButton(
                 text = "시작하기",
-                onClick = {
-                    // TODO : Add next button Event
-                    navController.navigate(HomeDestinations.ROUTE)
-                },
+                onClick = onSignUpComplete,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
             HeightSpacer(height = 40.dp)
