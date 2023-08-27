@@ -87,6 +87,24 @@ fun WineCard(
     }
 }
 
+@Preview
+@Composable
+private fun WineCardCircle() {
+    Canvas(modifier = Modifier.width(228.dp).height(271.dp)) {
+        drawCircle(
+            brush = Brush.verticalGradient(listOf(Color(0xFF6F0303), Color(0xFF6F036400))),
+            radius = 79.dp.toPx(),
+            center = Offset(x = 79.dp.toPx(), y = 79.dp.toPx())
+        )
+
+        drawCircle(
+            color = Color(0xAD711F1F),
+            radius = 89.dp.toPx(),
+            center = Offset(x = 139.dp.toPx(), y = 182.dp.toPx())
+        )
+    }
+}
+
 @Composable
 private fun CardSurface(
     modifier: Modifier = Modifier,
@@ -99,11 +117,14 @@ private fun CardSurface(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(440.dp)
-                    .blur(70.dp)
+                    .blur(30.dp)
                     .offset(y = circleOffsetY)
                     .padding(horizontal = 10.dp)
-                    .background(color = Color(0xFF310909))
-            )
+                    .background(color = Color(0xFF310909)),
+                contentAlignment = Alignment.Center
+            ) {
+                WineCardCircle()
+            }
 
             Box(
                 modifier = Modifier
