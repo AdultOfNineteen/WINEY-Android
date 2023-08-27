@@ -1,6 +1,7 @@
 package com.teamwiney.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
@@ -54,34 +55,15 @@ fun WineCard(
     varieties: String,
     price: String
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
     ) {
-        Box {
-            // TODO : 블러 처리 안된 영역 (원) 처리
-            Column {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(440.dp)
-                        .blur(70.dp)
-                        .offset(y = 10.dp)
-                        .padding(horizontal = 10.dp)
-                        .background(color = Color(0xFF310909))
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(10.dp)
-                        .padding(horizontal = 18.dp)
-                        .background(color = Color(0xFF310909))
-                )
-            }
-        }
+        CardSurface(
+            circleRadius = 38.dp,
+            circleOffsetY = 10.dp
+        )
         Surface(
             modifier = modifier
                 .height(IntrinsicSize.Max)
@@ -101,6 +83,58 @@ fun WineCard(
                 varieties = varieties,
                 price = price
             )
+        }
+    }
+}
+
+@Composable
+private fun CardSurface(
+    modifier: Modifier = Modifier,
+    circleRadius: Dp,
+    circleOffsetY: Dp
+) {
+    Box {
+        Column {
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(440.dp)
+                    .blur(70.dp)
+                    .offset(y = circleOffsetY)
+                    .padding(horizontal = 10.dp)
+                    .background(color = Color(0xFF310909))
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = -circleRadius)
+                    .padding(horizontal = 18.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Canvas(modifier = Modifier.fillMaxWidth()) {
+                    val canvasWidth = size.width
+
+                    val arcWidth = (circleRadius * 2).toPx()
+                    val arcStartX = (canvasWidth - arcWidth) / 2
+                    val arcStartY = circleOffsetY.toPx()
+
+                    drawArc(
+                        color = Color(0xFF310909),
+                        startAngle = 180f,
+                        sweepAngle = 180f,
+                        useCenter = true,
+                        topLeft = Offset(arcStartX, arcStartY),
+                        size = Size(arcWidth, arcWidth)
+                    )
+
+                    drawRect(
+                        color = Color(0xFF310909),
+                        topLeft = Offset(0f, circleRadius.toPx()),
+                        size = Size(canvasWidth, circleOffsetY.toPx())
+                    )
+                }
+            }
         }
     }
 }
@@ -221,20 +255,6 @@ private fun WineCardContent(
             }
         }
     }
-}
-
-@Composable
-private fun BlurredCircle(
-    modifier: Modifier = Modifier,
-    colors: List<Color>
-) {
-    Spacer(
-        modifier = modifier
-            .background(
-                brush = Brush.verticalGradient(colors),
-                shape = CircleShape
-            )
-    )
 }
 
 @Composable
