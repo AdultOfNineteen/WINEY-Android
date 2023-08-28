@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.teamwiney.core.design.R
+import com.teamwiney.ui.components.CardConfig
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WineCard
 import com.teamwiney.ui.theme.WineyTheme
@@ -218,7 +219,7 @@ private fun HomeRecommendWine() {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         },
-                    color = "RED",
+                    cardConfig = if (page % 2 == 0) CardConfig.Red else CardConfig.White,
                     name = "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
                     varieties = "모스까델 데 알레한드리아",

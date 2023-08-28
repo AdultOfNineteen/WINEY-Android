@@ -1,5 +1,6 @@
 package com.teamwiney.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,9 +18,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,10 +48,36 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
+enum class CardConfig(
+    val wineColor: String,
+    @DrawableRes val image: Int,
+    val borderColor: Color,
+    val gradientCircleColor: List<Color>,
+    val circleColor: Color,
+    val cardColor: Color
+) {
+    Red(
+        wineColor = "RED",
+        image = R.drawable.ic_red_wine,
+        borderColor = Color(0xFFA87575),
+        gradientCircleColor = listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
+        circleColor = Color(0xFF640D0D),
+        cardColor = Color(0xFF441010)
+    ),
+    White(
+        wineColor = "WHITE",
+        image = R.drawable.ic_white_wine,
+        borderColor = Color(0xFF3A3D40),
+        gradientCircleColor = listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
+        circleColor = Color(0xFF898472),
+        cardColor = Color(0xFF7A706D)
+    );
+}
+
 @Composable
 fun WineCard(
     modifier: Modifier = Modifier,
-    color: String,
+    cardConfig: CardConfig,
     name: String,
     origin: String,
     varieties: String,
@@ -62,7 +90,11 @@ fun WineCard(
     ) {
         CardSurface(
             circleRadius = 38.dp,
-            circleOffsetY = 10.dp
+            circleOffsetY = 10.dp,
+            cardColor = cardConfig.cardColor,
+            borderColor = cardConfig.borderColor,
+            gradientCircleColor = cardConfig.gradientCircleColor,
+            circleColor = cardConfig.circleColor
         )
         Surface(
             modifier = modifier
@@ -74,10 +106,12 @@ fun WineCard(
                 cornerSize = CornerSize(5.dp)
             ),
             color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
-            border = BorderStroke(1.dp, WineyTheme.colors.gray_900)
+            border = BorderStroke(1.dp, cardConfig.borderColor)
         ) {
             WineCardContent(
-                color = color,
+                wineColor = cardConfig.wineColor,
+                borderColor = cardConfig.borderColor,
+                image = cardConfig.image,
                 name = name,
                 origin = origin,
                 varieties = varieties,
@@ -87,18 +121,22 @@ fun WineCard(
     }
 }
 
-@Preview
 @Composable
-private fun WineCardCircle() {
-    Canvas(modifier = Modifier.width(228.dp).height(271.dp)) {
+private fun WineCardCircle(
+    gradientCircleColor: List<Color>,
+    circleColor: Color
+) {
+    Canvas(modifier = Modifier
+        .width(228.dp)
+        .height(271.dp)) {
         drawCircle(
-            brush = Brush.verticalGradient(listOf(Color(0xFF6F0303), Color(0xFF6F036400))),
+            brush = Brush.verticalGradient(gradientCircleColor),
             radius = 79.dp.toPx(),
             center = Offset(x = 79.dp.toPx(), y = 79.dp.toPx())
         )
 
         drawCircle(
-            color = Color(0xAD711F1F),
+            color = circleColor,
             radius = 89.dp.toPx(),
             center = Offset(x = 139.dp.toPx(), y = 182.dp.toPx())
         )
@@ -108,6 +146,10 @@ private fun WineCardCircle() {
 @Composable
 private fun CardSurface(
     modifier: Modifier = Modifier,
+    cardColor: Color,
+    borderColor: Color,
+    gradientCircleColor: List<Color>,
+    circleColor: Color,
     circleRadius: Dp,
     circleOffsetY: Dp
 ) {
@@ -120,10 +162,13 @@ private fun CardSurface(
                     .blur(30.dp)
                     .offset(y = circleOffsetY)
                     .padding(horizontal = 10.dp)
-                    .background(color = Color(0xFF310909)),
+                    .background(color = cardColor),
                 contentAlignment = Alignment.Center
             ) {
-                WineCardCircle()
+                WineCardCircle(
+                    gradientCircleColor = gradientCircleColor,
+                    circleColor = circleColor
+                )
             }
 
             Box(
@@ -141,7 +186,7 @@ private fun CardSurface(
                     val arcStartY = circleOffsetY.toPx()
 
                     drawArc(
-                        color = Color(0xFF310909),
+                        color = cardColor,
                         startAngle = 180f,
                         sweepAngle = 180f,
                         useCenter = true,
@@ -149,10 +194,20 @@ private fun CardSurface(
                         size = Size(arcWidth, arcWidth)
                     )
 
-                    drawRect(
-                        color = Color(0xFF310909),
-                        topLeft = Offset(0f, circleRadius.toPx()),
-                        size = Size(canvasWidth, circleOffsetY.toPx())
+                    drawPath(
+                        Path().apply {
+                            addRoundRect(
+                                RoundRect(
+                                    rect = Rect(
+                                        offset = Offset(0f, circleRadius.toPx()),
+                                        size = Size(canvasWidth, circleOffsetY.toPx()),
+                                    ),
+                                    bottomLeft = CornerRadius(10.dp.toPx(), 10.dp.toPx()),
+                                    bottomRight = CornerRadius(10.dp.toPx(), 10.dp.toPx())
+                                )
+                            )
+                        },
+                        color = cardColor
                     )
                 }
             }
@@ -162,7 +217,9 @@ private fun CardSurface(
 
 @Composable
 private fun WineCardContent(
-    color: String,
+    wineColor: String,
+    borderColor: Color,
+    @DrawableRes image: Int,
     name: String,
     origin: String,
     varieties: String,
@@ -186,7 +243,7 @@ private fun WineCardContent(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
-                text = color,
+                text = wineColor,
                 style = WineyTheme.typography.display1,
                 color = WineyTheme.colors.gray_50
             )
@@ -205,7 +262,11 @@ private fun WineCardContent(
         )
         HeightSpacer(height = 25.dp)
 
-        HorizontalGradientDivider(colorStops = dividerColorSteps)
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth().height(1.dp),
+            thickness = 1.dp,
+            color = borderColor
+        )
 
         Row {
             Box(
@@ -214,12 +275,16 @@ private fun WineCardContent(
             ) {
                 Image(
                     modifier = Modifier.padding(start = 8.dp, end = 18.dp),
-                    painter = painterResource(id = R.drawable.ic_red_wine),
+                    painter = painterResource(id = image),
                     contentDescription = null
                 )
             }
 
-            VerticalGradientDivider(colorStops = dividerColorSteps)
+            VerticalDivider(
+                modifier = Modifier.width(1.dp).fillMaxHeight(),
+                thickness = 1.dp,
+                color = borderColor
+            )
 
             Column {
                 Column(modifier = Modifier.padding(12.dp)) {
@@ -238,7 +303,11 @@ private fun WineCardContent(
                     HeightSpacer(height = 5.dp)
                 }
 
-                HorizontalGradientDivider(colorStops = dividerColorSteps)
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth().height(1.dp),
+                    thickness = 1.dp,
+                    color = borderColor
+                )
 
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
@@ -256,7 +325,11 @@ private fun WineCardContent(
                     HeightSpacer(height = 5.dp)
                 }
 
-                HorizontalGradientDivider(colorStops = dividerColorSteps)
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth().height(1.dp),
+                    thickness = 1.dp,
+                    color = borderColor
+                )
 
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
@@ -276,30 +349,6 @@ private fun WineCardContent(
             }
         }
     }
-}
-
-@Composable
-private fun HorizontalGradientDivider(
-    colorStops: Array<Pair<Float, Color>>
-) {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Brush.horizontalGradient(colorStops = colorStops))
-    )
-}
-
-@Composable
-private fun VerticalGradientDivider(
-    colorStops: Array<Pair<Float, Color>>
-) {
-    Spacer(
-        modifier = Modifier
-            .width(1.dp)
-            .fillMaxHeight()
-            .background(Brush.verticalGradient(colorStops = colorStops))
-    )
 }
 
 class TicketShape(
@@ -365,7 +414,7 @@ fun PreviewWineCard() {
             contentAlignment = Alignment.Center
         ) {
             WineCard(
-                color = "RED",
+                cardConfig = CardConfig.White,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",
