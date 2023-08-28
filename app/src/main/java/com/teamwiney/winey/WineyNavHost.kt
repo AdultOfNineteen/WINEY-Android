@@ -14,8 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.AuthDestinations
@@ -23,6 +25,7 @@ import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.notecollection.noteGraph
+import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
@@ -76,12 +79,16 @@ fun WineyNavHost() {
             backgroundColor = WineyTheme.colors.background_1,
             bottomBar = {
                 if (appState.shouldShowBottomBar) {
-                    // TODO : 바텀 네비게이션 바
+                    WineyBottomNavigationBar(
+                        destinations = appState.topLevelDestination,
+                        currentDestination = appState.currentDestination,
+                        onNavigateToDestination = appState::navigateToTopLevelDestination,
+                    )
                 }
             }
-        ) {
+        ) { padding ->
             NavHost(
-                modifier = Modifier.padding(it),
+                modifier = Modifier.padding(padding),
                 navController = navController,
                 startDestination = AuthDestinations.ROUTE
             ) {
@@ -130,4 +137,32 @@ fun WineyNavHost() {
     }
 }
 
+@Composable
+private fun WineyBottomNavigationBar(
+    modifier: Modifier = Modifier,
+    destinations: List<TopLevelDestination>,
+    currentDestination: NavDestination?,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    backgroundColor: Color = WineyTheme.colors.gray_900,
+    selectedContentColor: Color = WineyTheme.colors.gray_50,
+    unselectedContentColor: Color = WineyTheme.colors.gray_800
+) {
+    BottomNavigationBar(
+        modifier = modifier,
+        backgroundColor = backgroundColor
+    ) {
+        destinations.forEach { destination ->
+            val selected = currentDestination?.route == destination.route
 
+            com.teamwiney.ui.components.BottomNavigationItem(
+                label = destination.label,
+                selected = selected,
+                selectedIcon = destination.selectedIcon,
+                unselectedIcon = destination.unselectedIcon,
+                selectedContentColor = selectedContentColor,
+                unselectedContentColor = unselectedContentColor,
+                onClick = { onNavigateToDestination(destination) },
+            )
+        }
+    }
+}
