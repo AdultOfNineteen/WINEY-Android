@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -45,8 +44,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
@@ -69,7 +66,7 @@ fun HomeScreen() {
             .background(WineyTheme.colors.background_1)
             .navigationBarsPadding()
             .statusBarsPadding()
-            .padding(vertical = 20.dp)
+            .padding(top = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
@@ -242,13 +239,4 @@ private fun HomeLogo() {
         ),
         modifier = Modifier.padding(horizontal = 24.dp)
     )
-}
-
-fun calculateCenterVisibleIndex(listState: LazyListState, itemCount: Int, itemWidth: Dp, density: Density): Int {
-    val totalScrollOffset = listState.firstVisibleItemScrollOffset + (listState.layoutInfo.viewportEndOffset - listState.layoutInfo.viewportStartOffset) / 2
-    val itemWidthPx = density.run { itemWidth.toPx() }
-
-    // Calculate the index of the item that's nearest to the estimated center position
-    val centerItemIndexFloat = (totalScrollOffset + itemWidthPx / 2) / itemWidthPx
-    return centerItemIndexFloat.coerceIn(0f, itemCount - 1f).toInt()
 }
