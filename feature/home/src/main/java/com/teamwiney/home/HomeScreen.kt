@@ -2,6 +2,7 @@
 
 package com.teamwiney.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,11 +18,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -35,15 +40,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.CardConfig
@@ -62,7 +62,6 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
-            .padding(top = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
@@ -142,23 +141,21 @@ fun HomeRecommendNewbie() {
             }
             Spacer(modifier = Modifier.width(16.dp))
         }
+        HeightSpacer(height = 20.dp)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeRecommendWine() {
-    // TODO : 나중에 와인 추천 리스트는 UI State로 뺄 예정
+    // TODO : 나중에 와인 추천 리스트는 UiState로 뺄 예정
     val cardConfigList = listOf(
         CardConfig.Red, CardConfig.White, CardConfig.Rose, CardConfig.Sparkl, CardConfig.Port, CardConfig.Etc
     )
 
-    val pagerState = rememberPagerState(pageCount = { 5 })
+    val pagerState = rememberPagerState(pageCount = { 6 })
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 24.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -227,16 +224,72 @@ private fun HomeRecommendWine() {
     }
 }
 
+@Preview
 @Composable
 private fun HomeLogo() {
-    Text(
-        text = "WINEY",
-        style = TextStyle(
-            fontSize = 28.sp,
-            fontFamily = FontFamily(Font(R.font.chaviera)),
-            fontWeight = FontWeight(400),
-            color = WineyTheme.colors.gray_400,
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(
+                horizontal = 24.dp,
+                vertical = 18.dp
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier,
+            text = "WINEY",
+            style = WineyTheme.typography.display2.copy(
+                color = WineyTheme.colors.gray_400
+            )
+        )
+
+        AnalysisButton { }
+    }
+}
+
+@Preview
+@Composable
+private fun AnalysisButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent
         ),
-        modifier = Modifier.padding(horizontal = 24.dp)
-    )
+        border = BorderStroke(
+            width = 1.dp,
+            color = WineyTheme.colors.main_3
+        ),
+        contentPadding = PaddingValues(
+            start = 15.dp,
+            end = 12.dp,
+            top = 7.dp,
+            bottom = 7.dp
+        ),
+        shape = RoundedCornerShape(25.dp),
+        elevation = ButtonDefaults.buttonElevation(7.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_analysis),
+                contentDescription = null,
+                tint = Color.Unspecified
+            )
+
+            Spacer(modifier = Modifier.width(3.dp))
+
+            Text(
+                text = "분석하기",
+                style = WineyTheme.typography.captionB1.copy(
+                    color = WineyTheme.colors.main_3
+                )
+            )
+        }
+    }
 }
