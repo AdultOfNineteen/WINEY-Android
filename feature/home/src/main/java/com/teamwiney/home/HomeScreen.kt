@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -64,8 +62,6 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
-            .navigationBarsPadding()
-            .statusBarsPadding()
             .padding(top = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -151,6 +147,10 @@ fun HomeRecommendNewbie() {
 
 @Composable
 private fun HomeRecommendWine() {
+    // TODO : 나중에 와인 추천 리스트는 UI State로 뺄 예정
+    val cardConfigList = listOf(
+        CardConfig.Red, CardConfig.White, CardConfig.Rose, CardConfig.Sparkl, CardConfig.Port, CardConfig.Etc
+    )
 
     val pagerState = rememberPagerState(pageCount = { 5 })
 
@@ -216,7 +216,7 @@ private fun HomeRecommendWine() {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         },
-                    cardConfig = if (page % 2 == 0) CardConfig.Red else CardConfig.White,
+                    cardConfig = cardConfigList[page],
                     name = "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
                     varieties = "모스까델 데 알레한드리아",
