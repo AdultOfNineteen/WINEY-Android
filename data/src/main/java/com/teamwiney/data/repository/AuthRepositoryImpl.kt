@@ -14,7 +14,4 @@ class AuthRepositoryImpl @Inject constructor(
         accessToken: String
     ) = authDataSource.socialLogin(socialType, SocialLoginRequest(accessToken))
 
-    override fun kakaoLogin(
-        accessToken: String
-    ) = authDataSource.kakaoLogin(accessToken)
 }

@@ -1,4 +1,4 @@
-package com.teamwiney.winey
+package com.teamwiney.core.common.domain.common
 
 import androidx.annotation.DrawableRes
 import com.teamwiney.core.common.HomeDestinations

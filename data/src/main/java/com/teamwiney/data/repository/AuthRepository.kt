@@ -1,5 +1,7 @@
 package com.teamwiney.data.repository
 
+import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.domain.response.AccessTokenResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.service.SocialType
@@ -10,7 +12,6 @@ interface AuthRepository {
     fun socialLogin(
         socialType: SocialType,
         accessToken: String
-    ): Flow<ApiResult<BaseResponse>>
+    ): Flow<ApiResult<ResponseWrapper<AccessTokenResponse>>>
 
-    fun kakaoLogin(accessToken: String): Flow<ApiResult<BaseResponse>>
 }

@@ -22,9 +22,4 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.socialLogin(socialType, socialLoginRequest))
     }.flowOn(ioDispatcher)
 
-    override fun kakaoLogin(
-        accessToken: String
-    ) = flow {
-        emit(authService.kakaoLogin(accessToken))
-    }.flowOn(ioDispatcher)
 }

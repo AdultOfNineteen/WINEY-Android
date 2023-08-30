@@ -6,9 +6,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
 
 fun NavGraphBuilder.loginGraph(
-    navController: NavController
+    appState: WineyAppState
 ) {
     navigation(
         route = AuthDestinations.Login.ROUTE,
@@ -19,7 +20,7 @@ fun NavGraphBuilder.loginGraph(
 
             LoginScreen(
                 effectFlow = viewModel.effect,
-                navController = navController,
+                appState = appState,
                 viewModel = viewModel
             )
         }

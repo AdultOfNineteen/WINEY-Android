@@ -2,6 +2,7 @@ package com.teamwiney.data.network.service
 
 import com.google.gson.annotations.SerializedName
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.domain.response.AccessTokenResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.SocialLoginRequest
@@ -28,11 +29,7 @@ interface AuthService {
     suspend fun socialLogin(
         @Path("social") social: SocialType,
         @Body socialLoginRequest: SocialLoginRequest
-    ): ApiResult<BaseResponse>
+    ): ApiResult<ResponseWrapper<AccessTokenResponse>>
 
-    @GET("/auth/kakao")
-    suspend fun kakaoLogin(
-        @Query("code") accessToken: String
-    ): ApiResult<BaseResponse>
 
 }

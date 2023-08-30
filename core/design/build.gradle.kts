@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)

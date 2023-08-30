@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
 import com.teamwiney.ui.signup.SheetContent
@@ -43,28 +44,24 @@ import kotlinx.coroutines.flow.collectLatest
 fun LoginScreen(
     effectFlow: Flow<LoginContract.Effect>,
     showBottomSheet: (SheetContent) -> Unit = { },
-    navController: NavController,
+    appState: WineyAppState,
     viewModel: LoginViewModel
 ) {
     val context = LocalContext.current
-
-    val onLoginComplete = {
-        navController.navigate(HomeDestinations.ROUTE) {
-            popUpTo(AuthDestinations.SignUp.ROUTE) {
-                inclusive = true
-            }
-        }
-    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    navController.navigate(effect.destination, effect.navOptions)
+                    appState.navigate(effect.destination) {
+                        popUpTo(AuthDestinations.Login.ROUTE) {
+                            inclusive = true
+                        }
+                    }
                 }
 
                 is LoginContract.Effect.ShowSnackBar -> {
-                    // TODO : 스낵바에 에러 메시지 보여주기
+                    appState.showSnackbar(effect.message)
                 }
             }
         }
@@ -110,7 +107,7 @@ fun LoginScreen(
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     // onGoogleLogin()
-                    navController.navigate(AuthDestinations.SignUp.ROUTE)
+                    appState.navigate(AuthDestinations.SignUp.ROUTE)
                 }
             }
             Text(

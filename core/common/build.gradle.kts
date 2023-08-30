@@ -15,7 +15,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -35,9 +40,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design"))
+
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_UI)
+        implementation(NAVIGATION_COMPOSE)
+        implementation(COMPOSE_MATERIAL)
         implementation(COROUTINES_ANDROID)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
         implementation(CONVERTER_GSON)

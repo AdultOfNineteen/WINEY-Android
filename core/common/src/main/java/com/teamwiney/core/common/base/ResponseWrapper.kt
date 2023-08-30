@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
  * @property isSuccess
  * @property code
  * @property message
+ * @property result
  */
 open class ResponseWrapper<out T>(
     @SerializedName("isSuccess")

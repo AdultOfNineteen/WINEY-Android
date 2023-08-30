@@ -21,6 +21,8 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.TopLevelDestination
+import com.teamwiney.core.common.domain.common.rememberWineyAppState
 import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
@@ -93,7 +95,7 @@ fun WineyNavHost() {
                 startDestination = AuthDestinations.ROUTE
             ) {
                 authGraph(
-                    navController = navController,
+                    appState = appState,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,
                     setOnHideBottomSheet = { event ->

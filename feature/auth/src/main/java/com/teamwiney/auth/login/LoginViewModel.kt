@@ -13,6 +13,8 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -74,11 +76,10 @@ class LoginViewModel @Inject constructor(
 
     private fun socialLogin(socialType: SocialType, token: String) {
         viewModelScope.launch {
-            authRepository.kakaoLogin(token)
+            authRepository.socialLogin(socialType, token)
                 .onStart {
                     updateState(currentState.copy(isLoading = true))
-                }
-                .collect { result ->
+                }.collectLatest { result ->
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
