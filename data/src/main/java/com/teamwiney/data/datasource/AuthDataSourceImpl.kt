@@ -1,6 +1,7 @@
 package com.teamwiney.data.datasource
 
 import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.SocialType
@@ -22,4 +23,9 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.socialLogin(socialType, socialLoginRequest))
     }.flowOn(ioDispatcher)
 
+    override fun sendAuthCodeMessage(
+        phoneNumberRequest: PhoneNumberRequest
+    ) = flow {
+        emit(authService.sendAuthCodeMessage(userId = 0, phoneNumberRequest = phoneNumberRequest))
+    }.flowOn(ioDispatcher)
 }

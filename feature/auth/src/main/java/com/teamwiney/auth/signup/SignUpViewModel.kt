@@ -3,28 +3,29 @@ package com.teamwiney.auth.signup
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.PhoneNumberRequest
+import com.teamwiney.data.repository.AuthRepository
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-
+    private val authRepository: AuthRepository
 ) : BaseViewModel<SignUpContract.State, SignUpContract.Event, SignUpContract.Effect>(
     initialState = SignUpContract.State()
 ) {
 
-    // TODO : 이벤트의 범위를 어디까지 해야할지 모르겠다....
     override fun reduceState(event: SignUpContract.Event) {
         when (event) {
             is SignUpContract.Event.SendAuthenticationButtonClicked -> {
-                postEffect(
-                    SignUpContract.Effect.ShowBottomSheet(
-                        SignUpContract.BottomSheet.SendMessage
-                    )
-                )
+                sendAuthenticationNumber()
             }
+
             is SignUpContract.Event.BackToLoginButtonClicked -> {
                 postEffect(
                     SignUpContract.Effect.ShowBottomSheet(
@@ -32,6 +33,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 )
             }
+
             is SignUpContract.Event.CancelTasteSelectionButtonClicked -> {
                 postEffect(
                     SignUpContract.Effect.ShowBottomSheet(
@@ -39,6 +41,7 @@ class SignUpViewModel @Inject constructor(
                     )
                 )
             }
+
             is SignUpContract.Event.TasteSelectionLastItemClicked -> {
                 postEffect(
                     SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE)
@@ -46,6 +49,28 @@ class SignUpViewModel @Inject constructor(
             }
         }
     }
+
+    private fun sendAuthenticationNumber() = viewModelScope.launch {
+        authRepository.sendAuthCodeMessage(PhoneNumberRequest(currentState.phoneNumber)).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(
+                        SignUpContract.Effect.ShowBottomSheet(
+                            SignUpContract.BottomSheet.SendMessage
+                        )
+                    )
+                }
+
+                else -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                }
+            }
+        }
+    }
+
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
         updateState(currentState.copy(phoneNumber = phoneNumber))
