@@ -62,11 +62,12 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
-            .verticalScroll(rememberScrollState())
     ) {
         HomeLogo()
-        HomeRecommendWine()
-        HomeRecommendNewbie()
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+            HomeRecommendWine()
+            HomeRecommendNewbie()
+        }
     }
 }
 

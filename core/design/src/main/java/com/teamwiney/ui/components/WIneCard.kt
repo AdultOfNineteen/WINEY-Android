@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -121,9 +122,7 @@ fun WineCard(
     DimensionSubComposeLayout(
         mainContent = {
             Surface(
-                modifier = modifier
-                    .height(IntrinsicSize.Max)
-                    .fillMaxWidth(),
+                modifier = modifier,
                 shape = TicketShape(
                     circleRadius = 38.dp,
                     circleOffsetY = 10.dp,
@@ -133,6 +132,7 @@ fun WineCard(
                 border = BorderStroke(1.dp, cardConfig.borderColor)
             ) {
                 WineCardContent(
+                    modifier = modifier,
                     wineColor = cardConfig.wineColor,
                     borderColor = cardConfig.borderColor,
                     image = cardConfig.image,
@@ -145,9 +145,8 @@ fun WineCard(
         }
     ) { size: Size ->
         CardSurface(
-            modifier = Modifier.height(density.run { size.height.toDp() }),
-            circleRadius = 38.dp,
-            circleOffsetY = 10.dp,
+            modifier = modifier
+                .height(density.run { size.height.toDp() + 10.dp }),
             cardColor = cardConfig.cardColor,
             gradientCircleColor = cardConfig.gradientCircleColor,
             circleColor = cardConfig.circleColor
@@ -160,9 +159,11 @@ private fun WineCardCircle(
     gradientCircleColor: List<Color>,
     circleColor: Color
 ) {
-    Canvas(modifier = Modifier
-        .width(228.dp)
-        .height(271.dp)) {
+    Canvas(
+        modifier = Modifier
+            .width(228.dp)
+            .height(271.dp)
+    ) {
         drawCircle(
             brush = Brush.verticalGradient(gradientCircleColor),
             radius = 79.dp.toPx(),
@@ -182,17 +183,16 @@ private fun CardSurface(
     modifier: Modifier = Modifier,
     cardColor: Color,
     gradientCircleColor: List<Color>,
-    circleColor: Color,
-    circleRadius: Dp,
-    circleOffsetY: Dp
+    circleColor: Color
 ) {
-    Box {
+    Box(modifier = modifier) {
         Column {
             Box(
-                modifier = modifier
-                    .fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
                     .blur(30.dp)
-                    .offset(y = circleOffsetY)
+                    .offset(y = 10.dp)
                     .padding(horizontal = 10.dp)
                     .background(color = cardColor),
                 contentAlignment = Alignment.Center
@@ -206,49 +206,23 @@ private fun CardSurface(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = -circleRadius)
-                    .padding(horizontal = 18.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Canvas(modifier = Modifier.fillMaxWidth()) {
-                    val canvasWidth = size.width
-
-                    val arcWidth = (circleRadius * 2).toPx()
-                    val arcStartX = (canvasWidth - arcWidth) / 2
-                    val arcStartY = circleOffsetY.toPx()
-
-                    drawArc(
+                    .height(10.dp)
+                    .padding(horizontal = 18.dp)
+                    .background(
                         color = cardColor,
-                        startAngle = 180f,
-                        sweepAngle = 180f,
-                        useCenter = true,
-                        topLeft = Offset(arcStartX, arcStartY),
-                        size = Size(arcWidth, arcWidth)
+                        shape = RoundedCornerShape(
+                            topStart = 0.dp, topEnd = 0.dp,
+                            bottomStart = 10.dp, bottomEnd = 10.dp
+                        )
                     )
-
-                    drawPath(
-                        Path().apply {
-                            addRoundRect(
-                                RoundRect(
-                                    rect = Rect(
-                                        offset = Offset(0f, circleRadius.toPx()),
-                                        size = Size(canvasWidth, circleOffsetY.toPx()),
-                                    ),
-                                    bottomLeft = CornerRadius(10.dp.toPx(), 10.dp.toPx()),
-                                    bottomRight = CornerRadius(10.dp.toPx(), 10.dp.toPx())
-                                )
-                            )
-                        },
-                        color = cardColor
-                    )
-                }
-            }
+            )
         }
     }
 }
 
 @Composable
 private fun WineCardContent(
+    modifier: Modifier = Modifier,
     wineColor: String,
     borderColor: Color,
     @DrawableRes image: Int,
@@ -257,12 +231,7 @@ private fun WineCardContent(
     varieties: String,
     price: String
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .width(IntrinsicSize.Max)
-            .padding(start = 30.dp, end = 30.dp, top = 37.dp, bottom = 70.dp)
-    ) {
+    Column(modifier = modifier.padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 60.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -298,7 +267,9 @@ private fun WineCardContent(
             color = borderColor
         )
 
-        Row {
+        Row(
+            modifier = Modifier.height(IntrinsicSize.Min)
+        ) {
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center
@@ -329,7 +300,7 @@ private fun WineCardContent(
                     Text(
                         modifier = Modifier,
                         text = origin,
-                        style = WineyTheme.typography.bodyB1,
+                        style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
                     )
                     HeightSpacer(height = 5.dp)
@@ -353,8 +324,9 @@ private fun WineCardContent(
                     Text(
                         modifier = Modifier,
                         text = varieties,
-                        style = WineyTheme.typography.bodyB1,
-                        color = WineyTheme.colors.gray_50
+                        style = WineyTheme.typography.captionB1,
+                        color = WineyTheme.colors.gray_50,
+                        maxLines = 1
                     )
                     HeightSpacer(height = 5.dp)
                 }
@@ -377,7 +349,7 @@ private fun WineCardContent(
                     Text(
                         modifier = Modifier,
                         text = price,
-                        style = WineyTheme.typography.bodyB1,
+                        style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
                     )
                     HeightSpacer(height = 5.dp)
@@ -450,7 +422,7 @@ fun PreviewWineCard() {
             contentAlignment = Alignment.Center
         ) {
             WineCard(
-                cardConfig = CardConfig.White,
+                cardConfig = CardConfig.Red,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",
