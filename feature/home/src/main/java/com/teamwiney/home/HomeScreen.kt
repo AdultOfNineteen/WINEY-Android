@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,6 +46,7 @@ import androidx.compose.ui.util.lerp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.CardConfig
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
 import com.teamwiney.ui.theme.WineyTheme
 import kotlin.math.absoluteValue
@@ -81,7 +80,10 @@ fun HomeRecommendNewbie() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 30.dp),
+                .padding(
+                    start = 24.dp, end = 5.dp,
+                    top = 25.dp, bottom = 25.dp
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -118,27 +120,10 @@ fun HomeRecommendNewbie() {
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             (0..5).forEach { _ ->
-                Box(
-                    modifier = Modifier
-                        .width(itemWidth)
-                        .aspectRatio(1.1f)
-                        .padding(horizontal = 8.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_dummy_wine),
-                        contentDescription = "IMG_DUMMY_WINE",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    Text(
-                        text = "와인이 처음이여서\n뭘 먹어서 모르겠다면?",
-                        style = WineyTheme.typography.captionB1,
-                        color = Color.White,
-                        modifier = Modifier
-                            .padding(13.dp, 8.dp)
-                            .align(Alignment.BottomStart)
-                    )
-                }
+                TipCard(
+                    modifier = Modifier.width(itemWidth),
+                    title = "와인이 처음이여서 뭘 마셔야할지 모르겠다면?"
+                )
             }
             Spacer(modifier = Modifier.width(16.dp))
         }
@@ -215,7 +200,7 @@ private fun HomeRecommendWine() {
                             )
                         },
                     cardConfig = cardConfigList[page],
-                    name = "캄포 마리나 프리미티도 디 만두리아",
+                    name = if (page == 0) "으아아아앙아아아아아아아아아아아아아아아아아아앙아아ㅏ앙아아아아아아아아아아아아아아아아아아아악" else "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
                     varieties = "모스까델 데 알레한드리아",
                     price = "8.80"

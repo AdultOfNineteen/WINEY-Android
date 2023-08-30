@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -253,7 +254,9 @@ private fun WineCardContent(
 
         Text(
             modifier = Modifier.offset(y = (-10).dp),
-            text = name,
+            text = name + "\n",
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             style = WineyTheme.typography.bodyM2,
             color = WineyTheme.colors.gray_50
         )
