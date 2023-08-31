@@ -23,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.domain.common.WineyAppState
@@ -50,12 +48,14 @@ fun SignUpPhoneScreen(
     hideBottomSheet: () -> Unit = { },
     appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel(),
-    onHideBottomSheet: (() -> Unit) -> Unit = {}
+    onHideBottomSheet: (() -> Unit) -> Unit = {},
+    userId: String = ""
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     DisposableEffect(true) {
+        viewModel.updateUserId(userId)
         onHideBottomSheet {
             hideBottomSheet()
             appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
@@ -69,7 +69,7 @@ fun SignUpPhoneScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is SignUpContract.Effect.ShowSnackBar -> {
-                    // TODO : 스낵바에 에러 메시지 보여주기
+                    appState.showSnackbar(effect.message)
                 }
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
@@ -100,7 +100,6 @@ fun SignUpPhoneScreen(
                                     HeightSpacer(height = 40.dp)
                                 }
                             }
-
                         }
 
                         else -> {}

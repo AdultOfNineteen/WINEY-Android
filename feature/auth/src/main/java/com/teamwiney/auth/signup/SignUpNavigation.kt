@@ -6,7 +6,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.domain.common.WineyAppState
@@ -22,9 +24,17 @@ fun NavGraphBuilder.signUpGraph(
         route = AuthDestinations.SignUp.ROUTE,
         startDestination = AuthDestinations.SignUp.PHONE
     ) {
-        composable(route = AuthDestinations.SignUp.PHONE) {
+        composable(
+            route = "${AuthDestinations.SignUp.PHONE}/{userId}",
+            arguments = listOf(
+                navArgument("userId") {
+                    type = NavType.StringType
+                },
+            )
+        ) { entry ->
+            val userId = entry.arguments?.getString("userId") ?: ""
             val backStackEntry = rememberNavControllerBackEntry(
-                entry = it,
+                entry = entry,
                 navController = appState.navController,
                 graph = AuthDestinations.SignUp.ROUTE
             )
@@ -33,6 +43,7 @@ fun NavGraphBuilder.signUpGraph(
                 hideBottomSheet = hideBottomSheet,
                 onHideBottomSheet = setOnHideBottomSheet,
                 appState = appState,
+                userId= userId,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }

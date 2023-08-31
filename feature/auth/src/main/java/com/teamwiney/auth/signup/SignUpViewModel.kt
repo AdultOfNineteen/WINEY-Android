@@ -5,6 +5,7 @@ import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
+import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.repository.AuthRepository
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,11 +48,50 @@ class SignUpViewModel @Inject constructor(
                     SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE)
                 )
             }
+
+            SignUpContract.Event.VerifyCode -> {
+                verifyAuthenficationNumber()
+            }
+        }
+    }
+
+    private fun verifyAuthenficationNumber() = viewModelScope.launch {
+        authRepository.verifyAuthCodeMessage(
+            currentState.userId,
+            PhoneNumberWithVerificationCodeRequest(
+                phoneNumber = currentState.phoneNumber,
+                verificationCode = currentState.verifyNumber
+            )
+        ).collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(SignUpContract.Effect.ShowBottomSheet(SignUpContract.BottomSheet.SendMessage))
+                }
+
+                is ApiResult.ApiError -> {
+                    updateState(
+                        currentState.copy(
+                            verifyNumberErrorState = true,
+                            verifyNumberErrorText = "인증번호를 확인해 주세요."
+                        )
+                    )
+                    postEffect(SignUpContract.Effect.ShowSnackBar("인증번호를 확인해 주세요."))
+                }
+
+                else -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                }
+            }
         }
     }
 
     private fun sendAuthenticationNumber() = viewModelScope.launch {
-        authRepository.sendAuthCodeMessage(PhoneNumberRequest(currentState.phoneNumber)).onStart {
+        authRepository.sendAuthCodeMessage(
+            currentState.userId,
+            PhoneNumberRequest(
+                currentState.phoneNumber
+            )
+        ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
             updateState(currentState.copy(isLoading = false))
@@ -71,6 +111,13 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    fun updateUserId(userId: String) = viewModelScope.launch {
+        updateState(currentState.copy(userId = userId))
+    }
+
+    fun updateVerifyNumberErrorText(text: String) = viewModelScope.launch {
+        updateState(currentState.copy(verifyNumberErrorText = text))
+    }
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
         updateState(currentState.copy(phoneNumber = phoneNumber))

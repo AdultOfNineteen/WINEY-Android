@@ -57,12 +57,14 @@ fun SignUpAuthenticationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is SignUpContract.Effect.ShowSnackBar -> {
-                    // TODO : 스낵바에 에러 메시지 보여주기
+                    keyboardController?.hide()
+                    appState.showSnackbar(effect.message)
                 }
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
@@ -122,13 +124,23 @@ fun SignUpAuthenticationScreen(
                     }
                 }
 
+                is SignUpContract.Effect.VerifyCodeSuccess -> {
+                    keyboardController?.hide()
+                    appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                }
                 else -> {}
             }
         }
     }
 
     LaunchedEffect(uiState.verifyNumber) {
-        viewModel.updateVerifyNumberErrorState(!(uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty()))
+        if((uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty()) ){
+            viewModel.updateVerifyNumberErrorText("인증번호")
+            viewModel.updateVerifyNumberErrorState(false)
+        } else {
+            viewModel.updateVerifyNumberErrorText("인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요")
+            viewModel.updateVerifyNumberErrorState(true)
+        }
     }
 
     LaunchedEffect(uiState.isTimerRunning) {
@@ -138,7 +150,6 @@ fun SignUpAuthenticationScreen(
         }
         if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
     }
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -159,7 +170,7 @@ fun SignUpAuthenticationScreen(
             )
             HeightSpacer(height = 40.dp)
             Text(
-                text = if (uiState.verifyNumberErrorState) "인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요" else "인증번호",
+                text = uiState.verifyNumberErrorText,
                 color = if (uiState.verifyNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
                 style = WineyTheme.typography.bodyB2
             )
@@ -213,9 +224,7 @@ fun SignUpAuthenticationScreen(
             WButton(
                 text = "확인",
                 onClick = {
-                    // TODO : Add next button Event
-                    keyboardController?.hide()
-                    appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                    viewModel.processEvent(SignUpContract.Event.VerifyCode)
                 },
                 enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)

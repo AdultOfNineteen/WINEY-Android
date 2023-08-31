@@ -18,8 +18,10 @@ class SignUpContract {
         val phoneNumberErrorState: Boolean = false,
         val verifyNumber: String = "",
         val verifyNumberErrorState: Boolean = false,
+        val verifyNumberErrorText: String = "인증번호",
         val isTimerRunning: Boolean = true,
         val remainingTime: Int = VERIFY_NUMBER_TIMER,
+        val userId: String = "",
         val favoriteTastes: List<SignUpFavoriteCategoryiState> = mutableStateListOf(
             SignUpFavoriteCategoryiState(
                 title = "평소 초콜릿을 먹을 때 나는?",
@@ -75,6 +77,8 @@ class SignUpContract {
         object BackToLoginButtonClicked : Event()
         object CancelTasteSelectionButtonClicked : Event()
         object TasteSelectionLastItemClicked : Event()
+
+        object VerifyCode : Event()
     }
 
     sealed class Effect : UiEffect {
@@ -82,8 +86,10 @@ class SignUpContract {
             val destination: String,
             val navOptions: NavOptions? = null
         ) : Effect()
+
         data class ShowSnackBar(val message: String) : Effect()
 
+        object VerifyCodeSuccess : Effect()
         data class ShowBottomSheet(val bottomSheet: BottomSheet) : Effect()
     }
 

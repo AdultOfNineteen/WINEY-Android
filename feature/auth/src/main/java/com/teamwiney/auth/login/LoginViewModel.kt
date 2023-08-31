@@ -7,14 +7,13 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +41,8 @@ class LoginViewModel @Inject constructor(
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             viewModelScope.launch {
-                updateState(currentState.copy(error = "카카오톡으로 로그인 실패"))
-                postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                error.printStackTrace()
+                postEffect(LoginContract.Effect.ShowSnackBar("카카오톡으로 로그인 실패"))
             }
         } else if (token != null) {
             Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
@@ -55,10 +54,10 @@ class LoginViewModel @Inject constructor(
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
+                    error.printStackTrace()
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         viewModelScope.launch {
-                            updateState(currentState.copy(error = "카카오톡으로 로그인 실패"))
-                            postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                            postEffect(LoginContract.Effect.ShowSnackBar("카카오톡으로 로그인 실패"))
                         }
                         return@loginWithKakaoTalk
                     }
@@ -83,7 +82,11 @@ class LoginViewModel @Inject constructor(
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
-                            postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
+                            postEffect(
+                                LoginContract.Effect.NavigateTo(
+                                    "${AuthDestinations.SignUp.PHONE}/${result.data.result?.userId}"
+                                )
+                            )
                         }
 
                         is ApiResult.NetworkError -> {

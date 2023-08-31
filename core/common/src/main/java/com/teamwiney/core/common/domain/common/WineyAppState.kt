@@ -32,7 +32,7 @@ fun rememberWineyAppState(
 @Stable
 class WineyAppState(
     val navController: NavHostController,
-    private val scaffoldState: ScaffoldState,
+    val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
 ) {
     val currentDestination: NavDestination?

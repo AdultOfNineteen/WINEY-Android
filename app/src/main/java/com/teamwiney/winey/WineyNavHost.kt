@@ -9,6 +9,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -84,6 +87,21 @@ fun WineyNavHost() {
     ) {
         Scaffold(
             backgroundColor = WineyTheme.colors.background_1,
+            snackbarHost = {
+                SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
+                    snackbar = { data ->
+                        Snackbar(
+                            modifier = Modifier.padding(
+                                bottom = 50.dp,
+                                start = 20.dp,
+                                end = 20.dp
+                            )
+                        ) {
+                            Text(text = data.message)
+                        }
+                    }
+                )
+           },
             bottomBar = {
                 AnimatedVisibility(
                     appState.shouldShowBottomBar,

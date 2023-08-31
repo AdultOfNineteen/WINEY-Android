@@ -63,7 +63,7 @@ fun SignUpFavoriteTasteScreen(
                     appState.navigate(effect.destination, effect.navOptions)
                 }
                 is SignUpContract.Effect.ShowSnackBar -> {
-                    // TODO : 스낵바에 에러 메시지 보여주기
+                    appState.showSnackbar(effect.message)
                 }
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
@@ -93,6 +93,8 @@ fun SignUpFavoriteTasteScreen(
                         else -> {}
                     }
                 }
+
+                else -> {}
             }
         }
     }
