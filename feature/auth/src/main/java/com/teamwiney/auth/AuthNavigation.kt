@@ -38,7 +38,7 @@ fun NavGraphBuilder.authGraph(
         )
 
         signUpGraph(
-            navController = appState.navController,
+            appState = navController,
             showBottomSheet = showBottomSheet,
             hideBottomSheet = hideBottomSheet,
             setOnHideBottomSheet = setOnHideBottomSheet

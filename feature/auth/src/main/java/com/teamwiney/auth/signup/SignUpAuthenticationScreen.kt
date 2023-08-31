@@ -30,6 +30,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
+import com.teamwiney.core.common.domain.common.rememberWineyAppState
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
@@ -50,7 +52,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpAuthenticationScreen(
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
-    navController: NavController = rememberNavController(),
+    appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -103,7 +105,7 @@ fun SignUpAuthenticationScreen(
                                     BottomSheetSelectionButton(
                                         onConfirm = {
                                             hideBottomSheet()
-                                            navController.navigate(AuthDestinations.Login.ROUTE) {
+                                            appState.navigate(AuthDestinations.Login.ROUTE) {
                                                 popUpTo(AuthDestinations.SignUp.ROUTE) {
                                                     inclusive = true
                                                 }
@@ -182,7 +184,7 @@ fun SignUpAuthenticationScreen(
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
                     if (uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH) {
-                        navController.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                        appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
                     }
                 }),
                 onErrorState = uiState.verifyNumberErrorState
@@ -213,7 +215,7 @@ fun SignUpAuthenticationScreen(
                 onClick = {
                     // TODO : Add next button Event
                     keyboardController?.hide()
-                    navController.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                    appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
                 },
                 enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)

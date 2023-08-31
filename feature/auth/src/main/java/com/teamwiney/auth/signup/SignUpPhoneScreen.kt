@@ -27,6 +27,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
+import com.teamwiney.core.common.domain.common.rememberWineyAppState
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PhoneNumberVisualTransformation
 import com.teamwiney.ui.components.WButton
@@ -46,7 +48,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpPhoneScreen(
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
-    navController: NavController = rememberNavController(),
+    appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel(),
     onHideBottomSheet: (() -> Unit) -> Unit = {}
 ) {
@@ -56,7 +58,7 @@ fun SignUpPhoneScreen(
     DisposableEffect(true) {
         onHideBottomSheet {
             hideBottomSheet()
-            navController.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+            appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
         }
         onDispose {
             onHideBottomSheet { }
@@ -92,7 +94,7 @@ fun SignUpPhoneScreen(
                                         text = "확인",
                                         onClick = {
                                             hideBottomSheet()
-                                            navController.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                            appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
                                         }
                                     )
                                     HeightSpacer(height = 40.dp)
@@ -127,7 +129,7 @@ fun SignUpPhoneScreen(
             .imePadding()
     ) {
         SignUpTopBar {
-            navController.navigateUp()
+            appState.navController.navigateUp()
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(

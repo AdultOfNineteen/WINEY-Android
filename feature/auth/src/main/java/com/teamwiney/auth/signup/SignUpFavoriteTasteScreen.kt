@@ -25,6 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
+import com.teamwiney.core.common.domain.common.rememberWineyAppState
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.signup.BottomSheetSelectionButton
 import com.teamwiney.ui.signup.SheetContent
@@ -45,7 +47,7 @@ import kotlinx.coroutines.launch
 fun SignUpFavoriteTasteScreen(
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
-    navController: NavController = rememberNavController(),
+    appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -58,7 +60,7 @@ fun SignUpFavoriteTasteScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateTo -> {
-                    navController.navigate(effect.destination, effect.navOptions)
+                    appState.navigate(effect.destination, effect.navOptions)
                 }
                 is SignUpContract.Effect.ShowSnackBar -> {
                     // TODO : 스낵바에 에러 메시지 보여주기
@@ -78,7 +80,7 @@ fun SignUpFavoriteTasteScreen(
                                     BottomSheetSelectionButton(
                                         onConfirm = {
                                             hideBottomSheet()
-                                            navController.navigate(AuthDestinations.Login.ROUTE) {
+                                            appState.navigate(AuthDestinations.Login.ROUTE) {
                                                 popUpTo(AuthDestinations.SignUp.ROUTE) { inclusive = true }
                                             }
                                         },

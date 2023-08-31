@@ -9,10 +9,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.teamwiney.core.common.AuthDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
 import com.teamwiney.ui.signup.SheetContent
 
 fun NavGraphBuilder.signUpGraph(
-    navController: NavController,
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     setOnHideBottomSheet: (() -> Unit) -> Unit
@@ -24,14 +25,14 @@ fun NavGraphBuilder.signUpGraph(
         composable(route = AuthDestinations.SignUp.PHONE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.SignUp.ROUTE
             )
             SignUpPhoneScreen(
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
                 onHideBottomSheet = setOnHideBottomSheet,
-                navController = navController,
+                appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -39,13 +40,13 @@ fun NavGraphBuilder.signUpGraph(
         composable(route = AuthDestinations.SignUp.AUTHENTICATION) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.SignUp.ROUTE
             )
             SignUpAuthenticationScreen(
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
-                navController = navController,
+                appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -53,13 +54,13 @@ fun NavGraphBuilder.signUpGraph(
         composable(route = AuthDestinations.SignUp.FAVORITE_TASTE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.SignUp.ROUTE
             )
             SignUpFavoriteTasteScreen(
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
-                navController = navController,
+                appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
@@ -67,11 +68,11 @@ fun NavGraphBuilder.signUpGraph(
         composable(route = AuthDestinations.SignUp.COMPLETE) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = AuthDestinations.SignUp.ROUTE
             )
             SignUpCompleteScreen(
-                navController = navController,
+                appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }

@@ -17,6 +17,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.HomeDestinations
+import com.teamwiney.core.common.domain.common.WineyAppState
+import com.teamwiney.core.common.domain.common.rememberWineyAppState
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.signup.SignUpTopBar
@@ -29,12 +31,12 @@ import com.teamwiney.ui.theme.WineyTheme
 )
 @Composable
 fun SignUpCompleteScreen(
-    navController: NavController = rememberNavController(),
+    appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     val onSignUpComplete = {
-        navController.navigate(HomeDestinations.ROUTE) {
+        appState.navigate(HomeDestinations.ROUTE) {
             popUpTo(AuthDestinations.SignUp.ROUTE) {
                 inclusive = true
             }
@@ -49,7 +51,7 @@ fun SignUpCompleteScreen(
             .imePadding()
     ) {
         SignUpTopBar {
-            navController.navigateUp()
+            appState.navController.navigateUp()
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
