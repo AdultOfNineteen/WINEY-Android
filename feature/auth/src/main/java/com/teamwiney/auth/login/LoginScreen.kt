@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,9 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.HomeDestinations
 import com.teamwiney.core.common.domain.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
@@ -71,6 +70,7 @@ fun LoginScreen(
         LoginTitle()
         Column(
             modifier = Modifier
+                .statusBarsPadding()
                 .navigationBarsPadding()
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()

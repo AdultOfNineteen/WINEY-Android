@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.HomeDestinations
-import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -48,7 +47,7 @@ fun SignUpCompleteScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        SignUpTopBar {
+        SignUpTopBar(modifier = Modifier.statusBarsPadding()) {
             navController.navigateUp()
         }
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
@@ -64,7 +63,6 @@ fun SignUpCompleteScreen(
                 onClick = onSignUpComplete,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            HeightSpacer(height = 40.dp)
         }
     }
 }

@@ -85,7 +85,7 @@ fun SignUpAuthenticationScreen(
                                         text = "확인",
                                         onClick = { hideBottomSheet() }
                                     )
-                                    HeightSpacer(height = 40.dp)
+                                    HeightSpacer(height = 20.dp)
                                 }
                             }
                         }
@@ -111,7 +111,7 @@ fun SignUpAuthenticationScreen(
                                         },
                                         onCancel = { hideBottomSheet() }
                                     )
-                                    HeightSpacer(height = 40.dp)
+                                    HeightSpacer(height = 20.dp)
                                 }
                             }
                         }

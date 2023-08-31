@@ -40,7 +40,7 @@ fun SignUpBottomSheet(
         modifier = modifier
             .fillMaxWidth()
             .background(containerColor)
-            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 40.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(

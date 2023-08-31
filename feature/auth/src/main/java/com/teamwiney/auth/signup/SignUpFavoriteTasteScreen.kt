@@ -84,7 +84,7 @@ fun SignUpFavoriteTasteScreen(
                                         },
                                         onCancel = { hideBottomSheet() }
                                     )
-                                    HeightSpacer(height = 40.dp)
+                                    HeightSpacer(height = 20.dp)
                                 }
                             }
                         }
