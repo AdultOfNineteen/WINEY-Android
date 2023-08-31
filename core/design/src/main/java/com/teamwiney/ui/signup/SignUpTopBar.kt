@@ -17,10 +17,11 @@ import com.teamwiney.core.design.R
 
 @Composable
 fun SignUpTopBar(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp)
             .height(68.dp)

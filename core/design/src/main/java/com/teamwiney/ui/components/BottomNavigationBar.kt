@@ -46,7 +46,7 @@ fun BottomNavigationBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 47.dp),
+                    .padding(horizontal = 45.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -55,6 +55,7 @@ fun BottomNavigationBar(
         }
     }
 }
+
 
 @Composable
 fun BottomNavigationItem(

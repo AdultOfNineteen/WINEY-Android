@@ -66,7 +66,6 @@ fun SignUpCompleteScreen(
                 onClick = onSignUpComplete,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
-            HeightSpacer(height = 40.dp)
         }
     }
 }

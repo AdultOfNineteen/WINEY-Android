@@ -10,17 +10,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -28,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -40,7 +44,6 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -112,46 +115,46 @@ enum class CardConfig(
 @Composable
 fun WineCard(
     modifier: Modifier = Modifier,
+    onShowDetail: (Long) -> Unit,
     cardConfig: CardConfig,
     name: String,
     origin: String,
     varieties: String,
     price: String
 ) {
-    val density = LocalDensity.current
-
-    DimensionSubComposeLayout(
-        mainContent = {
-            Surface(
-                modifier = modifier,
-                shape = TicketShape(
-                    circleRadius = 38.dp,
-                    circleOffsetY = 10.dp,
-                    cornerSize = CornerSize(5.dp)
-                ),
-                color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
-                border = BorderStroke(1.dp, cardConfig.borderColor)
-            ) {
-                WineCardContent(
-                    modifier = modifier,
-                    wineColor = cardConfig.wineColor,
-                    borderColor = cardConfig.borderColor,
-                    image = cardConfig.image,
-                    name = name,
-                    origin = origin,
-                    varieties = varieties,
-                    price = price
-                )
-            }
-        }
-    ) { size: Size ->
+    Box(
+        modifier = Modifier.size(width = 282.dp, height = 392.dp),
+        contentAlignment = Alignment.TopCenter
+    ) {
         CardSurface(
-            modifier = modifier
-                .height(density.run { size.height.toDp() + 10.dp }),
+            modifier = modifier.fillMaxSize(),
             cardColor = cardConfig.cardColor,
             gradientCircleColor = cardConfig.gradientCircleColor,
             circleColor = cardConfig.circleColor
         )
+
+        Surface(
+            modifier = modifier,
+            shape = TicketShape(
+                circleRadius = 38.dp,
+                circleOffsetY = 10.dp,
+                cornerSize = CornerSize(5.dp)
+            ),
+            color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
+            border = BorderStroke(1.dp, cardConfig.borderColor)
+        ) {
+            WineCardContent(
+                modifier = modifier,
+                onShowDetail = onShowDetail,
+                wineColor = cardConfig.wineColor,
+                borderColor = cardConfig.borderColor,
+                image = cardConfig.image,
+                name = name,
+                origin = origin,
+                varieties = varieties,
+                price = price
+            )
+        }
     }
 }
 
@@ -195,7 +198,10 @@ private fun CardSurface(
                     .blur(30.dp)
                     .offset(y = 10.dp)
                     .padding(horizontal = 10.dp)
-                    .background(color = cardColor),
+                    .background(
+                        color = cardColor,
+                        shape = RoundedCornerShape(5.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 WineCardCircle(
@@ -224,6 +230,7 @@ private fun CardSurface(
 @Composable
 private fun WineCardContent(
     modifier: Modifier = Modifier,
+    onShowDetail: (Long) -> Unit,
     wineColor: String,
     borderColor: Color,
     @DrawableRes image: Int,
@@ -232,28 +239,50 @@ private fun WineCardContent(
     varieties: String,
     price: String
 ) {
-    Column(modifier = modifier.padding(start = 30.dp, end = 30.dp, top = 30.dp, bottom = 60.dp)) {
+    Column(
+        modifier = modifier
+            .size(width = 282.dp, height = 382.dp)
+            .padding(start = 30.dp, end = 30.dp, top = 26.dp, bottom = 60.dp)
+    ) {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = wineColor,
-                style = WineyTheme.typography.display1,
-                color = WineyTheme.colors.gray_50
-            )
-            Icon(
-                modifier = Modifier.offset(y = (-5).dp),
-                painter = painterResource(id = R.drawable.ic_thismooth),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier.height(68.dp),
+                    text = wineColor,
+                    style = WineyTheme.typography.display1,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_thismooth),
+                    contentDescription = null,
+                    tint = Color.Unspecified
+                )
+            }
+
+            IconButton(
+                onClick = { onShowDetail },
+                modifier = Modifier
+                    .size(48.dp)
+                    .offset(x = 14.dp)
+                    .rotate(180f)
+                    .align(Alignment.CenterVertically),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back_arrow_48),
+                    contentDescription = "IC_ARROW_RIGHT",
+                    tint = Color.White
+                )
+            }
         }
 
-        HeightSpacer(height = 4.dp)
-
         Text(
-            modifier = Modifier.offset(y = (-10).dp),
             text = name + "\n",
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -293,7 +322,7 @@ private fun WineCardContent(
             )
 
             Column {
-                Column(modifier = Modifier.padding(12.dp)) {
+                Column(modifier = Modifier.padding(10.dp)) {
                     Text(
                         text = "national anthems",
                         style = WineyTheme.typography.captionM3,
@@ -306,7 +335,6 @@ private fun WineCardContent(
                         style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
                     )
-                    HeightSpacer(height = 5.dp)
                 }
 
                 HorizontalDivider(
@@ -317,7 +345,7 @@ private fun WineCardContent(
                     color = borderColor
                 )
 
-                Column(modifier = Modifier.padding(12.dp)) {
+                Column(modifier = Modifier.padding(10.dp)) {
                     Text(
                         text = "Varieties",
                         style = WineyTheme.typography.captionM3,
@@ -331,7 +359,6 @@ private fun WineCardContent(
                         color = WineyTheme.colors.gray_50,
                         maxLines = 1
                     )
-                    HeightSpacer(height = 5.dp)
                 }
 
                 HorizontalDivider(
@@ -342,7 +369,7 @@ private fun WineCardContent(
                     color = borderColor
                 )
 
-                Column(modifier = Modifier.padding(12.dp)) {
+                Column(modifier = Modifier.padding(10.dp)) {
                     Text(
                         text = "Purchase Price",
                         style = WineyTheme.typography.captionM3,
@@ -355,7 +382,6 @@ private fun WineCardContent(
                         style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
                     )
-                    HeightSpacer(height = 5.dp)
                 }
             }
         }
@@ -425,6 +451,7 @@ fun PreviewWineCard() {
             contentAlignment = Alignment.Center
         ) {
             WineCard(
+                onShowDetail = { },
                 cardConfig = CardConfig.Red,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",

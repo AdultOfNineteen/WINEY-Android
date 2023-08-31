@@ -97,7 +97,7 @@ fun SignUpPhoneScreen(
                                             appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
                                         }
                                     )
-                                    HeightSpacer(height = 40.dp)
+                                    HeightSpacer(height = 20.dp)
                                 }
                             }
                         }
