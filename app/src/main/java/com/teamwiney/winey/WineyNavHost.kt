@@ -21,9 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.domain.common.TopLevelDestination
@@ -93,15 +91,7 @@ fun WineyNavHost() {
                     WineyBottomNavigationBar(
                         destinations = appState.topLevelDestination,
                         currentDestination = appState.currentDestination,
-                        onNavigateToDestination = {
-                            appState.navigate(it.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
+                        onNavigateToDestination = appState::navigateToTopLevelDestination
                     )
                 }
             }
