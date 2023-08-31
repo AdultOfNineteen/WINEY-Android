@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -82,7 +83,7 @@ fun HomeRecommendNewbie() {
                 .fillMaxWidth()
                 .padding(
                     start = 24.dp, end = 5.dp,
-                    top = 25.dp, bottom = 25.dp
+                    top = 14.dp, bottom = 14.dp
                 ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -175,10 +176,16 @@ private fun HomeRecommendWine() {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
+            val configuration = LocalConfiguration.current
+            val pageSize = PageSize.Fixed(pageSize = 282.dp)
+            val horizontalContentPadding = (configuration.screenWidthDp.dp - 282.dp) / 2
+
             HorizontalPager(
+                modifier = Modifier.fillMaxSize(),
                 state = pagerState,
                 beyondBoundsPageCount = 2,
-                contentPadding = PaddingValues(horizontal = 24.dp),
+                pageSize = pageSize,
+                contentPadding = PaddingValues(horizontal = horizontalContentPadding),
                 pageSpacing = 16.dp
             ) { page ->
                 WineCard(
@@ -199,6 +206,7 @@ private fun HomeRecommendWine() {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         },
+                    onShowDetail = { },
                     cardConfig = cardConfigList[page],
                     name = if (page == 0) "으아아아앙아아아아아아아아아아아아아아아아아아앙아아ㅏ앙아아아아아아아아아아아아아아아아아아아악" else "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
@@ -210,7 +218,6 @@ private fun HomeRecommendWine() {
     }
 }
 
-@Preview
 @Composable
 private fun HomeLogo() {
     Row(
@@ -236,7 +243,6 @@ private fun HomeLogo() {
     }
 }
 
-@Preview
 @Composable
 private fun AnalysisButton(
     modifier: Modifier = Modifier,
