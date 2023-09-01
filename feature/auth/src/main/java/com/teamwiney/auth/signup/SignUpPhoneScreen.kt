@@ -145,7 +145,11 @@ fun SignUpPhoneScreen(
             HeightSpacer(10.dp)
             WTextField(
                 value = uiState.phoneNumber,
-                onValueChanged = { viewModel.updatePhoneNumber(it) },
+                onValueChanged = {
+                    viewModel.updatePhoneNumber(it.filter { symbol ->
+                        symbol.isDigit()
+                    })
+                },
                 placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
                 maxLength = PHONE_NUMBER_LENGTH,
                 visualTransformation = PhoneNumberVisualTransformation(),
