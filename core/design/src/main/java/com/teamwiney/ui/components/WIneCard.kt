@@ -330,8 +330,9 @@ private fun WineCardContent(
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
-                        modifier = Modifier,
                         text = origin,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
                     )
@@ -353,11 +354,11 @@ private fun WineCardContent(
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
-                        modifier = Modifier,
                         text = varieties,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50,
-                        maxLines = 1
                     )
                 }
 
@@ -377,7 +378,8 @@ private fun WineCardContent(
                     )
                     HeightSpacer(height = 5.dp)
                     Text(
-                        modifier = Modifier,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         text = price,
                         style = WineyTheme.typography.captionB1,
                         color = WineyTheme.colors.gray_50
