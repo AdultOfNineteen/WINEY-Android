@@ -31,22 +31,32 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.CardConfig
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
 import com.teamwiney.ui.theme.WineyTheme
@@ -58,13 +68,21 @@ import kotlin.math.absoluteValue
 )
 @Composable
 fun HomeScreen() {
+    val scrollState = rememberScrollState()
+
+    // TODO : SharedPreferences나 DataStore로 관리 예정 (Application 전역변수로 관리할려면 모듈 의존성이 깨짐 오엠쥐)
+    var hintPopupOpen by remember { mutableStateOf(true) }
+    LaunchedEffect(scrollState.isScrollInProgress) {
+        if (scrollState.isScrollInProgress) { hintPopupOpen = false }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
     ) {
-        HomeLogo()
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        HomeLogo(hintPopupOpen = hintPopupOpen)
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
             HomeRecommendWine()
             HomeRecommendNewbie()
         }
@@ -219,7 +237,9 @@ private fun HomeRecommendWine() {
 }
 
 @Composable
-private fun HomeLogo() {
+private fun HomeLogo(
+    hintPopupOpen: Boolean
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -239,13 +259,30 @@ private fun HomeLogo() {
             )
         )
 
-        AnalysisButton { }
+        Box {
+            var buttonHeight by remember { mutableIntStateOf(0) }
+            val density = LocalDensity.current
+
+            AnalysisButton(
+                modifier = Modifier.onGloballyPositioned { coordinates ->
+                    buttonHeight = density.run { coordinates.size.height / 2 + 12.dp.roundToPx() }
+                },
+                onClick = { }
+            )
+            if (hintPopupOpen) {
+                HintPopUp(
+                    offset = IntOffset(0, buttonHeight)
+                )
+            }
+        }
     }
 }
 
+@Preview
 @Composable
 private fun AnalysisButton(
     modifier: Modifier = Modifier,
+    borderColor: Color = WineyTheme.colors.main_3,
     onClick: () -> Unit = {}
 ) {
     Button(
@@ -264,8 +301,7 @@ private fun AnalysisButton(
             top = 7.dp,
             bottom = 7.dp
         ),
-        shape = RoundedCornerShape(25.dp),
-        elevation = ButtonDefaults.buttonElevation(7.dp)
+        shape = RoundedCornerShape(25.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
