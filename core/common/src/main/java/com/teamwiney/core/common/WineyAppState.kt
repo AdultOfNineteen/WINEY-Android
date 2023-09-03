@@ -1,5 +1,6 @@
-package com.teamwiney.core.common.domain.common
+package com.teamwiney.core.common
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.navigation.Navigator
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.teamwiney.core.common.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,12 +29,14 @@ fun rememberWineyAppState(
     return remember(Unit) { WineyAppState(navController, scaffoldState, scope) }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Stable
-class WineyAppState(
+class WineyAppState  constructor(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
 ) {
+
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination

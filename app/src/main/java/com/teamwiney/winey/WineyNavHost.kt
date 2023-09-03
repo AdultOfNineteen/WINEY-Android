@@ -26,15 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
-import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.domain.common.TopLevelDestination
-import com.teamwiney.core.common.domain.common.rememberWineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.TopLevelDestination
+import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.notecollection.noteGraph
 import com.teamwiney.ui.components.BottomNavigationBar
-import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 

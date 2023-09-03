@@ -28,12 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.HomeDestinations
-import com.teamwiney.core.common.domain.common.WineyAppState
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
-import com.teamwiney.ui.signup.SheetContent
 import com.teamwiney.ui.splash.SocialLoginButton
 import com.teamwiney.ui.splash.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme

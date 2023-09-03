@@ -13,13 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.HomeDestinations
-import com.teamwiney.core.common.domain.common.WineyAppState
-import com.teamwiney.core.common.domain.common.rememberWineyAppState
-import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme

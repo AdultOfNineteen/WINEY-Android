@@ -1,8 +1,8 @@
 package com.teamwiney.auth.signup
 
 import androidx.lifecycle.viewModelScope
-import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -49,13 +49,13 @@ class SignUpViewModel @Inject constructor(
                 )
             }
 
-            SignUpContract.Event.VerifyCode -> {
-                verifyAuthenficationNumber()
+            is SignUpContract.Event.VerifyCode -> {
+                verifyAuthenticationNumber()
             }
         }
     }
 
-    private fun verifyAuthenficationNumber() = viewModelScope.launch {
+    private fun verifyAuthenticationNumber() = viewModelScope.launch {
         authRepository.verifyAuthCodeMessage(
             currentState.userId,
             PhoneNumberWithVerificationCodeRequest(

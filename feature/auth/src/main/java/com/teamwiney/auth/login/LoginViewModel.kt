@@ -7,8 +7,8 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.teamwiney.core.common.AuthDestinations
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.AuthRepository

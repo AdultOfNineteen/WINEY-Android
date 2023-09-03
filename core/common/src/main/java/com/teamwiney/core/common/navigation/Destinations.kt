@@ -1,4 +1,4 @@
-package com.teamwiney.core.common
+package com.teamwiney.core.common.navigation
 
 object AuthDestinations {
     const val ROUTE = "authRoute"

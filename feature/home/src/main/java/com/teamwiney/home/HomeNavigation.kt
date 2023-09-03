@@ -7,8 +7,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.teamwiney.core.common.HomeDestinations
-import com.teamwiney.ui.signup.SheetContent
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.`typealias`.SheetContent
 
 // TODO 메인 그래프라고 생각하고 만들었는데 Mypage, Note 모듈이 따로
 //  있어서 이걸 어떻게 처리할까유

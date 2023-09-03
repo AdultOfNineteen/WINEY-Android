@@ -1,15 +1,14 @@
 package com.teamwiney.auth
 
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.teamwiney.auth.login.loginGraph
 import com.teamwiney.auth.signup.signUpGraph
 import com.teamwiney.auth.splash.SplashScreen
-import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.domain.common.WineyAppState
-import com.teamwiney.ui.signup.SheetContent
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.authGraph(
     appState: WineyAppState,

@@ -1,10 +1,6 @@
-package com.teamwiney.core.common.domain.common
+package com.teamwiney.core.common.navigation
 
 import androidx.annotation.DrawableRes
-import com.teamwiney.core.common.HomeDestinations
-import com.teamwiney.core.common.MapDestinations
-import com.teamwiney.core.common.MyPageDestinations
-import com.teamwiney.core.common.NoteDestinations
 import com.teamwiney.core.design.R
 
 

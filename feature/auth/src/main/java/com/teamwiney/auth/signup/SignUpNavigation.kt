@@ -10,9 +10,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.teamwiney.core.common.AuthDestinations
-import com.teamwiney.core.common.domain.common.WineyAppState
-import com.teamwiney.ui.signup.SheetContent
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.signUpGraph(
     appState: WineyAppState,
@@ -22,7 +22,7 @@ fun NavGraphBuilder.signUpGraph(
 ) {
     navigation(
         route = AuthDestinations.SignUp.ROUTE,
-        startDestination = AuthDestinations.SignUp.PHONE
+        startDestination = "${AuthDestinations.SignUp.PHONE}/1"
     ) {
         composable(
             route = "${AuthDestinations.SignUp.PHONE}/{userId}",
