@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -242,7 +240,7 @@ private fun WineCardContent(
     Column(
         modifier = modifier
             .size(width = 282.dp, height = 382.dp)
-            .padding(start = 30.dp, end = 30.dp, top = 26.dp, bottom = 60.dp)
+            .padding(start = 26.dp, end = 26.dp, top = 27.dp, bottom = 50.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -257,8 +255,6 @@ private fun WineCardContent(
                     color = WineyTheme.colors.gray_50
                 )
 
-                Spacer(modifier = Modifier.width(10.dp))
-
                 Icon(
                     painter = painterResource(id = R.drawable.ic_thismooth),
                     contentDescription = null,
@@ -269,13 +265,12 @@ private fun WineCardContent(
             IconButton(
                 onClick = { onShowDetail },
                 modifier = Modifier
-                    .size(48.dp)
-                    .offset(x = 14.dp)
-                    .rotate(180f)
+                    .size(24.dp)
+                    .offset(x = 5.dp)
                     .align(Alignment.CenterVertically),
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_back_arrow_48),
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
                     contentDescription = "IC_ARROW_RIGHT",
                     tint = Color.White
                 )
@@ -307,7 +302,7 @@ private fun WineCardContent(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    modifier = Modifier.padding(start = 5.dp, end = 11.dp),
+                    modifier = Modifier.padding(end = 11.dp),
                     painter = painterResource(id = image),
                     contentDescription = null
                 )
@@ -454,7 +449,7 @@ fun PreviewWineCard() {
         ) {
             WineCard(
                 onShowDetail = { },
-                cardConfig = CardConfig.Red,
+                cardConfig = CardConfig.Sparkl,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",
