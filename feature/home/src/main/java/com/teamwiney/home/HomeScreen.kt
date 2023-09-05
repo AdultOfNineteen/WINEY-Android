@@ -59,6 +59,7 @@ import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
+import com.teamwiney.ui.components.drawColoredShadow
 import com.teamwiney.ui.theme.WineyTheme
 import kotlin.math.absoluteValue
 
@@ -287,9 +288,13 @@ private fun AnalysisButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier
+            .drawColoredShadow(
+                color = WineyTheme.colors.main_3,
+                cornerRadius = 25.dp
+            ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
+            containerColor = WineyTheme.colors.background_1
         ),
         border = BorderStroke(
             width = 1.dp,
