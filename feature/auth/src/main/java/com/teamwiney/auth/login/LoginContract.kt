@@ -26,6 +26,7 @@ class LoginContract {
             val navOptions: NavOptions? = null
         ) : Effect()
         data class ShowSnackBar(val message: String) : Effect()
+        object LaunchGoogleLogin : Effect()
     }
 
 }

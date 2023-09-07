@@ -1,6 +1,7 @@
 package com.teamwiney.data.datasource
 
 import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
@@ -15,6 +16,12 @@ class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
     @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthDataSource {
+
+    override fun getGoogleAccessToken(
+        googleAccessTokenRequest: GoogleAccessTokenRequest
+    ) = flow {
+        emit(authService.getGoogleAccessToken(googleAccessTokenRequest = googleAccessTokenRequest))
+    }.flowOn(ioDispatcher)
 
     override fun socialLogin(
         socialType: SocialType,

@@ -1,5 +1,7 @@
 package com.teamwiney.auth.login
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.common.api.ApiException
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
@@ -49,6 +52,24 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
+    val googleLoginResultLauncher =
+        rememberLauncherForActivityResult(contract = GoogleLoginContract()) { task ->
+            try {
+                val gsa = task?.getResult(ApiException::class.java)
+                if (gsa != null) {
+                    Log.d("code", gsa.serverAuthCode.toString())
+                    Log.d("idToken", gsa.idToken.toString())
+
+                    viewModel.googleLogin(
+                        code = gsa.serverAuthCode.toString(),
+                        idToken = gsa.idToken.toString()
+                    )
+                }
+            } catch (e: ApiException) {
+                Log.d("googleLoginError", e.toString())
+            }
+        }
+
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
@@ -62,6 +83,10 @@ fun LoginScreen(
 
                 is LoginContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
+                }
+
+                is LoginContract.Effect.LaunchGoogleLogin -> {
+                    googleLoginResultLauncher.launch(GOOGLE_LOGIN_REQUEST)
                 }
             }
         }
@@ -107,8 +132,8 @@ fun LoginScreen(
                     viewModel.processEvent(LoginContract.Event.KakaoLoginButtonClicked(context))
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
-                    // onGoogleLogin()
-                    appState.navigate(AuthDestinations.SignUp.ROUTE)
+                    viewModel.processEvent(LoginContract.Event.GoogleLoginButtonClicked)
+                    // appState.navigate(AuthDestinations.SignUp.ROUTE)
                 }
                 // 홈화면 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_lock) {

@@ -12,6 +12,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.AuthRepository
+import com.teamwiney.feature.auth.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
@@ -32,7 +33,7 @@ class LoginViewModel @Inject constructor(
                 }
 
                 is LoginContract.Event.GoogleLoginButtonClicked -> {
-
+                    postEffect(LoginContract.Effect.LaunchGoogleLogin)
                 }
             }
         }
@@ -47,6 +48,41 @@ class LoginViewModel @Inject constructor(
         } else if (token != null) {
             Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
             socialLogin(SocialType.KAKAO, token.accessToken)
+        }
+    }
+
+    fun googleLogin(
+        clientId: String = BuildConfig.GOOGLE_OAUTH_CLIENT_ID,
+        clientSecret: String = BuildConfig.GOOGLE_OAUTH_CLIENT_SECRET,
+        code: String,
+        idToken: String
+    ) {
+        viewModelScope.launch {
+            authRepository.getGoogleAccessToken(
+                clientId = clientId,
+                clientSecret = clientSecret,
+                code = code,
+                idToken = idToken
+            ).onStart {
+                updateState(currentState.copy(isLoading = true))
+            }.collectLatest { result ->
+                updateState(currentState.copy(isLoading = false))
+                when (result) {
+                    is ApiResult.Success -> {
+                        socialLogin(SocialType.GOOGLE, result.data.accessToken)
+                    }
+
+                    is ApiResult.NetworkError -> {
+                        updateState(currentState.copy(error = "네트워크 에러"))
+                        postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                    }
+
+                    is ApiResult.ApiError -> {
+                        updateState(currentState.copy(error = result.message))
+                        postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                    }
+                }
+            }
         }
     }
 

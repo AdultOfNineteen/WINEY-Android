@@ -1,6 +1,7 @@
 package com.teamwiney.data.repository
 
 import com.teamwiney.data.datasource.AuthDataSource
+import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
@@ -10,6 +11,22 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource
 ) : AuthRepository {
+
+    override fun getGoogleAccessToken(
+        clientId: String,
+        clientSecret: String,
+        code: String,
+        idToken: String
+    ) = authDataSource.getGoogleAccessToken(
+        GoogleAccessTokenRequest(
+            grantType = "authorization_code",
+            clientId = clientId,
+            clientSecret = clientSecret,
+            redirectUri = "",
+            code = code,
+            idToken = idToken
+        )
+    )
 
     override fun socialLogin(
         socialType: SocialType,

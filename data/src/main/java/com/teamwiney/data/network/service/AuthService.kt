@@ -3,15 +3,18 @@ package com.teamwiney.data.network.service
 import com.google.gson.annotations.SerializedName
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AuthenticationMessageCodeResponse
+import com.teamwiney.data.network.model.response.GoogleAccessTokenResponse
 import com.teamwiney.data.network.model.response.SocialLoginResponse
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessageResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 enum class SocialType {
     @SerializedName("KAKAO")
@@ -25,6 +28,13 @@ enum class SocialType {
 }
 
 interface AuthService {
+
+    /** 구글 액세스 토큰 발급 API */
+    @POST
+    suspend fun getGoogleAccessToken(
+        @Url url: String = "https://www.googleapis.com/oauth2/v4/token",
+        @Body googleAccessTokenRequest: GoogleAccessTokenRequest
+    ): ApiResult<GoogleAccessTokenResponse>
 
     /** 소셜로그인 API */
     @POST("/login/{social}")

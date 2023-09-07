@@ -1,9 +1,15 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(JETBRAINS_KOTLIN_ANDROID)
         id(KOTLIN_KAPT)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -15,6 +21,17 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            "String",
+            "GOOGLE_OAUTH_CLIENT_ID",
+            properties["google.oauth.client.id"] as String
+        )
+        buildConfigField(
+            "String",
+            "GOOGLE_OAUTH_CLIENT_SECRET",
+            properties["google.oauth.client.secret"] as String
+        )
     }
 
     buildTypes {
@@ -35,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -59,6 +77,7 @@ dependencies {
         implementation(HILT_NAVIGATION_COMPOSE)
         implementation(LIFECYCLE_RUNTIME_COMPOSE)
         implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
+        implementation("com.google.android.gms:play-services-auth:20.7.0") // 구글 로그인
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
