@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -37,11 +37,11 @@ fun TasteScoreHorizontalBar(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-        var barWidth by remember { mutableIntStateOf(0) }
+        var barWidth by remember { mutableStateOf(0.dp) }
         val density = LocalDensity.current
 
         Row(
-            modifier = Modifier.width(density.run { barWidth.toDp() } + 8.dp),
+            modifier = Modifier.width(maxOf(barWidth + 8.dp, 25.dp)),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -56,7 +56,7 @@ fun TasteScoreHorizontalBar(
             if (peopleScore < defaultScore) {
                 RoundedHorizontalBar(
                     modifier = Modifier.onGloballyPositioned { coordinates ->
-                        barWidth = coordinates.size.width
+                        barWidth = density.run { coordinates.size.width.toDp() }
                     },
                     targetProgress = defaultScore / 5f,
                     color = WineyTheme.colors.point_1
@@ -68,7 +68,7 @@ fun TasteScoreHorizontalBar(
             } else {
                 RoundedHorizontalBar(
                     modifier = Modifier.onGloballyPositioned { coordinates ->
-                        barWidth = coordinates.size.width
+                        barWidth = density.run { coordinates.size.width.toDp() }
                     },
                     targetProgress = peopleScore / 5f,
                     color = WineyTheme.colors.main_2

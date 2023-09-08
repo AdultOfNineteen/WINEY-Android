@@ -25,6 +25,7 @@ object HomeDestinations {
     const val ROUTE = "homeRoute"
 
     const val HOME = "home"
+    const val DETAIL = "detail"
 }
 
 object MapDestinations {

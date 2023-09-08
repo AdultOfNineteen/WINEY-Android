@@ -31,6 +31,15 @@ fun NavGraphBuilder.homeGraph(
             HomeScreen()
         }
 
+        composable(route= HomeDestinations.DETAIL) {
+            val backStackEntry = rememberNavControllerBackEntry(
+                entry = it,
+                navController = navController,
+                graph = HomeDestinations.ROUTE
+            )
+            DetailScreen()
+        }
+
         // TODO : 오늘의 와인 추천
 
         // TODO : 와인 초보를 위한 TIP

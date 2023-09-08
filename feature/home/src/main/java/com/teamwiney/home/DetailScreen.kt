@@ -1,16 +1,23 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.teamwiney.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -65,7 +72,7 @@ fun DetailScreen() {
 
             WineInfo()
 
-            HeightSpacer(height = 87.dp)
+            HeightSpacer(height = 33.dp)
         }
     }
 }
@@ -73,72 +80,130 @@ fun DetailScreen() {
 @Composable
 private fun WineInfo() {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(421.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(WineyTheme.colors.main_2)
-                    .size(12.dp)
-            )
-            Text(
-                text = "취향이 비슷한 사람들이 느낀 와인의 맛",
-                style = WineyTheme.typography.captionM2,
-                color = WineyTheme.colors.gray_50
-            )
+        val pageCount = 5
+        val pagerState = rememberPagerState(pageCount = { pageCount })
+
+        HorizontalPager(state = pagerState) { page ->
+            WineInfoTotalBarGraph()
         }
 
-        Row(
+        Spacer(modifier = Modifier
+            .fillMaxHeight()
+            .weight(1f))
+
+        PageIndicator(pagerState = pagerState, pageCount = pageCount)
+    }
+}
+
+@Composable
+private fun WineInfoTotalBarGraph() {
+    Column {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(WineyTheme.colors.main_2)
+                        .size(12.dp)
+                )
+                Text(
+                    text = "취향이 비슷한 사람들이 느낀 와인의 맛",
+                    style = WineyTheme.typography.captionM2,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(WineyTheme.colors.point_1)
+                        .size(12.dp)
+                )
+                Text(
+                    text = "와인의 기본 맛",
+                    style = WineyTheme.typography.captionM2,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+        }
+
+        HeightSpacer(height = 17.dp)
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 27.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                .height(300.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(WineyTheme.colors.point_1)
-                    .size(12.dp)
+            TasteScoreHorizontalBar(
+                label = "당도",
+                peopleScore = 4,
+                defaultScore = 2
             )
-            Text(
-                text = "와인의 기본 맛",
-                style = WineyTheme.typography.captionM2,
-                color = WineyTheme.colors.gray_50
+
+            TasteScoreHorizontalBar(
+                label = "산도",
+                peopleScore = 1,
+                defaultScore = 3
+            )
+
+            TasteScoreHorizontalBar(
+                label = "바디",
+                peopleScore = 5,
+                defaultScore = 2
+            )
+
+            TasteScoreHorizontalBar(
+                label = "탄닌",
+                peopleScore = 3,
+                defaultScore = 4
             )
         }
     }
+}
 
-    Column(verticalArrangement = Arrangement.spacedBy(44.dp)) {
-        TasteScoreHorizontalBar(
-            label = "당도",
-            peopleScore = 4,
-            defaultScore = 2
+@Composable
+private fun PageIndicator(
+    pagerState: PagerState,
+    pageCount: Int
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 10.dp,
+            alignment = Alignment.CenterHorizontally
         )
+    ) {
+        repeat(pageCount) { iteration ->
+            val color = if (pagerState.currentPage == iteration) {
+                WineyTheme.colors.point_1
+            } else {
+                WineyTheme.colors.gray_900
+            }
 
-        TasteScoreHorizontalBar(
-            label = "산도",
-            peopleScore = 1,
-            defaultScore = 3
-        )
-
-        TasteScoreHorizontalBar(
-            label = "바디",
-            peopleScore = 5,
-            defaultScore = 2
-        )
-
-        TasteScoreHorizontalBar(
-            label = "탄닌",
-            peopleScore = 3,
-            defaultScore = 4
-        )
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(color)
+                    .size(10.dp)
+            )
+        }
     }
 }
 
