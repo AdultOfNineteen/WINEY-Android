@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
-import com.teamwiney.ui.components.RoundedLinearBar
+import com.teamwiney.ui.components.TasteScoreHorizontalBar
 import com.teamwiney.ui.components.WineBadge
 import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.theme.WineyTheme
@@ -116,97 +116,29 @@ private fun WineInfo() {
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(44.dp)) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "당도",
-                    style = WineyTheme.typography.bodyB2,
-                    color = WineyTheme.colors.gray_50,
-                )
-                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
-                    RoundedLinearBar(
-                        targetProgress = 1f,
-                        color = WineyTheme.colors.main_2
-                    )
-                    RoundedLinearBar(
-                        targetProgress = 0.3f,
-                        color = WineyTheme.colors.point_1
-                    )
-                }
-            }
-        }
+        TasteScoreHorizontalBar(
+            label = "당도",
+            peopleScore = 4,
+            defaultScore = 2
+        )
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "산도",
-                    style = WineyTheme.typography.bodyB2,
-                    color = WineyTheme.colors.gray_50,
-                )
-                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
-                    RoundedLinearBar(
-                        targetProgress = 0.7f,
-                        color = WineyTheme.colors.point_1
-                    )
-                    RoundedLinearBar(
-                        targetProgress = 0.4f,
-                        color = WineyTheme.colors.main_2
-                    )
-                }
-            }
-        }
+        TasteScoreHorizontalBar(
+            label = "산도",
+            peopleScore = 1,
+            defaultScore = 3
+        )
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "바디",
-                    style = WineyTheme.typography.bodyB2,
-                    color = WineyTheme.colors.gray_50,
-                )
-                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
-                    RoundedLinearBar(
-                        targetProgress = 0.5f,
-                        color = WineyTheme.colors.point_1
-                    )
-                    RoundedLinearBar(
-                        targetProgress = 0.2f,
-                        color = WineyTheme.colors.main_2
-                    )
-                }
-            }
-        }
+        TasteScoreHorizontalBar(
+            label = "바디",
+            peopleScore = 5,
+            defaultScore = 2
+        )
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "탄닌",
-                    style = WineyTheme.typography.bodyB2,
-                    color = WineyTheme.colors.gray_50,
-                )
-                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
-                    RoundedLinearBar(
-                        targetProgress = 0.8f,
-                        color = WineyTheme.colors.main_2
-                    )
-                    RoundedLinearBar(
-                        targetProgress = 0.3f,
-                        color = WineyTheme.colors.point_1
-                    )
-                }
-            }
-        }
+        TasteScoreHorizontalBar(
+            label = "탄닌",
+            peopleScore = 3,
+            defaultScore = 4
+        )
     }
 }
 
