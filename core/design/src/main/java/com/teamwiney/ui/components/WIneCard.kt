@@ -52,83 +52,90 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
-enum class CardConfig(
-    val wineColor: String,
-    @DrawableRes val image: Int,
+enum class WineColor {
+    Red, White, Rose, Sparkl, Port, Etc
+}
+
+data class CardProperties(
+    val wineName: String,
+    val image: Int,
     val borderColor: Color,
     val gradientCircleColor: List<Color>,
     val circleColor: Color,
     val cardColor: Color
-) {
-    Red(
-        wineColor = "RED",
-        image = R.drawable.ic_red_wine,
-        borderColor = Color(0xFFA87575),
-        gradientCircleColor = listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
-        circleColor = Color(0xFF640D0D),
-        cardColor = Color(0xFF441010)
-    ),
-    White(
-        wineColor = "WHITE",
-        image = R.drawable.ic_white_wine,
-        borderColor = Color(0xFFC1BA9E),
-        gradientCircleColor = listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
-        circleColor = Color(0xFF898472),
-        cardColor = Color(0xFF7A706D)
-    ),
-    Rose(
-        wineColor = "ROSE",
-        image = R.drawable.ic_rose_wine,
-        borderColor = Color(0xFFC9A4A1),
-        gradientCircleColor = listOf(Color(0xFFAA678F), Color(0xFFD29263)),
-        circleColor = Color(0xFFBA7A71),
-        cardColor = Color(0xFF8F6C64)
-    ),
-    Sparkl(
-        wineColor = "SPARKL",
-        image = R.drawable.ic_sparkl_wine,
-        borderColor = Color(0xFFA78093),
-        gradientCircleColor = listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
-        circleColor = Color(0xFF777151),
-        cardColor = Color(0xFF4F5144)
-    ),
-    Port(
-        wineColor = "PORT",
-        image = R.drawable.ic_port_wine,
-        borderColor = Color(0xFFB09A86),
-        gradientCircleColor = listOf(Color(0xFF4A2401), Color(0xFF77503A)),
-        circleColor = Color(0xFF4F3F28),
-        cardColor = Color(0xFF3A2F2F)
-    ),
-    Etc(
-        wineColor = "ETC",
-        image = R.drawable.ic_etc_wine,
-        borderColor = Color(0xFF768169),
-        gradientCircleColor = listOf(Color(0xFF3C3D12), Color(0xFF465C18)),
-        circleColor = Color(0xFF2D4328),
-        cardColor = Color(0xFF233124)
-    )
-}
+)
 
 @Composable
 fun WineCard(
     modifier: Modifier = Modifier,
     onShowDetail: (Long) -> Unit,
-    cardConfig: CardConfig,
+    wineColor: WineColor,
     name: String,
     origin: String,
     varieties: String,
     price: String
 ) {
+    val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (wineColor) {
+        WineColor.Red -> CardProperties(
+            "RED",
+            R.drawable.ic_red_wine,
+            Color(0xFFA87575),
+            listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
+            Color(0xFF640D0D),
+            Color(0xFF441010)
+        )
+        WineColor.White -> CardProperties(
+            "WHITE",
+            R.drawable.ic_white_wine,
+            Color(0xFFC1BA9E),
+            listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
+            Color(0xFF898472),
+            Color(0xFF7A706D)
+        )
+        WineColor.Rose -> CardProperties(
+            "ROSE",
+            R.drawable.ic_rose_wine,
+            Color(0xFFC9A4A1),
+            listOf(Color(0xFFAA678F), Color(0xFFD29263)),
+            Color(0xFFBA7A71),
+            Color(0xFF8F6C64)
+        )
+        WineColor.Sparkl -> CardProperties(
+            "SPARKL",
+            R.drawable.ic_sparkl_wine,
+            Color(0xFFA78093),
+            listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
+            Color(0xFF777151),
+            Color(0xFF4F5144)
+        )
+        WineColor.Port -> CardProperties(
+            "PORT",
+            R.drawable.ic_port_wine,
+            Color(0xFFB09A86),
+            listOf(Color(0xFF4A2401), Color(0xFF77503A)),
+            Color(0xFF4F3F28),
+            Color(0xFF3A2F2F)
+        )
+        WineColor.Etc -> CardProperties(
+            "ETC",
+            R.drawable.ic_etc_wine,
+            Color(0xFF768169),
+            listOf(Color(0xFF3C3D12), Color(0xFF465C18)),
+            Color(0xFF2D4328),
+            Color(0xFF233124)
+        )
+    }
+
+
     Box(
         modifier = Modifier.size(width = 282.dp, height = 392.dp),
         contentAlignment = Alignment.TopCenter
     ) {
         CardSurface(
             modifier = modifier.fillMaxSize(),
-            cardColor = cardConfig.cardColor,
-            gradientCircleColor = cardConfig.gradientCircleColor,
-            circleColor = cardConfig.circleColor
+            cardColor = cardColor,
+            gradientCircleColor = gradientCircleColor,
+            circleColor = circleColor
         )
 
         Surface(
@@ -139,14 +146,14 @@ fun WineCard(
                 cornerSize = CornerSize(5.dp)
             ),
             color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
-            border = BorderStroke(1.dp, cardConfig.borderColor)
+            border = BorderStroke(1.dp, borderColor)
         ) {
             WineCardContent(
                 modifier = modifier,
                 onShowDetail = onShowDetail,
-                wineColor = cardConfig.wineColor,
-                borderColor = cardConfig.borderColor,
-                image = cardConfig.image,
+                wineColor = wineName,
+                borderColor = borderColor,
+                image = image,
                 name = name,
                 origin = origin,
                 varieties = varieties,
@@ -449,7 +456,7 @@ fun PreviewWineCard() {
         ) {
             WineCard(
                 onShowDetail = { },
-                cardConfig = CardConfig.Sparkl,
+                wineColor = WineColor.Sparkl,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",
