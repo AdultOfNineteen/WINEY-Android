@@ -54,11 +54,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.teamwiney.core.design.R
-import com.teamwiney.ui.components.CardConfig
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
+import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.components.drawColoredShadow
 import com.teamwiney.ui.theme.WineyTheme
 import kotlin.math.absoluteValue
@@ -155,8 +155,8 @@ fun HomeRecommendNewbie() {
 @Composable
 private fun HomeRecommendWine() {
     // TODO : 나중에 와인 추천 리스트는 UiState로 뺄 예정
-    val cardConfigList = listOf(
-        CardConfig.Red, CardConfig.White, CardConfig.Rose, CardConfig.Sparkl, CardConfig.Port, CardConfig.Etc
+    val wineColorList = listOf(
+        WineColor.Red, WineColor.White, WineColor.Rose, WineColor.Sparkl, WineColor.Port, WineColor.Etc
     )
 
     val pagerState = rememberPagerState(pageCount = { 6 })
@@ -226,7 +226,7 @@ private fun HomeRecommendWine() {
                             )
                         },
                     onShowDetail = { },
-                    cardConfig = cardConfigList[page],
+                    wineColor = wineColorList[page],
                     name = if (page == 0) "으아아아앙아아아아아아아아아아아아아아아아아아앙아아ㅏ앙아아아아아아아아아아아아아아아아아아아악" else "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
                     varieties = "모스까델 데 알레한드리아",

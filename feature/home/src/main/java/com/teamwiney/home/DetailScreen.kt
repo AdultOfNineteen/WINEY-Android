@@ -1,12 +1,11 @@
 package com.teamwiney.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,12 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.RoundedLinearBar
+import com.teamwiney.ui.components.WineBadge
+import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
@@ -38,13 +40,15 @@ fun DetailScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
             .background(WineyTheme.colors.background_1)
     ) {
-
         DetailTopBar()
 
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
             TitleAndDescription()
 
             HeightSpacerWithLine(
@@ -60,6 +64,8 @@ fun DetailScreen() {
             )
 
             WineInfo()
+
+            HeightSpacer(height = 87.dp)
         }
     }
 }
@@ -109,34 +115,95 @@ private fun WineInfo() {
         }
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(50.dp)) {
-        repeat(4) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "당도",
-                        style = WineyTheme.typography.bodyB2,
-                        color = WineyTheme.colors.gray_50,
+    Column(verticalArrangement = Arrangement.spacedBy(44.dp)) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "당도",
+                    style = WineyTheme.typography.bodyB2,
+                    color = WineyTheme.colors.gray_50,
+                )
+                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+                    RoundedLinearBar(
+                        targetProgress = 1f,
+                        color = WineyTheme.colors.main_2
                     )
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f)
-                                .height(10.dp)
-                                .clip(CircleShape)
-                                .background(WineyTheme.colors.main_2)
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(0.3f)
-                                .height(10.dp)
-                                .clip(CircleShape)
-                                .background(WineyTheme.colors.point_1)
-                        )
-                    }
+                    RoundedLinearBar(
+                        targetProgress = 0.3f,
+                        color = WineyTheme.colors.point_1
+                    )
+                }
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "산도",
+                    style = WineyTheme.typography.bodyB2,
+                    color = WineyTheme.colors.gray_50,
+                )
+                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+                    RoundedLinearBar(
+                        targetProgress = 0.7f,
+                        color = WineyTheme.colors.point_1
+                    )
+                    RoundedLinearBar(
+                        targetProgress = 0.4f,
+                        color = WineyTheme.colors.main_2
+                    )
+                }
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "바디",
+                    style = WineyTheme.typography.bodyB2,
+                    color = WineyTheme.colors.gray_50,
+                )
+                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+                    RoundedLinearBar(
+                        targetProgress = 0.5f,
+                        color = WineyTheme.colors.point_1
+                    )
+                    RoundedLinearBar(
+                        targetProgress = 0.2f,
+                        color = WineyTheme.colors.main_2
+                    )
+                }
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "탄닌",
+                    style = WineyTheme.typography.bodyB2,
+                    color = WineyTheme.colors.gray_50,
+                )
+                Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+                    RoundedLinearBar(
+                        targetProgress = 0.8f,
+                        color = WineyTheme.colors.main_2
+                    )
+                    RoundedLinearBar(
+                        targetProgress = 0.3f,
+                        color = WineyTheme.colors.point_1
+                    )
                 }
             }
         }
@@ -146,38 +213,76 @@ private fun WineInfo() {
 @Composable
 private fun WineOrigin() {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min),
+        modifier = Modifier.height(148.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.img_dummy_wine),
-            contentDescription = "WINE_IMG",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .weight(1f)
-                .clip(CircleShape)
-        )
-        Column(
-            modifier = Modifier.weight(1f),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            repeat(3) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "national an thems",
-                        style = WineyTheme.typography.captionM3,
-                        color = WineyTheme.colors.gray_50
+        WineBadge(wineColor = WineColor.Red)
+
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Text(
+                    text = "national an thems",
+                    style = WineyTheme.typography.captionM3,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Text(
+                    text = "이탈리아",
+                    style = WineyTheme.typography.captionB1,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalArrangement = Arrangement
+                    .spacedBy(
+                        space = 6.dp,
+                        alignment = Alignment.CenterVertically
                     )
-                    Text(
-                        text = "이탈리아",
-                        style = WineyTheme.typography.captionB1,
-                        color = WineyTheme.colors.gray_50
+            ) {
+                Text(
+                    text = "Varieties",
+                    style = WineyTheme.typography.captionM3,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Text(
+                    text = "모스까델 데 알레한드리아",
+                    style = WineyTheme.typography.captionB1,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalArrangement = Arrangement
+                    .spacedBy(
+                        space = 6.dp,
+                        alignment = Alignment.Bottom
                     )
-                }
+            ) {
+                Text(
+                    text = "Purchase price",
+                    style = WineyTheme.typography.captionM3,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Text(
+                    text = "8.80",
+                    style = WineyTheme.typography.captionB1,
+                    color = WineyTheme.colors.gray_50
+                )
             }
         }
     }
