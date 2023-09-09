@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -36,6 +37,8 @@ import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
+import com.teamwiney.ui.components.VerticalBarGraph
+import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
 import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.theme.WineyTheme
@@ -87,8 +90,18 @@ private fun WineInfo() {
         val pageCount = 5
         val pagerState = rememberPagerState(pageCount = { pageCount })
 
+        val tasteList = listOf("", "당도", "산도", "바디", "탄닌")
+
         HorizontalPager(state = pagerState) { page ->
-            WineInfoTotalBarGraph()
+            if (page == 0) {
+                WineInfoTotalBarGraph()
+            } else {
+                WineInfoBarGraph(
+                    taste = tasteList[page],
+                    default = 3,
+                    similar = 5
+                )
+            }
         }
 
         Spacer(modifier = Modifier
@@ -175,6 +188,44 @@ private fun WineInfoTotalBarGraph() {
                 defaultScore = 4
             )
         }
+    }
+}
+
+@Composable
+private fun WineInfoBarGraph(
+    taste: String,
+    default: Int,
+    similar: Int
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        HeightSpacer(height = 42.dp)
+
+        // VerticalBarGraph의 너비가 280.dp
+        Text(
+            modifier = Modifier.width(280.dp),
+            text = taste,
+            style = WineyTheme.typography.headline.copy(color = Color.White)
+        )
+
+        HeightSpacer(height = 36.dp)
+
+        VerticalBarGraph(
+            data = listOf(
+                VerticalBarGraphData(
+                    label = "와인의 기본맛",
+                    score = default,
+                    color = WineyTheme.colors.main_2
+                ),
+                VerticalBarGraphData(
+                    label = "취향이 비슷한 사람들이\n느낀 와인의 맛",
+                    score = similar,
+                    color = WineyTheme.colors.point_1
+                )
+            )
+        )
     }
 }
 
@@ -336,3 +387,4 @@ private fun DetailTopBar() {
         )
     }
 }
+
