@@ -20,7 +20,7 @@ fun NavGraphBuilder.homeGraph(
 ) {
     navigation(
         route = HomeDestinations.ROUTE,
-        startDestination = HomeDestinations.HOME
+        startDestination = HomeDestinations.DETAIL
     ) {
         composable(route = HomeDestinations.HOME) {
             val backStackEntry = rememberNavControllerBackEntry(

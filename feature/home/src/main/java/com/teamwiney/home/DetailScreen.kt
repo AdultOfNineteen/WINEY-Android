@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -51,12 +53,14 @@ fun DetailScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         DetailTopBar()
 
         Column(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             TitleAndDescription()
@@ -338,6 +342,7 @@ private fun WineOrigin() {
 
 @Composable
 private fun TitleAndDescription() {
+    HeightSpacer(height = 20.dp)
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -361,6 +366,7 @@ private fun TitleAndDescription() {
     )
 }
 
+@Preview
 @Composable
 private fun DetailTopBar() {
     Box(
