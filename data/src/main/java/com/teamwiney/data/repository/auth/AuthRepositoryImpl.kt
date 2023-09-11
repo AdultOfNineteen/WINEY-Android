@@ -1,4 +1,4 @@
-package com.teamwiney.data.repository
+package com.teamwiney.data.repository.auth
 
 import com.teamwiney.data.datasource.AuthDataSource
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest

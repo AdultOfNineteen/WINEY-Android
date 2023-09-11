@@ -1,4 +1,4 @@
-package com.teamwiney.data.repository
+package com.teamwiney.data.repository.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult

@@ -50,6 +50,7 @@ dependencies {
         implementation(COROUTINES_ANDROID)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
         implementation(CONVERTER_GSON)
+        implementation(DATASTORE)
         testImplementation(JUNIT)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)

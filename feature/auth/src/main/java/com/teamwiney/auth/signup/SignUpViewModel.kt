@@ -6,7 +6,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
-import com.teamwiney.data.repository.AuthRepository
+import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest

@@ -21,6 +21,7 @@ object Dependency {
     const val LIFECYCLE_RUNTIME_COMPOSE =
         "androidx.lifecycle:lifecycle-runtime-compose:${Versions.LIFECYCLE}"
     const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
+    const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
     const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
     const val DAGGER = "com.google.dagger:dagger:2.37"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.HILT}"
