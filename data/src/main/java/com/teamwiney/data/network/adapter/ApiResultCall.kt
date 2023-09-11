@@ -1,5 +1,7 @@
 package com.teamwiney.data.network.adapter
 
+import com.google.gson.Gson
+import com.teamwiney.core.common.base.ErrorResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call
@@ -8,6 +10,7 @@ import retrofit2.Response
 
 class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
 
+    private val gson = Gson()
     override fun enqueue(callback: Callback<ApiResult<T>>) {
         delegate.enqueue(
             object : Callback<T> {
@@ -20,10 +23,15 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                             )
                         )
                     } else {
+                        val message = if (response.errorBody() == null) "네트워크 에러가 발생했습니다." else
+                            gson.fromJson(
+                                response.errorBody()!!.string(),
+                                ErrorResponse::class.java
+                            ).message
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.ApiError(response.message(), response.code())
+                                ApiResult.ApiError(message, response.code())
                             )
                         )
                     }
