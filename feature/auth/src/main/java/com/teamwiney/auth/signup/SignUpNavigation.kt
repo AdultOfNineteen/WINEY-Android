@@ -22,7 +22,7 @@ fun NavGraphBuilder.signUpGraph(
 ) {
     navigation(
         route = AuthDestinations.SignUp.ROUTE,
-        startDestination = "${AuthDestinations.SignUp.PHONE}/1"
+        startDestination = AuthDestinations.SignUp.PHONE
     ) {
         composable(
             route = "${AuthDestinations.SignUp.PHONE}/{userId}",
@@ -43,7 +43,7 @@ fun NavGraphBuilder.signUpGraph(
                 hideBottomSheet = hideBottomSheet,
                 onHideBottomSheet = setOnHideBottomSheet,
                 appState = appState,
-                userId= userId,
+                userId = userId,
                 viewModel = hiltViewModel(backStackEntry)
             )
         }

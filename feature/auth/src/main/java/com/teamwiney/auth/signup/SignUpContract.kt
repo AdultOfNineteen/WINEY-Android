@@ -29,12 +29,14 @@ class SignUpContract {
                     SignUpFavoriteItemUiState(
                         title = "밀크 초콜릿",
                         description = "안달면 초콜릿을 왜 먹어?",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "MILK"
                     ),
                     SignUpFavoriteItemUiState(
                         title = "다크 초콜릿",
                         description = "카카오 본연의 맛이지!",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "DARK"
                     )
                 )
             ),
@@ -44,12 +46,14 @@ class SignUpContract {
                     SignUpFavoriteItemUiState(
                         title = "아메리카노",
                         description = "깔끔하고 시원한",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "AMERICANO"
                     ),
                     SignUpFavoriteItemUiState(
                         title = "진하고 풍미가득한",
                         description = "카페 라떼",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "CAFE_LATTE"
                     )
                 )
             ),
@@ -59,14 +63,15 @@ class SignUpContract {
                     SignUpFavoriteItemUiState(
                         title = "복숭아, 자두, 망고",
                         description = "달콤한 과즙이 맴도는",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "PEACH"
                     ),
                     SignUpFavoriteItemUiState(
                         title = "상큼한 과즙으로 깔끔하게",
                         description = "파인애플, 수박, 멜론",
-                        isSelected = false
+                        isSelected = false,
+                        keyword = "PINEAPPLE"
                     )
-
                 )
             )
         ),
@@ -76,7 +81,7 @@ class SignUpContract {
         object SendAuthenticationButtonClicked : Event()
         object BackToLoginButtonClicked : Event()
         object CancelTasteSelectionButtonClicked : Event()
-        object TasteSelectionLastItemClicked : Event()
+        object SetPreferences : Event()
 
         object VerifyCode : Event()
     }

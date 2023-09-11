@@ -6,6 +6,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
+import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,14 +44,37 @@ class SignUpViewModel @Inject constructor(
                 )
             }
 
-            is SignUpContract.Event.TasteSelectionLastItemClicked -> {
-                postEffect(
-                    SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE)
-                )
+            is SignUpContract.Event.SetPreferences -> {
+                setPreferences()
             }
 
             is SignUpContract.Event.VerifyCode -> {
                 verifyAuthenticationNumber()
+            }
+        }
+    }
+
+    private fun setPreferences() = viewModelScope.launch {
+        authRepository.setPreferences(
+            userId = currentState.userId,
+            request = SetPreferencesRequest(
+                chocolate = currentState.favoriteTastes[0].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
+                coffee = currentState.favoriteTastes[1].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
+                fruit = currentState.favoriteTastes[2].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
+            )
+        ).collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                }
             }
         }
     }
@@ -102,6 +126,10 @@ class SignUpViewModel @Inject constructor(
                             SignUpContract.BottomSheet.SendMessage
                         )
                     )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
                 }
 
                 else -> {

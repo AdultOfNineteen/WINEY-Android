@@ -126,13 +126,14 @@ fun SignUpAuthenticationScreen(
                     keyboardController?.hide()
                     appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
                 }
+
                 else -> {}
             }
         }
     }
 
     LaunchedEffect(uiState.verifyNumber) {
-        if((uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty()) ){
+        if ((uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty())) {
             viewModel.updateVerifyNumberErrorText("인증번호")
             viewModel.updateVerifyNumberErrorState(false)
         } else {
