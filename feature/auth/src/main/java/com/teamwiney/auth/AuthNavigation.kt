@@ -22,13 +22,7 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(route = AuthDestinations.SPLASH) {
             SplashScreen(
-                onCompleted = {
-                    appState.navigate(AuthDestinations.Login.ROUTE) {
-                        popUpTo(AuthDestinations.SPLASH) {
-                            inclusive = true
-                        }
-                    }
-                }
+                appState = appState
             )
         }
 

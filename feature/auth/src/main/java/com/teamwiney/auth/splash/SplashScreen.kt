@@ -13,20 +13,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.teamwiney.auth.login.LoginContract
+import com.teamwiney.auth.login.LoginViewModel
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.splash.SplashBackground
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFF1F2126
-)
 @Composable
-fun SplashScreen(onCompleted: () -> Unit = { }) {
+fun SplashScreen(
+    appState: WineyAppState,
+) {
+    val viewModel: SplashViewModel = hiltViewModel()
+
     LaunchedEffect(true) {
         delay(1000)
-        onCompleted()
+        viewModel.processEvent(SplashContract.Event.AutoLoginCheck)
+        viewModel.effect.collectLatest {
+            when (it) {
+                is SplashContract.Effect.NavigateTo -> {
+                    appState.navigate(it.destination, builder = it.builder)
+                }
+            }
+        }
     }
 
     Column(
