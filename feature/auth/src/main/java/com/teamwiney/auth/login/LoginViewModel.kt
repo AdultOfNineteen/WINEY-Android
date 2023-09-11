@@ -9,7 +9,9 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.SocialLoginResponse
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.AuthRepository
 import com.teamwiney.feature.auth.BuildConfig
@@ -46,7 +48,6 @@ class LoginViewModel @Inject constructor(
                 postEffect(LoginContract.Effect.ShowSnackBar("카카오톡으로 로그인 실패"))
             }
         } else if (token != null) {
-            Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
             socialLogin(SocialType.KAKAO, token.accessToken)
         }
     }
@@ -118,11 +119,12 @@ class LoginViewModel @Inject constructor(
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
-                            postEffect(
-                                LoginContract.Effect.NavigateTo(
-                                    "${AuthDestinations.SignUp.PHONE}/${result.data.result?.userId}"
-                                )
-                            )
+                            val userStatus = result.data.result.userStatus
+                            if (userStatus == SocialLoginResponse.USER_STATUS_ACTIVE) {
+                                postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
+                            } else {
+                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.PHONE}/${result.data.result.userId}"))
+                            }
                         }
 
                         is ApiResult.NetworkError -> {

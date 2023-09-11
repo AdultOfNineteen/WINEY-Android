@@ -18,5 +18,5 @@ open class ResponseWrapper<out T>(
     @SerializedName("message")
     val message: String = "",
     @SerializedName("result")
-    val result: T? = null
+    val result: T
 )
