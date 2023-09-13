@@ -25,7 +25,7 @@ import kotlin.math.sin
 
 @Preview
 @Composable
-private fun PieChart(
+fun PieChart(
     chartDataList: List<ChartData> = listOf(
         ChartData("레드", Color(0xFF5123DF), 75f),
         ChartData("화이트", Color(0xFF5E489B), 18f),

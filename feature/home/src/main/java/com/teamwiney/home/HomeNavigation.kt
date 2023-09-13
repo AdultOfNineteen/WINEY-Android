@@ -10,6 +10,8 @@ import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
+import com.teamwiney.home.analysis.AnalysisResultScreen
+import com.teamwiney.home.analysis.AnalysisScreen
 
 fun NavGraphBuilder.homeGraph(
     appState: WineyAppState,
@@ -30,7 +32,7 @@ fun NavGraphBuilder.homeGraph(
             HomeScreen(appState = appState)
         }
 
-        composable(route= HomeDestinations.DETAIL) {
+        composable(route = HomeDestinations.DETAIL) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = appState.navController,
@@ -38,19 +40,32 @@ fun NavGraphBuilder.homeGraph(
             )
             DetailScreen()
         }
+    }
 
-        // TODO : 오늘의 와인 추천
-
-        // TODO : 와인 초보를 위한 TIP
-
-        // TODO : 와인 취향 분석하기
-        composable(route = HomeDestinations.ANAYLYSIS) {
-            val backStackEntry = rememberNavControllerBackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = HomeDestinations.ROUTE
+    navigation(
+        route = HomeDestinations.Analysis.ROUTE,
+        startDestination = HomeDestinations.Analysis.START
+    ) {
+        composable(
+            route = HomeDestinations.Analysis.START,
+        ) {
+//            val backStackEntry = rememberNavControllerBackEntry(
+//                entry = it,
+//                navController = appState.navController,
+//                graph = HomeDestinations.ROUTE,
+//            )
+            AnalysisScreen(
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet,
             )
-            AnalysisScreen()
+        }
+
+        composable(
+            route = HomeDestinations.Analysis.START,
+        ) {
+            AnalysisResultScreen(
+                appState = appState,
+            )
         }
     }
 }

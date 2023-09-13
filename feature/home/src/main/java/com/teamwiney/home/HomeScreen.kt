@@ -72,14 +72,16 @@ import kotlin.math.absoluteValue
 )
 @Composable
 fun HomeScreen(
-    appState : WineyAppState = rememberWineyAppState()
+    appState: WineyAppState = rememberWineyAppState()
 ) {
     val scrollState = rememberScrollState()
 
     // TODO : SharedPreferences나 DataStore로 관리 예정 (Application 전역변수로 관리할려면 모듈 의존성이 깨짐 오엠쥐)
     var hintPopupOpen by remember { mutableStateOf(true) }
     LaunchedEffect(scrollState.isScrollInProgress) {
-        if (scrollState.isScrollInProgress) { hintPopupOpen = false }
+        if (scrollState.isScrollInProgress) {
+            hintPopupOpen = false
+        }
     }
 
     Column(
@@ -168,7 +170,12 @@ private fun HomeRecommendWine(
 ) {
     // TODO : 나중에 와인 추천 리스트는 UiState로 뺄 예정
     val wineColorList = listOf(
-        WineColor.Red, WineColor.White, WineColor.Rose, WineColor.Sparkl, WineColor.Port, WineColor.Etc
+        WineColor.Red,
+        WineColor.White,
+        WineColor.Rose,
+        WineColor.Sparkl,
+        WineColor.Port,
+        WineColor.Etc
     )
 
     val pagerState = rememberPagerState(pageCount = { 6 })
@@ -284,7 +291,7 @@ private fun HomeLogo(
                     buttonHeight = density.run { coordinates.size.height / 2 + 12.dp.roundToPx() }
                 },
                 onClick = {
-                    appState.navigate(HomeDestinations.ANAYLYSIS)
+                    appState.navigate(HomeDestinations.Analysis.ROUTE)
                 }
             )
             if (hintPopupOpen) {

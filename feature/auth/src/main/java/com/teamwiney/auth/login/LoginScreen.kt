@@ -136,7 +136,7 @@ fun LoginScreen(
                 }
                 // 홈화면 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_lock) {
-                    appState.navigate(HomeDestinations.ROUTE) {
+                    appState.navigate(HomeDestinations.Analysis.ROUTE) {
                         popUpTo(AuthDestinations.Login.ROUTE) {
                             inclusive = true
                         }
