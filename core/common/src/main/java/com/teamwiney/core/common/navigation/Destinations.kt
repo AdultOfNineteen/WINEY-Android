@@ -26,6 +26,7 @@ object HomeDestinations {
 
     const val HOME = "home"
     const val DETAIL = "detail"
+    const val ANAYLYSIS = "analysis"
 }
 
 object MapDestinations {

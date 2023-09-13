@@ -7,34 +7,33 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 
-// TODO 메인 그래프라고 생각하고 만들었는데 Mypage, Note 모듈이 따로
-//  있어서 이걸 어떻게 처리할까유
 fun NavGraphBuilder.homeGraph(
-    navController: NavController,
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     setOnHideBottomSheet: (() -> Unit) -> Unit
 ) {
     navigation(
         route = HomeDestinations.ROUTE,
-        startDestination = HomeDestinations.DETAIL
+        startDestination = HomeDestinations.HOME
     ) {
         composable(route = HomeDestinations.HOME) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = HomeDestinations.ROUTE
             )
-            HomeScreen()
+            HomeScreen(appState = appState)
         }
 
         composable(route= HomeDestinations.DETAIL) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = HomeDestinations.ROUTE
             )
             DetailScreen()
@@ -45,6 +44,14 @@ fun NavGraphBuilder.homeGraph(
         // TODO : 와인 초보를 위한 TIP
 
         // TODO : 와인 취향 분석하기
+        composable(route = HomeDestinations.ANAYLYSIS) {
+            val backStackEntry = rememberNavControllerBackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = HomeDestinations.ROUTE
+            )
+            AnalysisScreen()
+        }
     }
 }
 

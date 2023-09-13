@@ -23,7 +23,6 @@ fun SignUpTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp)
             .height(68.dp)
             .padding(horizontal = 5.dp, vertical = 10.dp)
     ) {

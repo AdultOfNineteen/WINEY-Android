@@ -53,6 +53,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HintPopUp
@@ -68,7 +71,9 @@ import kotlin.math.absoluteValue
     showSystemUi = true,
 )
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    appState : WineyAppState = rememberWineyAppState()
+) {
     val scrollState = rememberScrollState()
 
     // TODO : SharedPreferences나 DataStore로 관리 예정 (Application 전역변수로 관리할려면 모듈 의존성이 깨짐 오엠쥐)
@@ -82,16 +87,21 @@ fun HomeScreen() {
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
     ) {
-        HomeLogo(hintPopupOpen = hintPopupOpen)
+        HomeLogo(
+            appState = appState,
+            hintPopupOpen = hintPopupOpen
+        )
         Column(modifier = Modifier.verticalScroll(scrollState)) {
-            HomeRecommendWine()
-            HomeRecommendNewbie()
+            HomeRecommendWine(appState = appState)
+            HomeRecommendNewbie(appState = appState)
         }
     }
 }
 
 @Composable
-fun HomeRecommendNewbie() {
+fun HomeRecommendNewbie(
+    appState: WineyAppState
+) {
 
     val configuration = LocalConfiguration.current
     val itemWidth = configuration.screenWidthDp.dp * 0.45f
@@ -153,7 +163,9 @@ fun HomeRecommendNewbie() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HomeRecommendWine() {
+private fun HomeRecommendWine(
+    appState: WineyAppState
+) {
     // TODO : 나중에 와인 추천 리스트는 UiState로 뺄 예정
     val wineColorList = listOf(
         WineColor.Red, WineColor.White, WineColor.Rose, WineColor.Sparkl, WineColor.Port, WineColor.Etc
@@ -225,7 +237,9 @@ private fun HomeRecommendWine() {
                                 fraction = 1f - pageOffset.coerceIn(0f, 1f)
                             )
                         },
-                    onShowDetail = { },
+                    onShowDetail = {
+                        appState.navigate(HomeDestinations.DETAIL)
+                    },
                     wineColor = wineColorList[page],
                     name = if (page == 0) "으아아아앙아아아아아아아아아아아아아아아아아아앙아아ㅏ앙아아아아아아아아아아아아아아아아아아아악" else "캄포 마리나 프리미티도 디 만두리아",
                     origin = "이탈리아",
@@ -239,6 +253,7 @@ private fun HomeRecommendWine() {
 
 @Composable
 private fun HomeLogo(
+    appState: WineyAppState,
     hintPopupOpen: Boolean
 ) {
     Row(
@@ -268,7 +283,9 @@ private fun HomeLogo(
                 modifier = Modifier.onGloballyPositioned { coordinates ->
                     buttonHeight = density.run { coordinates.size.height / 2 + 12.dp.roundToPx() }
                 },
-                onClick = { }
+                onClick = {
+                    appState.navigate(HomeDestinations.ANAYLYSIS)
+                }
             )
             if (hintPopupOpen) {
                 HintPopUp(
@@ -298,7 +315,7 @@ private fun AnalysisButton(
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = WineyTheme.colors.main_3
+            color = borderColor
         ),
         contentPadding = PaddingValues(
             start = 15.dp,

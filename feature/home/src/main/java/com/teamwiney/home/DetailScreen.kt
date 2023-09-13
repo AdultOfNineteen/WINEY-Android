@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -202,14 +201,14 @@ private fun WineInfoBarGraph(
     similar: Int
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HeightSpacer(height = 42.dp)
 
         // VerticalBarGraph의 너비가 280.dp
         Text(
-            modifier = Modifier.width(280.dp),
+            modifier = Modifier,
             text = taste,
             style = WineyTheme.typography.headline.copy(color = Color.White)
         )
