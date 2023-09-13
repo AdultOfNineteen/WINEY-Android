@@ -6,12 +6,15 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
+import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AuthenticationMessageCodeResponse
 import com.teamwiney.data.network.model.response.GoogleAccessTokenResponse
+import com.teamwiney.data.network.model.response.SetPreferencesResponse
 import com.teamwiney.data.network.model.response.SocialLoginResponse
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessageResponse
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
@@ -55,6 +58,12 @@ interface AuthService {
     suspend fun verifyAuthCodeMessage(
         @Path("userId") userId: String,
         @Body phoneNumberWithVerificationCodeRequest: PhoneNumberWithVerificationCodeRequest
-    ): ApiResult<VerifyAuthenticationMessageResponse>
+    ): ApiResult<ResponseWrapper<VerifyAuthenticationMessageResponse>>
 
+    /** 취향 설정 */
+    @PATCH("/users/{userId}/preferences")
+    suspend fun setPreferences(
+        @Path("userId") userId: String,
+        @Body preferences: SetPreferencesRequest
+    ): ApiResult<ResponseWrapper<SetPreferencesResponse>>
 }

@@ -14,6 +14,7 @@ object Versions {
     const val APPCOMPAT = "1.6.1"
     const val KOTLIN_BOM = "1.8.0"
     const val HILT = "2.47"
+    const val DATASTORE = "1.0.0"
     const val RETROFIT2 = "2.9.0"
     const val OKHTTP3 = "5.0.0-alpha.11"
     const val TEST_EXT_JUNIT = "1.1.5"

@@ -3,6 +3,7 @@ package com.teamwiney.winey
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -81,7 +82,8 @@ fun WineyNavHost() {
             bottomSheetContent?.invoke(this)
         },
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)
+        sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp),
+        modifier = Modifier.navigationBarsPadding()
     ) {
         Scaffold(
             backgroundColor = WineyTheme.colors.background_1,

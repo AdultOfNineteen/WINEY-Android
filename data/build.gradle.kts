@@ -50,10 +50,11 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    with (Dependency) {
+    with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(COROUTINES_ANDROID)
         implementation(HILT_ANDROID)
+        implementation(DATASTORE)
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         implementation(RETROFIT)

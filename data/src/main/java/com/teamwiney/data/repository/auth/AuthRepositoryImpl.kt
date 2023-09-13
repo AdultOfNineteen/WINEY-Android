@@ -1,11 +1,16 @@
-package com.teamwiney.data.repository
+package com.teamwiney.data.repository.auth
 
+import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.datasource.AuthDataSource
+import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
+import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
+import com.teamwiney.data.network.model.response.SetPreferencesResponse
 import com.teamwiney.data.network.service.SocialType
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -37,6 +42,12 @@ class AuthRepositoryImpl @Inject constructor(
         userId: String,
         phoneNumberRequest: PhoneNumberRequest
     ) = authDataSource.sendAuthCodeMessage(userId, phoneNumberRequest)
+
+    override fun setPreferences(
+        userId: String,
+        request: SetPreferencesRequest
+    ): Flow<ApiResult<ResponseWrapper<SetPreferencesResponse>>> =
+        authDataSource.setPreferences(userId, request)
 
     override fun verifyAuthCodeMessage(
         userId: String,

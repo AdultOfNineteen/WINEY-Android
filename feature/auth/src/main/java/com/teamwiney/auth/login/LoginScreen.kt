@@ -133,11 +133,18 @@ fun LoginScreen(
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     viewModel.processEvent(LoginContract.Event.GoogleLoginButtonClicked)
-                    // appState.navigate(AuthDestinations.SignUp.ROUTE)
                 }
                 // 홈화면 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_lock) {
                     appState.navigate(HomeDestinations.ROUTE) {
+                        popUpTo(AuthDestinations.Login.ROUTE) {
+                            inclusive = true
+                        }
+                    }
+                }
+                // 회원가입 테스트용 아이콘
+                SocialLoginButton(drawable = R.mipmap.img_winey_logo_title) {
+                    appState.navigate("${AuthDestinations.SignUp.PHONE}/4") {
                         popUpTo(AuthDestinations.Login.ROUTE) {
                             inclusive = true
                         }

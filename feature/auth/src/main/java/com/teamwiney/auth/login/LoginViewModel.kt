@@ -9,9 +9,15 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
+import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
+import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.SocialLoginResponse
 import com.teamwiney.data.network.service.SocialType
-import com.teamwiney.data.repository.AuthRepository
+import com.teamwiney.data.repository.auth.AuthRepository
+import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.feature.auth.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -22,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
@@ -46,7 +53,6 @@ class LoginViewModel @Inject constructor(
                 postEffect(LoginContract.Effect.ShowSnackBar("카카오톡으로 로그인 실패"))
             }
         } else if (token != null) {
-            Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
             socialLogin(SocialType.KAKAO, token.accessToken)
         }
     }
@@ -118,11 +124,23 @@ class LoginViewModel @Inject constructor(
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
-                            postEffect(
-                                LoginContract.Effect.NavigateTo(
-                                    "${AuthDestinations.SignUp.PHONE}/${result.data.result?.userId}"
+                            val userStatus = result.data.result.userStatus
+                            viewModelScope.launch {
+                                dataStoreRepository.setToken(
+                                    ACCESS_TOKEN,
+                                    result.data.result.accessToken
                                 )
-                            )
+                                dataStoreRepository.setToken(
+                                    REFRESH_TOKEN,
+                                    result.data.result.refreshToken
+                                )
+                                dataStoreRepository.setToken(LOGIN_TYPE, socialType.name)
+                            }
+                            if (userStatus == SocialLoginResponse.USER_STATUS_ACTIVE) {
+                                postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
+                            } else {
+                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.PHONE}/${result.data.result.userId}"))
+                            }
                         }
 
                         is ApiResult.NetworkError -> {

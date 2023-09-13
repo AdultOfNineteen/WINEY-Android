@@ -1,9 +1,11 @@
 package com.teamwiney.auth.signup
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -27,6 +29,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.signup.BottomSheetSelectionButton
 import com.teamwiney.ui.signup.SignUpBottomSheet
 import com.teamwiney.ui.signup.SignUpFavoriteItemContainer
@@ -60,9 +63,11 @@ fun SignUpFavoriteTasteScreen(
                 is SignUpContract.Effect.NavigateTo -> {
                     appState.navigate(effect.destination, effect.navOptions)
                 }
+
                 is SignUpContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
                 }
+
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.CancelTasteSelection -> {
@@ -79,7 +84,9 @@ fun SignUpFavoriteTasteScreen(
                                         onConfirm = {
                                             hideBottomSheet()
                                             appState.navigate(AuthDestinations.Login.ROUTE) {
-                                                popUpTo(AuthDestinations.SignUp.ROUTE) { inclusive = true }
+                                                popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                                    inclusive = true
+                                                }
                                             }
                                         },
                                         onCancel = { hideBottomSheet() }
@@ -88,6 +95,7 @@ fun SignUpFavoriteTasteScreen(
                                 }
                             }
                         }
+
                         else -> {}
                     }
                 }
@@ -149,9 +157,21 @@ fun SignUpFavoriteTasteScreen(
                             scope.launch {
                                 pagerState.animateScrollToPage(it + 1)
                             }
-                        } else {
-                            viewModel.processEvent(SignUpContract.Event.TasteSelectionLastItemClicked)
                         }
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            AnimatedVisibility(
+                visible = pagerState.currentPage == uiState.favoriteTastes.size - 1 && uiState.favoriteTastes.sumOf { it.signUpFavoriteItem.count { it.isSelected } } == 3,
+                modifier = Modifier.padding(bottom = 20.dp)
+            ) {
+                WButton(
+                    text = "시작하기",
+                    onClick = {
+                        viewModel.processEvent(SignUpContract.Event.SetPreferences)
                     }
                 )
             }

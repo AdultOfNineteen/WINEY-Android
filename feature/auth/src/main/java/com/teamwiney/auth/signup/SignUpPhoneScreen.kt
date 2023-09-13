@@ -49,7 +49,7 @@ fun SignUpPhoneScreen(
     appState: WineyAppState = rememberWineyAppState(),
     viewModel: SignUpViewModel = hiltViewModel(),
     onHideBottomSheet: (() -> Unit) -> Unit = {},
-    userId: String = ""
+    userId: String = "",
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -167,7 +167,7 @@ fun SignUpPhoneScreen(
                 text = "확인",
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
+                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)
