@@ -1,5 +1,7 @@
 package com.teamwiney.ui.components
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -7,19 +9,23 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.center
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.launch
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -35,7 +41,7 @@ fun PieChart(
     modifier: Modifier = Modifier,
     chartDataList: List<ChartData>
 ) {
-
+    val animatedProgress = remember { Animatable(0f) }
     val textMeasurer = rememberTextMeasurer()
     val textMeasureResults = remember(chartDataList) {
         chartDataList.mapIndexed { index, chartData ->
@@ -48,6 +54,13 @@ fun PieChart(
                 text = labelText,
                 style = chartData.textStyle
             )
+        }
+    }
+
+    LaunchedEffect(true) {
+        launch {
+            animatedProgress.snapTo(0f)
+            animatedProgress.animateTo(1f, animationSpec = tween(1000))
         }
     }
 
@@ -70,16 +83,15 @@ fun PieChart(
 
                 val chartData = chartDataList[index]
                 val sweepAngle = chartData.value.asAngle
-                val angleInRadians = (startAngle + sweepAngle / 2).degreeToAngle
+
                 val textMeasureResult = textMeasureResults[index]
-                val textSize = textMeasureResult.size
 
                 if (index == 0) {
                     // 첫 번째 Arc일 때 바깥쪽만 두꺼워지도록 Stroke의 두께를 조절합니다.
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = sweepAngle - gapAngle,
+                        sweepAngle = (sweepAngle - gapAngle) * animatedProgress.value,
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),
@@ -89,7 +101,7 @@ fun PieChart(
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = sweepAngle - gapAngle,
+                        sweepAngle = (sweepAngle - gapAngle) * animatedProgress.value,
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),
@@ -97,37 +109,56 @@ fun PieChart(
                     )
                 }
 
-                val textCenter = textSize.center
-
-                val legendRadius = if (startAngle >= 235f) {
-                    width / 2f + textSize.width
-                } else if (startAngle >= 180f && startAngle + sweepAngle >= 235f) {
-                    width / 2f + textSize.width + 20f
-                } else {
-                    width / 2f + textCenter.x + 30f
-                }
-
-                val legendX = center.x + legendRadius * cos(angleInRadians) + 65f
-                val legendY = center.y + legendRadius * sin(angleInRadians)
-
-                drawCircle(
-                    color = chartData.color,
-                    radius = 10f,
-                    center = Offset(legendX - textCenter.x - 20f, legendY - textCenter.y + 10f)
-                )
-
-                drawText(
-                    textLayoutResult = textMeasureResult,
-                    topLeft = Offset(
-                        legendX - textCenter.x,
-                        legendY - textCenter.y
-                    )
+                drawLabel(
+                    textMeasureResult = textMeasureResult,
+                    startAngle = startAngle,
+                    sweepAngle = sweepAngle,
+                    chartRadius = width,
+                    color = chartData.color
                 )
 
                 startAngle += sweepAngle
             }
         }
     }
+}
+
+private fun DrawScope.drawLabel(
+    textMeasureResult: TextLayoutResult,
+    startAngle: Float,
+    sweepAngle: Float,
+    chartRadius: Float,
+    color: Color
+) {
+    val textSize = textMeasureResult.size
+    val textCenter = textSize.center
+
+    val angleInRadians = (startAngle + sweepAngle / 2).degreeToAngle
+
+    val legendRadius = if (startAngle >= 235f) {
+        chartRadius / 2f + textSize.width
+    } else if (startAngle >= 180f && startAngle + sweepAngle >= 235f) {
+        chartRadius / 2f + textSize.width + 20f
+    } else {
+        chartRadius / 2f + textCenter.x + 30f
+    }
+
+    val legendX = center.x + legendRadius * cos(angleInRadians) + 65f
+    val legendY = center.y + legendRadius * sin(angleInRadians)
+
+    drawCircle(
+        color = color,
+        radius = 10f,
+        center = Offset(legendX - textCenter.x - 20f, legendY - textCenter.y + 10f)
+    )
+
+    drawText(
+        textLayoutResult = textMeasureResult,
+        topLeft = Offset(
+            legendX - textCenter.x,
+            legendY - textCenter.y
+        )
+    )
 }
 
 private val Float.degreeToAngle
