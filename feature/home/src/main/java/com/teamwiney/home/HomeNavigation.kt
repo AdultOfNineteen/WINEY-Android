@@ -55,13 +55,14 @@ fun NavGraphBuilder.homeGraph(
 //                graph = HomeDestinations.ROUTE,
 //            )
             AnalysisScreen(
+                appState = appState,
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
             )
         }
 
         composable(
-            route = HomeDestinations.Analysis.START,
+            route = HomeDestinations.Analysis.RESULT,
         ) {
             AnalysisResultScreen(
                 appState = appState,

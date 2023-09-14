@@ -1,5 +1,7 @@
 package com.teamwiney.home.analysis.component
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,11 +28,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun WineVarietyContent() {
+    val animatedProgress = remember { Animatable(0f) }
+
+    LaunchedEffect(true) {
+        launch {
+            animatedProgress.snapTo(0f)
+            animatedProgress.animateTo(1f, animationSpec = tween(1000))
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
-        HeightSpacer(height = 66.dp)
+        HeightSpacer(height = 33.dp)
 
         Row(
             modifier = Modifier
@@ -63,8 +77,8 @@ fun WineVarietyContent() {
                     .background(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
-                                WineyTheme.colors.main_1,
-                                WineyTheme.colors.main_2,
+                                WineyTheme.colors.main_1.copy(animatedProgress.value),
+                                WineyTheme.colors.main_2.copy(animatedProgress.value),
                             )
                         )
                     )
@@ -89,7 +103,7 @@ fun WineVarietyContent() {
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFF8E79D0),
+                                Color(0xFF8E79D0).copy(animatedProgress.value),
                                 Color.Transparent,
                             )
                         )
@@ -115,7 +129,7 @@ fun WineVarietyContent() {
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFF948FA6),
+                                Color(0xFF948FA6).copy(animatedProgress.value),
                                 Color.Transparent,
                             )
                         )

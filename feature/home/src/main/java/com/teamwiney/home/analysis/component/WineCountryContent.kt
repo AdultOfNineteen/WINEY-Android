@@ -1,5 +1,7 @@
 package com.teamwiney.home.analysis.component
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +22,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +36,13 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun WineCountryContent() {
     Column(modifier = Modifier.fillMaxSize()) {
-        HeightSpacer(height = 66.dp)
+        HeightSpacer(height = 33.dp)
 
         Row(
             modifier = Modifier
@@ -88,6 +93,15 @@ private fun RowScope.WineAnalysisBottle(
     percentage: Float = 0.6f, // 0.6f 가 100% 라고 가정
     textColor: Color = WineyTheme.colors.gray_50,
 ) {
+    val animatedProgress = remember { Animatable(0f) }
+
+    LaunchedEffect(true) {
+        launch {
+            animatedProgress.snapTo(0f)
+            animatedProgress.animateTo(1f, animationSpec = tween(1000))
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -112,7 +126,7 @@ private fun RowScope.WineAnalysisBottle(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .fillMaxHeight(percentage)
+                    .fillMaxHeight(percentage * animatedProgress.value)
                     .clip(RoundedCornerShape(3.dp))
                     .padding(6.dp)
                     .background(

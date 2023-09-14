@@ -1,7 +1,6 @@
 package com.teamwiney.home.analysis.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,25 +10,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.PreviewWineTasteComparisonGraph
+import com.teamwiney.ui.components.RadarChart
+import com.teamwiney.ui.components.RadarData
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineyTasteContent() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        HeightSpacer(height = 66.dp)
+fun WineTasteContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        HeightSpacer(height = 33.dp)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
+        Row {
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -45,8 +45,17 @@ fun WineyTasteContent() {
         }
         HeightSpacer(height = 40.dp)
 
-        // TODO 파이 차트 그래프...
-        PreviewWineTasteComparisonGraph()
+        RadarChart(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            data = listOf(
+                RadarData("당도", 5f),
+                RadarData("여운", 1f),
+                RadarData("알코올", 5f),
+                RadarData("탄닌", 1f),
+                RadarData("바디", 5f),
+                RadarData("산도", 2f)
+            )
+        )
     }
 }
 
