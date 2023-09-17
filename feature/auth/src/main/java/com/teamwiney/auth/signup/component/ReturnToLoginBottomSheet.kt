@@ -1,4 +1,4 @@
-package com.teamwiney.ui.signup
+package com.teamwiney.auth.signup.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,21 +22,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun SignUpBottomSheet(
+fun ReturnToLoginBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
-    content: @Composable () -> Unit
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(containerColor)
+            .background(
+                color = containerColor,
+                shape = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp)
+            )
             .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -55,12 +60,23 @@ fun SignUpBottomSheet(
             contentDescription = null
         )
         HeightSpacer(height = 16.dp)
-        content()
+        Text(
+            text = "진행을 중단하고 처음으로\n되돌아가시겠어요?",
+            style = WineyTheme.typography.bodyB1,
+            color = WineyTheme.colors.gray_200,
+            textAlign = TextAlign.Center
+        )
+        HeightSpacer(height = 66.dp)
+        BottomSheetSelectionButton(
+            onConfirm = { onConfirm() },
+            onCancel = { onCancel() }
+        )
+        HeightSpacer(height = 20.dp)
     }
 }
 
 @Composable
-fun BottomSheetSelectionButton(
+private fun BottomSheetSelectionButton(
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
