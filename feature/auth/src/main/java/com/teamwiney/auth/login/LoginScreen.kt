@@ -74,11 +74,7 @@ fun LoginScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    appState.navigate(effect.destination) {
-                        popUpTo(AuthDestinations.Login.ROUTE) {
-                            inclusive = true
-                        }
-                    }
+                    appState.navigate(effect.destination)
                 }
 
                 is LoginContract.Effect.ShowSnackBar -> {
@@ -144,11 +140,7 @@ fun LoginScreen(
                 }
                 // 회원가입 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_winey_logo_title) {
-                    appState.navigate("${AuthDestinations.SignUp.PHONE}/4") {
-                        popUpTo(AuthDestinations.Login.ROUTE) {
-                            inclusive = true
-                        }
-                    }
+                    appState.navigate("${AuthDestinations.SignUp.ROUTE}/6")
                 }
             }
             Text(

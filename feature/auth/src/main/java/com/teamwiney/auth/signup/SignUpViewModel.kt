@@ -28,18 +28,10 @@ class SignUpViewModel @Inject constructor(
                 sendAuthenticationNumber()
             }
 
-            is SignUpContract.Event.BackToLoginButtonClicked -> {
+            is SignUpContract.Event.BackToLoginButtonClicked, SignUpContract.Event.CancelTasteSelectionButtonClicked-> {
                 postEffect(
                     SignUpContract.Effect.ShowBottomSheet(
                         SignUpContract.BottomSheet.ReturnToLogin
-                    )
-                )
-            }
-
-            is SignUpContract.Event.CancelTasteSelectionButtonClicked -> {
-                postEffect(
-                    SignUpContract.Effect.ShowBottomSheet(
-                        SignUpContract.BottomSheet.CancelTasteSelection
                     )
                 )
             }
@@ -89,17 +81,11 @@ class SignUpViewModel @Inject constructor(
         ).collectLatest {
             when (it) {
                 is ApiResult.Success -> {
-                    postEffect(SignUpContract.Effect.ShowBottomSheet(SignUpContract.BottomSheet.SendMessage))
+                    postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.FAVORITE_TASTE))
                 }
 
                 is ApiResult.ApiError -> {
-                    updateState(
-                        currentState.copy(
-                            verifyNumberErrorState = true,
-                            verifyNumberErrorText = "인증번호를 확인해 주세요."
-                        )
-                    )
-                    postEffect(SignUpContract.Effect.ShowSnackBar("인증번호를 확인해 주세요."))
+                    postEffect(SignUpContract.Effect.ShowBottomSheet(SignUpContract.BottomSheet.AuthenticationFailed))
                 }
 
                 else -> {
@@ -180,13 +166,13 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    fun updateSignUpFavoriteItem(signUpFavoriteCategoryiState: SignUpFavoriteCategoryiState) =
+    fun updateSignUpFavoriteItem(signUpFavoriteCategoryUiState: SignUpFavoriteCategoryiState) =
         viewModelScope.launch {
             updateState(
                 currentState.copy(
                     favoriteTastes = currentState.favoriteTastes.map {
-                        if (it.title == signUpFavoriteCategoryiState.title) {
-                            signUpFavoriteCategoryiState
+                        if (it.title == signUpFavoriteCategoryUiState.title) {
+                            signUpFavoriteCategoryUiState
                         } else {
                             it
                         }

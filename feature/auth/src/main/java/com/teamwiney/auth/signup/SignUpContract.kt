@@ -93,15 +93,13 @@ class SignUpContract {
         ) : Effect()
 
         data class ShowSnackBar(val message: String) : Effect()
-
-        object VerifyCodeSuccess : Effect()
         data class ShowBottomSheet(val bottomSheet: BottomSheet) : Effect()
     }
 
     sealed class BottomSheet : UiSheet {
         object SendMessage : BottomSheet()
+        object AuthenticationFailed : BottomSheet()
         object ReturnToLogin : BottomSheet()
-        object CancelTasteSelection : BottomSheet()
     }
 
     companion object {

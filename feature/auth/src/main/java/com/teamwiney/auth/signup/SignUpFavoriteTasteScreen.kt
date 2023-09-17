@@ -19,19 +19,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.auth.signup.component.ReturnToLoginBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
-import com.teamwiney.ui.signup.BottomSheetSelectionButton
-import com.teamwiney.ui.signup.SignUpBottomSheet
 import com.teamwiney.ui.signup.SignUpFavoriteItemContainer
 import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -70,29 +68,21 @@ fun SignUpFavoriteTasteScreen(
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
-                        is SignUpContract.BottomSheet.CancelTasteSelection -> {
+                        is SignUpContract.BottomSheet.ReturnToLogin -> {
                             showBottomSheet {
-                                SignUpBottomSheet {
-                                    Text(
-                                        text = "진행을 중단하고 처음으로\n되돌아가시겠어요?",
-                                        style = WineyTheme.typography.bodyB1,
-                                        color = WineyTheme.colors.gray_200,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    HeightSpacer(height = 66.dp)
-                                    BottomSheetSelectionButton(
-                                        onConfirm = {
-                                            hideBottomSheet()
-                                            appState.navigate(AuthDestinations.Login.ROUTE) {
-                                                popUpTo(AuthDestinations.SignUp.ROUTE) {
-                                                    inclusive = true
-                                                }
+                                ReturnToLoginBottomSheet(
+                                    onConfirm = {
+                                        hideBottomSheet()
+                                        appState.navigate(AuthDestinations.Login.ROUTE) {
+                                            popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                                inclusive = true
                                             }
-                                        },
-                                        onCancel = { hideBottomSheet() }
-                                    )
-                                    HeightSpacer(height = 20.dp)
-                                }
+                                        }
+                                    },
+                                    onCancel = {
+                                        hideBottomSheet()
+                                    }
+                                )
                             }
                         }
 

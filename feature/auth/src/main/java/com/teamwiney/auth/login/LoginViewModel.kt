@@ -3,6 +3,7 @@ package com.teamwiney.auth.login
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -137,9 +138,16 @@ class LoginViewModel @Inject constructor(
                                 dataStoreRepository.setToken(LOGIN_TYPE, socialType.name)
                             }
                             if (userStatus == SocialLoginResponse.USER_STATUS_ACTIVE) {
-                                postEffect(LoginContract.Effect.NavigateTo(HomeDestinations.ROUTE))
+                                postEffect(LoginContract.Effect.NavigateTo(
+                                    destination = HomeDestinations.ROUTE,
+                                    navOptions = navOptions {
+                                        popUpTo(AuthDestinations.Login.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
+                                ))
                             } else {
-                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.PHONE}/${result.data.result.userId}"))
+                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}/${result.data.result.userId}"))
                             }
                         }
 

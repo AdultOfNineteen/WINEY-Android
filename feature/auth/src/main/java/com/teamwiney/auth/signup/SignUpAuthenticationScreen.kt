@@ -20,13 +20,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
+import com.teamwiney.auth.signup.component.AuthenticationFailedBottomSheet
+import com.teamwiney.auth.signup.component.ReturnToLoginBottomSheet
+import com.teamwiney.auth.signup.component.SendMessageBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -34,8 +36,6 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
-import com.teamwiney.ui.signup.BottomSheetSelectionButton
-import com.teamwiney.ui.signup.SignUpBottomSheet
 import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
@@ -60,6 +60,10 @@ fun SignUpAuthenticationScreen(
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
             when (effect) {
+                is SignUpContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
                 is SignUpContract.Effect.ShowSnackBar -> {
                     keyboardController?.hide()
                     appState.showSnackbar(effect.message)
@@ -69,65 +73,39 @@ fun SignUpAuthenticationScreen(
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.SendMessage -> {
                             showBottomSheet {
-                                SignUpBottomSheet {
-                                    Text(
-                                        text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
-                                        style = WineyTheme.typography.bodyB1,
-                                        color = WineyTheme.colors.gray_200,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    HeightSpacer(height = 14.dp)
-                                    Text(
-                                        text = "*인증번호 요청 3회 초과 시 5분 제한",
-                                        style = WineyTheme.typography.captionM2,
-                                        color = WineyTheme.colors.gray_600
-                                    )
-                                    HeightSpacer(height = 40.dp)
-                                    WButton(
-                                        text = "확인",
-                                        onClick = { hideBottomSheet() }
-                                    )
-                                    HeightSpacer(height = 20.dp)
+                                SendMessageBottomSheet {
+                                    hideBottomSheet()
                                 }
                             }
                         }
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             showBottomSheet {
-                                SignUpBottomSheet {
-                                    Text(
-                                        text = "진행을 중단하고 처음으로\n되돌아가시겠어요?",
-                                        style = WineyTheme.typography.bodyB1,
-                                        color = WineyTheme.colors.gray_200,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    HeightSpacer(height = 66.dp)
-                                    BottomSheetSelectionButton(
-                                        onConfirm = {
-                                            hideBottomSheet()
-                                            appState.navigate(AuthDestinations.Login.ROUTE) {
-                                                popUpTo(AuthDestinations.SignUp.ROUTE) {
-                                                    inclusive = true
-                                                }
+                                ReturnToLoginBottomSheet(
+                                    onConfirm = {
+                                        hideBottomSheet()
+                                        appState.navigate(AuthDestinations.Login.ROUTE) {
+                                            popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                                inclusive = true
                                             }
-                                        },
-                                        onCancel = { hideBottomSheet() }
-                                    )
-                                    HeightSpacer(height = 20.dp)
-                                }
+                                        }
+                                    },
+                                    onCancel = {
+                                        hideBottomSheet()
+                                    }
+                                )
                             }
                         }
 
-                        else -> {}
+                        is SignUpContract.BottomSheet.AuthenticationFailed -> {
+                            showBottomSheet {
+                                AuthenticationFailedBottomSheet {
+                                    hideBottomSheet()
+                                }
+                            }
+                        }
                     }
                 }
-
-                is SignUpContract.Effect.VerifyCodeSuccess -> {
-                    keyboardController?.hide()
-                    appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
-                }
-
-                else -> {}
             }
         }
     }
