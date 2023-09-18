@@ -3,7 +3,9 @@ package com.teamwiney.data.di
 import com.teamwiney.data.BuildConfig
 import com.teamwiney.data.network.adapter.ApiResultCallAdapterFactory
 import com.teamwiney.data.network.converter.EnumConverterFactory
+import com.teamwiney.data.network.interceptor.AuthInterceptor
 import com.teamwiney.data.network.service.AuthService
+import com.teamwiney.data.network.service.WineService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +22,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(): OkHttpClient =
+    fun providesOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor()
@@ -30,6 +32,7 @@ object NetworkModule {
                         }
                     }
             )
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
@@ -47,5 +50,10 @@ object NetworkModule {
     @Singleton
     fun providesAuthService(retrofit: Retrofit) =
         retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesWineService(retrofit: Retrofit) =
+        retrofit.create(WineService::class.java)
 
 }

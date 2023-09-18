@@ -15,7 +15,7 @@ class LoginContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        class KakaoLoginButtonClicked(val context: Context) : Event()
+        data class KakaoLoginButtonClicked(val context: Context) : Event()
         object GoogleLoginButtonClicked : Event()
 
     }
