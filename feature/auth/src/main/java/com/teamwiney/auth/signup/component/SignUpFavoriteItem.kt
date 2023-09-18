@@ -1,4 +1,4 @@
-package com.teamwiney.ui.signup
+package com.teamwiney.auth.signup.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.teamwiney.auth.signup.component.state.SignUpFavoriteItemUiState
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.signup.state.SignUpFavoriteItemUiState
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable

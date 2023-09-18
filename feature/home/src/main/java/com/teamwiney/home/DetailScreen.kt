@@ -268,7 +268,7 @@ private fun WineOrigin() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        WineBadge(wineColor = WineColor.Red)
+        WineBadge(wineColor = WineColor.RED)
 
         Column {
             Column(

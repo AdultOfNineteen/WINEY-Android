@@ -71,7 +71,7 @@ fun VerticalBarGraph(
         // 그래프 경계선 그리기
         drawLine(
             color = borderColor,
-            start = Offset(0f, 0f),
+            start = Offset(0f, tickSpacing),
             end = Offset(0f, canvasHeight)
         )
         drawLine(

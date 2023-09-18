@@ -2,6 +2,7 @@ package com.teamwiney.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -29,7 +30,10 @@ fun NavGraphBuilder.homeGraph(
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
             )
-            HomeScreen(appState = appState)
+            HomeScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry)
+            )
         }
 
         composable(route = HomeDestinations.DETAIL) {

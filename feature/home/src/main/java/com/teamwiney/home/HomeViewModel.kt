@@ -3,7 +3,9 @@ package com.teamwiney.home
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.repository.auth.WineRepository
+import com.teamwiney.data.repository.wine.WineRepository
+import com.teamwiney.home.component.state.WineCardUiState
+import com.teamwiney.ui.components.WineColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
@@ -39,15 +41,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getRecommendWines() = viewModelScope.launch {
+    fun getRecommendWines() = viewModelScope.launch {
         wineRepository.getRecommendWines().onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
-                    currentState.copy(
-                        recommendWines = it.data.result
+                    updateState(
+                        currentState.copy(
+                            recommendWines = it.data.result.map { wine ->
+                                WineCardUiState(
+                                    wineColor = convertToWineColor(wine.type),
+                                    name = wine.name,
+                                    country = wine.country,
+                                    varietal = wine.varietal.firstOrNull() ?: "Unknown",
+                                    price = wine.price
+                                )
+                            }
+                        )
                     )
                 }
 
@@ -59,6 +71,14 @@ class HomeViewModel @Inject constructor(
                     postEffect(HomeContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                 }
             }
+        }
+    }
+
+    private fun convertToWineColor(type: String): WineColor {
+        return try  {
+            WineColor.valueOf(type)
+        } catch (e: IllegalArgumentException) {
+            WineColor.RED
         }
     }
 

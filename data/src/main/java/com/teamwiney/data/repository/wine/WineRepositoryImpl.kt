@@ -1,4 +1,4 @@
-package com.teamwiney.data.repository.auth
+package com.teamwiney.data.repository.wine
 
 import com.teamwiney.data.datasource.WineDataSource
 import javax.inject.Inject

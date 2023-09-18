@@ -1,4 +1,4 @@
-package com.teamwiney.home.analysis.component
+package com.teamwiney.home.analysis.component.pagercontent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

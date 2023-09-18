@@ -1,4 +1,4 @@
-package com.teamwiney.auth.signup.component
+package com.teamwiney.auth.signup.component.bottomsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.teamwiney.ui.signup
+package com.teamwiney.home.analysis.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 
 @Composable
-fun SignUpTopBar(
+fun AnalysisTopBar(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {

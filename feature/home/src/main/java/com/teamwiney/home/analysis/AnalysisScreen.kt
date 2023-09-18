@@ -31,14 +31,15 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
+import com.teamwiney.home.analysis.component.AnalysisBottomContent
+import com.teamwiney.home.analysis.component.AnalysisStartButton
+import com.teamwiney.home.analysis.component.AnalysisTopBar
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
-import com.teamwiney.ui.home.anaylsis.AnalysisBottomContent
-import com.teamwiney.ui.home.anaylsis.AnalysisStartButton
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun AnalysisScreen(
@@ -58,8 +59,8 @@ fun AnalysisScreen(
             .navigationBarsPadding()
     ) {
         // TODO : TopBar가 많이 겹치는데 Button처럼 컴포넌트화 필요
-        SignUpTopBar {
-
+        AnalysisTopBar {
+            appState.navController.navigateUp()
         }
 
         VerticalPager(

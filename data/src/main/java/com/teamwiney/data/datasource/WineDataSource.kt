@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface WineDataSource {
 
-    fun getRecommendWines(): Flow<ApiResult<ResponseWrapper<RecommendWineResponse>>>
+    fun getRecommendWines(): Flow<ApiResult<ResponseWrapper<List<RecommendWineResponse>>>>
 
 }

@@ -1,4 +1,4 @@
-package com.teamwiney.auth.signup.component
+package com.teamwiney.auth.signup.component.bottomsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +23,7 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun AuthenticationFailedBottomSheet(
+fun SendMessageBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
     onConfirm: () -> Unit
@@ -54,12 +54,18 @@ fun AuthenticationFailedBottomSheet(
         )
         HeightSpacer(height = 16.dp)
         Text(
-            text = "인증에 실패했어요\n처음부터 다시 입력해주세요!",
+            text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
             style = WineyTheme.typography.bodyB1,
             color = WineyTheme.colors.gray_200,
             textAlign = TextAlign.Center
         )
-        HeightSpacer(height = 72.dp)
+        HeightSpacer(height = 14.dp)
+        Text(
+            text = "*인증번호 요청 3회 초과 시 5분 제한",
+            style = WineyTheme.typography.captionM2,
+            color = WineyTheme.colors.gray_600
+        )
+        HeightSpacer(height = 40.dp)
         WButton(
             text = "확인",
             onClick = {

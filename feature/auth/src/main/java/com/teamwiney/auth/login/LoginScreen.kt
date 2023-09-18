@@ -31,14 +31,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.common.api.ApiException
+import com.teamwiney.auth.login.component.SocialLoginButton
+import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.dashedBorder
-import com.teamwiney.ui.splash.SocialLoginButton
-import com.teamwiney.ui.splash.SplashBackground
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

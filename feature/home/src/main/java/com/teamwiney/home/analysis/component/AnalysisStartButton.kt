@@ -1,4 +1,4 @@
-package com.teamwiney.ui.home.anaylsis
+package com.teamwiney.home.analysis.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape

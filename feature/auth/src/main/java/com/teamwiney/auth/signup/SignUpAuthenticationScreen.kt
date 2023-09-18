@@ -26,9 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
-import com.teamwiney.auth.signup.component.AuthenticationFailedBottomSheet
-import com.teamwiney.auth.signup.component.ReturnToLoginBottomSheet
-import com.teamwiney.auth.signup.component.SendMessageBottomSheet
+import com.teamwiney.auth.signup.component.SignUpTopBar
+import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -36,7 +37,6 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest

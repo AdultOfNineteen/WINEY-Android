@@ -53,7 +53,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
 enum class WineColor {
-    Red, White, Rose, Sparkl, Port, Etc
+    RED, WHITE, ROSE, SPARKL, PORT, ETC
 }
 
 data class CardProperties(
@@ -76,7 +76,7 @@ fun WineCard(
     price: String
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (wineColor) {
-        WineColor.Red -> CardProperties(
+        WineColor.RED -> CardProperties(
             "RED",
             R.drawable.ic_red_wine,
             Color(0xFFA87575),
@@ -84,7 +84,7 @@ fun WineCard(
             Color(0xFF640D0D),
             Color(0xFF441010)
         )
-        WineColor.White -> CardProperties(
+        WineColor.WHITE -> CardProperties(
             "WHITE",
             R.drawable.ic_white_wine,
             Color(0xFFC1BA9E),
@@ -92,7 +92,7 @@ fun WineCard(
             Color(0xFF898472),
             Color(0xFF7A706D)
         )
-        WineColor.Rose -> CardProperties(
+        WineColor.ROSE -> CardProperties(
             "ROSE",
             R.drawable.ic_rose_wine,
             Color(0xFFC9A4A1),
@@ -100,7 +100,7 @@ fun WineCard(
             Color(0xFFBA7A71),
             Color(0xFF8F6C64)
         )
-        WineColor.Sparkl -> CardProperties(
+        WineColor.SPARKL -> CardProperties(
             "SPARKL",
             R.drawable.ic_sparkl_wine,
             Color(0xFFA78093),
@@ -108,7 +108,7 @@ fun WineCard(
             Color(0xFF777151),
             Color(0xFF4F5144)
         )
-        WineColor.Port -> CardProperties(
+        WineColor.PORT -> CardProperties(
             "PORT",
             R.drawable.ic_port_wine,
             Color(0xFFB09A86),
@@ -116,7 +116,7 @@ fun WineCard(
             Color(0xFF4F3F28),
             Color(0xFF3A2F2F)
         )
-        WineColor.Etc -> CardProperties(
+        WineColor.ETC -> CardProperties(
             "ETC",
             R.drawable.ic_etc_wine,
             Color(0xFF768169),
@@ -270,7 +270,7 @@ private fun WineCardContent(
             }
 
             IconButton(
-                onClick = { onShowDetail },
+                onClick = { onShowDetail(0L) },
                 modifier = Modifier
                     .size(24.dp)
                     .offset(x = 5.dp)
@@ -456,7 +456,7 @@ fun PreviewWineCard() {
         ) {
             WineCard(
                 onShowDetail = { },
-                wineColor = WineColor.Sparkl,
+                wineColor = WineColor.SPARKL,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",

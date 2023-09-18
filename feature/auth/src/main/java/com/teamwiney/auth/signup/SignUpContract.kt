@@ -2,12 +2,12 @@ package com.teamwiney.auth.signup
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.navigation.NavOptions
+import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
+import com.teamwiney.auth.signup.component.state.SignUpFavoriteItemUiState
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiSheet
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
-import com.teamwiney.ui.signup.state.SignUpFavoriteItemUiState
 
 class SignUpContract {
 
@@ -22,8 +22,8 @@ class SignUpContract {
         val isTimerRunning: Boolean = true,
         val remainingTime: Int = VERIFY_NUMBER_TIMER,
         val userId: String = "",
-        val favoriteTastes: List<SignUpFavoriteCategoryiState> = mutableStateListOf(
-            SignUpFavoriteCategoryiState(
+        val favoriteTastes: List<SignUpFavoriteCategoryUiState> = mutableStateListOf(
+            SignUpFavoriteCategoryUiState(
                 title = "평소 초콜릿을 먹을 때 나는?",
                 signUpFavoriteItem = listOf(
                     SignUpFavoriteItemUiState(
@@ -40,7 +40,7 @@ class SignUpContract {
                     )
                 )
             ),
-            SignUpFavoriteCategoryiState(
+            SignUpFavoriteCategoryUiState(
                 title = "내가 좋아하는 커피는?",
                 signUpFavoriteItem = listOf(
                     SignUpFavoriteItemUiState(
@@ -57,7 +57,7 @@ class SignUpContract {
                     )
                 )
             ),
-            SignUpFavoriteCategoryiState(
+            SignUpFavoriteCategoryUiState(
                 title = "내가 평소 즐겨먹는 과일은?",
                 signUpFavoriteItem = listOf(
                     SignUpFavoriteItemUiState(

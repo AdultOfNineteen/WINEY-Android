@@ -1,4 +1,4 @@
-package com.teamwiney.ui.signup
+package com.teamwiney.auth.signup.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,20 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun SignUpFavoriteItemContainer(
-    signUpFavoriteCategoryiState: SignUpFavoriteCategoryiState,
-    updateSignUpFavoriteItemUiState: (SignUpFavoriteCategoryiState) -> Unit,
+    signUpFavoriteCategoryUiState: SignUpFavoriteCategoryUiState,
+    updateSignUpFavoriteItemUiState: (SignUpFavoriteCategoryUiState) -> Unit,
     nextStep: () -> Unit = {}
 ) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = signUpFavoriteCategoryiState.title,
+            text = signUpFavoriteCategoryUiState.title,
             color = Color.White,
             style = WineyTheme.typography.captionB1,
             modifier = Modifier
@@ -40,13 +40,13 @@ fun SignUpFavoriteItemContainer(
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(21.dp)
         ) {
-            signUpFavoriteCategoryiState.signUpFavoriteItem.forEach {
+            signUpFavoriteCategoryUiState.signUpFavoriteItem.forEach {
                 SignUpFavoriteItem(
                     signUpFavoriteItemUiState = it,
                     updateSignUpFavoriteItemUiState = { selectedItem ->
                         updateSignUpFavoriteItemUiState(
-                            signUpFavoriteCategoryiState.copy(
-                                signUpFavoriteItem = signUpFavoriteCategoryiState.signUpFavoriteItem.map { signUpFavoriteItemUiState ->
+                            signUpFavoriteCategoryUiState.copy(
+                                signUpFavoriteItem = signUpFavoriteCategoryUiState.signUpFavoriteItem.map { signUpFavoriteItemUiState ->
                                     if (signUpFavoriteItemUiState.title == selectedItem.title) {
                                         it.copy(isSelected = !selectedItem.isSelected)
                                     } else {

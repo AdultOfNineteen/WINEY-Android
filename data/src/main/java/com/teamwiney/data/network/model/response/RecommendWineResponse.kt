@@ -9,6 +9,10 @@ data class RecommendWineResponse(
     val name: String,
     @SerializedName("country")
     val country: String,
+    @SerializedName("type")
+    val type: String,
     @SerializedName("varietal")
-    val varietal: String
+    val varietal: List<String>,
+    @SerializedName("price")
+    val price: Int
 )

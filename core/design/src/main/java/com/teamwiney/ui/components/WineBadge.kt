@@ -20,27 +20,27 @@ fun WineBadge(
     wineColor: WineColor
 ) {
     val (badge, image) = when (wineColor) {
-        WineColor.Red -> BadgeProperties(
+        WineColor.RED -> BadgeProperties(
             R.drawable.ic_red_wine_badge,
             R.drawable.ic_red_wine
         )
-        WineColor.White -> BadgeProperties(
+        WineColor.WHITE -> BadgeProperties(
             R.drawable.ic_white_wine_badge,
             R.drawable.ic_white_wine
         )
-        WineColor.Rose -> BadgeProperties(
+        WineColor.ROSE -> BadgeProperties(
             R.drawable.ic_rose_wine_badge,
             R.drawable.ic_rose_wine
         )
-        WineColor.Sparkl -> BadgeProperties(
+        WineColor.SPARKL -> BadgeProperties(
             R.drawable.ic_sparkl_wine_badge,
             R.drawable.ic_sparkl_wine
         )
-        WineColor.Port -> BadgeProperties(
+        WineColor.PORT -> BadgeProperties(
             R.drawable.ic_port_wine_badge,
             R.drawable.ic_port_wine
         )
-        WineColor.Etc -> BadgeProperties(
+        WineColor.ETC -> BadgeProperties(
             R.drawable.ic_etc_wine_badge,
             R.drawable.ic_etc_wine
         )

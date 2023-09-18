@@ -9,6 +9,6 @@ interface WineService {
 
     /** 추천 와인 API */
     @GET("/wines/recommend")
-    suspend fun getRecommendWines(): ApiResult<ResponseWrapper<RecommendWineResponse>>
+    suspend fun getRecommendWines(): ApiResult<ResponseWrapper<List<RecommendWineResponse>>>
 
 }

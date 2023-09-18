@@ -1,6 +1,7 @@
 package com.teamwiney.auth.signup
 
 import androidx.lifecycle.viewModelScope
+import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
@@ -8,7 +9,6 @@ import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.repository.auth.AuthRepository
-import com.teamwiney.ui.signup.state.SignUpFavoriteCategoryiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
@@ -166,7 +166,7 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    fun updateSignUpFavoriteItem(signUpFavoriteCategoryUiState: SignUpFavoriteCategoryiState) =
+    fun updateSignUpFavoriteItem(signUpFavoriteCategoryUiState: SignUpFavoriteCategoryUiState) =
         viewModelScope.launch {
             updateState(
                 currentState.copy(

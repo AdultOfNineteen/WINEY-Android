@@ -53,17 +53,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
+import com.teamwiney.home.component.state.WineCardUiState
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
-import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.components.drawColoredShadow
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.absoluteValue
 
 @Preview(
@@ -72,8 +75,27 @@ import kotlin.math.absoluteValue
 )
 @Composable
 fun HomeScreen(
-    appState: WineyAppState = rememberWineyAppState()
+    appState: WineyAppState = rememberWineyAppState(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        viewModel.getRecommendWines()
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is HomeContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is HomeContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
+    }
+
     val scrollState = rememberScrollState()
 
     // TODO : SharedPreferences나 DataStore로 관리 예정 (Application 전역변수로 관리할려면 모듈 의존성이 깨짐 오엠쥐)
@@ -94,7 +116,10 @@ fun HomeScreen(
             hintPopupOpen = hintPopupOpen
         )
         Column(modifier = Modifier.verticalScroll(scrollState)) {
-            HomeRecommendWine(appState = appState)
+            HomeRecommendWine(
+                appState = appState,
+                recommendWines = uiState.recommendWines
+            )
             HomeRecommendNewbie(appState = appState)
         }
     }
@@ -166,19 +191,11 @@ fun HomeRecommendNewbie(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeRecommendWine(
-    appState: WineyAppState
+    appState: WineyAppState,
+    recommendWines: List<WineCardUiState>
 ) {
-    // TODO : 나중에 와인 추천 리스트는 UiState로 뺄 예정
-    val wineColorList = listOf(
-        WineColor.Red,
-        WineColor.White,
-        WineColor.Rose,
-        WineColor.Sparkl,
-        WineColor.Port,
-        WineColor.Etc
-    )
 
-    val pagerState = rememberPagerState(pageCount = { 6 })
+    val pagerState = rememberPagerState(pageCount = { recommendWines.size })
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -247,11 +264,11 @@ private fun HomeRecommendWine(
                     onShowDetail = {
                         appState.navigate(HomeDestinations.DETAIL)
                     },
-                    wineColor = wineColorList[page],
-                    name = if (page == 0) "으아아아앙아아아아아아아아아아아아아아아아아아앙아아ㅏ앙아아아아아아아아아아아아아아아아아아아악" else "캄포 마리나 프리미티도 디 만두리아",
-                    origin = "이탈리아",
-                    varieties = "모스까델 데 알레한드리아",
-                    price = "8.80"
+                    wineColor = recommendWines[page].wineColor,
+                    name = recommendWines[page].name,
+                    origin = recommendWines[page].country,
+                    varieties = recommendWines[page].varietal,
+                    price = "${recommendWines[page].price}"
                 )
             }
         }

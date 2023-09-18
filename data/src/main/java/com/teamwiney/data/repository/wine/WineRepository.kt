@@ -1,4 +1,4 @@
-package com.teamwiney.data.repository.auth
+package com.teamwiney.data.repository.wine
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface WineRepository {
 
-    fun getRecommendWines(): Flow<ApiResult<ResponseWrapper<RecommendWineResponse>>>
+    fun getRecommendWines(): Flow<ApiResult<ResponseWrapper<List<RecommendWineResponse>>>>
 
 }

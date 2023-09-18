@@ -1,4 +1,4 @@
-package com.teamwiney.ui.signup.state
+package com.teamwiney.auth.signup.component.state
 
 
 data class SignUpFavoriteItemUiState(

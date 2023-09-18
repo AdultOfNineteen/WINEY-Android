@@ -1,4 +1,4 @@
-package com.teamwiney.ui.splash
+package com.teamwiney.auth.login.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

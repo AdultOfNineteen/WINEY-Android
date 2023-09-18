@@ -28,14 +28,14 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
-import com.teamwiney.home.analysis.component.WineCountryContent
-import com.teamwiney.home.analysis.component.WinePriceContent
-import com.teamwiney.home.analysis.component.WineScentContent
-import com.teamwiney.home.analysis.component.WineTasteContent
-import com.teamwiney.home.analysis.component.WineTypeContent
-import com.teamwiney.home.analysis.component.WineVarietyContent
+import com.teamwiney.home.analysis.component.AnalysisTopBar
+import com.teamwiney.home.analysis.component.pagercontent.WineCountryContent
+import com.teamwiney.home.analysis.component.pagercontent.WinePriceContent
+import com.teamwiney.home.analysis.component.pagercontent.WineScentContent
+import com.teamwiney.home.analysis.component.pagercontent.WineTasteContent
+import com.teamwiney.home.analysis.component.pagercontent.WineTypeContent
+import com.teamwiney.home.analysis.component.pagercontent.WineVarietyContent
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.signup.SignUpTopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 
@@ -55,10 +55,10 @@ fun AnalysisResultScreen(
             .systemBarsPadding()
             .navigationBarsPadding()
     ) {
-        SignUpTopBar {
-
+        AnalysisTopBar {
+            appState.navController.navigateUp()
         }
-        HeightSpacer(height = 39.dp)
+        HeightSpacer(height = 20.dp)
         Text(
             text = "이런 와인은 어때요?",
             style = WineyTheme.typography.title2,
@@ -134,4 +134,3 @@ fun AnalysisResultScreen(
         }
     }
 }
-

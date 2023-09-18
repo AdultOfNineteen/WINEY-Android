@@ -4,14 +4,14 @@ import androidx.navigation.NavOptions
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.data.network.model.response.RecommendWineResponse
+import com.teamwiney.home.component.state.WineCardUiState
 
 class HomeContract {
 
     data class State(
         val isLoading: Boolean = false,
         val error: String? = null,
-        val recommendWines: RecommendWineResponse? = null,
+        val recommendWines: List<WineCardUiState> = emptyList(),
         val tips: List<String> = emptyList(),
     ) : UiState
 

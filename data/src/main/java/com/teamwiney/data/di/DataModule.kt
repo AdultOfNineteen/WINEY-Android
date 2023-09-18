@@ -10,10 +10,10 @@ import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.WineService
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.auth.AuthRepositoryImpl
-import com.teamwiney.data.repository.auth.WineRepository
-import com.teamwiney.data.repository.auth.WineRepositoryImpl
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepositoryImpl
+import com.teamwiney.data.repository.wine.WineRepository
+import com.teamwiney.data.repository.wine.WineRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
