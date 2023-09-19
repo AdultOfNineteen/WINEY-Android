@@ -33,8 +33,8 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.home.analysis.component.AnalysisBottomContent
 import com.teamwiney.home.analysis.component.AnalysisStartButton
-import com.teamwiney.home.analysis.component.AnalysisTopBar
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
@@ -58,10 +58,11 @@ fun AnalysisScreen(
             .systemBarsPadding()
             .navigationBarsPadding()
     ) {
-        // TODO : TopBar가 많이 겹치는데 Button처럼 컴포넌트화 필요
-        AnalysisTopBar {
-            appState.navController.navigateUp()
-        }
+        TopBar(
+            leadingIconOnClick = {
+                appState.navController.navigateUp()
+            }
+        )
 
         VerticalPager(
             state = pagerState,

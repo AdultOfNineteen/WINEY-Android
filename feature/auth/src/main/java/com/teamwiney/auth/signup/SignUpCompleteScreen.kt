@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.teamwiney.auth.signup.component.SignUpTopBar
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
@@ -47,9 +47,11 @@ fun SignUpCompleteScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        SignUpTopBar {
-            appState.navController.navigateUp()
-        }
+        TopBar(
+            leadingIconOnClick = {
+                appState.navController.navigateUp()
+            }
+        )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
                 text = "안녕하세요\n와이니에 오신 걸 환영해요!",

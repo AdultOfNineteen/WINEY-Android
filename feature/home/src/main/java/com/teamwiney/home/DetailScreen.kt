@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,10 +33,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.VerticalBarGraph
 import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
@@ -46,7 +48,9 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 @Preview
-fun DetailScreen() {
+fun DetailScreen(
+    appState: WineyAppState = rememberWineyAppState()
+) {
 
     Column(
         modifier = Modifier
@@ -55,7 +59,12 @@ fun DetailScreen() {
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        DetailTopBar()
+        TopBar(
+            leadingIconOnClick = {
+                appState.navController.navigateUp()
+            },
+            content = "와인 상세정보"
+        )
 
         Column(
             modifier = Modifier
@@ -201,7 +210,9 @@ private fun WineInfoBarGraph(
     similar: Int
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HeightSpacer(height = 42.dp)
@@ -363,33 +374,5 @@ private fun TitleAndDescription() {
         style = WineyTheme.typography.bodyB2,
         color = WineyTheme.colors.gray_500
     )
-}
-
-@Preview
-@Composable
-private fun DetailTopBar() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(68.dp)
-    ) {
-        IconButton(
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.CenterStart),
-            onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back_arrow_48),
-                contentDescription = "IC_BACK_ARROW",
-                tint = WineyTheme.colors.gray_50
-            )
-        }
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = "와인 상세정보",
-            style = WineyTheme.typography.title2,
-            color = WineyTheme.colors.gray_50
-        )
-    }
 }
 

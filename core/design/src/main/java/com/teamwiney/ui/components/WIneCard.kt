@@ -53,7 +53,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
 enum class WineColor {
-    RED, WHITE, ROSE, SPARKL, PORT, ETC
+    RED, WHITE, ROSE, SPARKLING, FORTIFIED, OTHER
 }
 
 data class CardProperties(
@@ -100,7 +100,7 @@ fun WineCard(
             Color(0xFFBA7A71),
             Color(0xFF8F6C64)
         )
-        WineColor.SPARKL -> CardProperties(
+        WineColor.SPARKLING -> CardProperties(
             "SPARKL",
             R.drawable.ic_sparkl_wine,
             Color(0xFFA78093),
@@ -108,7 +108,7 @@ fun WineCard(
             Color(0xFF777151),
             Color(0xFF4F5144)
         )
-        WineColor.PORT -> CardProperties(
+        WineColor.FORTIFIED -> CardProperties(
             "PORT",
             R.drawable.ic_port_wine,
             Color(0xFFB09A86),
@@ -116,7 +116,7 @@ fun WineCard(
             Color(0xFF4F3F28),
             Color(0xFF3A2F2F)
         )
-        WineColor.ETC -> CardProperties(
+        WineColor.OTHER -> CardProperties(
             "ETC",
             R.drawable.ic_etc_wine,
             Color(0xFF768169),
@@ -456,7 +456,7 @@ fun PreviewWineCard() {
         ) {
             WineCard(
                 onShowDetail = { },
-                wineColor = WineColor.SPARKL,
+                wineColor = WineColor.SPARKLING,
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",

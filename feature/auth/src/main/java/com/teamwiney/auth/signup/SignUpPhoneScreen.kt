@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
-import com.teamwiney.auth.signup.component.SignUpTopBar
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -31,6 +30,7 @@ import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PhoneNumberVisualTransformation
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
 import com.teamwiney.ui.theme.WineyTheme
@@ -107,9 +107,11 @@ fun SignUpPhoneScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        SignUpTopBar {
-            appState.navController.navigateUp()
-        }
+        TopBar(
+            leadingIconOnClick = {
+                appState.navController.navigateUp()
+            }
+        )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
                 text = "휴대폰 번호를 입력해주세요",

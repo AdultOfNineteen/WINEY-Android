@@ -24,13 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.component.SignUpFavoriteItemContainer
-import com.teamwiney.auth.signup.component.SignUpTopBar
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -103,13 +103,15 @@ fun SignUpFavoriteTasteScreen(
             .navigationBarsPadding()
     ) {
         Box {
-            SignUpTopBar {
-                if (pagerState.currentPage == 0) {
-                    viewModel.processEvent(SignUpContract.Event.CancelTasteSelectionButtonClicked)
-                } else {
-                    scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+            TopBar(
+                leadingIconOnClick =  {
+                    if (pagerState.currentPage == 0) {
+                        viewModel.processEvent(SignUpContract.Event.CancelTasteSelectionButtonClicked)
+                    } else {
+                        scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+                    }
                 }
-            }
+            )
             Text(
                 text = "${pagerState.currentPage + 1}/${uiState.favoriteTastes.size}",
                 modifier = Modifier

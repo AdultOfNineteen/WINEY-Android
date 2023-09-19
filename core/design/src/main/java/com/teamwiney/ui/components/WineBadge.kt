@@ -32,15 +32,15 @@ fun WineBadge(
             R.drawable.ic_rose_wine_badge,
             R.drawable.ic_rose_wine
         )
-        WineColor.SPARKL -> BadgeProperties(
+        WineColor.SPARKLING -> BadgeProperties(
             R.drawable.ic_sparkl_wine_badge,
             R.drawable.ic_sparkl_wine
         )
-        WineColor.PORT -> BadgeProperties(
+        WineColor.FORTIFIED -> BadgeProperties(
             R.drawable.ic_port_wine_badge,
             R.drawable.ic_port_wine
         )
-        WineColor.ETC -> BadgeProperties(
+        WineColor.OTHER -> BadgeProperties(
             R.drawable.ic_etc_wine_badge,
             R.drawable.ic_etc_wine
         )
