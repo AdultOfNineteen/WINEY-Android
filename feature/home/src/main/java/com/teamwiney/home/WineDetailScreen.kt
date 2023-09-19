@@ -48,7 +48,7 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 @Preview
-fun DetailScreen(
+fun WineDetailScreen(
     appState: WineyAppState = rememberWineyAppState()
 ) {
 

@@ -36,13 +36,26 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
-        composable(route = HomeDestinations.DETAIL) {
+        composable(route = HomeDestinations.WINE_TIP) {
             val backStackEntry = rememberNavControllerBackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
             )
-            DetailScreen()
+            WineTipScreen(
+                appState = appState
+            )
+        }
+
+        composable(route = HomeDestinations.WINE_DETAIL) {
+            val backStackEntry = rememberNavControllerBackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = HomeDestinations.ROUTE
+            )
+            WineDetailScreen(
+                appState = appState
+            )
         }
     }
 

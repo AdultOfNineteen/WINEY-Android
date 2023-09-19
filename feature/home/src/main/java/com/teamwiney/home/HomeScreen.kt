@@ -146,7 +146,7 @@ fun HomeRecommendNewbie(
         ) {
             Text(
                 text = buildAnnotatedString {
-                    append("와인 초보를 위한")
+                    append("와인 초보를 위한 ")
                     withStyle(style = SpanStyle(WineyTheme.colors.main_2)) {
                         append("TIP")
                     }
@@ -156,7 +156,9 @@ fun HomeRecommendNewbie(
                 color = Color.White,
             )
             IconButton(
-                onClick = { },
+                onClick = {
+                    appState.navigate(HomeDestinations.WINE_TIP)
+                },
                 modifier = Modifier
                     .size(48.dp)
                     .rotate(180f)
@@ -262,7 +264,7 @@ private fun HomeRecommendWine(
                             )
                         },
                     onShowDetail = {
-                        appState.navigate(HomeDestinations.DETAIL)
+                        appState.navigate(HomeDestinations.WINE_DETAIL)
                     },
                     wineColor = recommendWines[page].wineColor,
                     name = recommendWines[page].name,

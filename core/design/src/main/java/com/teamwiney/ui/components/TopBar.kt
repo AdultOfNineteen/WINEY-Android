@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +29,7 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun TopBar(
     content: String = "",
+    annotatedContent: AnnotatedString = buildAnnotatedString {  },
     @DrawableRes leadingIcon: Int? = R.drawable.ic_back_arrow_48,
     @DrawableRes trailingIcon: Int? = null,
     leadingIconOnClick: () -> Unit = {},
@@ -69,6 +72,14 @@ fun TopBar(
 
         Text(
             text = content,
+            style = WineyTheme.typography.title2.copy(
+                fontWeight = FontWeight.Bold,
+                color = WineyTheme.colors.gray_50
+            )
+        )
+
+        Text(
+            text = annotatedContent,
             style = WineyTheme.typography.title2.copy(
                 fontWeight = FontWeight.Bold,
                 color = WineyTheme.colors.gray_50

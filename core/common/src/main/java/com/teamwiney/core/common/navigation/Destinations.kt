@@ -25,7 +25,8 @@ object HomeDestinations {
     const val ROUTE = "homeRoute"
 
     const val HOME = "home"
-    const val DETAIL = "detail"
+    const val WINE_DETAIL = "detail"
+    const val WINE_TIP = "wineTip"
 
     object Analysis {
         const val ROUTE = "analysis"
