@@ -1,16 +1,18 @@
 package com.teamwiney.home.analysis.component.pagercontent
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,18 +26,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core.design.R
+import androidx.compose.ui.unit.times
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun WineScentContent() {
+    val animatedProgress = remember { Animatable(0f) }
 
     var animatedOffset by remember {
         mutableStateOf(0.dp)
@@ -60,6 +64,11 @@ fun WineScentContent() {
     )
 
     LaunchedEffect(true) {
+        launch {
+            animatedProgress.snapTo(0f)
+            animatedProgress.animateTo(1f, animationSpec = tween(1000))
+        }
+
         while (true) {
             animatedOffset = (-4).dp
             animatedOffset2 = 2.dp
@@ -98,16 +107,28 @@ fun WineScentContent() {
         HeightSpacer(height = 40.dp)
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.mipmap.img_splash_background),
-                contentDescription = "IMG_SPLASH_BACKGROUND",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Inside
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth().height(324.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(324 * animatedProgress.value.dp)
+                        .blur(50.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .size(108 * animatedProgress.value.dp)
+                            .background(
+                                color = Color(0xFF5123DF).copy(0.5f),
+                                shape = CircleShape
+                            )
+                    )
+                }
+            }
 
             /** 서버에서 내려주는 값은 다음과 같음
              * 7개의 값을 내려주며 랭킹 1순위(1개), 2순위(1개), 3순위(3개), 4순위(2개)로 UI구성

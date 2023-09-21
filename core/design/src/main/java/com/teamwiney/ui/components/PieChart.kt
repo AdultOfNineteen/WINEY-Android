@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.center
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.launch
 import kotlin.math.cos
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sin
 
 data class ChartData(
@@ -41,7 +43,7 @@ fun PieChart(
     modifier: Modifier = Modifier,
     chartDataList: List<ChartData>
 ) {
-    val animatedProgress = remember { Animatable(0f) }
+    val animatedAngle = remember { Animatable(-90f) }
     val textMeasurer = rememberTextMeasurer()
     val textMeasureResults = remember(chartDataList) {
         chartDataList.mapIndexed { index, chartData ->
@@ -59,8 +61,8 @@ fun PieChart(
 
     LaunchedEffect(true) {
         launch {
-            animatedProgress.snapTo(0f)
-            animatedProgress.animateTo(1f, animationSpec = tween(1000))
+            animatedAngle.snapTo(0f)
+            animatedAngle.animateTo(270f, animationSpec = tween(1000))
         }
     }
 
@@ -87,21 +89,21 @@ fun PieChart(
                 val textMeasureResult = textMeasureResults[index]
 
                 if (index == 0) {
-                    // 첫 번째 Arc일 때 바깥쪽만 두꺼워지도록 Stroke의 두께를 조절합니다.
+                    // 첫 번째 Arc일 때 바깥쪽만 두꺼워지도록 Stroke의 두께를 조절
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = (sweepAngle - gapAngle) * animatedProgress.value,
+                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle.value - startAngle), 0f)),
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),
-                        style = Stroke(strokeWidth * 1.2f) // 두께를 조절합니다.
+                        style = Stroke(strokeWidth * 1.2f)
                     )
                 } else {
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = (sweepAngle - gapAngle) * animatedProgress.value,
+                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle.value - startAngle), 0f)),
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),

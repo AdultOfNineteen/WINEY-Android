@@ -71,14 +71,14 @@ fun WineVarietyContent() {
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.62f)
+                    .fillMaxWidth(0.62f * animatedProgress.value)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
                         brush = Brush.horizontalGradient(
                             colors = listOf(
-                                WineyTheme.colors.main_1.copy(animatedProgress.value),
-                                WineyTheme.colors.main_2.copy(animatedProgress.value),
+                                WineyTheme.colors.main_1,
+                                WineyTheme.colors.main_2
                             )
                         )
                     )
@@ -97,13 +97,13 @@ fun WineVarietyContent() {
                 modifier = Modifier
                     .padding(top = 82.dp)
                     .align(Alignment.TopEnd)
-                    .fillMaxWidth(0.52f)
+                    .fillMaxWidth(0.52f * animatedProgress.value)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFF8E79D0).copy(animatedProgress.value),
+                                Color(0xFF8E79D0),
                                 Color.Transparent,
                             )
                         )
@@ -123,13 +123,13 @@ fun WineVarietyContent() {
                 modifier = Modifier
                     .padding(top = 182.dp, start = 40.dp)
                     .align(Alignment.TopStart)
-                    .fillMaxWidth(0.52f)
+                    .fillMaxWidth(0.52f * animatedProgress.value)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFF948FA6).copy(animatedProgress.value),
+                                Color(0xFF948FA6),
                                 Color.Transparent,
                             )
                         )

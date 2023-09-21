@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -35,8 +36,8 @@ import com.teamwiney.home.analysis.component.AnalysisBottomContent
 import com.teamwiney.home.analysis.component.AnalysisStartButton
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
-import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -92,6 +93,11 @@ fun AnalysisScreen(
 private fun AnalysisProgressContent(
     getAnalytics: () -> Unit = {}
 ) {
+    LaunchedEffect(true) {
+        delay(1000)
+        getAnalytics()
+    }
+
     HeightSpacer(height = 39.dp)
     Box(
         modifier = Modifier
@@ -117,21 +123,11 @@ private fun AnalysisProgressContent(
                 .fillMaxWidth()
         )
         Image(
-            painter = painterResource(id = R.mipmap.img_splash_background),
+            painter = painterResource(id = R.mipmap.img_analysis_background),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
-        )
-        WButton(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 92.dp),
-            text = "이버튼을 없앨 예정",
-            onClick = {
-                getAnalytics()
-            }
         )
     }
 }
