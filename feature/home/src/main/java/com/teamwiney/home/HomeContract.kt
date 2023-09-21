@@ -10,7 +10,7 @@ class HomeContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val error: String? = null,
+        val isFirstScroll: Boolean = true,
         val recommendWines: List<WineCardUiState> = emptyList(),
         val tips: List<String> = emptyList(),
     ) : UiState

@@ -34,7 +34,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -98,11 +97,9 @@ fun HomeScreen(
 
     val scrollState = rememberScrollState()
 
-    // TODO : SharedPreferences나 DataStore로 관리 예정 (Application 전역변수로 관리할려면 모듈 의존성이 깨짐 오엠쥐)
-    var hintPopupOpen by remember { mutableStateOf(true) }
     LaunchedEffect(scrollState.isScrollInProgress) {
-        if (scrollState.isScrollInProgress) {
-            hintPopupOpen = false
+        if (scrollState.isScrollInProgress && uiState.isFirstScroll) {
+            viewModel.setIsFirstScroll(false)
         }
     }
 
@@ -113,7 +110,7 @@ fun HomeScreen(
     ) {
         HomeLogo(
             appState = appState,
-            hintPopupOpen = hintPopupOpen
+            hintPopupOpen = uiState.isFirstScroll
         )
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             HomeRecommendWine(

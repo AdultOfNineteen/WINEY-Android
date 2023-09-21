@@ -2,22 +2,34 @@ package com.teamwiney.home
 
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.home.component.state.WineCardUiState
 import com.teamwiney.ui.components.WineColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val wineRepository: WineRepository
+    private val wineRepository: WineRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<HomeContract.State, HomeContract.Event, HomeContract.Effect>(
     initialState = HomeContract.State()
 ) {
+
+    init {
+        val isFirstScroll = runBlocking {
+            dataStoreRepository.getBooleanValue(IS_FIRST_SCROLL).first()
+        }
+        updateState(currentState.copy(isFirstScroll = isFirstScroll))
+    }
 
     override fun reduceState(event: HomeContract.Event) {
         viewModelScope.launch {
@@ -38,6 +50,13 @@ class HomeViewModel @Inject constructor(
 
                 }
             }
+        }
+    }
+
+    fun setIsFirstScroll(value: Boolean) {
+        viewModelScope.launch {
+            dataStoreRepository.setBooleanValue(IS_FIRST_SCROLL, value)
+            updateState(currentState.copy(isFirstScroll = value))
         }
     }
 

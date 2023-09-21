@@ -1,9 +1,9 @@
 package com.teamwiney.auth.splash
 
 import androidx.lifecycle.viewModelScope
-import com.teamwiney.auth.login.LoginContract
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.di.DispatcherModule
@@ -24,6 +24,13 @@ class SplashViewModel @Inject constructor(
 ) : BaseViewModel<SplashContract.State, SplashContract.Event, SplashContract.Effect>(
     initialState = SplashContract.State()
 ) {
+    init {
+        viewModelScope.launch {
+            dataStoreRepository.setBooleanValue(Constants.IS_FIRST_SCROLL, true)
+        }
+    }
+
+
     override fun reduceState(event: SplashContract.Event) {
         viewModelScope.launch {
             when (event) {
@@ -36,9 +43,9 @@ class SplashViewModel @Inject constructor(
 
     private fun autoLoginCheck() = viewModelScope.launch {
         val accessToken =
-            withContext(defaultDispatcher) { dataStoreRepository.getToken(ACCESS_TOKEN) }
+            withContext(defaultDispatcher) { dataStoreRepository.getStringValue(ACCESS_TOKEN) }
         val refreshToken =
-            withContext(defaultDispatcher) { dataStoreRepository.getToken(REFRESH_TOKEN) }
+            withContext(defaultDispatcher) { dataStoreRepository.getStringValue(REFRESH_TOKEN) }
 
         // API 나오면 연결
 //        authRepository.autoLogin()

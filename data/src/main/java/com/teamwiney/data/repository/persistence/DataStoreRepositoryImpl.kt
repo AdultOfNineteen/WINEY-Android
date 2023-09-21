@@ -14,7 +14,7 @@ class DataStoreRepositoryImpl(
 ) : DataStoreRepository {
 
 
-    override fun getToken(type: Preferences.Key<String>): Flow<String> {
+    override fun getStringValue(type: Preferences.Key<String>): Flow<String> {
         return preferenceDataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -28,9 +28,30 @@ class DataStoreRepositoryImpl(
             }
     }
 
-    override suspend fun setToken(type: Preferences.Key<String>, value: String) {
+    override suspend fun setStringValue(type: Preferences.Key<String>, value: String) {
         preferenceDataStore.edit { settings ->
             settings[type] = value
         }
     }
+
+    override fun getBooleanValue(type: Preferences.Key<Boolean>): Flow<Boolean> {
+        return preferenceDataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map { prefs ->
+                prefs[type] ?: false
+            }
+    }
+
+    override suspend fun setBooleanValue(type: Preferences.Key<Boolean>, value: Boolean) {
+        preferenceDataStore.edit { settings ->
+            settings[type] = value
+        }
+    }
+
 }

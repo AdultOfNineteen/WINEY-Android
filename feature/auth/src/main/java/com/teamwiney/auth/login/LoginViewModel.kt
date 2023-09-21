@@ -127,15 +127,15 @@ class LoginViewModel @Inject constructor(
                         is ApiResult.Success -> {
                             val userStatus = result.data.result.userStatus
                             viewModelScope.launch {
-                                dataStoreRepository.setToken(
+                                dataStoreRepository.setStringValue(
                                     ACCESS_TOKEN,
                                     result.data.result.accessToken
                                 )
-                                dataStoreRepository.setToken(
+                                dataStoreRepository.setStringValue(
                                     REFRESH_TOKEN,
                                     result.data.result.refreshToken
                                 )
-                                dataStoreRepository.setToken(LOGIN_TYPE, socialType.name)
+                                dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
                             }
                             if (userStatus == SocialLoginResponse.USER_STATUS_ACTIVE) {
                                 postEffect(LoginContract.Effect.NavigateTo(
