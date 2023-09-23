@@ -1,4 +1,4 @@
-package com.teamwiney.home.analysis.component.pagercontent
+package com.teamwiney.analysis.component.pagercontent
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -110,7 +110,9 @@ fun WineScentContent() {
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().height(324.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(324.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(

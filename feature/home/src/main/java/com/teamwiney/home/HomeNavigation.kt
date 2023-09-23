@@ -8,11 +8,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.analysis.AnalysisResultScreen
+import com.teamwiney.analysis.AnalysisScreen
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
-import com.teamwiney.home.analysis.AnalysisResultScreen
-import com.teamwiney.home.analysis.AnalysisScreen
 
 fun NavGraphBuilder.homeGraph(
     appState: WineyAppState,

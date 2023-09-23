@@ -1,4 +1,4 @@
-package com.teamwiney.home.analysis.component
+package com.teamwiney.analysis.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

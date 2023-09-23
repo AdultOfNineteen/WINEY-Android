@@ -1,4 +1,4 @@
-package com.teamwiney.home.analysis.component.pagercontent
+package com.teamwiney.analysis.component.pagercontent
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

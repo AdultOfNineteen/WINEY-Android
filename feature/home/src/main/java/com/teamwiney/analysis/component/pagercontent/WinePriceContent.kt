@@ -1,4 +1,4 @@
-package com.teamwiney.home.analysis.component.pagercontent
+package com.teamwiney.analysis.component.pagercontent
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -73,7 +73,9 @@ fun WinePriceContent() {
             contentAlignment = Alignment.Center
         ) {
             Box(
-                modifier = Modifier.size(324 * animatedProgress.value.dp).blur(50.dp),
+                modifier = Modifier
+                    .size(324 * animatedProgress.value.dp)
+                    .blur(50.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Spacer(
