@@ -17,6 +17,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.analysis.component.pagercontent.WineCountryContent
 import com.teamwiney.analysis.component.pagercontent.WinePriceContent
 import com.teamwiney.analysis.component.pagercontent.WineScentContent
@@ -44,9 +46,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun AnalysisResultScreen(
     appState: WineyAppState = rememberWineyAppState(),
+    viewModel: AnalysisViewModel = hiltViewModel()
 ) {
 
     val pagerState = rememberPagerState(pageCount = { 6 })
+
+    LaunchedEffect(true) {
+        viewModel.processEvent(AnalysisContract.Event.GetTastAnalysis)
+    }
 
     Column(
         modifier = Modifier

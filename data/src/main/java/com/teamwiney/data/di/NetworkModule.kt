@@ -5,6 +5,7 @@ import com.teamwiney.data.network.adapter.ApiResultCallAdapterFactory
 import com.teamwiney.data.network.converter.EnumConverterFactory
 import com.teamwiney.data.network.interceptor.AuthInterceptor
 import com.teamwiney.data.network.service.AuthService
+import com.teamwiney.data.network.service.TastingNoteService
 import com.teamwiney.data.network.service.WineService
 import dagger.Module
 import dagger.Provides
@@ -55,5 +56,10 @@ object NetworkModule {
     @Singleton
     fun providesWineService(retrofit: Retrofit) =
         retrofit.create(WineService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesTastingNoteService(retrofit: Retrofit) =
+        retrofit.create(TastingNoteService::class.java)
 
 }
