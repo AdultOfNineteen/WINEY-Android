@@ -85,7 +85,7 @@ fun AnalysisResultScreen(
             modifier = Modifier.weight(1f),
             userScrollEnabled = true,
         ) {
-            when (it) {
+            when (pagerState.currentPage) {
                 0 -> {
                     WineTypeContent()
                 }

@@ -32,11 +32,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WineVarietyContent() {
-    val animatedProgress = remember { Animatable(0f) }
+    val animatedProgress = remember { Animatable(0.2f) }
 
     LaunchedEffect(true) {
         launch {
-            animatedProgress.snapTo(0f)
+            animatedProgress.snapTo(0.2f)
             animatedProgress.animateTo(1f, animationSpec = tween(1000))
         }
     }
