@@ -30,13 +30,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.Top3Country
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
 fun WineCountryContent(
-    progress: Float
+    progress: Float,
+    countries: List<Top3Country>
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 33.dp)
@@ -67,20 +69,23 @@ fun WineCountryContent(
                 .padding(horizontal = 54.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            WineAnalysisBottle(
-                0.6f,
-                textColor = WineyTheme.colors.gray_50
-            )
-            Spacer(modifier = Modifier.weight(0.2f))
-            WineAnalysisBottle(
-                0.4f,
-                textColor = WineyTheme.colors.gray_700
-            )
-            Spacer(modifier = Modifier.weight(0.2f))
-            WineAnalysisBottle(
-                0.2f,
-                textColor = WineyTheme.colors.gray_900
-            )
+            countries.forEachIndexed { index, country ->
+                val labelColor = when (index) {
+                    0 -> WineyTheme.colors.gray_50
+                    1 -> WineyTheme.colors.gray_700
+                    2 -> WineyTheme.colors.gray_900
+                    else -> WineyTheme.colors.gray_50
+                }
+
+                WineAnalysisBottle(
+                    progress = progress,
+                    percentage = country.percent.toFloat(),
+                    label = country.country,
+                    textColor = labelColor,
+                )
+
+                if (index != 2) Spacer(modifier = Modifier.weight(0.2f))
+            }
         }
     }
 }
@@ -90,6 +95,7 @@ private fun RowScope.WineAnalysisBottle(
     progress: Float = 1f,
     percentage: Float = 0.6f, // 0.6f 가 100% 라고 가정
     textColor: Color = WineyTheme.colors.gray_50,
+    label: String
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -130,7 +136,7 @@ private fun RowScope.WineAnalysisBottle(
         }
 
         Text(
-            text = "이탈리야(3회)",
+            text = label,
             style = WineyTheme.typography.bodyB2,
             color = textColor,
         )

@@ -21,13 +21,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.Top3Varietal
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun WineVarietyContent(
-    progress: Float
+    progress: Float,
+    varietals: List<Top3Varietal>,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 33.dp)
@@ -57,80 +60,87 @@ fun WineVarietyContent(
                 .height(IntrinsicSize.Min)
                 .padding(start = 64.dp, end = 61.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.62f * progress)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            colors = listOf(
-                                WineyTheme.colors.main_1,
-                                WineyTheme.colors.main_2
+            varietals.forEachIndexed { index, varietal ->
+                if (index == 0) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.62f * progress)
+                            .aspectRatio(1f)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(
+                                        WineyTheme.colors.main_1,
+                                        WineyTheme.colors.main_2
+                                    )
+                                )
                             )
+                    ) {
+                        Text(
+                            text = "${varietal.varietal}\n${varietal.percent}%",
+                            style = WineyTheme.typography.bodyB1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .align(Alignment.Center)
                         )
-                    )
-            ) {
-                Text(
-                    text = "프리미티보\n74%",
-                    style = WineyTheme.typography.bodyB1,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(top = 82.dp)
-                    .align(Alignment.TopEnd)
-                    .fillMaxWidth(0.52f * progress)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFF8E79D0),
-                                Color.Transparent,
+                    }
+                } else if (index == 1) {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 82.dp)
+                            .align(Alignment.TopEnd)
+                            .fillMaxWidth(0.52f * progress)
+                            .aspectRatio(1f)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFF8E79D0),
+                                        Color.Transparent,
+                                    )
+                                )
                             )
+                    ) {
+                        Text(
+                            text = "${varietal.varietal}\n${varietal.percent}%",
+                            style = WineyTheme.typography.bodyB1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = WineyTheme.colors.gray_500,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .align(Alignment.Center)
                         )
-                    )
-            ) {
-                Text(
-                    text = "프리미티보\n74%",
-                    style = WineyTheme.typography.bodyB1,
-                    color = WineyTheme.colors.gray_500,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(top = 182.dp, start = 40.dp)
-                    .align(Alignment.TopStart)
-                    .fillMaxWidth(0.52f * progress)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFF948FA6),
-                                Color.Transparent,
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 182.dp, start = 40.dp)
+                            .align(Alignment.TopStart)
+                            .fillMaxWidth(0.52f * progress)
+                            .aspectRatio(1f)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFF948FA6),
+                                        Color.Transparent,
+                                    )
+                                )
                             )
+                    ) {
+                        Text(
+                            text = "${varietal.varietal}",
+                            style = WineyTheme.typography.bodyB1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = WineyTheme.colors.gray_600,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .align(Alignment.Center)
                         )
-                    )
-            ) {
-                Text(
-                    text = "까르베네\n소비뇽",
-                    style = WineyTheme.typography.bodyB1,
-                    color = WineyTheme.colors.gray_600,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                )
+                    }
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import com.teamwiney.data.network.model.response.TasteAnalysis
 class AnalysisContract {
 
     data class State(
+        val isLoading: Boolean = false,
         val tasteAnalysis: TasteAnalysis = TasteAnalysis()
     ) : UiState
 

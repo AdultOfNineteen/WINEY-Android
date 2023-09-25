@@ -20,7 +20,9 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun WineTypeContent(
-    progress: Float
+    progress: Float,
+    totalWineCount: Int,
+    buyAgainCount: Int
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -30,7 +32,7 @@ fun WineTypeContent(
                 withStyle(style = SpanStyle(color = WineyTheme.colors.gray_700)) {
                     append("지금까지 ")
                 }
-                append("7개의 와인을 마셨고\n5개의 와인에 대해 재구매")
+                append("${totalWineCount}개의 와인을 마셨고\n${buyAgainCount}개의 와인에 대해 재구매")
                 withStyle(style = SpanStyle(color = WineyTheme.colors.gray_700)) {
                     append(" 의향이 있어요!")
                 }
@@ -45,7 +47,7 @@ fun WineTypeContent(
         HeightSpacer(height = 70.dp)
         PieChart(
             progress = progress,
-            chartDataList = listOf(
+            data = listOf(
                 ChartData(
                     label = "레드",
                     color = Color(0xFF5123DF),

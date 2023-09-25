@@ -38,12 +38,12 @@ data class ChartData(
 fun PieChart(
     modifier: Modifier = Modifier,
     progress: Float = 1f,
-    chartDataList: List<ChartData>
+    data: List<ChartData>
 ) {
     val animatedAngle = -90f + (360 * progress)
     val textMeasurer = rememberTextMeasurer()
-    val textMeasureResults = remember(chartDataList) {
-        chartDataList.mapIndexed { index, chartData ->
+    val textMeasureResults = remember(data) {
+        data.mapIndexed { index, chartData ->
             val labelText = if (index == 0) {
                 "${chartData.label}\n${chartData.value}%"
             } else {
@@ -71,9 +71,9 @@ fun PieChart(
 
             var startAngle = -90f
 
-            for (index in 0..chartDataList.lastIndex) {
+            for (index in 0..data.lastIndex) {
 
-                val chartData = chartDataList[index]
+                val chartData = data[index]
                 val sweepAngle = chartData.value.asAngle
 
                 val textMeasureResult = textMeasureResults[index]
@@ -168,7 +168,7 @@ fun PreviewPieChart() {
             contentAlignment = Alignment.Center
         ) {
             PieChart(
-                chartDataList = listOf(
+                data = listOf(
                     ChartData(
                         label = "레드",
                         color = Color(0xFF5123DF),

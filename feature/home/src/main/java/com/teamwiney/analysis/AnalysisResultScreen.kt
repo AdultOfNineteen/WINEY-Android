@@ -20,6 +20,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.analysis.component.pagercontent.WineCountryContent
 import com.teamwiney.analysis.component.pagercontent.WinePriceContent
 import com.teamwiney.analysis.component.pagercontent.WineScentContent
@@ -42,6 +44,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -51,12 +54,27 @@ fun AnalysisResultScreen(
     appState: WineyAppState = rememberWineyAppState(),
     viewModel: AnalysisViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
 
     val pagerState = rememberPagerState(pageCount = { 6 })
 
     LaunchedEffect(true) {
         viewModel.processEvent(AnalysisContract.Event.GetTastAnalysis)
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is AnalysisContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is AnalysisContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
     }
+
+    val analysisData = uiState.tasteAnalysis
 
     Column(
         modifier = Modifier
@@ -81,7 +99,7 @@ fun AnalysisResultScreen(
         )
         HeightSpacer(height = 39.dp)
         Text(
-            text = "\"이탈리아의 프리미티보 품종으로 만든 레드 와인\"",
+            text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendVarietal}\"",
             style = WineyTheme.typography.title2,
             color = WineyTheme.colors.main_3,
             textAlign = TextAlign.Center,
@@ -109,37 +127,44 @@ fun AnalysisResultScreen(
             when (page) {
                 0 -> {
                     WineTypeContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        totalWineCount = analysisData.totalWineCnt,
+                        buyAgainCount = analysisData.buyAgainCnt
                     )
                 }
 
                 1 -> {
                     WineCountryContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        countries = analysisData.top3Country
                     )
                 }
 
                 2 -> {
                     WineVarietyContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        varietals = analysisData.top3Varietal
                     )
                 }
 
                 3 -> {
                     WineTasteContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        tastes = analysisData.taste
                     )
                 }
 
                 4 -> {
                     WineScentContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        scents = analysisData.top7Smell
                     )
                 }
 
                 5 -> {
                     WinePriceContent(
-                        progress = animatedProgress.value
+                        progress = animatedProgress.value,
+                        price = analysisData.avgPrice
                     )
                 }
             }

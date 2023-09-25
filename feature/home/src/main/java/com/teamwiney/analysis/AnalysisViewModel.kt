@@ -6,6 +6,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +27,10 @@ class AnalysisViewModel @Inject constructor(
     }
 
     private fun getTasteAnalysis() = viewModelScope.launch {
-        tastingNoteRepository.getTasteAnalysis().collectLatest {
+        tastingNoteRepository.getTasteAnalysis().onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
                     val tasteAnalysis = it.data.result
@@ -34,11 +38,11 @@ class AnalysisViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-
+                    postEffect(AnalysisContract.Effect.ShowSnackBar(it.message))
                 }
 
                 is ApiResult.NetworkError -> {
-
+                    postEffect(AnalysisContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                 }
             }
         }

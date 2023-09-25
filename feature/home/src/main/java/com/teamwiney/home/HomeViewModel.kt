@@ -2,6 +2,7 @@ package com.teamwiney.home
 
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.persistence.DataStoreRepository
@@ -35,7 +36,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is HomeContract.Event.WineCardShowDetailButtonClicked -> {
-
+                    postEffect(HomeContract.Effect.NavigateTo(HomeDestinations.WINE_DETAIL))
                 }
 
                 is HomeContract.Event.ShowMoreTipsButtonClicked -> {
@@ -47,7 +48,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeContract.Event.AnalysisButtonClicked -> {
-
+                    postEffect(HomeContract.Effect.NavigateTo(HomeDestinations.Analysis.ROUTE))
                 }
             }
         }

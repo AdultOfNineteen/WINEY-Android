@@ -26,7 +26,8 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun WinePriceContent(
-    progress: Float
+    progress: Float,
+    price: Int
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 33.dp)
@@ -84,7 +85,7 @@ fun WinePriceContent(
                 )
 
                 Text(
-                    text = "70,580 원",
+                    text = "$price 원",
                     style = WineyTheme.typography.title1,
                     color = WineyTheme.colors.gray_50.copy(progress)
                 )

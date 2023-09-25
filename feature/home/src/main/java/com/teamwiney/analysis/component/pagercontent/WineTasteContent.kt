@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.Taste
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.RadarChart
 import com.teamwiney.ui.components.RadarData
@@ -23,7 +24,8 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun WineTasteContent(
-    progress: Float
+    progress: Float,
+    tastes: Taste
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -50,12 +52,12 @@ fun WineTasteContent(
         RadarChart(
             modifier = Modifier.fillMaxWidth(0.8f),
             data = listOf(
-                RadarData("당도", 5f),
-                RadarData("여운", 1f),
-                RadarData("알코올", 5f),
-                RadarData("탄닌", 1f),
-                RadarData("바디", 5f),
-                RadarData("산도", 2f)
+                RadarData("당도", tastes.sweetness.toFloat()),
+                RadarData("여운", tastes.finish.toFloat()),
+                RadarData("알코올", tastes.alcohol.toFloat()),
+                RadarData("탄닌", tastes.tannin.toFloat()),
+                RadarData("바디", tastes.body.toFloat()),
+                RadarData("산도", tastes.acidity.toFloat())
             )
         )
     }

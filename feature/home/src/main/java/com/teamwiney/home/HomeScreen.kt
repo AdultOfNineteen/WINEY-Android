@@ -109,12 +109,12 @@ fun HomeScreen(
             .background(WineyTheme.colors.background_1)
     ) {
         HomeLogo(
-            appState = appState,
+            processEvent = viewModel::processEvent,
             hintPopupOpen = uiState.isFirstScroll
         )
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             HomeRecommendWine(
-                appState = appState,
+                processEvent = viewModel::processEvent,
                 recommendWines = uiState.recommendWines
             )
             HomeRecommendNewbie(appState = appState)
@@ -190,7 +190,7 @@ fun HomeRecommendNewbie(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun HomeRecommendWine(
-    appState: WineyAppState,
+    processEvent: (HomeContract.Event) -> Unit,
     recommendWines: List<WineCardUiState>
 ) {
 
@@ -261,7 +261,7 @@ private fun HomeRecommendWine(
                             )
                         },
                     onShowDetail = {
-                        appState.navigate(HomeDestinations.WINE_DETAIL)
+                        processEvent(HomeContract.Event.WineCardShowDetailButtonClicked(0L))
                     },
                     wineColor = recommendWines[page].wineColor,
                     name = recommendWines[page].name,
@@ -276,7 +276,7 @@ private fun HomeRecommendWine(
 
 @Composable
 private fun HomeLogo(
-    appState: WineyAppState,
+    processEvent: (HomeContract.Event) -> Unit,
     hintPopupOpen: Boolean
 ) {
     Row(
@@ -307,7 +307,7 @@ private fun HomeLogo(
                     buttonHeight = density.run { coordinates.size.height / 2 + 12.dp.roundToPx() }
                 },
                 onClick = {
-                    appState.navigate(HomeDestinations.Analysis.ROUTE)
+                    processEvent(HomeContract.Event.AnalysisButtonClicked)
                 }
             )
             if (hintPopupOpen) {
