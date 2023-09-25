@@ -38,6 +38,7 @@ data class VerticalBarGraphData(
 @Composable
 fun VerticalBarGraph(
     modifier: Modifier = Modifier,
+    progress: Float = 1f,
     maxValue: Int = 5,
     data: List<VerticalBarGraphData>,
     barWidth: Dp = 38.dp,
@@ -97,7 +98,7 @@ fun VerticalBarGraph(
         val highestScore = data.maxOf { it.score }
 
         data.forEach { (label, value, color) ->
-            val barHeight = canvasHeight * value / (maxValue + 1) * animatedProgress.value
+            val barHeight = canvasHeight * value / (maxValue + 1) * progress
 
             val barRect = Rect(startX, canvasHeight - barHeight, startX + barWidthInPx, canvasHeight)
 

@@ -2,6 +2,8 @@
 
 package com.teamwiney.analysis
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -91,30 +94,53 @@ fun AnalysisResultScreen(
             state = pagerState,
             modifier = Modifier.weight(1f),
             userScrollEnabled = true,
-        ) {
-            when (pagerState.currentPage) {
+        ) { page ->
+            val animatedProgress = remember { Animatable(0f) }
+
+            LaunchedEffect(pagerState.currentPage) {
+                if (pagerState.currentPage == 2) {
+                    animatedProgress.snapTo(0.2f)
+                } else {
+                    animatedProgress.snapTo(0f)
+                }
+                animatedProgress.animateTo(1f, tween(durationMillis = 1000))
+            }
+
+            when (page) {
                 0 -> {
-                    WineTypeContent()
+                    WineTypeContent(
+                        progress = animatedProgress.value
+                    )
                 }
 
                 1 -> {
-                    WineCountryContent()
+                    WineCountryContent(
+                        progress = animatedProgress.value
+                    )
                 }
 
                 2 -> {
-                    WineVarietyContent()
+                    WineVarietyContent(
+                        progress = animatedProgress.value
+                    )
                 }
 
                 3 -> {
-                    WineTasteContent()
+                    WineTasteContent(
+                        progress = animatedProgress.value
+                    )
                 }
 
                 4 -> {
-                    WineScentContent()
+                    WineScentContent(
+                        progress = animatedProgress.value
+                    )
                 }
 
                 5 -> {
-                    WinePriceContent()
+                    WinePriceContent(
+                        progress = animatedProgress.value
+                    )
                 }
             }
         }

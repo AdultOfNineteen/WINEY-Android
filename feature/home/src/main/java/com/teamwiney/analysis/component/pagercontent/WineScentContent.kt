@@ -1,6 +1,5 @@
 package com.teamwiney.analysis.component.pagercontent
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -35,12 +34,11 @@ import androidx.compose.ui.unit.times
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
-fun WineScentContent() {
-    val animatedProgress = remember { Animatable(0f) }
-
+fun WineScentContent(
+    progress: Float
+) {
     var animatedOffset by remember {
         mutableStateOf(0.dp)
     }
@@ -64,11 +62,6 @@ fun WineScentContent() {
     )
 
     LaunchedEffect(true) {
-        launch {
-            animatedProgress.snapTo(0f)
-            animatedProgress.animateTo(1f, animationSpec = tween(1000))
-        }
-
         while (true) {
             animatedOffset = (-4).dp
             animatedOffset2 = 2.dp
@@ -117,13 +110,13 @@ fun WineScentContent() {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(324 * animatedProgress.value.dp)
+                        .size(324 * progress.dp)
                         .blur(50.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Spacer(
                         modifier = Modifier
-                            .size(108 * animatedProgress.value.dp)
+                            .size(108 * progress.dp)
                             .background(
                                 color = Color(0xFF5123DF).copy(0.5f),
                                 shape = CircleShape

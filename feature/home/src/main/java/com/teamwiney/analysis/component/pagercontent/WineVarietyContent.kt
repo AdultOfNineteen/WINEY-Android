@@ -1,7 +1,5 @@
 package com.teamwiney.analysis.component.pagercontent
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,19 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.launch
 
 @Composable
-fun WineVarietyContent() {
-    val animatedProgress = remember { Animatable(0.2f) }
-
-    LaunchedEffect(true) {
-        launch {
-            animatedProgress.snapTo(0.2f)
-            animatedProgress.animateTo(1f, animationSpec = tween(1000))
-        }
-    }
-
+fun WineVarietyContent(
+    progress: Float
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 33.dp)
 
@@ -71,7 +59,7 @@ fun WineVarietyContent() {
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.62f * animatedProgress.value)
+                    .fillMaxWidth(0.62f * progress)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
@@ -97,7 +85,7 @@ fun WineVarietyContent() {
                 modifier = Modifier
                     .padding(top = 82.dp)
                     .align(Alignment.TopEnd)
-                    .fillMaxWidth(0.52f * animatedProgress.value)
+                    .fillMaxWidth(0.52f * progress)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
@@ -123,7 +111,7 @@ fun WineVarietyContent() {
                 modifier = Modifier
                     .padding(top = 182.dp, start = 40.dp)
                     .align(Alignment.TopStart)
-                    .fillMaxWidth(0.52f * animatedProgress.value)
+                    .fillMaxWidth(0.52f * progress)
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(

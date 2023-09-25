@@ -22,7 +22,9 @@ import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineTasteContent() {
+fun WineTasteContent(
+    progress: Float
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally

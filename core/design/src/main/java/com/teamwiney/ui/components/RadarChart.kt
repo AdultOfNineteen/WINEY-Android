@@ -1,14 +1,11 @@
 package com.teamwiney.ui.components
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +23,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.sin
@@ -35,8 +31,9 @@ data class RadarData(val label: String, val value: Float)
 
 @Composable
 fun RadarChart(
-    data: List<RadarData>,
     modifier: Modifier = Modifier,
+    progress: Float = 1f,
+    data: List<RadarData>,
     contentColor: Color = WineyTheme.colors.main_3.copy(alpha = 0.4f),
     strokeColor: Color = WineyTheme.colors.gray_50.copy(alpha = 0.4f),
     strokeWidth: Dp = 1.dp,
@@ -45,7 +42,6 @@ fun RadarChart(
         color = WineyTheme.colors.gray_600
     )
 ) {
-    val animatedProgress = remember { Animatable(0f) }
     val textMeasurer = rememberTextMeasurer()
     val textMeasureResults = remember(data) {
         data.mapIndexed { index, chartData ->
@@ -61,13 +57,7 @@ fun RadarChart(
             )
         }
     }
-
-    LaunchedEffect(true) {
-        launch {
-            animatedProgress.snapTo(0f)
-            animatedProgress.animateTo(1f, animationSpec = tween(1000))
-        }
-    }
+    
 
     Box(modifier = modifier) {
         Canvas(modifier = Modifier.fillMaxSize()) {
@@ -77,7 +67,7 @@ fun RadarChart(
                 strokeColor,
                 strokeWidth,
                 maxValue,
-                animatedProgress.value
+                progress
             )
             drawLabels(textMeasureResults, data.map { it.label })
         }

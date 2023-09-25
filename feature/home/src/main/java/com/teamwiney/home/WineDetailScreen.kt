@@ -2,6 +2,8 @@
 
 package com.teamwiney.home
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +28,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -105,10 +109,18 @@ private fun WineInfo() {
         val tasteList = listOf("", "당도", "산도", "바디", "탄닌")
 
         HorizontalPager(state = pagerState) { page ->
+            val animatedProgress = remember { Animatable(0f) }
+
+            LaunchedEffect(pagerState.currentPage) {
+                animatedProgress.snapTo(0f)
+                animatedProgress.animateTo(1f, tween(durationMillis = 1000))
+            }
+
             if (page == 0) {
-                WineInfoTotalBarGraph()
+                WineInfoTotalBarGraph(progress = animatedProgress.value)
             } else {
                 WineInfoBarGraph(
+                    progress = animatedProgress.value,
                     taste = tasteList[page],
                     default = 3,
                     similar = 5
@@ -125,7 +137,9 @@ private fun WineInfo() {
 }
 
 @Composable
-private fun WineInfoTotalBarGraph() {
+private fun WineInfoTotalBarGraph(
+    progress: Float
+) {
     Column {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -177,24 +191,28 @@ private fun WineInfoTotalBarGraph() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             TasteScoreHorizontalBar(
+                progress = progress,
                 label = "당도",
                 peopleScore = 4,
                 defaultScore = 2
             )
 
             TasteScoreHorizontalBar(
+                progress = progress,
                 label = "산도",
                 peopleScore = 1,
                 defaultScore = 3
             )
 
             TasteScoreHorizontalBar(
+                progress = progress,
                 label = "바디",
                 peopleScore = 5,
                 defaultScore = 2
             )
 
             TasteScoreHorizontalBar(
+                progress = progress,
                 label = "탄닌",
                 peopleScore = 3,
                 defaultScore = 4
@@ -205,6 +223,7 @@ private fun WineInfoTotalBarGraph() {
 
 @Composable
 private fun WineInfoBarGraph(
+    progress: Float,
     taste: String,
     default: Int,
     similar: Int
@@ -227,6 +246,7 @@ private fun WineInfoBarGraph(
         HeightSpacer(height = 36.dp)
 
         VerticalBarGraph(
+            progress = progress,
             data = listOf(
                 VerticalBarGraphData(
                     label = "와인의 기본맛",
@@ -243,6 +263,7 @@ private fun WineInfoBarGraph(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PageIndicator(
     pagerState: PagerState,

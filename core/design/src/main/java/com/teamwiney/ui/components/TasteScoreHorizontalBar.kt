@@ -31,6 +31,7 @@ import kotlin.math.max
 
 @Composable
 fun TasteScoreHorizontalBar(
+    progress: Float = 1f,
     label: String,
     peopleScore: Int,
     defaultScore: Int
@@ -55,25 +56,31 @@ fun TasteScoreHorizontalBar(
         Box(modifier = Modifier.fillMaxWidth(0.9f)) {
             if (peopleScore < defaultScore) {
                 RoundedHorizontalBar(
-                    modifier = Modifier.onGloballyPositioned { coordinates ->
-                        barWidth = density.run { coordinates.size.width.toDp() }
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f * (defaultScore / 5f) * progress)
+                        .onGloballyPositioned { coordinates ->
+                            barWidth = density.run { coordinates.size.width.toDp()}
+                        },
                     targetProgress = defaultScore / 5f,
                     color = WineyTheme.colors.point_1
                 )
                 RoundedHorizontalBar(
+                    modifier = Modifier.fillMaxWidth(0.9f * (peopleScore / 5f) * progress),
                     targetProgress = peopleScore / 5f,
                     color = WineyTheme.colors.main_2
                 )
             } else {
                 RoundedHorizontalBar(
-                    modifier = Modifier.onGloballyPositioned { coordinates ->
-                        barWidth = density.run { coordinates.size.width.toDp() }
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f * (peopleScore / 5f) * progress)
+                        .onGloballyPositioned { coordinates ->
+                            barWidth = density.run { coordinates.size.width.toDp()}
+                        },
                     targetProgress = peopleScore / 5f,
                     color = WineyTheme.colors.main_2
                 )
                 RoundedHorizontalBar(
+                    modifier = Modifier.fillMaxWidth(0.9f * (defaultScore / 5f) * progress),
                     targetProgress = defaultScore / 5f,
                     color = WineyTheme.colors.point_1
                 )

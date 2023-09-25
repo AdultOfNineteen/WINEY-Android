@@ -1,7 +1,5 @@
 package com.teamwiney.ui.components
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +22,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.center
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.launch
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
@@ -41,9 +37,10 @@ data class ChartData(
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
+    progress: Float = 1f,
     chartDataList: List<ChartData>
 ) {
-    val animatedAngle = remember { Animatable(-90f) }
+    val animatedAngle = -90f + (360 * progress)
     val textMeasurer = rememberTextMeasurer()
     val textMeasureResults = remember(chartDataList) {
         chartDataList.mapIndexed { index, chartData ->
@@ -56,13 +53,6 @@ fun PieChart(
                 text = labelText,
                 style = chartData.textStyle
             )
-        }
-    }
-
-    LaunchedEffect(true) {
-        launch {
-            animatedAngle.snapTo(0f)
-            animatedAngle.animateTo(270f, animationSpec = tween(1000))
         }
     }
 
@@ -93,7 +83,7 @@ fun PieChart(
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle.value - startAngle), 0f)),
+                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle - startAngle), 0f)),
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),
@@ -103,7 +93,7 @@ fun PieChart(
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle.value - startAngle), 0f)),
+                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle - startAngle), 0f)),
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),

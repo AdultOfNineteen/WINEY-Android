@@ -19,7 +19,9 @@ import com.teamwiney.ui.components.PieChart
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun WineTypeContent() {
+fun WineTypeContent(
+    progress: Float
+) {
     Column(modifier = Modifier.fillMaxSize()) {
 
         HeightSpacer(height = 22.dp)
@@ -42,6 +44,7 @@ fun WineTypeContent() {
         )
         HeightSpacer(height = 70.dp)
         PieChart(
+            progress = progress,
             chartDataList = listOf(
                 ChartData(
                     label = "레드",

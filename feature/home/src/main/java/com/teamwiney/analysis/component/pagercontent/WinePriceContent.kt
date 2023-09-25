@@ -1,7 +1,5 @@
 package com.teamwiney.analysis.component.pagercontent
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,33 +14,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.times
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.launch
 
-@Preview
 @Composable
-fun WinePriceContent() {
-    val animatedProgress = remember { Animatable(0f) }
-
-    LaunchedEffect(true) {
-        launch {
-            animatedProgress.snapTo(0f)
-            animatedProgress.animateTo(1f, animationSpec = tween(1000))
-        }
-    }
-
+fun WinePriceContent(
+    progress: Float
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 33.dp)
 
@@ -74,13 +59,13 @@ fun WinePriceContent() {
         ) {
             Box(
                 modifier = Modifier
-                    .size(324 * animatedProgress.value.dp)
+                    .size(324.dp * progress)
                     .blur(50.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Spacer(
                     modifier = Modifier
-                        .size(108 * animatedProgress.value.dp)
+                        .size(108.dp * progress)
                         .background(
                             color = Color(0xFF5123DF).copy(0.5f),
                             shape = CircleShape
@@ -101,7 +86,7 @@ fun WinePriceContent() {
                 Text(
                     text = "70,580 원",
                     style = WineyTheme.typography.title1,
-                    color = WineyTheme.colors.gray_50.copy(animatedProgress.value)
+                    color = WineyTheme.colors.gray_50.copy(progress)
                 )
             }
         }
