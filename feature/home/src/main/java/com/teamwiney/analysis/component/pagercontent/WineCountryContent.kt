@@ -69,6 +69,8 @@ fun WineCountryContent(
                 .padding(horizontal = 54.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
+            val total = countries.sumOf { it.count }
+
             countries.forEachIndexed { index, country ->
                 val labelColor = when (index) {
                     0 -> WineyTheme.colors.gray_50
@@ -79,7 +81,7 @@ fun WineCountryContent(
 
                 WineAnalysisBottle(
                     progress = progress,
-                    percentage = country.percent.toFloat(),
+                    percentage = country.count / total.toFloat(),
                     label = country.country,
                     textColor = labelColor,
                 )

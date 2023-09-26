@@ -51,6 +51,7 @@ fun WineTasteContent(
 
         RadarChart(
             modifier = Modifier.fillMaxWidth(0.8f),
+            progress = progress,
             data = listOf(
                 RadarData("당도", tastes.sweetness.toFloat()),
                 RadarData("여운", tastes.finish.toFloat()),

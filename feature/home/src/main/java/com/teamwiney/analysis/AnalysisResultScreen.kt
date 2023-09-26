@@ -128,6 +128,7 @@ fun AnalysisResultScreen(
                 0 -> {
                     WineTypeContent(
                         progress = animatedProgress.value,
+                        types = analysisData.top3Type,
                         totalWineCount = analysisData.totalWineCnt,
                         buyAgainCount = analysisData.buyAgainCnt
                     )

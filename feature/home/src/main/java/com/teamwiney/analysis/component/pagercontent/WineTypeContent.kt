@@ -13,6 +13,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.Top3Type
 import com.teamwiney.ui.components.ChartData
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PieChart
@@ -21,8 +22,9 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WineTypeContent(
     progress: Float,
+    types: List<Top3Type>,
     totalWineCount: Int,
-    buyAgainCount: Int
+    buyAgainCount: Int,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -45,34 +47,41 @@ fun WineTypeContent(
             textAlign = TextAlign.Center
         )
         HeightSpacer(height = 70.dp)
+
+        val chartData = types.mapIndexed { index, type ->
+            val labelColor = when (index) {
+                0 -> Color(0xFF5123DF)
+                1 -> Color(0xFF5E489B)
+                2 -> WineyTheme.colors.gray_800
+                else -> Color(0xFF5123DF)
+            }
+
+            val labelStyle = when (index) {
+                0 -> WineyTheme.typography.title2.copy(
+                    color = WineyTheme.colors.gray_50
+                )
+                1 -> WineyTheme.typography.bodyB2.copy(
+                    color = WineyTheme.colors.gray_800
+                )
+                2 -> WineyTheme.typography.captionB1.copy(
+                    color = WineyTheme.colors.gray_900
+                )
+                else -> WineyTheme.typography.title2.copy(
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            ChartData(
+                label = type.type,
+                color = labelColor,
+                value = type.percent.toFloat(),
+                textStyle = labelStyle
+            )
+        }
+
         PieChart(
             progress = progress,
-            data = listOf(
-                ChartData(
-                    label = "레드",
-                    color = Color(0xFF5123DF),
-                    value = 75f,
-                    textStyle = WineyTheme.typography.title2.copy(
-                        color = WineyTheme.colors.gray_50
-                    )
-                ),
-                ChartData(
-                    label = "화이트",
-                    color = Color(0xFF5E489B),
-                    value = 18f,
-                    textStyle = WineyTheme.typography.bodyB2.copy(
-                        color = WineyTheme.colors.gray_800
-                    )
-                ),
-                ChartData(
-                    label = "로제",
-                    color = WineyTheme.colors.gray_800,
-                    value = 7f,
-                    textStyle = WineyTheme.typography.captionB1.copy(
-                        color = WineyTheme.colors.gray_900
-                    )
-                )
-            )
+            data = chartData
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.teamwiney.analysis
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
@@ -35,6 +36,7 @@ class AnalysisViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val tasteAnalysis = it.data.result
                     updateState(currentState.copy(tasteAnalysis = tasteAnalysis))
+                    Log.d("analysis", tasteAnalysis.toString())
                 }
 
                 is ApiResult.ApiError -> {
