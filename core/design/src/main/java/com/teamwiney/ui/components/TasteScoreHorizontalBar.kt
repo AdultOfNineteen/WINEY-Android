@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,12 +21,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 import kotlin.math.max
 
@@ -51,7 +55,14 @@ fun TasteScoreHorizontalBar(
                 color = WineyTheme.colors.gray_50,
             )
 
-            ScoreIndicator(score = max(peopleScore, defaultScore))
+            ScoreIndicator(
+                score = max(peopleScore, defaultScore),
+                color = if (peopleScore < defaultScore) {
+                    WineyTheme.colors.point_1
+                } else {
+                    WineyTheme.colors.main_2
+                }
+            )
         }
         Box(modifier = Modifier.fillMaxWidth(0.9f)) {
             if (peopleScore < defaultScore) {
@@ -59,7 +70,7 @@ fun TasteScoreHorizontalBar(
                     modifier = Modifier
                         .fillMaxWidth(0.9f * (defaultScore / 5f) * progress)
                         .onGloballyPositioned { coordinates ->
-                            barWidth = density.run { coordinates.size.width.toDp()}
+                            barWidth = density.run { coordinates.size.width.toDp() }
                         },
                     targetProgress = defaultScore / 5f,
                     color = WineyTheme.colors.point_1
@@ -74,7 +85,7 @@ fun TasteScoreHorizontalBar(
                     modifier = Modifier
                         .fillMaxWidth(0.9f * (peopleScore / 5f) * progress)
                         .onGloballyPositioned { coordinates ->
-                            barWidth = density.run { coordinates.size.width.toDp()}
+                            barWidth = density.run { coordinates.size.width.toDp() }
                         },
                     targetProgress = peopleScore / 5f,
                     color = WineyTheme.colors.main_2
@@ -114,14 +125,20 @@ fun RoundedHorizontalBar(
 @Composable
 private fun ScoreIndicator(
     modifier: Modifier = Modifier,
-    score: Int
+    score: Int,
+    color: Color
 ) {
     Box(
         modifier = modifier
             .width(22.dp)
-            .height(29.dp)
+            .height(29.dp),
+        contentAlignment = Alignment.Center
     ) {
-        // TODO : 배경 이미지 추가
+        Icon(
+            painter = painterResource(id = R.drawable.ic_score_indicator),
+            contentDescription = "IC_SCORE_INDICATOR",
+            tint = color
+        )
 
         Text(
             modifier = Modifier
