@@ -139,7 +139,7 @@ private fun AnalysisStartContent(
     hideBottomSheet: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        HeightSpacer(height = 28.dp)
+        HeightSpacer(height = 20.dp)
         Column(
             modifier = Modifier
                 .fillMaxWidth()

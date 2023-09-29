@@ -17,6 +17,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
@@ -47,11 +48,9 @@ fun SignUpCompleteScreen(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        TopBar(
-            leadingIconOnClick = {
-                appState.navController.navigateUp()
-            }
-        )
+
+        HeightSpacer(height = 68.dp)
+
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
                 text = "안녕하세요\n와이니에 오신 걸 환영해요!",
