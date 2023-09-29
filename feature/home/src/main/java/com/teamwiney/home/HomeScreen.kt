@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -115,7 +117,8 @@ fun HomeScreen(
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             HomeRecommendWine(
                 processEvent = viewModel::processEvent,
-                recommendWines = uiState.recommendWines
+                recommendWines = uiState.recommendWines,
+                isLoading = uiState.isLoading
             )
             HomeRecommendNewbie(appState = appState)
         }
@@ -191,7 +194,8 @@ fun HomeRecommendNewbie(
 @Composable
 private fun HomeRecommendWine(
     processEvent: (HomeContract.Event) -> Unit,
-    recommendWines: List<WineCardUiState>
+    recommendWines: List<WineCardUiState>,
+    isLoading: Boolean,
 ) {
 
     val pagerState = rememberPagerState(pageCount = { recommendWines.size })
@@ -226,49 +230,60 @@ private fun HomeRecommendWine(
             HeightSpacer(height = 28.dp)
         }
 
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            val configuration = LocalConfiguration.current
-            val pageSize = PageSize.Fixed(pageSize = 282.dp)
-            val horizontalContentPadding = (configuration.screenWidthDp.dp - 282.dp) / 2
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 48.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(0.7f)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(WineyTheme.colors.gray_800)
+            )
+        } else {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                val configuration = LocalConfiguration.current
+                val pageSize = PageSize.Fixed(pageSize = 282.dp)
+                val horizontalContentPadding = (configuration.screenWidthDp.dp - 282.dp) / 2
 
-            HorizontalPager(
-                modifier = Modifier.fillMaxSize(),
-                state = pagerState,
-                beyondBoundsPageCount = 2,
-                pageSize = pageSize,
-                contentPadding = PaddingValues(horizontal = horizontalContentPadding),
-                pageSpacing = 16.dp
-            ) { page ->
-                WineCard(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            val pageOffset = (
-                                    (pagerState.currentPage - page) + pagerState
-                                        .currentPageOffsetFraction
-                                    ).absoluteValue
-                            alpha = lerp(
-                                start = 0.8f,
-                                stop = 1f,
-                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                            )
-                            scaleY = lerp(
-                                start = 0.8f,
-                                stop = 1f,
-                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                            )
+                HorizontalPager(
+                    modifier = Modifier.fillMaxSize(),
+                    state = pagerState,
+                    beyondBoundsPageCount = 2,
+                    pageSize = pageSize,
+                    contentPadding = PaddingValues(horizontal = horizontalContentPadding),
+                    pageSpacing = 16.dp
+                ) { page ->
+                    WineCard(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                val pageOffset = (
+                                        (pagerState.currentPage - page) + pagerState
+                                            .currentPageOffsetFraction
+                                        ).absoluteValue
+                                alpha = lerp(
+                                    start = 0.8f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                )
+                                scaleY = lerp(
+                                    start = 0.8f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                )
+                            },
+                        onShowDetail = {
+                            processEvent(HomeContract.Event.WineCardShowDetailButtonClicked(0L))
                         },
-                    onShowDetail = {
-                        processEvent(HomeContract.Event.WineCardShowDetailButtonClicked(0L))
-                    },
-                    wineColor = recommendWines[page].wineColor,
-                    name = recommendWines[page].name,
-                    origin = recommendWines[page].country,
-                    varieties = recommendWines[page].varietal,
-                    price = "${recommendWines[page].price}"
-                )
+                        wineColor = recommendWines[page].wineColor,
+                        name = recommendWines[page].name,
+                        origin = recommendWines[page].country,
+                        varieties = recommendWines[page].varietal,
+                        price = "${recommendWines[page].price}"
+                    )
+                }
             }
         }
     }
