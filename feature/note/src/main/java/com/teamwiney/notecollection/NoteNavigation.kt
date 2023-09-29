@@ -26,7 +26,7 @@ fun NavGraphBuilder.noteGraph(
                 navController = navController,
                 graph = NoteDestinations.ROUTE
             )
-            NoteScreen()
+            NoteScreen(showBottomSheet = showBottomSheet)
         }
 
         // TODO : 노트 작성 / 수정
