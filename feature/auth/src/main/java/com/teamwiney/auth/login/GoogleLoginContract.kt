@@ -18,6 +18,7 @@ class GoogleLoginContract : ActivityResultContract<Int, Task<GoogleSignInAccount
     private fun getGoogleSignInClient(context: Context): GoogleSignInClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(BuildConfig.GOOGLE_OAUTH_CLIENT_ID)
+            .requestServerAuthCode(BuildConfig.GOOGLE_OAUTH_CLIENT_ID)
             .requestEmail()
             .build()
 
