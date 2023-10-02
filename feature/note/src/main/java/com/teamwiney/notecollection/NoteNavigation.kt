@@ -2,6 +2,7 @@ package com.teamwiney.notecollection
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -26,7 +27,11 @@ fun NavGraphBuilder.noteGraph(
                 navController = navController,
                 graph = NoteDestinations.ROUTE
             )
-            NoteScreen(showBottomSheet = showBottomSheet)
+            NoteScreen(
+                showBottomSheet = showBottomSheet,
+                viewModel = hiltViewModel(backStackEntry),
+                hideBottomSheet = hideBottomSheet,
+            )
         }
 
         // TODO : 노트 작성 / 수정
