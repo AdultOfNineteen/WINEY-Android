@@ -171,14 +171,13 @@ fun AnalysisResultScreen(
             }
         }
 
-        // TODO 줄리가 바꿔줄 것
         IconButton(
             onClick = {
                 appState.scope.launch {
                     if (pagerState.currentPage < pagerState.pageCount - 1) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     } else {
-                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        pagerState.animateScrollToPage(0)
                     }
                 }
             },
