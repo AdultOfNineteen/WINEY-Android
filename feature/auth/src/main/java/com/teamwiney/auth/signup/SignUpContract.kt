@@ -100,6 +100,7 @@ class SignUpContract {
         object SendMessage : BottomSheet()
         object AuthenticationFailed : BottomSheet()
         object ReturnToLogin : BottomSheet()
+        class UserAlreadyExists(val message: String) : BottomSheet()
     }
 
     companion object {

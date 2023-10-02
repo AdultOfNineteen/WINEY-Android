@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -75,9 +76,28 @@ fun SignUpPhoneScreen(
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.SendMessage -> {
                             showBottomSheet {
-                                SendMessageBottomSheet {
+                                SendMessageBottomSheet(
+                                    text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
+                                    sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
+                                ) {
                                     hideBottomSheet()
                                     appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                }
+                            }
+                        }
+
+                        is SignUpContract.BottomSheet.UserAlreadyExists -> {
+                            showBottomSheet {
+                                SendMessageBottomSheet(
+                                    text = effect.bottomSheet.message,
+                                    sendMessageBottomSheetType = SendMessageBottomSheetType.USER_ALREADY_EXIST
+                                ) {
+                                    hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
                             }
                         }

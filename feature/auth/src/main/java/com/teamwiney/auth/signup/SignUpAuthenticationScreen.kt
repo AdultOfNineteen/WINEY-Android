@@ -28,7 +28,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
-import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -71,13 +70,6 @@ fun SignUpAuthenticationScreen(
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
-                        is SignUpContract.BottomSheet.SendMessage -> {
-                            showBottomSheet {
-                                SendMessageBottomSheet {
-                                    hideBottomSheet()
-                                }
-                            }
-                        }
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             showBottomSheet {
@@ -103,6 +95,10 @@ fun SignUpAuthenticationScreen(
                                     hideBottomSheet()
                                 }
                             }
+                        }
+
+                        else -> {
+
                         }
                     }
                 }

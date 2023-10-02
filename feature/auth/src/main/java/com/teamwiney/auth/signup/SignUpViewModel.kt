@@ -3,6 +3,7 @@ package com.teamwiney.auth.signup
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.base.CommonResponseStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
@@ -28,7 +29,7 @@ class SignUpViewModel @Inject constructor(
                 sendAuthenticationNumber()
             }
 
-            is SignUpContract.Event.BackToLoginButtonClicked, SignUpContract.Event.CancelTasteSelectionButtonClicked-> {
+            is SignUpContract.Event.BackToLoginButtonClicked, SignUpContract.Event.CancelTasteSelectionButtonClicked -> {
                 postEffect(
                     SignUpContract.Effect.ShowBottomSheet(
                         SignUpContract.BottomSheet.ReturnToLogin
@@ -115,7 +116,17 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                    if (it.code == CommonResponseStatus.USER_ALREADY_EXISTS.code) {
+                        postEffect(
+                            SignUpContract.Effect.ShowBottomSheet(
+                                SignUpContract.BottomSheet.UserAlreadyExists(
+                                    it.message
+                                )
+                            )
+                        )
+                    } else {
+                        postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                    }
                 }
 
                 else -> {

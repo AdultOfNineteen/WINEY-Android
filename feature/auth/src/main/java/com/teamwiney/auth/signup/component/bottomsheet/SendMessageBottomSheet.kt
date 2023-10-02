@@ -22,12 +22,20 @@ import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
+enum class SendMessageBottomSheetType {
+    SEND_MESSAGE,
+    USER_ALREADY_EXIST,
+}
+
 @Composable
 fun SendMessageBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
-    onConfirm: () -> Unit
+    text: String,
+    sendMessageBottomSheetType: SendMessageBottomSheetType,
+    onConfirm: () -> Unit,
 ) {
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -53,18 +61,34 @@ fun SendMessageBottomSheet(
             contentDescription = null
         )
         HeightSpacer(height = 16.dp)
-        Text(
-            text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
-            style = WineyTheme.typography.bodyB1,
-            color = WineyTheme.colors.gray_200,
-            textAlign = TextAlign.Center
-        )
-        HeightSpacer(height = 14.dp)
-        Text(
-            text = "*인증번호 요청 3회 초과 시 5분 제한",
-            style = WineyTheme.typography.captionM2,
-            color = WineyTheme.colors.gray_600
-        )
+
+        if (sendMessageBottomSheetType == SendMessageBottomSheetType.SEND_MESSAGE) {
+            Text(
+                text = text,
+                style = WineyTheme.typography.bodyB1,
+                color = WineyTheme.colors.gray_200,
+                textAlign = TextAlign.Center
+            )
+        } else if (sendMessageBottomSheetType == SendMessageBottomSheetType.USER_ALREADY_EXIST) {
+            // 파싱 필요
+            Text(
+                text = text,
+                style = WineyTheme.typography.bodyB1,
+                color = WineyTheme.colors.gray_200,
+                textAlign = TextAlign.Center
+            )
+        }
+
+
+        if (sendMessageBottomSheetType == SendMessageBottomSheetType.SEND_MESSAGE) {
+            HeightSpacer(height = 14.dp)
+            Text(
+                text = "*인증번호 요청 3회 초과 시 5분 제한",
+                style = WineyTheme.typography.captionM2,
+                color = WineyTheme.colors.gray_600
+            )
+        }
+
         HeightSpacer(height = 40.dp)
         WButton(
             text = "확인",
