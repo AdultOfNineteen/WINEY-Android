@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
@@ -137,6 +138,8 @@ fun WineScentContent(
             "percent": 10
              *  */
 
+            val configuration = LocalConfiguration.current
+
             scents
                 .sortedByDescending { it.percent }
                 .forEachIndexed { index, scent ->
@@ -158,9 +161,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_200,
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
-                                    .fillMaxWidth(0.3f)
                                     .padding(top = 80.dp)
                                     .offset(
+                                        x = -configuration.screenWidthDp * 0.2f.dp,
                                         y = animatedPosition2
                                     ),
                                 textAlign = TextAlign.Start
@@ -173,9 +176,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_600,
                                 modifier = Modifier
                                     .align(Alignment.CenterStart)
-                                    .fillMaxWidth(0.23f)
-                                    .padding(top = 90.dp)
+                                    .padding(top = 110.dp)
                                     .offset(
+                                        x = configuration.screenWidthDp * 0.18f.dp,
                                         y = animatedPosition2
                                     ),
                                 textAlign = TextAlign.End
@@ -188,9 +191,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_600,
                                 modifier = Modifier
                                     .align(Alignment.CenterStart)
-                                    .fillMaxWidth(0.23f)
-                                    .padding(bottom = 120.dp)
+                                    .padding(bottom = 90.dp)
                                     .offset(
+                                        x = configuration.screenWidthDp * 0.18f.dp,
                                         y = animatedPosition2
                                     ),
                                 textAlign = TextAlign.End
@@ -203,9 +206,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_600,
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
-                                    .fillMaxWidth(0.27f)
-                                    .padding(bottom = 120.dp)
+                                    .padding(bottom = 140.dp)
                                     .offset(
+                                        x = -configuration.screenWidthDp * 0.25f.dp,
                                         y = animatedPosition
                                     ),
                                 textAlign = TextAlign.Start
@@ -218,9 +221,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_800,
                                 modifier = Modifier
                                     .align(Alignment.CenterStart)
-                                    .fillMaxWidth(0.1f)
                                     .padding(top = 20.dp)
                                     .offset(
+                                        x = configuration.screenWidthDp * 0.05f.dp,
                                         y = animatedPosition2
                                     ),
                                 textAlign = TextAlign.End
@@ -233,9 +236,9 @@ fun WineScentContent(
                                 color = WineyTheme.colors.gray_800,
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
-                                    .fillMaxWidth(0.17f)
                                     .padding(bottom = 50.dp)
                                     .offset(
+                                        x = -configuration.screenWidthDp * 0.07f.dp,
                                         y = animatedPosition
                                     ),
                                 textAlign = TextAlign.Start
