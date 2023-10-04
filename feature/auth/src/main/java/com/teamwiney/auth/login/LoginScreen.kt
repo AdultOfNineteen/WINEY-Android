@@ -60,10 +60,7 @@ fun LoginScreen(
                     Log.d("code", gsa.serverAuthCode.toString())
                     Log.d("idToken", gsa.idToken.toString())
 
-                    viewModel.googleLogin(
-                        code = gsa.serverAuthCode.toString(),
-                        idToken = gsa.idToken.toString()
-                    )
+                    viewModel.googleLogin(token = gsa.idToken.toString())
                 }
             } catch (e: ApiException) {
                 Log.d("googleLoginError", e.toString())

@@ -19,7 +19,6 @@ import com.teamwiney.data.network.model.response.SocialLoginResponse
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
-import com.teamwiney.feature.auth.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
@@ -58,37 +57,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun googleLogin(
-        clientId: String = BuildConfig.GOOGLE_OAUTH_CLIENT_ID,
-        clientSecret: String = BuildConfig.GOOGLE_OAUTH_CLIENT_SECRET,
-        code: String,
-        idToken: String
-    ) {
-        viewModelScope.launch {
-            authRepository.getGoogleAccessToken(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                code = code,
-                idToken = idToken
-            ).onStart {
-                updateState(currentState.copy(isLoading = true))
-            }.collectLatest { result ->
-                updateState(currentState.copy(isLoading = false))
-                when (result) {
-                    is ApiResult.Success -> {
-                        socialLogin(SocialType.GOOGLE, result.data.accessToken)
-                    }
-
-                    is ApiResult.ApiError -> {
-                        postEffect(LoginContract.Effect.ShowSnackBar(result.message))
-                    }
-
-                    is ApiResult.NetworkError -> {
-                        postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
-                    }
-                }
-            }
-        }
+    fun googleLogin(token: String) {
+        socialLogin(
+            socialType = SocialType.GOOGLE,
+            token = token
+        )
     }
 
     private fun kakaoLogin(context: Context) {
