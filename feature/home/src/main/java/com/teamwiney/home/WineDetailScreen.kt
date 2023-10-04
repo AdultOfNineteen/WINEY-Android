@@ -47,7 +47,6 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.VerticalBarGraph
 import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
-import com.teamwiney.ui.components.WineColor
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
@@ -300,7 +299,7 @@ private fun WineOrigin() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        WineBadge(wineColor = WineColor.RED)
+        WineBadge(color = "RED")
 
         Column {
             Column(

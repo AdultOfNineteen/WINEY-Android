@@ -99,7 +99,7 @@ fun AnalysisResultScreen(
         )
         HeightSpacer(height = 39.dp)
         Text(
-            text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendVarietal}\"",
+            text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendWineType}\"",
             style = WineyTheme.typography.title2,
             color = WineyTheme.colors.main_3,
             textAlign = TextAlign.Center,

@@ -5,10 +5,10 @@ import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.toDomain
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.home.component.state.WineCardUiState
-import com.teamwiney.ui.components.WineColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -71,12 +71,14 @@ class HomeViewModel @Inject constructor(
                     updateState(
                         currentState.copy(
                             recommendWines = it.data.result.map { wine ->
+                                val recommendWine = wine.toDomain()
+
                                 WineCardUiState(
-                                    wineColor = convertToWineColor(wine.type),
-                                    name = wine.name,
-                                    country = wine.country,
-                                    varietal = wine.varietal.firstOrNull() ?: "Unknown",
-                                    price = wine.price
+                                    color = recommendWine.type,
+                                    name = recommendWine.name,
+                                    country = recommendWine.country,
+                                    varietal = recommendWine.varietal.firstOrNull() ?: "Unknown",
+                                    price = recommendWine.price
                                 )
                             }
                         )
@@ -91,14 +93,6 @@ class HomeViewModel @Inject constructor(
                     postEffect(HomeContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                 }
             }
-        }
-    }
-
-    private fun convertToWineColor(type: String): WineColor {
-        return try  {
-            WineColor.valueOf(type)
-        } catch (e: IllegalArgumentException) {
-            WineColor.RED
         }
     }
 

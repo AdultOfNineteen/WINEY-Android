@@ -52,10 +52,6 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
-enum class WineColor {
-    RED, WHITE, ROSE, SPARKLING, FORTIFIED, OTHER
-}
-
 data class CardProperties(
     val wineName: String,
     val image: Int,
@@ -69,55 +65,55 @@ data class CardProperties(
 fun WineCard(
     modifier: Modifier = Modifier,
     onShowDetail: (Long) -> Unit,
-    wineColor: WineColor,
+    color: String,
     name: String,
     origin: String,
     varieties: String,
     price: String
 ) {
-    val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (wineColor) {
-        WineColor.RED -> CardProperties(
-            "RED",
+    val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
+        "RED" -> CardProperties(
+            color,
             R.drawable.ic_red_wine,
             Color(0xFFA87575),
             listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
             Color(0xFF640D0D),
             Color(0xFF441010)
         )
-        WineColor.WHITE -> CardProperties(
-            "WHITE",
+        "WHITE" -> CardProperties(
+            color,
             R.drawable.ic_white_wine,
             Color(0xFFC1BA9E),
             listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
             Color(0xFF898472),
             Color(0xFF7A706D)
         )
-        WineColor.ROSE -> CardProperties(
-            "ROSE",
+        "ROSE" -> CardProperties(
+            color,
             R.drawable.ic_rose_wine,
             Color(0xFFC9A4A1),
             listOf(Color(0xFFAA678F), Color(0xFFD29263)),
             Color(0xFFBA7A71),
             Color(0xFF8F6C64)
         )
-        WineColor.SPARKLING -> CardProperties(
-            "SPARKL",
+        "SPARKL" -> CardProperties(
+            color,
             R.drawable.ic_sparkl_wine,
             Color(0xFFA78093),
             listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
             Color(0xFF777151),
             Color(0xFF4F5144)
         )
-        WineColor.FORTIFIED -> CardProperties(
-            "PORT",
+        "PORT" -> CardProperties(
+            color,
             R.drawable.ic_port_wine,
             Color(0xFFB09A86),
             listOf(Color(0xFF4A2401), Color(0xFF77503A)),
             Color(0xFF4F3F28),
             Color(0xFF3A2F2F)
         )
-        WineColor.OTHER -> CardProperties(
-            "ETC",
+        else -> CardProperties(
+            color,
             R.drawable.ic_etc_wine,
             Color(0xFF768169),
             listOf(Color(0xFF3C3D12), Color(0xFF465C18)),
@@ -456,7 +452,7 @@ fun PreviewWineCard() {
         ) {
             WineCard(
                 onShowDetail = { },
-                wineColor = WineColor.SPARKLING,
+                color = "SPARKLING",
                 name = "캄포 마리나 프리미티도 디 만두리아",
                 varieties = "모스까뗄 데 알레한드리아",
                 origin = "이탈리아",

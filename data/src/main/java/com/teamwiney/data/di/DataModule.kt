@@ -76,5 +76,4 @@ object DataModule {
         pref: DataStore<Preferences>
     ): DataStoreRepository = DataStoreRepositoryImpl(pref)
 
-
 }

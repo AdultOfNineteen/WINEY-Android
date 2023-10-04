@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.navOptions
 import com.teamwiney.analysis.component.AnalysisBottomContent
 import com.teamwiney.analysis.component.AnalysisStartButton
 import com.teamwiney.core.common.WineyAppState
@@ -82,7 +83,14 @@ fun AnalysisScreen(
                 )
 
                 1 -> AnalysisProgressContent {
-                    appState.navigate(HomeDestinations.Analysis.RESULT)
+                    appState.navigate(
+                        HomeDestinations.Analysis.RESULT,
+                        navOptions {
+                            popUpTo(HomeDestinations.Analysis.START) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
             }
         }

@@ -79,14 +79,12 @@ class LoginViewModel @Inject constructor(
                         socialLogin(SocialType.GOOGLE, result.data.accessToken)
                     }
 
-                    is ApiResult.NetworkError -> {
-                        updateState(currentState.copy(error = "네트워크 에러"))
-                        postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                    is ApiResult.ApiError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar(result.message))
                     }
 
-                    is ApiResult.ApiError -> {
-                        updateState(currentState.copy(error = result.message))
-                        postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                    is ApiResult.NetworkError -> {
+                        postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                     }
                 }
             }
@@ -107,7 +105,6 @@ class LoginViewModel @Inject constructor(
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i("LoginViewModel", "accessToken: ${token.accessToken}")
-                    // TODO : 토큰 저장 로직
                     socialLogin(SocialType.KAKAO, token.accessToken)
                 }
             }
@@ -151,14 +148,12 @@ class LoginViewModel @Inject constructor(
                             }
                         }
 
-                        is ApiResult.NetworkError -> {
-                            updateState(currentState.copy(error = "네트워크 에러"))
-                            postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                        is ApiResult.ApiError -> {
+                            postEffect(LoginContract.Effect.ShowSnackBar(result.message))
                         }
 
-                        is ApiResult.ApiError -> {
-                            updateState(currentState.copy(error = result.message))
-                            postEffect(LoginContract.Effect.ShowSnackBar(currentState.error!!))
+                        is ApiResult.NetworkError -> {
+                            postEffect(LoginContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
                         }
                     }
                 }

@@ -10,8 +10,7 @@ class LoginContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val lastLoginMethod: String? = null,
-        val error: String? = null
+        val lastLoginMethod: String? = null
     ) : UiState
 
     sealed class Event : UiEvent {

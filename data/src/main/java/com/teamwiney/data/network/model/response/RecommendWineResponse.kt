@@ -16,3 +16,21 @@ data class RecommendWineResponse(
     @SerializedName("price")
     val price: Int
 )
+
+fun RecommendWineResponse.toDomain() = RecommendWineResponse(
+    wineId = this.wineId,
+    name = this.name,
+    country = this.country,
+    type = convertTypeToColor(this.type),
+    varietal = this.varietal,
+    price = this.price
+)
+
+private fun convertTypeToColor(type: String): String {
+    return when(type) {
+        "SPARKLING" -> "SPARKL"
+        "FORTIFIED" -> "PORT"
+        "OTHER" -> "ETC"
+        else -> type
+    }
+}

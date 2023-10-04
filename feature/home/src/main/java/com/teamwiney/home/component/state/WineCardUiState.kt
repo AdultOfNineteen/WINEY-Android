@@ -1,9 +1,7 @@
 package com.teamwiney.home.component.state
 
-import com.teamwiney.ui.components.WineColor
-
 data class WineCardUiState(
-    val wineColor: WineColor,
+    val color: String,
     val name: String,
     val country: String,
     val varietal: String,

@@ -17,30 +17,30 @@ data class BadgeProperties(
 
 @Composable
 fun WineBadge(
-    wineColor: WineColor
+    color: String
 ) {
-    val (badge, image) = when (wineColor) {
-        WineColor.RED -> BadgeProperties(
+    val (badge, image) = when (color) {
+        "RED" -> BadgeProperties(
             R.drawable.ic_red_wine_badge,
             R.drawable.ic_red_wine
         )
-        WineColor.WHITE -> BadgeProperties(
+        "WHITE" -> BadgeProperties(
             R.drawable.ic_white_wine_badge,
             R.drawable.ic_white_wine
         )
-        WineColor.ROSE -> BadgeProperties(
+        "ROSE" -> BadgeProperties(
             R.drawable.ic_rose_wine_badge,
             R.drawable.ic_rose_wine
         )
-        WineColor.SPARKLING -> BadgeProperties(
+        "SPARKL" -> BadgeProperties(
             R.drawable.ic_sparkl_wine_badge,
             R.drawable.ic_sparkl_wine
         )
-        WineColor.FORTIFIED -> BadgeProperties(
+        "PORT" -> BadgeProperties(
             R.drawable.ic_port_wine_badge,
             R.drawable.ic_port_wine
         )
-        WineColor.OTHER -> BadgeProperties(
+        else -> BadgeProperties(
             R.drawable.ic_etc_wine_badge,
             R.drawable.ic_etc_wine
         )

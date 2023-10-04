@@ -1,9 +1,9 @@
 package com.teamwiney.analysis
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.toDomain
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -35,8 +35,7 @@ class AnalysisViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     val tasteAnalysis = it.data.result
-                    updateState(currentState.copy(tasteAnalysis = tasteAnalysis))
-                    Log.d("analysis", tasteAnalysis.toString())
+                    updateState(currentState.copy(tasteAnalysis = tasteAnalysis.toDomain()))
                 }
 
                 is ApiResult.ApiError -> {
