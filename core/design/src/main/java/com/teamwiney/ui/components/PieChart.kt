@@ -171,7 +171,7 @@ fun PreviewPieChart() {
                 data = listOf(
                     ChartData(
                         label = "레드",
-                        color = Color(0xFF5123DF),
+                        color = WineyTheme.colors.main_1,
                         value = 75f,
                         textStyle = WineyTheme.typography.title2.copy(
                             color = WineyTheme.colors.gray_50
@@ -179,7 +179,7 @@ fun PreviewPieChart() {
                     ),
                     ChartData(
                         label = "화이트",
-                        color = Color(0xFF5E489B),
+                        color = WineyTheme.colors.gray_800,
                         value = 18f,
                         textStyle = WineyTheme.typography.bodyB2.copy(
                             color = WineyTheme.colors.gray_800
@@ -187,7 +187,7 @@ fun PreviewPieChart() {
                     ),
                     ChartData(
                         label = "로제",
-                        color = WineyTheme.colors.gray_800,
+                        color = WineyTheme.colors.gray_900,
                         value = 7f,
                         textStyle = WineyTheme.typography.captionB1.copy(
                             color = WineyTheme.colors.gray_900

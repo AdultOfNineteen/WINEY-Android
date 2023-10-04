@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -50,10 +49,9 @@ fun WineTypeContent(
 
         val chartData = types.mapIndexed { index, type ->
             val labelColor = when (index) {
-                0 -> Color(0xFF5123DF)
-                1 -> Color(0xFF5E489B)
-                2 -> WineyTheme.colors.gray_800
-                else -> Color(0xFF5123DF)
+                0 -> WineyTheme.colors.main_1
+                1 -> WineyTheme.colors.gray_800
+                else -> WineyTheme.colors.gray_900
             }
 
             val labelStyle = when (index) {
@@ -63,11 +61,8 @@ fun WineTypeContent(
                 1 -> WineyTheme.typography.bodyB2.copy(
                     color = WineyTheme.colors.gray_800
                 )
-                2 -> WineyTheme.typography.captionB1.copy(
+                else -> WineyTheme.typography.captionB1.copy(
                     color = WineyTheme.colors.gray_900
-                )
-                else -> WineyTheme.typography.title2.copy(
-                    color = WineyTheme.colors.gray_50
                 )
             }
 
