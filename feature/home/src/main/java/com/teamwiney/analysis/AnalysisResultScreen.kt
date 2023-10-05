@@ -116,11 +116,7 @@ fun AnalysisResultScreen(
             val animatedProgress = remember { Animatable(0f) }
 
             LaunchedEffect(pagerState.currentPage) {
-                if (pagerState.currentPage == 2) {
-                    animatedProgress.snapTo(0.2f)
-                } else {
-                    animatedProgress.snapTo(0f)
-                }
+                animatedProgress.snapTo(0f)
                 animatedProgress.animateTo(1f, tween(durationMillis = 1000))
             }
 

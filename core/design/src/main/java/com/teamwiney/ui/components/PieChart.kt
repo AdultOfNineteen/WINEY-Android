@@ -37,6 +37,7 @@ data class ChartData(
 @Composable
 fun PieChart(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = WineyTheme.colors.background_1,
     progress: Float = 1f,
     data: List<ChartData>
 ) {
@@ -67,7 +68,7 @@ fun PieChart(
 
             val radius = width / 3f
             val strokeWidth = radius * .4f
-            val gapAngle = 2f // Arc 사이의 간격 각도
+            val gapAngle = 3f // Arc 사이의 간격 각도
 
             var startAngle = -90f
 
@@ -101,6 +102,15 @@ fun PieChart(
                     )
                 }
 
+                drawCircle(
+                    color = backgroundColor,
+                    center = Offset(
+                        x = size.width / 2,
+                        y = size.height / 2
+                    ),
+                    radius = (width - strokeWidth) / 2.35f
+                )
+
                 drawLabel(
                     textMeasureResult = textMeasureResult,
                     startAngle = startAngle,
@@ -127,21 +137,14 @@ private fun DrawScope.drawLabel(
 
     val angleInRadians = (startAngle + sweepAngle / 2).degreeToAngle
 
-    val legendRadius = if (startAngle >= 235f) {
-        chartRadius / 2f + textSize.width
-    } else if (startAngle >= 180f && startAngle + sweepAngle >= 235f) {
-        chartRadius / 2f + textSize.width + 20f
-    } else {
-        chartRadius / 2f + textCenter.x + 30f
-    }
-
-    val legendX = center.x + legendRadius * cos(angleInRadians) + 65f
+    val legendRadius = chartRadius / 2f + textSize.width
+    val legendX = center.x + legendRadius * cos(angleInRadians)
     val legendY = center.y + legendRadius * sin(angleInRadians)
 
     drawCircle(
         color = color,
         radius = 10f,
-        center = Offset(legendX - textCenter.x - 20f, legendY - textCenter.y + 10f)
+        center = Offset(legendX - textCenter.x - 25f, legendY - textCenter.y + 10f)
     )
 
     drawText(
@@ -162,6 +165,38 @@ private val Float.asAngle: Float
 @Preview
 @Composable
 fun PreviewPieChart() {
+    WineyTheme {
+        Box(
+            modifier = Modifier.fillMaxSize().background(WineyTheme.colors.background_1),
+            contentAlignment = Alignment.Center
+        ) {
+            PieChart(
+                data = listOf(
+                    ChartData(
+                        label = "화이트",
+                        color = WineyTheme.colors.main_1,
+                        value = 60f,
+                        textStyle = WineyTheme.typography.title2.copy(
+                            color = WineyTheme.colors.gray_50
+                        )
+                    ),
+                    ChartData(
+                        label = "레드",
+                        color = WineyTheme.colors.gray_800,
+                        value = 40f,
+                        textStyle = WineyTheme.typography.bodyB2.copy(
+                            color = WineyTheme.colors.gray_800
+                        )
+                    )
+                )
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewPieChart2() {
     WineyTheme {
         Box(
             modifier = Modifier.fillMaxSize().background(WineyTheme.colors.background_1),
