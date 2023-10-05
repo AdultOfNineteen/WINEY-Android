@@ -1,6 +1,5 @@
 package com.teamwiney.data.network.model.response
 
-
 data class TasteAnalysis(
     val avgPrice: Int = 0,
     val recommendCountry: String = "",
