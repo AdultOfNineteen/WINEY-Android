@@ -90,12 +90,6 @@ fun HomeScreen(
         viewModel.getRecommendWines()
         viewModel.getWineTips()
 
-        val refreshState = wineTips.loadState.refresh
-        if (refreshState is LoadState.Error) {
-            val errorMessage = refreshState.error.message ?: "네트워크 오류가 발생했습니다."
-            appState.showSnackbar(errorMessage)
-        }
-
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is HomeContract.Effect.NavigateTo -> {
@@ -136,7 +130,8 @@ fun HomeScreen(
             )
             HomeWineTips(
                 appState = appState,
-                wineTips = wineTips
+                wineTips = wineTips,
+                viewModel = viewModel
             )
         }
     }
@@ -145,7 +140,8 @@ fun HomeScreen(
 @Composable
 fun HomeWineTips(
     appState: WineyAppState,
-    wineTips: LazyPagingItems<WineTipResponse>
+    wineTips: LazyPagingItems<WineTipResponse>,
+    viewModel: HomeViewModel,
 ) {
 
     val configuration = LocalConfiguration.current
@@ -205,7 +201,7 @@ fun HomeWineTips(
                         title = it.title,
                         thumbnail = it.thumbnail,
                         onClick = {
-                            appState.navigate("${HomeDestinations.WINE_TIP_DETAIL}?url=${it.url}")
+                            viewModel.processEvent(HomeContract.Event.ShowTipDetail(it.url))
                         }
                     )
                 }

@@ -35,7 +35,7 @@ class HomeContract {
         object ShowAnalysis : Event()
         data class ShowWineCardDetail(val cardId: Long) : Event()
         object ShowMoreTips : Event()
-        data class ShowTipDetail(val tipId: Long) : Event()
+        data class ShowTipDetail(val url: String) : Event()
     }
 
     sealed class Effect : UiEffect {

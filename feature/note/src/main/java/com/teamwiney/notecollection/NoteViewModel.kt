@@ -1,10 +1,14 @@
 package com.teamwiney.notecollection
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineType
+import com.teamwiney.data.pagingsource.TastingNotesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -21,14 +25,42 @@ class NoteViewModel @Inject constructor(
     override fun reduceState(event: NoteContract.Event) {
         viewModelScope.launch {
             when (event) {
-                is NoteContract.Event.ShowFilters -> {
+                is NoteContract.Event.ShowFilter -> {
                     getTastingNoteFilters()
+                }
+                is NoteContract.Event.ApplyFilter -> {
+                    getTastingNotes()
                 }
             }
         }
     }
 
-    fun getTastingNoteFilters() = viewModelScope.launch {
+    private fun getTastingNotes() = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                tastingNotes = Pager(
+                    config = PagingConfig(
+                        pageSize = 10
+                    ),
+                    pagingSourceFactory = {
+                        TastingNotesPagingSource(
+                            tastingNoteRepository = tastingNoteRepository,
+                            order = currentState.selectedSort,
+                            countries = currentState.selectedCountryFilter
+                                .filter { it.country != "전체" }
+                                .map { it.country },
+                            wineTypes = currentState.selectedTypeFilter
+                                .filter { it.type != "전체" }
+                                .map { convertToWineType(it.type) },
+                            buyAgain = currentState.buyAgain
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+            )
+        )
+    }
+
+    private fun getTastingNoteFilters() = viewModelScope.launch {
         tastingNoteRepository.getTastingNoteFilters().onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
@@ -55,7 +87,7 @@ class NoteViewModel @Inject constructor(
     }
 
     fun updateSelectedSort(radioButton: String) = viewModelScope.launch {
-        updateState(currentState.copy(selectedSort = radioButton))
+        updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(radioButton)))
     }
 
     fun updateSelectedTypeFilter(filterItem: WineType) = viewModelScope.launch {
@@ -63,8 +95,13 @@ class NoteViewModel @Inject constructor(
 
         if (filterItem in updatedSelectedFilter) {
             updatedSelectedFilter.remove(filterItem)
-        } else {
+        } else if (filterItem.type == "전체") {
+            updatedSelectedFilter.clear()
             updatedSelectedFilter.add(filterItem)
+        } else {
+            if (!updatedSelectedFilter.any { it.type == "전체" }) {
+                updatedSelectedFilter.add(filterItem)
+            }
         }
 
         updateState(
@@ -79,8 +116,13 @@ class NoteViewModel @Inject constructor(
 
         if (filterItem in updatedSelectedFilter) {
             updatedSelectedFilter.remove(filterItem)
-        } else {
+        } else if (filterItem.country == "전체") {
+            updatedSelectedFilter.clear()
             updatedSelectedFilter.add(filterItem)
+        } else {
+            if (!updatedSelectedFilter.any { it.country == "전체" }) {
+                updatedSelectedFilter.add(filterItem)
+            }
         }
 
         updateState(
@@ -99,9 +141,16 @@ class NoteViewModel @Inject constructor(
         )
     }
 
-    fun updateWineList() {
-
+    private fun convertToWineType(input: String): String {
+        return when (input) {
+            "레드" -> "RED"
+            "로제" -> "ROSE"
+            "화이트" -> "WHITE"
+            "스파클링" -> "SPARKLING"
+            "포트" -> "FORTIFIED"
+            "기타" -> "OTHER"
+            else -> input
+        }
     }
-
 
 }

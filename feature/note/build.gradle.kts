@@ -51,6 +51,8 @@ dependencies {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_UI)
+        implementation(COMPOSE_PAGING)
+        implementation(COMPOSE_PAGING_RUNTIME)
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)

@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeContract.Event.ShowTipDetail-> {
-
+                    postEffect(HomeContract.Effect.NavigateTo("${HomeDestinations.WINE_TIP_DETAIL}?url=${event.url}"))
                 }
 
                 is HomeContract.Event.ShowAnalysis -> {

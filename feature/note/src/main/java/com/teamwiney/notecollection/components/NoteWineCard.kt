@@ -33,7 +33,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamwiney.core.design.R
@@ -43,10 +42,66 @@ import com.teamwiney.ui.theme.Chaviera
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun NoteWineCard(wine: CardProperties) {
+fun NoteWineCard(
+    modifier: Modifier = Modifier,
+    color: String,
+    name: String,
+    origin: String,
+    starRating: Int
+) {
+    val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
+        "RED" -> CardProperties(
+            color,
+            R.drawable.ic_red_wine,
+            Color(0xFFA87575),
+            listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
+            Color(0xFF640D0D),
+            Color(0xFF441010)
+        )
+        "WHITE" -> CardProperties(
+            color,
+            R.drawable.ic_white_wine,
+            Color(0xFFC1BA9E),
+            listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
+            Color(0xFF898472),
+            Color(0xFF7A706D)
+        )
+        "ROSE" -> CardProperties(
+            color,
+            R.drawable.ic_rose_wine,
+            Color(0xFFC9A4A1),
+            listOf(Color(0xFFAA678F), Color(0xFFD29263)),
+            Color(0xFFBA7A71),
+            Color(0xFF8F6C64)
+        )
+        "SPARKL" -> CardProperties(
+            color,
+            R.drawable.ic_sparkl_wine,
+            Color(0xFFA78093),
+            listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
+            Color(0xFF777151),
+            Color(0xFF4F5144)
+        )
+        "PORT" -> CardProperties(
+            color,
+            R.drawable.ic_port_wine,
+            Color(0xFFB09A86),
+            listOf(Color(0xFF4A2401), Color(0xFF77503A)),
+            Color(0xFF4F3F28),
+            Color(0xFF3A2F2F)
+        )
+        else -> CardProperties(
+            color,
+            R.drawable.ic_etc_wine,
+            Color(0xFF768169),
+            listOf(Color(0xFF3C3D12), Color(0xFF465C18)),
+            Color(0xFF2D4328),
+            Color(0xFF233124)
+        )
+    }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
     ) {
@@ -70,9 +125,9 @@ fun NoteWineCard(wine: CardProperties) {
         ) {
             NoteCardSurface(
                 modifier = Modifier.fillMaxSize(),
-                cardColor = wine.cardColor,
-                gradientCircleColor = wine.gradientCircleColor,
-                circleColor = wine.circleColor
+                cardColor = cardColor,
+                gradientCircleColor = gradientCircleColor,
+                circleColor = circleColor
             )
             Column(
                 modifier = Modifier
@@ -85,7 +140,7 @@ fun NoteWineCard(wine: CardProperties) {
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Text(
-                        text = wine.wineName,
+                        text = wineName,
                         style = TextStyle(
                             fontFamily = Chaviera,
                             fontWeight = FontWeight.Normal,
@@ -104,7 +159,7 @@ fun NoteWineCard(wine: CardProperties) {
                     )
                 }
                 Image(
-                    painter = painterResource(id = R.drawable.ic_sparkl_wine),
+                    painter = painterResource(id = image),
                     contentDescription = "IMG_SPARKL_WINE",
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -116,7 +171,7 @@ fun NoteWineCard(wine: CardProperties) {
         }
         HeightSpacer(height = 10.dp)
         Text(
-            text = "캄포 마리니 어쩌구저쩌구ㅁㄴㅇㅁㄴㅇㅁㄴㅇ",
+            text = name,
             color = WineyTheme.colors.gray_50,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -125,7 +180,7 @@ fun NoteWineCard(wine: CardProperties) {
         )
         HeightSpacer(height = 2.dp)
         Text(
-            text = "이탈리아 / 5점",
+            text = "$origin / ${starRating}점",
             color = WineyTheme.colors.gray_700,
             style = WineyTheme.typography.captionM2
         )

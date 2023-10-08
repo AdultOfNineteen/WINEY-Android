@@ -2,8 +2,9 @@ package com.teamwiney.data.network.service
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.PagingData
 import com.teamwiney.data.network.model.response.RecommendWineResponse
-import com.teamwiney.data.network.model.response.WineTipsResponse
+import com.teamwiney.data.network.model.response.WineTipResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -23,6 +24,6 @@ interface WineService {
     suspend fun getWineTips(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): ApiResult<ResponseWrapper<WineTipsResponse>>
+    ): ApiResult<ResponseWrapper<PagingData<List<WineTipResponse>>>>
 
 }
