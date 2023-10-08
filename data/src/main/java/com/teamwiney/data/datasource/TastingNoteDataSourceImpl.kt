@@ -4,9 +4,9 @@ import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingData
-import com.teamwiney.data.network.model.response.TasteAnalysisResponse
-import com.teamwiney.data.network.model.response.TastingNoteFiltersResponse
-import com.teamwiney.data.network.model.response.TastingNoteResponse
+import com.teamwiney.data.network.model.response.TasteAnalysis
+import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.service.TastingNoteService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ class TastingNoteDataSourceImpl @Inject constructor(
     @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : TastingNoteDataSource {
 
-    override fun getTasteAnalysis(): Flow<ApiResult<ResponseWrapper<TasteAnalysisResponse>>> =
+    override fun getTasteAnalysis(): Flow<ApiResult<ResponseWrapper<TasteAnalysis>>> =
         flow {
             emit(tastingNoteService.getTasteAnalysis())
         }.flowOn(ioDispatcher)
@@ -31,12 +31,12 @@ class TastingNoteDataSourceImpl @Inject constructor(
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int
-    ): Flow<ApiResult<ResponseWrapper<PagingData<List<TastingNoteResponse>>>>> =
+    ): Flow<ApiResult<ResponseWrapper<PagingData<List<TastingNote>>>>> =
         flow {
             emit(tastingNoteService.getTastingNotes(page, size, order, countries, wineTypes, buyAgain))
         }.flowOn(ioDispatcher)
 
-    override fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFiltersResponse>>> =
+    override fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>> =
         flow {
             emit(tastingNoteService.getTastingNoteFilters())
         }.flowOn(ioDispatcher)

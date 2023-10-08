@@ -15,7 +15,7 @@ import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.SocialLoginResponse
+import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
@@ -107,7 +107,7 @@ class LoginViewModel @Inject constructor(
                                 )
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
                             }
-                            if (userStatus == SocialLoginResponse.USER_STATUS_ACTIVE) {
+                            if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
                                 postEffect(LoginContract.Effect.NavigateTo(
                                     destination = HomeDestinations.ROUTE,
                                     navOptions = navOptions {

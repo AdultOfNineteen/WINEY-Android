@@ -35,7 +35,7 @@ class AnalysisViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     val tasteAnalysis = it.data.result
-                    updateState(currentState.copy(tasteAnalysisResponse = tasteAnalysis.toDomain()))
+                    updateState(currentState.copy(tasteAnalysis = tasteAnalysis.toDomain()))
                 }
 
                 is ApiResult.ApiError -> {

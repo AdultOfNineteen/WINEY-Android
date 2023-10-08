@@ -3,8 +3,8 @@ package com.teamwiney.data.network.service
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingData
-import com.teamwiney.data.network.model.response.RecommendWineResponse
-import com.teamwiney.data.network.model.response.WineTipResponse
+import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.WineTip
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,7 +12,7 @@ interface WineService {
 
     /** 추천 와인 API */
     @GET("/wines/recommend")
-    suspend fun getRecommendWines(): ApiResult<ResponseWrapper<List<RecommendWineResponse>>>
+    suspend fun getRecommendWines(): ApiResult<ResponseWrapper<List<RecommendWine>>>
 
     /** 와인 상세보기 조회 API
      * 현재 미구현 */
@@ -24,6 +24,6 @@ interface WineService {
     suspend fun getWineTips(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): ApiResult<ResponseWrapper<PagingData<List<WineTipResponse>>>>
+    ): ApiResult<ResponseWrapper<PagingData<List<WineTip>>>>
 
 }

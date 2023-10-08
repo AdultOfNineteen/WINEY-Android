@@ -8,11 +8,11 @@ import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
-import com.teamwiney.data.network.model.response.AuthenticationMessageCodeResponse
-import com.teamwiney.data.network.model.response.GoogleAccessTokenResponse
-import com.teamwiney.data.network.model.response.SetPreferencesResponse
-import com.teamwiney.data.network.model.response.SocialLoginResponse
-import com.teamwiney.data.network.model.response.VerifyAuthenticationMessageResponse
+import com.teamwiney.data.network.model.response.AuthenticationMessageCode
+import com.teamwiney.data.network.model.response.GoogleAccessToken
+import com.teamwiney.data.network.model.response.SetPreferences
+import com.teamwiney.data.network.model.response.SocialLogin
+import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -37,33 +37,33 @@ interface AuthService {
     suspend fun getGoogleAccessToken(
         @Url url: String = "https://www.googleapis.com/oauth2/v4/token",
         @Body googleAccessTokenRequest: GoogleAccessTokenRequest
-    ): ApiResult<GoogleAccessTokenResponse>
+    ): ApiResult<GoogleAccessToken>
 
     /** 소셜로그인 API */
     @POST("/login/{social}")
     suspend fun socialLogin(
         @Path("social") social: SocialType,
         @Body socialLoginRequest: SocialLoginRequest
-    ): ApiResult<ResponseWrapper<SocialLoginResponse>>
+    ): ApiResult<ResponseWrapper<SocialLogin>>
 
     /** 인증번호 전송 API */
     @POST("/users/{userId}/phone/code/send")
     suspend fun sendAuthCodeMessage(
         @Path("userId") userId: String,
         @Body phoneNumberRequest: PhoneNumberRequest
-    ): ApiResult<ResponseWrapper<AuthenticationMessageCodeResponse>>
+    ): ApiResult<ResponseWrapper<AuthenticationMessageCode>>
 
     /** 인증번호 검사 API */
     @POST("/users/{userId}/phone/code/verify")
     suspend fun verifyAuthCodeMessage(
         @Path("userId") userId: String,
         @Body phoneNumberWithVerificationCodeRequest: PhoneNumberWithVerificationCodeRequest
-    ): ApiResult<ResponseWrapper<VerifyAuthenticationMessageResponse>>
+    ): ApiResult<ResponseWrapper<VerifyAuthenticationMessage>>
 
     /** 취향 설정 */
     @PATCH("/users/{userId}/preferences")
     suspend fun setPreferences(
         @Path("userId") userId: String,
         @Body preferences: SetPreferencesRequest
-    ): ApiResult<ResponseWrapper<SetPreferencesResponse>>
+    ): ApiResult<ResponseWrapper<SetPreferences>>
 }

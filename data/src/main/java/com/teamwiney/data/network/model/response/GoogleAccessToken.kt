@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class GoogleAccessTokenResponse(
+data class GoogleAccessToken(
     @SerializedName("access_token")
     val accessToken: String,
     @SerializedName("expires_in")

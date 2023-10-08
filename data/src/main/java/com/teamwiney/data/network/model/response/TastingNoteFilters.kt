@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class TastingNoteFiltersResponse(
+data class TastingNoteFilters(
     @SerializedName("wineTypes")
     val wineTypes: List<WineType>,
     @SerializedName("countries")

@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.model.response
 
-data class SetPreferencesResponse(
+data class SetPreferences(
     val description: String,
     val preferenceId: Int,
     val updatedAt: String

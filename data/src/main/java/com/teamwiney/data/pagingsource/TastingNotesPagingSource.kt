@@ -3,7 +3,7 @@ package com.teamwiney.data.pagingsource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.TastingNoteResponse
+import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.toDomain
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import kotlinx.coroutines.flow.first
@@ -14,16 +14,16 @@ class TastingNotesPagingSource(
     private val countries: List<String>,
     private val wineTypes: List<String>,
     private val buyAgain: Int
-) : PagingSource<Int, TastingNoteResponse>() {
+) : PagingSource<Int, TastingNote>() {
 
-    override fun getRefreshKey(state: PagingState<Int, TastingNoteResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, TastingNote>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TastingNoteResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TastingNote> {
         val currentPage = params.key ?: 0
 
         val loadData =

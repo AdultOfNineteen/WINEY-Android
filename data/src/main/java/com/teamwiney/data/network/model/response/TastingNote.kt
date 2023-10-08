@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class TastingNoteResponse(
+data class TastingNote(
     @SerializedName("noteId")
     val id: Long,
     @SerializedName("wineName")
@@ -17,7 +17,7 @@ data class TastingNoteResponse(
     val wineType: String
 )
 
-fun TastingNoteResponse.toDomain() = TastingNoteResponse(
+fun TastingNote.toDomain() = TastingNote(
     id = this.id,
     name = this.name,
     country = this.country,

@@ -3,22 +3,22 @@ package com.teamwiney.data.pagingsource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.WineTipResponse
+import com.teamwiney.data.network.model.response.WineTip
 import com.teamwiney.data.repository.wine.WineRepository
 import kotlinx.coroutines.flow.first
 
 class WineTipsPagingSource(
     private val wineRepository: WineRepository
-) : PagingSource<Int, WineTipResponse>() {
+) : PagingSource<Int, WineTip>() {
 
-    override fun getRefreshKey(state: PagingState<Int, WineTipResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, WineTip>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WineTipResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WineTip> {
         val currentPage = params.key ?: 0
 
         val loadData =

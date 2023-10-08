@@ -8,7 +8,7 @@ import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
-import com.teamwiney.data.network.model.response.SetPreferencesResponse
+import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.service.SocialType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -46,7 +46,7 @@ class AuthRepositoryImpl @Inject constructor(
     override fun setPreferences(
         userId: String,
         request: SetPreferencesRequest
-    ): Flow<ApiResult<ResponseWrapper<SetPreferencesResponse>>> =
+    ): Flow<ApiResult<ResponseWrapper<SetPreferences>>> =
         authDataSource.setPreferences(userId, request)
 
     override fun verifyAuthCodeMessage(

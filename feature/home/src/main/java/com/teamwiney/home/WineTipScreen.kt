@@ -29,7 +29,7 @@ import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.data.network.model.response.WineTipResponse
+import com.teamwiney.data.network.model.response.WineTip
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
@@ -79,7 +79,7 @@ fun WineTipScreen(
 @Composable
 fun TipContent(
     appState: WineyAppState,
-    wineTips: LazyPagingItems<WineTipResponse>
+    wineTips: LazyPagingItems<WineTip>
 ) {
 
     LazyVerticalGrid(

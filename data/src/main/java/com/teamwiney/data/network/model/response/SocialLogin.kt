@@ -17,7 +17,7 @@ package com.teamwiney.data.network.model.response
 1. 취향 설정을 한 경우 → `DONE`
 2. 취향 설정을 하지 않은 경우 → `NONE`
  */
-data class SocialLoginResponse(
+data class SocialLogin(
     val accessToken: String,
     val userId: Int,
     val refreshToken: String,

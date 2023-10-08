@@ -4,13 +4,13 @@ import androidx.navigation.NavOptions
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.data.network.model.response.TasteAnalysisResponse
+import com.teamwiney.data.network.model.response.TasteAnalysis
 
 class AnalysisContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val tasteAnalysisResponse: TasteAnalysisResponse = TasteAnalysisResponse()
+        val tasteAnalysis: TasteAnalysis = TasteAnalysis()
     ) : UiState
 
     sealed class Event : UiEvent {

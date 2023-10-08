@@ -55,8 +55,8 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
-import com.teamwiney.data.network.model.response.RecommendWineResponse
-import com.teamwiney.data.network.model.response.WineTipResponse
+import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.WineTip
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WineCard
 import com.teamwiney.ui.components.home.HomeLogo
@@ -140,7 +140,7 @@ fun HomeScreen(
 @Composable
 fun HomeWineTips(
     appState: WineyAppState,
-    wineTips: LazyPagingItems<WineTipResponse>,
+    wineTips: LazyPagingItems<WineTip>,
     viewModel: HomeViewModel,
 ) {
 
@@ -215,7 +215,7 @@ fun HomeWineTips(
 @Composable
 private fun HomeRecommendWine(
     processEvent: (HomeContract.Event) -> Unit,
-    recommendWines: List<RecommendWineResponse>,
+    recommendWines: List<RecommendWine>,
     isLoading: Boolean,
 ) {
 

@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class RecommendWineResponse(
+data class RecommendWine(
     @SerializedName("wineId")
     val wineId: Long,
     @SerializedName("name")
@@ -17,7 +17,7 @@ data class RecommendWineResponse(
     val price: Int
 )
 
-fun RecommendWineResponse.toDomain() = RecommendWineResponse(
+fun RecommendWine.toDomain() = RecommendWine(
     wineId = this.wineId,
     name = this.name,
     country = this.country,

@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.data.network.model.response.RecommendWineResponse
-import com.teamwiney.data.network.model.response.WineTipResponse
+import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.WineTip
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -17,8 +17,8 @@ class HomeContract {
     data class State(
         val isLoading: Boolean = false,
         val isFirstScroll: Boolean = true,
-        val recommendWines: List<RecommendWineResponse> = emptyList(),
-        val wineTips: Flow<PagingData<WineTipResponse>> = flowOf(
+        val recommendWines: List<RecommendWine> = emptyList(),
+        val wineTips: Flow<PagingData<WineTip>> = flowOf(
             PagingData.from(
                 emptyList(),
                 LoadStates(

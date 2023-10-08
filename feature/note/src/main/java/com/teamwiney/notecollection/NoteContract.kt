@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.data.network.model.response.TastingNoteResponse
+import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineType
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ class NoteContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val tastingNotes: Flow<PagingData<TastingNoteResponse>> = flowOf(
+        val tastingNotes: Flow<PagingData<TastingNote>> = flowOf(
             PagingData.from(
                 emptyList(),
                 LoadStates(

@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class WineTipResponse(
+data class WineTip(
     @SerializedName("windTipId")
     val id: Long,
     @SerializedName("thumbNail")

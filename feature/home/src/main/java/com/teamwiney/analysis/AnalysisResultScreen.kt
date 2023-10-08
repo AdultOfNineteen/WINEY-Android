@@ -74,7 +74,7 @@ fun AnalysisResultScreen(
         }
     }
 
-    val analysisData = uiState.tasteAnalysisResponse
+    val analysisData = uiState.tasteAnalysis
 
     Column(
         modifier = Modifier
