@@ -101,7 +101,7 @@ fun HomeScreen(
     ) {
         HomeLogo(
             onClick = {
-                viewModel.processEvent(HomeContract.Event.AnalysisButtonClicked)
+                viewModel.processEvent(HomeContract.Event.ShowAnalysis)
             },
             hintPopupOpen = uiState.isFirstScroll
         )
@@ -266,7 +266,7 @@ private fun HomeRecommendWine(
                                 )
                             },
                         onShowDetail = {
-                            processEvent(HomeContract.Event.WineCardShowDetailButtonClicked(0L))
+                            processEvent(HomeContract.Event.ShowWineCardDetail(0L))
                         },
                         color = recommendWines[page].color,
                         name = recommendWines[page].name,

@@ -35,19 +35,19 @@ class HomeViewModel @Inject constructor(
     override fun reduceState(event: HomeContract.Event) {
         viewModelScope.launch {
             when (event) {
-                is HomeContract.Event.WineCardShowDetailButtonClicked -> {
+                is HomeContract.Event.ShowWineCardDetail -> {
                     postEffect(HomeContract.Effect.NavigateTo(HomeDestinations.WINE_DETAIL))
                 }
 
-                is HomeContract.Event.ShowMoreTipsButtonClicked -> {
+                is HomeContract.Event.ShowMoreTips -> {
 
                 }
 
-                is HomeContract.Event.TipItemClicked-> {
+                is HomeContract.Event.ShowTipDetail-> {
 
                 }
 
-                is HomeContract.Event.AnalysisButtonClicked -> {
+                is HomeContract.Event.ShowAnalysis -> {
                     postEffect(HomeContract.Effect.NavigateTo(HomeDestinations.Analysis.ROUTE))
                 }
             }

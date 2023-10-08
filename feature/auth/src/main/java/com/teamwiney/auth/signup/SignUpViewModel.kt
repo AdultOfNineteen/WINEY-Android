@@ -25,11 +25,11 @@ class SignUpViewModel @Inject constructor(
 
     override fun reduceState(event: SignUpContract.Event) {
         when (event) {
-            is SignUpContract.Event.SendAuthenticationButtonClicked -> {
+            is SignUpContract.Event.SendAuthentication -> {
                 sendAuthenticationNumber()
             }
 
-            is SignUpContract.Event.BackToLoginButtonClicked, SignUpContract.Event.CancelTasteSelectionButtonClicked -> {
+            is SignUpContract.Event.BackToLogin, SignUpContract.Event.CancelTasteSelection -> {
                 postEffect(
                     SignUpContract.Effect.ShowBottomSheet(
                         SignUpContract.BottomSheet.ReturnToLogin
@@ -79,7 +79,10 @@ class SignUpViewModel @Inject constructor(
                 phoneNumber = currentState.phoneNumber,
                 verificationCode = currentState.verifyNumber
             )
-        ).collectLatest {
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
                     postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.FAVORITE_TASTE))
@@ -191,20 +194,5 @@ class SignUpViewModel @Inject constructor(
                 )
             )
         }
-
-    fun formatPhoneNumber(input: String): String {
-        val part1 = input.substring(0, 3)
-        val part2 = input.substring(3, 7)
-        val part3 = "****"
-
-        return "$part1 - $part2 - $part3"
-    }
-
-    fun formatLoginType(input: String): String {
-        return when (input) {
-            "KAKAO" -> "카카오 소셜"
-            else -> "구글 소셜"
-        }
-    }
 }
 

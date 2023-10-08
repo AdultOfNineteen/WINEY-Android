@@ -25,7 +25,8 @@ object NetworkModule {
     @Singleton
     fun providesOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(
+            .addNetworkInterceptor(authInterceptor)
+            .addNetworkInterceptor(
                 HttpLoggingInterceptor()
                     .apply {
                         if (BuildConfig.DEBUG) {
@@ -33,7 +34,6 @@ object NetworkModule {
                         }
                     }
             )
-            .addInterceptor(authInterceptor)
             .build()
 
     @Provides

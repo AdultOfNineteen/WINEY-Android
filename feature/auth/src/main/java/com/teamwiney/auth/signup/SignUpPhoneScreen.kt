@@ -92,9 +92,9 @@ fun SignUpPhoneScreen(
                         is SignUpContract.BottomSheet.UserAlreadyExists -> {
                             showBottomSheet {
                                 val message = buildAnnotatedString {
-                                    append("${viewModel.formatPhoneNumber(uiState.phoneNumber)}님은\n")
+                                    append("${formatPhoneNumber(uiState.phoneNumber)}님은\n")
                                     withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                                        append(viewModel.formatLoginType(effect.bottomSheet.message))
+                                        append(formatLoginType(effect.bottomSheet.message))
                                     }
                                     append(" 회원으로\n")
                                     append("가입하신 기록이 있어요")
@@ -171,7 +171,7 @@ fun SignUpPhoneScreen(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
-                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
+                        viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                     }
                 ),
                 onErrorState = uiState.phoneNumberErrorState
@@ -181,11 +181,26 @@ fun SignUpPhoneScreen(
                 text = "확인",
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
+                    viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
+    }
+}
+
+private fun formatPhoneNumber(input: String): String {
+    val part1 = input.substring(0, 3)
+    val part2 = input.substring(3, 7)
+    val part3 = "****"
+
+    return "$part1 - $part2 - $part3"
+}
+
+private fun formatLoginType(input: String): String {
+    return when (input) {
+        "KAKAO" -> "카카오 소셜"
+        else -> "구글 소셜"
     }
 }

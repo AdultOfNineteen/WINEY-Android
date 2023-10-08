@@ -106,7 +106,7 @@ fun SignUpFavoriteTasteScreen(
             TopBar(
                 leadingIconOnClick =  {
                     if (pagerState.currentPage == 0) {
-                        viewModel.processEvent(SignUpContract.Event.CancelTasteSelectionButtonClicked)
+                        viewModel.processEvent(SignUpContract.Event.CancelTasteSelection)
                     } else {
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
                     }

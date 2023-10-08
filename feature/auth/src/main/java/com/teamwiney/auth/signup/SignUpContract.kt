@@ -13,7 +13,6 @@ class SignUpContract {
 
     data class State(
         val isLoading: Boolean = false,
-        val error: String? = null,
         val phoneNumber: String = "",
         val phoneNumberErrorState: Boolean = false,
         val verifyNumber: String = "",
@@ -78,9 +77,9 @@ class SignUpContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        object SendAuthenticationButtonClicked : Event()
-        object BackToLoginButtonClicked : Event()
-        object CancelTasteSelectionButtonClicked : Event()
+        object SendAuthentication : Event()
+        object BackToLogin : Event()
+        object CancelTasteSelection : Event()
         object SetPreferences : Event()
 
         object VerifyCode : Event()

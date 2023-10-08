@@ -134,7 +134,7 @@ fun SignUpAuthenticationScreen(
     ) {
         TopBar(
             leadingIconOnClick = {
-                viewModel.processEvent(SignUpContract.Event.BackToLoginButtonClicked)
+                viewModel.processEvent(SignUpContract.Event.BackToLogin)
             }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {
@@ -187,7 +187,7 @@ fun SignUpAuthenticationScreen(
                         keyboardController?.hide()
                         // TODO: 실제 구현에서는 ViewModel의 타이머 시작 함수를 onSend에 람다로 넘겨받음
                         viewModel.resetTimer()
-                        viewModel.processEvent(SignUpContract.Event.SendAuthenticationButtonClicked)
+                        viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                     },
                     text = "인증번호 재전송",
                     color = WineyTheme.colors.gray_700,

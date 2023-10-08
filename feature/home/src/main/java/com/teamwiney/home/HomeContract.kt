@@ -17,10 +17,10 @@ class HomeContract {
 
 
     sealed class Event : UiEvent {
-        object AnalysisButtonClicked : Event()
-        data class WineCardShowDetailButtonClicked(val cardId: Long) : Event()
-        object ShowMoreTipsButtonClicked : Event()
-        data class TipItemClicked(val tipId: Long) : Event()
+        object ShowAnalysis : Event()
+        data class ShowWineCardDetail(val cardId: Long) : Event()
+        object ShowMoreTips : Event()
+        data class ShowTipDetail(val tipId: Long) : Event()
     }
 
     sealed class Effect : UiEffect {
