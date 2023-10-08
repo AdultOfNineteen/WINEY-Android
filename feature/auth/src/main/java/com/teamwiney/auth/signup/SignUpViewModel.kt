@@ -66,7 +66,7 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.NetworkError -> {
-                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
         }
@@ -93,7 +93,7 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 else -> {
-                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
         }
@@ -133,7 +133,7 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 else -> {
-                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
         }

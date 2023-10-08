@@ -8,5 +8,6 @@ class WineRepositoryImpl @Inject constructor(
 ) : WineRepository {
 
     override fun getRecommendWines() = wineDataSource.getRecommendWines()
+    override fun getWineTips(page: Int, size: Int) = wineDataSource.getWineTips(page, size)
 
 }

@@ -5,19 +5,18 @@ package com.teamwiney.home
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -46,13 +45,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
-import com.teamwiney.home.component.state.WineCardUiState
+import com.teamwiney.data.network.model.response.RecommendWineResponse
+import com.teamwiney.data.network.model.response.WineTipResponse
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.TipCard
 import com.teamwiney.ui.components.WineCard
 import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
@@ -71,8 +76,26 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
+    val wineTips = uiState.wineTips.collectAsLazyPagingItems()
+    val wineTipsRefreshState = wineTips.loadState.refresh
+
+    LaunchedEffect(wineTipsRefreshState) {
+        if (wineTipsRefreshState is LoadState.Error) {
+            val errorMessage = wineTipsRefreshState.error.message ?: "네트워크 오류가 발생했습니다."
+            appState.showSnackbar(errorMessage)
+        }
+    }
+
     LaunchedEffect(true) {
         viewModel.getRecommendWines()
+        viewModel.getWineTips()
+
+        val refreshState = wineTips.loadState.refresh
+        if (refreshState is LoadState.Error) {
+            val errorMessage = refreshState.error.message ?: "네트워크 오류가 발생했습니다."
+            appState.showSnackbar(errorMessage)
+        }
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is HomeContract.Effect.NavigateTo -> {
@@ -111,14 +134,18 @@ fun HomeScreen(
                 recommendWines = uiState.recommendWines,
                 isLoading = uiState.isLoading
             )
-            HomeRecommendNewbie(appState = appState)
+            HomeWineTips(
+                appState = appState,
+                wineTips = wineTips
+            )
         }
     }
 }
 
 @Composable
-fun HomeRecommendNewbie(
-    appState: WineyAppState
+fun HomeWineTips(
+    appState: WineyAppState,
+    wineTips: LazyPagingItems<WineTipResponse>
 ) {
 
     val configuration = LocalConfiguration.current
@@ -163,19 +190,26 @@ fun HomeRecommendNewbie(
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            (0..5).forEach { _ ->
-                TipCard(
-                    modifier = Modifier.width(itemWidth),
-                    title = "와인이 처음이여서 뭘 마셔야할지 모르겠다면?"
-                )
+            items(
+                count = wineTips.itemCount,
+                key = wineTips.itemKey(),
+                contentType = wineTips.itemContentType()
+            ) { index ->
+                wineTips[index]?.let {
+                    TipCard(
+                        modifier = Modifier.width(itemWidth),
+                        title = it.title,
+                        thumbnail = it.thumbnail,
+                        onClick = {
+                            appState.navigate("${HomeDestinations.WINE_TIP_DETAIL}?url=${it.url}")
+                        }
+                    )
+                }
             }
-            Spacer(modifier = Modifier.width(16.dp))
         }
         HeightSpacer(height = 20.dp)
     }
@@ -185,7 +219,7 @@ fun HomeRecommendNewbie(
 @Composable
 private fun HomeRecommendWine(
     processEvent: (HomeContract.Event) -> Unit,
-    recommendWines: List<WineCardUiState>,
+    recommendWines: List<RecommendWineResponse>,
     isLoading: Boolean,
 ) {
 
@@ -268,10 +302,10 @@ private fun HomeRecommendWine(
                         onShowDetail = {
                             processEvent(HomeContract.Event.ShowWineCardDetail(0L))
                         },
-                        color = recommendWines[page].color,
+                        color = recommendWines[page].type,
                         name = recommendWines[page].name,
                         origin = recommendWines[page].country,
-                        varieties = recommendWines[page].varietal,
+                        varieties = recommendWines[page].varietal.firstOrNull() ?: "Unknown",
                         price = "${recommendWines[page].price}"
                     )
                 }

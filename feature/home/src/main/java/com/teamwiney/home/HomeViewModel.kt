@@ -1,14 +1,17 @@
 package com.teamwiney.home
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.toDomain
+import com.teamwiney.data.pagingsource.WineTipsPagingSource
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.wine.WineRepository
-import com.teamwiney.home.component.state.WineCardUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -40,7 +43,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeContract.Event.ShowMoreTips -> {
-
+                    getWineTips()
                 }
 
                 is HomeContract.Event.ShowTipDetail-> {
@@ -71,15 +74,7 @@ class HomeViewModel @Inject constructor(
                     updateState(
                         currentState.copy(
                             recommendWines = it.data.result.map { wine ->
-                                val recommendWine = wine.toDomain()
-
-                                WineCardUiState(
-                                    color = recommendWine.type,
-                                    name = recommendWine.name,
-                                    country = recommendWine.country,
-                                    varietal = recommendWine.varietal.firstOrNull() ?: "Unknown",
-                                    price = recommendWine.price
-                                )
+                                wine.toDomain()
                             }
                         )
                     )
@@ -90,10 +85,27 @@ class HomeViewModel @Inject constructor(
                 }
 
                 else -> {
-                    postEffect(HomeContract.Effect.ShowSnackBar("네트워크 에러가 발생했습니다."))
+                    postEffect(HomeContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
         }
+    }
+
+    fun getWineTips() = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                wineTips = Pager(
+                    config = PagingConfig(
+                        pageSize = 10
+                    ),
+                    pagingSourceFactory = {
+                        WineTipsPagingSource(
+                            wineRepository = wineRepository
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+            )
+        )
     }
 
 }

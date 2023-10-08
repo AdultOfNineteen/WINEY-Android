@@ -24,7 +24,7 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                         )
                     } else {
                         val message = if (response.errorBody() == null) ErrorResponse(
-                            message = "네트워크 에러가 발생했습니다.",
+                            message = "네트워크 오류가 발생했습니다.",
                             code = "U010",
                         ) else gson.fromJson(
                             response.errorBody()!!.string(),

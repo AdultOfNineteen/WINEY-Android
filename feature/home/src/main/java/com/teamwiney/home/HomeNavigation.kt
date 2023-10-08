@@ -6,7 +6,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.analysis.AnalysisResultScreen
 import com.teamwiney.analysis.AnalysisScreen
@@ -43,7 +45,23 @@ fun NavGraphBuilder.homeGraph(
                 graph = HomeDestinations.ROUTE
             )
             WineTipScreen(
-                appState = appState
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry)
+            )
+        }
+
+        composable(
+            route = "${HomeDestinations.WINE_TIP_DETAIL}?url={url}",
+            arguments = listOf(
+                navArgument("url") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) { entry ->
+            WebViewScreen(
+                appState = appState,
+                url = entry.arguments?.getString("url") ?: ""
             )
         }
 

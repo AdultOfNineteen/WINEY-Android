@@ -5,30 +5,52 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
+import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.ui.components.TipCard
+import com.teamwiney.data.network.model.response.WineTipResponse
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
 @Preview
 @Composable
 fun WineTipScreen(
-    appState: WineyAppState = rememberWineyAppState()
+    appState: WineyAppState = rememberWineyAppState(),
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val wineTips = uiState.wineTips.collectAsLazyPagingItems()
+    val wineTipsRefreshState = wineTips.loadState.refresh
+
+    LaunchedEffect(wineTipsRefreshState) {
+        if (wineTipsRefreshState is LoadState.Error) {
+            val errorMessage = wineTipsRefreshState.error.message ?: "네트워크 오류가 발생했습니다."
+            appState.showSnackbar(errorMessage)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,16 +69,18 @@ fun WineTipScreen(
                 appState.navController.navigateUp()
             }
         )
-        TipContent()
+        TipContent(
+            appState = appState,
+            wineTips = wineTips
+        )
     }
 }
 
 @Composable
-fun TipContent() {
-
-    val tipItems = List(12) {
-        "와인이 처음이여서 뭘 마셔야할지 모르겠다면?"
-    }
+fun TipContent(
+    appState: WineyAppState,
+    wineTips: LazyPagingItems<WineTipResponse>
+) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -64,11 +88,20 @@ fun TipContent() {
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(tipItems) {
-            TipCard(
-                modifier = Modifier.fillMaxWidth(),
-                title = it
-            )
+        items(
+            count = wineTips.itemCount,
+            key = wineTips.itemKey(),
+            contentType = wineTips.itemContentType()
+        ) { index ->
+            wineTips[index]?.let {
+                TipCard(
+                    title = it.title,
+                    thumbnail = it.thumbnail,
+                    onClick = {
+                        appState.navigate("${HomeDestinations.WINE_TIP_DETAIL}?url=${it.url}")
+                    }
+                )
+            }
         }
     }
 }

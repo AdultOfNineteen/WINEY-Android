@@ -53,6 +53,7 @@ dependencies {
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(COROUTINES_ANDROID)
+        implementation(COMPOSE_PAGING)
         implementation(HILT_ANDROID)
         implementation(DATASTORE)
         androidTestImplementation(TEST_EXT_JUNIT)
