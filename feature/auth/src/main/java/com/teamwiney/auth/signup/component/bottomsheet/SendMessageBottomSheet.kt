@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
@@ -31,7 +33,8 @@ enum class SendMessageBottomSheetType {
 fun SendMessageBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
-    text: String,
+    text: String = "",
+    annotatedText: AnnotatedString = buildAnnotatedString {  },
     sendMessageBottomSheetType: SendMessageBottomSheetType,
     onConfirm: () -> Unit,
 ) {
@@ -70,9 +73,8 @@ fun SendMessageBottomSheet(
                 textAlign = TextAlign.Center
             )
         } else if (sendMessageBottomSheetType == SendMessageBottomSheetType.USER_ALREADY_EXIST) {
-            // 파싱 필요
             Text(
-                text = text,
+                text = annotatedText,
                 style = WineyTheme.typography.bodyB1,
                 color = WineyTheme.colors.gray_200,
                 textAlign = TextAlign.Center

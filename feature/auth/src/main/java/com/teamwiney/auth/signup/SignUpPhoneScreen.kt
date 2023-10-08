@@ -17,7 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -88,8 +91,17 @@ fun SignUpPhoneScreen(
 
                         is SignUpContract.BottomSheet.UserAlreadyExists -> {
                             showBottomSheet {
+                                val message = buildAnnotatedString {
+                                    append("${viewModel.formatPhoneNumber(uiState.phoneNumber)}님은\n")
+                                    withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                                        append(viewModel.formatLoginType(effect.bottomSheet.message))
+                                    }
+                                    append(" 회원으로\n")
+                                    append("가입하신 기록이 있어요")
+                                }
+
                                 SendMessageBottomSheet(
-                                    text = effect.bottomSheet.message,
+                                    annotatedText = message,
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.USER_ALREADY_EXIST
                                 ) {
                                     hideBottomSheet()
