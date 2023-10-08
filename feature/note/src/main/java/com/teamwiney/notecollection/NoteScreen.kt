@@ -132,6 +132,7 @@ fun NoteScreen(
                             ),
                             onClick = {
                                 viewModel.updateSelectedSort(radioButton)
+                                viewModel.processEvent(NoteContract.Event.ApplyFilter)
                             }
                         )
                     }
