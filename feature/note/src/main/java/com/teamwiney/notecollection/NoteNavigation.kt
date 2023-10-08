@@ -8,11 +8,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.noteGraph(
-    navController: NavController,
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     setOnHideBottomSheet: (() -> Unit) -> Unit
@@ -22,12 +23,13 @@ fun NavGraphBuilder.noteGraph(
         startDestination = NoteDestinations.NOTE
     ) {
         composable(route = NoteDestinations.NOTE) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = NoteDestinations.ROUTE
             )
             NoteScreen(
+                appState = appState,
                 showBottomSheet = showBottomSheet,
                 viewModel = hiltViewModel(backStackEntry),
                 hideBottomSheet = hideBottomSheet,
@@ -41,7 +43,7 @@ fun NavGraphBuilder.noteGraph(
 }
 
 @Composable
-fun rememberNavControllerBackEntry(
+fun rememberNavControllerBackStackEntry(
     entry: NavBackStackEntry,
     navController: NavController,
     graph: String,

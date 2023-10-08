@@ -21,7 +21,7 @@ fun NavGraphBuilder.mapGraph(
         startDestination = MapDestinations.MAP
     ) {
         composable(route = MapDestinations.MAP) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = navController,
                 graph = MapDestinations.ROUTE
@@ -34,7 +34,7 @@ fun NavGraphBuilder.mapGraph(
 }
 
 @Composable
-fun rememberNavControllerBackEntry(
+fun rememberNavControllerBackStackEntry(
     entry: NavBackStackEntry,
     navController: NavController,
     graph: String,

@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.model.response
 
-data class TasteAnalysis(
+data class TasteAnalysisResponse(
     val avgPrice: Int = 0,
     val recommendCountry: String = "",
     val recommendVarietal: String = "",
@@ -43,7 +43,7 @@ data class Top7Smell(
     val percent: Int
 )
 
-fun TasteAnalysis.toDomain() = TasteAnalysis(
+fun TasteAnalysisResponse.toDomain() = TasteAnalysisResponse(
     avgPrice = this.avgPrice,
     recommendCountry = this.recommendCountry,
     recommendVarietal = this.recommendVarietal,

@@ -6,17 +6,14 @@ import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.WineCountry
+import com.teamwiney.data.network.model.response.WineType
 import com.teamwiney.ui.components.CardProperties
-
-
-data class WineFilter(
-    val title: String = "와인종류",
-    val filterGroup: List<String> = listOf("전체", "레드", "화이트", "로제", "스파클링", "포르투", "기타"),
-)
 
 class NoteContract {
 
     data class State(
+        val isLoading: Boolean = false,
         val wineList: List<CardProperties> = listOf(
             CardProperties(
                 "RED",
@@ -65,11 +62,14 @@ class NoteContract {
         ),
         val sortedGroup: List<String> = listOf("최신순", "인기순", "가격순"),
         val selectedSort: String = "최신순",
-        val wineTypeFilter: WineFilter = WineFilter(),
-        val selectedFilter: List<String> = emptyList(),
+        val typeFilter: List<WineType> = emptyList(),
+        val selectedTypeFilter: List<WineType> = emptyList(),
+        val countryFilter: List<WineCountry> = emptyList(),
+        val selectedCountryFilter: List<WineCountry> = emptyList(),
     ) : UiState
 
     sealed class Event : UiEvent {
+        object ShowFilters : Event()
     }
 
     sealed class Effect : UiEffect {

@@ -28,6 +28,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.notecollection.components.EmptyNote
@@ -41,6 +43,7 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteScreen(
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
     viewModel: NoteViewModel = hiltViewModel()
@@ -55,7 +58,7 @@ fun NoteScreen(
     ) {
         HomeLogo(
             onClick = {
-//                viewModel.processEvent(HomeContract.Event.AnalysisButtonClicked)
+                appState.navigate(HomeDestinations.Analysis.ROUTE)
             },
             hintPopupOpen = false
         )
@@ -106,11 +109,15 @@ fun NoteScreen(
                             .clip(RoundedCornerShape(20.dp))
                             .background(WineyTheme.colors.gray_900)
                             .clickable {
+                                viewModel.processEvent(NoteContract.Event.ShowFilters)
                                 showBottomSheet {
                                     NoteBottomSheet(
-                                        wineTypeFilter = uiState.wineTypeFilter,
-                                        selectedFilter = uiState.selectedFilter,
-                                        onSelectedFilter = viewModel::updateSelectedFilter,
+                                        typeFilter = uiState.typeFilter,
+                                        countryFilter = uiState.countryFilter,
+                                        selectedTypeFilter = uiState.selectedTypeFilter,
+                                        selectedCountryFilter = uiState.selectedCountryFilter,
+                                        onSelectTypeFilter = viewModel::updateSelectedTypeFilter,
+                                        onSelectCountryFilter = viewModel::updateSelectedCountryFilter,
                                         onResetFilter = viewModel::resetFilter,
                                         onApplyFilter = {
                                             hideBottomSheet()

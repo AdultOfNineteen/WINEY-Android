@@ -6,9 +6,8 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.WineTipResponse
 import com.teamwiney.data.repository.wine.WineRepository
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
-class WineTipsPagingSource @Inject constructor(
+class WineTipsPagingSource(
     private val wineRepository: WineRepository
 ) : PagingSource<Int, WineTipResponse>() {
 

@@ -34,7 +34,7 @@ fun NavGraphBuilder.signUpGraph(
             )
         ) { entry ->
             val userId = entry.arguments?.getString("userId") ?: ""
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
                 graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
@@ -50,7 +50,7 @@ fun NavGraphBuilder.signUpGraph(
         }
 
         composable(route = AuthDestinations.SignUp.AUTHENTICATION) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
@@ -64,7 +64,7 @@ fun NavGraphBuilder.signUpGraph(
         }
 
         composable(route = AuthDestinations.SignUp.FAVORITE_TASTE) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
@@ -78,7 +78,7 @@ fun NavGraphBuilder.signUpGraph(
         }
 
         composable(route = AuthDestinations.SignUp.COMPLETE) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
@@ -92,7 +92,7 @@ fun NavGraphBuilder.signUpGraph(
 }
 
 @Composable
-fun rememberNavControllerBackEntry(
+fun rememberNavControllerBackStackEntry(
     entry: NavBackStackEntry,
     navController: NavController,
     graph: String,

@@ -29,19 +29,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
-import com.teamwiney.notecollection.WineFilter
+import com.teamwiney.data.network.model.response.WineCountry
+import com.teamwiney.data.network.model.response.WineType
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteBottomSheet(
-    wineTypeFilter: WineFilter,
-    selectedFilter: List<String>,
-    onSelectedFilter: (String) -> Unit,
+    typeFilter: List<WineType>,
+    countryFilter: List<WineCountry>,
+    selectedTypeFilter: List<WineType>,
+    selectedCountryFilter: List<WineCountry>,
+    onSelectTypeFilter: (WineType) -> Unit,
+    onSelectCountryFilter: (WineCountry) -> Unit,
     onResetFilter: () -> Unit,
     onApplyFilter: () -> Unit,
 ) {
@@ -74,14 +79,21 @@ fun NoteBottomSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
-            repeat(2) {
-                FilterItems(
-                    wineTypeFilter = wineTypeFilter,
-                    selectedFilter = selectedFilter
-                ) {
-                    onSelectedFilter(it)
+            TypeFilterItems(
+                filterGroup = typeFilter,
+                selectedFilter = selectedTypeFilter,
+                onSelectFilter = {
+                    onSelectTypeFilter(it)
                 }
-            }
+            )
+
+            CountryFilterItems(
+                filterGroup = countryFilter,
+                selectedFilter = selectedCountryFilter,
+                onSelectFilter = {
+                    onSelectCountryFilter(it)
+                }
+            )
         }
 
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -93,7 +105,7 @@ fun NoteBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
@@ -118,19 +130,28 @@ fun NoteBottomSheet(
                 Text(
                     text = "옵션 적용하기",
                     modifier = Modifier
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                         .clickable {
-                            if (selectedFilter.isNotEmpty()) {
+                            if (selectedTypeFilter.isNotEmpty() || selectedCountryFilter.isNotEmpty()) {
                                 onApplyFilter()
                             }
                         }
                         .background(
-                            color = if (selectedFilter.isEmpty()) WineyTheme.colors.gray_900 else WineyTheme.colors.main_2,
+                            color = if (selectedTypeFilter.isEmpty() && selectedCountryFilter.isEmpty()) {
+                                WineyTheme.colors.gray_900
+                            } else {
+                                WineyTheme.colors.main_2
+                            },
                             shape = RoundedCornerShape(10.dp)
                         )
-                        .padding(horizontal = 72.dp, vertical = 16.dp),
-                    color = if (selectedFilter.isEmpty()) WineyTheme.colors.gray_600 else WineyTheme.colors.gray_50,
-                    style = WineyTheme.typography.bodyB2
+                        .padding(vertical = 16.dp),
+                    color = if (selectedTypeFilter.isEmpty() && selectedCountryFilter.isEmpty()) {
+                        WineyTheme.colors.gray_600
+                    } else {
+                        WineyTheme.colors.gray_50
+                    },
+                    style = WineyTheme.typography.bodyB2.copy(textAlign = TextAlign.Center)
                 )
             }
         }
@@ -139,14 +160,14 @@ fun NoteBottomSheet(
 }
 
 @Composable
-private fun FilterItems(
-    wineTypeFilter: WineFilter,
-    selectedFilter: List<String>,
-    onSelectedFilter: (String) -> Unit,
+private fun TypeFilterItems(
+    filterGroup: List<WineType>,
+    selectedFilter: List<WineType>,
+    onSelectFilter: (WineType) -> Unit,
 ) {
     Column {
         Text(
-            text = wineTypeFilter.title,
+            text = "와인 타입",
             color = WineyTheme.colors.gray_400,
             style = WineyTheme.typography.bodyB2
         )
@@ -157,18 +178,18 @@ private fun FilterItems(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            wineTypeFilter.filterGroup.forEach {
+            filterGroup.forEach {
                 val isEnable = selectedFilter.contains(it)
                 Text(
                     text = buildAnnotatedString {
-                        append(it)
+                        append(it.type)
                         append(" ")
                         withStyle(
                             style = SpanStyle(
                                 color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
                             )
                         ) {
-                            append("100+")
+                            append(if (it.count.toInt() > 100) "100+" else it.count)
                         }
                     },
                     color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
@@ -176,7 +197,61 @@ private fun FilterItems(
                     modifier = Modifier
                         .clip(RoundedCornerShape(40.dp))
                         .clickable {
-                            onSelectedFilter(it)
+                            onSelectFilter(it)
+                        }
+                        .border(
+                            BorderStroke(
+                                1.dp,
+                                if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900
+                            ),
+                            RoundedCornerShape(40.dp)
+                        )
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CountryFilterItems(
+    filterGroup: List<WineCountry>,
+    selectedFilter: List<WineCountry>,
+    onSelectFilter: (WineCountry) -> Unit,
+) {
+    Column {
+        Text(
+            text = "생산지",
+            color = WineyTheme.colors.gray_400,
+            style = WineyTheme.typography.bodyB2
+        )
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            filterGroup.forEach {
+                val isEnable = selectedFilter.contains(it)
+                Text(
+                    text = buildAnnotatedString {
+                        append(it.country)
+                        append(" ")
+                        withStyle(
+                            style = SpanStyle(
+                                color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
+                            )
+                        ) {
+                            append(if (it.count.toInt() > 100) "100+" else it.count)
+                        }
+                    },
+                    color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
+                    style = WineyTheme.typography.captionB1,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(40.dp))
+                        .clickable {
+                            onSelectFilter(it)
                         }
                         .border(
                             BorderStroke(

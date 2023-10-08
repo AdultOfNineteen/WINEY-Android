@@ -146,7 +146,7 @@ fun WineyNavHost() {
                     }
                 )
                 noteGraph(
-                    navController = navController,
+                    appState = appState,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,
                     setOnHideBottomSheet = { event ->

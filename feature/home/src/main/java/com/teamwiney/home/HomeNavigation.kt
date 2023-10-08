@@ -10,8 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.teamwiney.analysis.AnalysisResultScreen
-import com.teamwiney.analysis.AnalysisScreen
+import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
@@ -27,7 +26,7 @@ fun NavGraphBuilder.homeGraph(
         startDestination = HomeDestinations.HOME
     ) {
         composable(route = HomeDestinations.HOME) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
@@ -39,7 +38,7 @@ fun NavGraphBuilder.homeGraph(
         }
 
         composable(route = HomeDestinations.WINE_TIP) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
@@ -66,7 +65,7 @@ fun NavGraphBuilder.homeGraph(
         }
 
         composable(route = HomeDestinations.WINE_DETAIL) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
@@ -77,37 +76,16 @@ fun NavGraphBuilder.homeGraph(
         }
     }
 
-    navigation(
-        route = HomeDestinations.Analysis.ROUTE,
-        startDestination = HomeDestinations.Analysis.START
-    ) {
-        composable(
-            route = HomeDestinations.Analysis.START,
-        ) {
-//            val backStackEntry = rememberNavControllerBackEntry(
-//                entry = it,
-//                navController = appState.navController,
-//                graph = HomeDestinations.ROUTE,
-//            )
-            AnalysisScreen(
-                appState = appState,
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
-            )
-        }
-
-        composable(
-            route = HomeDestinations.Analysis.RESULT,
-        ) {
-            AnalysisResultScreen(
-                appState = appState,
-            )
-        }
-    }
+    analysisGraph(
+        appState = appState,
+        showBottomSheet = showBottomSheet,
+        hideBottomSheet = hideBottomSheet,
+        setOnHideBottomSheet = setOnHideBottomSheet
+    )
 }
 
 @Composable
-fun rememberNavControllerBackEntry(
+fun rememberNavControllerBackStackEntry(
     entry: NavBackStackEntry,
     navController: NavController,
     graph: String,

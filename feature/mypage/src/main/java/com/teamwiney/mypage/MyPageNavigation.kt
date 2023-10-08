@@ -21,7 +21,7 @@ fun NavGraphBuilder.myPageGraph(
         startDestination = MyPageDestinations.MY_PAGE
     ) {
         composable(route = MyPageDestinations.MY_PAGE) {
-            val backStackEntry = rememberNavControllerBackEntry(
+            val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = navController,
                 graph = MyPageDestinations.ROUTE
@@ -40,7 +40,7 @@ fun NavGraphBuilder.myPageGraph(
 }
 
 @Composable
-fun rememberNavControllerBackEntry(
+fun rememberNavControllerBackStackEntry(
     entry: NavBackStackEntry,
     navController: NavController,
     graph: String,
