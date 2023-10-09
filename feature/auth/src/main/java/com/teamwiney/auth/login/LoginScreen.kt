@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.common.api.ApiException
 import com.teamwiney.auth.login.component.SocialLoginButton
 import com.teamwiney.auth.login.component.SplashBackground
@@ -38,18 +40,20 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.dashedBorder
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
-    effectFlow: Flow<LoginContract.Effect>,
-    showBottomSheet: (SheetContent) -> Unit = { },
     appState: WineyAppState,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    showBottomSheet: (SheetContent) -> Unit = { }
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
     val context = LocalContext.current
 
     val googleLoginResultLauncher =
@@ -97,25 +101,30 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(36.dp)
         ) {
-
-            Box(
-                modifier = Modifier
-                    // Dashed Border
-                    .dashedBorder(1.dp, WineyTheme.colors.main_3, 32.dp)
-                    .padding(7.dp, 4.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        append("최근에 ")
-                        withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                            append("카카오톡")
-                        }
-                        append("으로 로그인 했어요")
-                    },
-                    color = WineyTheme.colors.point_2,
-                    style = WineyTheme.typography.captionM1
-                )
+            if (uiState.lastLoginMethod != null) {
+                Box(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .dashedBorder(1.dp, WineyTheme.colors.main_3, 32.dp)
+                        .padding(horizontal = 15.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = buildAnnotatedString {
+                            append("최근에 ")
+                            withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                                append(uiState.lastLoginMethod)
+                            }
+                            append("로 로그인 했어요")
+                        },
+                        color = WineyTheme.colors.point_2,
+                        style = WineyTheme.typography.captionM1
+                    )
+                }
+            } else {
+                HeightSpacer(30.dp)
             }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),

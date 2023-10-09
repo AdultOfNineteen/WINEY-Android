@@ -21,8 +21,10 @@ import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +34,20 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginContract.State, LoginContract.Event, LoginContract.Effect>(
     initialState = LoginContract.State()
 ) {
+    init {
+        val lastLoginType = runBlocking { dataStoreRepository.getStringValue(LOGIN_TYPE).first() }
+
+        updateState(
+            currentState.copy(
+                lastLoginMethod = when (lastLoginType) {
+                    SocialType.KAKAO.name -> "카카오"
+                    SocialType.GOOGLE.name -> "구글"
+                    else -> null
+                }
+            )
+        )
+    }
+
     override fun reduceState(event: LoginContract.Event) {
         viewModelScope.launch {
             when (event) {

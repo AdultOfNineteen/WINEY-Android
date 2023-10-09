@@ -18,7 +18,6 @@ fun NavGraphBuilder.loginGraph(
             val viewModel: LoginViewModel = hiltViewModel()
 
             LoginScreen(
-                effectFlow = viewModel.effect,
                 appState = appState,
                 viewModel = viewModel
             )
