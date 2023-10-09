@@ -4,8 +4,10 @@ import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingData
 import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.data.network.model.response.WineTip
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WineService {
@@ -14,10 +16,11 @@ interface WineService {
     @GET("/wines/recommend")
     suspend fun getRecommendWines(): ApiResult<ResponseWrapper<List<RecommendWine>>>
 
-    /** 와인 상세보기 조회 API
-     * 현재 미구현 */
+    /** 와인 상세정보 조회 API */
     @GET("/wines/{wineId}")
-    suspend fun getWineDetail(): ApiResult<ResponseWrapper<String>>
+    suspend fun getWineDetail(
+        @Path("wineId") wineId: Long
+    ): ApiResult<ResponseWrapper<Wine>>
 
     /** 와인 팁 조회 API */
     @GET("/wine-tip")

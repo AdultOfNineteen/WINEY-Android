@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is HomeContract.Event.ShowWineCardDetail -> {
-                    postEffect(HomeContract.Effect.NavigateTo(HomeDestinations.WINE_DETAIL))
+                    postEffect(HomeContract.Effect.NavigateTo("${HomeDestinations.WINE_DETAIL}?id=${event.cardId}"))
                 }
 
                 is HomeContract.Event.ShowMoreTips -> {
@@ -76,6 +76,31 @@ class HomeViewModel @Inject constructor(
                             recommendWines = it.data.result.map { wine ->
                                 wine.toDomain()
                             }
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(HomeContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(HomeContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun getWineDetail(wineId: Long) = viewModelScope.launch {
+        wineRepository.getWineDetail(wineId).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    updateState(
+                        currentState.copy(
+                            wineDetail = it.data.result.toDomain()
                         )
                     )
                 }

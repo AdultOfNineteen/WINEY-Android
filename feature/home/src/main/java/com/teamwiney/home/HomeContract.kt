@@ -8,6 +8,8 @@ import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.Wine
+import com.teamwiney.data.network.model.response.WineSummary
 import com.teamwiney.data.network.model.response.WineTip
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -27,7 +29,9 @@ class HomeContract {
                     refresh = LoadState.NotLoading(endOfPaginationReached = true),
                 )
             )
-        )
+        ),
+        val wineDetail: Wine = Wine(-1L, "", "", "", "", 0, 0, 0, 0,
+            WineSummary(0.toDouble(), 0, 0, 0, 0))
     ) : UiState
 
 

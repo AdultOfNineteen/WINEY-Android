@@ -21,11 +21,11 @@ fun NavGraphBuilder.signUpGraph(
     setOnHideBottomSheet: (() -> Unit) -> Unit
 ) {
     navigation(
-        route = "${AuthDestinations.SignUp.ROUTE}/{userId}",
-        startDestination = "${AuthDestinations.SignUp.PHONE}/{userId}"
+        route = "${AuthDestinations.SignUp.ROUTE}?userId={userId}",
+        startDestination = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
     ) {
         composable(
-            route = "${AuthDestinations.SignUp.PHONE}/{userId}",
+            route = "${AuthDestinations.SignUp.PHONE}?userId={userId}",
             arguments = listOf(
                 navArgument("userId") {
                     type = NavType.StringType
@@ -37,7 +37,7 @@ fun NavGraphBuilder.signUpGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = entry,
                 navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
+                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpPhoneScreen(
                 showBottomSheet = showBottomSheet,
@@ -53,7 +53,7 @@ fun NavGraphBuilder.signUpGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
+                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpAuthenticationScreen(
                 showBottomSheet = showBottomSheet,
@@ -67,7 +67,7 @@ fun NavGraphBuilder.signUpGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
+                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpFavoriteTasteScreen(
                 showBottomSheet = showBottomSheet,
@@ -81,7 +81,7 @@ fun NavGraphBuilder.signUpGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}/{userId}"
+                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpCompleteScreen(
                 appState = appState,

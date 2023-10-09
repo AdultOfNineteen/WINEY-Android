@@ -250,7 +250,10 @@ private fun WineCardContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 Text(
                     modifier = Modifier.height(68.dp),
                     text = wineColor,
@@ -259,6 +262,7 @@ private fun WineCardContent(
                 )
 
                 Icon(
+                    modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_thismooth),
                     contentDescription = null,
                     tint = Color.Unspecified

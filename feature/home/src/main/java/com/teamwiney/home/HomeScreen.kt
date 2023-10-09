@@ -296,7 +296,7 @@ private fun HomeRecommendWine(
                                 )
                             },
                         onShowDetail = {
-                            processEvent(HomeContract.Event.ShowWineCardDetail(0L))
+                            processEvent(HomeContract.Event.ShowWineCardDetail(recommendWines[page].wineId))
                         },
                         color = recommendWines[page].type,
                         name = recommendWines[page].name,

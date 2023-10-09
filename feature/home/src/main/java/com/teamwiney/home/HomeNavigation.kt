@@ -64,14 +64,24 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
-        composable(route = HomeDestinations.WINE_DETAIL) {
+        composable(
+            route = "${HomeDestinations.WINE_DETAIL}?id={wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                    defaultValue = 0L
+                }
+            )
+        ) { entry ->
             val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
+                entry = entry,
                 navController = appState.navController,
                 graph = HomeDestinations.ROUTE
             )
             WineDetailScreen(
-                appState = appState
+                appState = appState,
+                wineId = entry.arguments?.getLong("wineId") ?: 0L,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
     }

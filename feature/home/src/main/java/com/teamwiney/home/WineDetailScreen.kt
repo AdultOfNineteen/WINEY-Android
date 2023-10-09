@@ -29,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,9 +38,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
@@ -48,12 +52,33 @@ import com.teamwiney.ui.components.VerticalBarGraph
 import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 @Preview
 fun WineDetailScreen(
-    appState: WineyAppState = rememberWineyAppState()
+    appState: WineyAppState = rememberWineyAppState(),
+    wineId: Long = 0L,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    LaunchedEffect(true) {
+        viewModel.getWineDetail(wineId)
+
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is HomeContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is HomeContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -74,21 +99,24 @@ fun WineDetailScreen(
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            TitleAndDescription()
+            TitleAndDescription(
+                type = uiState.wineDetail.type,
+                name = uiState.wineDetail.name
+            )
 
             HeightSpacerWithLine(
                 modifier = Modifier.padding(vertical = 20.dp),
                 color = WineyTheme.colors.gray_900
             )
 
-            WineOrigin()
+            WineOrigin(uiState.wineDetail)
 
             HeightSpacerWithLine(
                 modifier = Modifier.padding(vertical = 20.dp),
                 color = WineyTheme.colors.gray_900
             )
 
-            WineInfo()
+            WineInfo(uiState.wineDetail)
 
             HeightSpacer(height = 33.dp)
         }
@@ -96,7 +124,7 @@ fun WineDetailScreen(
 }
 
 @Composable
-private fun WineInfo() {
+private fun WineInfo(wine: Wine) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,7 +133,12 @@ private fun WineInfo() {
         val pageCount = 5
         val pagerState = rememberPagerState(pageCount = { pageCount })
 
-        val tasteList = listOf("", "당도", "산도", "바디", "탄닌")
+        val tasteList = listOf(
+            Triple("당도", wine.sweetness, wine.wineSummary.avgSweetness),
+            Triple("산도", wine.acidity, wine.wineSummary.avgAcidity),
+            Triple("바디", wine.body, wine.wineSummary.avgBody),
+            Triple("탄닌", wine.tannins, wine.wineSummary.avgTannins)
+        )
 
         HorizontalPager(state = pagerState) { page ->
             val animatedProgress = remember { Animatable(0f) }
@@ -116,13 +149,16 @@ private fun WineInfo() {
             }
 
             if (page == 0) {
-                WineInfoTotalBarGraph(progress = animatedProgress.value)
+                WineInfoTotalBarGraph(
+                    progress = animatedProgress.value,
+                    wine = wine
+                )
             } else {
                 WineInfoBarGraph(
                     progress = animatedProgress.value,
-                    taste = tasteList[page],
-                    default = 3,
-                    similar = 5
+                    taste = tasteList[page - 1].first,
+                    default = tasteList[page - 1].second,
+                    similar = tasteList[page - 1].third
                 )
             }
         }
@@ -137,7 +173,8 @@ private fun WineInfo() {
 
 @Composable
 private fun WineInfoTotalBarGraph(
-    progress: Float
+    progress: Float,
+    wine: Wine
 ) {
     Column {
         Column(
@@ -192,29 +229,29 @@ private fun WineInfoTotalBarGraph(
             TasteScoreHorizontalBar(
                 progress = progress,
                 label = "당도",
-                peopleScore = 4,
-                defaultScore = 2
+                peopleScore = wine.wineSummary.avgSweetness,
+                defaultScore = wine.sweetness
             )
 
             TasteScoreHorizontalBar(
                 progress = progress,
                 label = "산도",
-                peopleScore = 1,
-                defaultScore = 3
+                peopleScore = wine.wineSummary.avgAcidity,
+                defaultScore = wine.acidity
             )
 
             TasteScoreHorizontalBar(
                 progress = progress,
                 label = "바디",
-                peopleScore = 5,
-                defaultScore = 2
+                peopleScore = wine.wineSummary.avgBody,
+                defaultScore = wine.body
             )
 
             TasteScoreHorizontalBar(
                 progress = progress,
                 label = "탄닌",
-                peopleScore = 3,
-                defaultScore = 4
+                peopleScore = wine.wineSummary.avgTannins,
+                defaultScore = wine.tannins
             )
         }
     }
@@ -235,7 +272,6 @@ private fun WineInfoBarGraph(
     ) {
         HeightSpacer(height = 42.dp)
 
-        // VerticalBarGraph의 너비가 280.dp
         Text(
             modifier = Modifier,
             text = taste,
@@ -293,21 +329,17 @@ private fun PageIndicator(
 }
 
 @Composable
-private fun WineOrigin() {
+private fun WineOrigin(
+    wine: Wine
+) {
     Row(
-        modifier = Modifier.height(148.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        WineBadge(color = "RED")
+        WineBadge(color = wine.type)
 
-        Column {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
+        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = "national an thems",
                     style = WineyTheme.typography.captionM3,
@@ -315,22 +347,13 @@ private fun WineOrigin() {
                 )
 
                 Text(
-                    text = "이탈리아",
+                    text = wine.country,
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                verticalArrangement = Arrangement
-                    .spacedBy(
-                        space = 6.dp,
-                        alignment = Alignment.CenterVertically
-                    )
-            ) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = "Varieties",
                     style = WineyTheme.typography.captionM3,
@@ -338,22 +361,13 @@ private fun WineOrigin() {
                 )
 
                 Text(
-                    text = "모스까델 데 알레한드리아",
+                    text = wine.varietal,
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                verticalArrangement = Arrangement
-                    .spacedBy(
-                        space = 6.dp,
-                        alignment = Alignment.Bottom
-                    )
-            ) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     text = "Purchase price",
                     style = WineyTheme.typography.captionM3,
@@ -361,7 +375,7 @@ private fun WineOrigin() {
                 )
 
                 Text(
-                    text = "8.80",
+                    text = "${wine.wineSummary.avgPrice}",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
@@ -371,14 +385,18 @@ private fun WineOrigin() {
 }
 
 @Composable
-private fun TitleAndDescription() {
+private fun TitleAndDescription(
+    type: String,
+    name: String,
+) {
     HeightSpacer(height = 20.dp)
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
             modifier = Modifier.height(68.dp),
-            text = "ETC",
+            text = type,
             style = WineyTheme.typography.display1,
             color = WineyTheme.colors.gray_50
         )
@@ -390,7 +408,7 @@ private fun TitleAndDescription() {
         )
     }
     Text(
-        text = "캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아",
+        text = name,
         style = WineyTheme.typography.bodyB2,
         color = WineyTheme.colors.gray_500
     )

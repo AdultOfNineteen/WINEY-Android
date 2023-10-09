@@ -117,7 +117,7 @@ class LoginViewModel @Inject constructor(
                                     }
                                 ))
                             } else {
-                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}/${result.data.result.userId}"))
+                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
                             }
                         }
 

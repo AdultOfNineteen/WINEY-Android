@@ -16,6 +16,10 @@ class WineDataSourceImpl @Inject constructor(
         emit(wineService.getRecommendWines())
     }.flowOn(ioDispatcher)
 
+    override fun getWineDetail(wineId: Long) = flow {
+        emit(wineService.getWineDetail(wineId))
+    }.flowOn(ioDispatcher)
+
     override fun getWineTips(page: Int, size: Int) = flow {
         emit(wineService.getWineTips(page, size))
     }.flowOn(ioDispatcher)
