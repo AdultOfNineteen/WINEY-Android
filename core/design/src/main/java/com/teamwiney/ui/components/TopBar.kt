@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -29,11 +30,10 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun TopBar(
     content: String = "",
-    annotatedContent: AnnotatedString = buildAnnotatedString {  },
+    annotatedContent: AnnotatedString = buildAnnotatedString { },
     @DrawableRes leadingIcon: Int? = R.drawable.ic_back_arrow_48,
-    @DrawableRes trailingIcon: Int? = null,
+    trailingIcon: @Composable (() -> Unit) = {},
     leadingIconOnClick: () -> Unit = {},
-    trailingIconOnClick: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -45,7 +45,8 @@ fun TopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 5.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (leadingIcon != null) {
                 Icon(
@@ -58,16 +59,7 @@ fun TopBar(
                 )
             }
 
-            if (trailingIcon != null) {
-                Icon(
-                    painter = painterResource(id = trailingIcon),
-                    contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { trailingIconOnClick() }
-                )
-            }
+            trailingIcon()
         }
 
         Text(

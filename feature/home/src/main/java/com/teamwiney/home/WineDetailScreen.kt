@@ -51,6 +51,9 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.VerticalBarGraph
 import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
+import com.teamwiney.ui.components.detail.DetailPageIndicator
+import com.teamwiney.ui.components.detail.TitleAndDescription
+import com.teamwiney.ui.components.detail.WineInfoBarGraph
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -163,11 +166,13 @@ private fun WineInfo(wine: Wine) {
             }
         }
 
-        Spacer(modifier = Modifier
-            .fillMaxHeight()
-            .weight(1f))
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+        )
 
-        PageIndicator(pagerState = pagerState, pageCount = pageCount)
+        DetailPageIndicator(pagerState = pagerState, pageCount = pageCount)
     }
 }
 
@@ -257,76 +262,6 @@ private fun WineInfoTotalBarGraph(
     }
 }
 
-@Composable
-private fun WineInfoBarGraph(
-    progress: Float,
-    taste: String,
-    default: Int,
-    similar: Int
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        HeightSpacer(height = 42.dp)
-
-        Text(
-            modifier = Modifier,
-            text = taste,
-            style = WineyTheme.typography.headline.copy(color = Color.White)
-        )
-
-        HeightSpacer(height = 36.dp)
-
-        VerticalBarGraph(
-            progress = progress,
-            data = listOf(
-                VerticalBarGraphData(
-                    label = "와인의 기본맛",
-                    score = default,
-                    color = WineyTheme.colors.main_2
-                ),
-                VerticalBarGraphData(
-                    label = "취향이 비슷한 사람들이\n느낀 와인의 맛",
-                    score = similar,
-                    color = WineyTheme.colors.point_1
-                )
-            )
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun PageIndicator(
-    pagerState: PagerState,
-    pageCount: Int
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 10.dp,
-            alignment = Alignment.CenterHorizontally
-        )
-    ) {
-        repeat(pageCount) { iteration ->
-            val color = if (pagerState.currentPage == iteration) {
-                WineyTheme.colors.point_1
-            } else {
-                WineyTheme.colors.gray_900
-            }
-
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .background(color)
-                    .size(10.dp)
-            )
-        }
-    }
-}
 
 @Composable
 private fun WineOrigin(
@@ -382,35 +317,5 @@ private fun WineOrigin(
             }
         }
     }
-}
-
-@Composable
-private fun TitleAndDescription(
-    type: String,
-    name: String,
-) {
-    HeightSpacer(height = 20.dp)
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            modifier = Modifier.height(68.dp),
-            text = type,
-            style = WineyTheme.typography.display1,
-            color = WineyTheme.colors.gray_50
-        )
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_thismooth),
-            contentDescription = null,
-            tint = Color.Unspecified
-        )
-    }
-    Text(
-        text = name,
-        style = WineyTheme.typography.bodyB2,
-        color = WineyTheme.colors.gray_500
-    )
 }
 
