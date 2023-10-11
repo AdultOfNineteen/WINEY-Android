@@ -1,5 +1,6 @@
 package com.teamwiney.notecollection
 
+import android.service.controls.actions.FloatAction
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,115 +86,137 @@ fun NoteScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(WineyTheme.colors.background_1)
-    ) {
-        HomeLogo(
-            onClick = {
-                appState.navigate(HomeDestinations.Analysis.ROUTE)
-            },
-            hintPopupOpen = false
-        )
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                        append("${tastingNotes.itemCount}개")
-                    }
-                    append("의 노트를 작성했어요!")
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WineyTheme.colors.background_1)
+        ) {
+            HomeLogo(
+                onClick = {
+                    appState.navigate(HomeDestinations.Analysis.ROUTE)
                 },
-                color = WineyTheme.colors.gray_50,
-                style = WineyTheme.typography.headline
+                hintPopupOpen = false
             )
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 14.dp),
-                color = WineyTheme.colors.gray_900
-            )
+            Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                            append("${tastingNotes.itemCount}개")
+                        }
+                        append("의 노트를 작성했어요!")
+                    },
+                    color = WineyTheme.colors.gray_50,
+                    style = WineyTheme.typography.headline
+                )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 14.dp),
+                    color = WineyTheme.colors.gray_900
+                )
+            }
+
+            if (tastingNotes.itemCount == 0) {
+                EmptyNote()
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    ) {
+                        uiState.sortedGroup.forEach { radioButton ->
+                            NoteRadioButton(
+                                name = radioButton,
+                                isEnable = uiState.selectedSort == uiState.sortedGroup.indexOf(
+                                    radioButton
+                                ),
+                                onClick = {
+                                    viewModel.updateSelectedSort(radioButton)
+                                    viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                }
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(WineyTheme.colors.gray_900)
+                            .clickable {
+                                viewModel.processEvent(NoteContract.Event.ShowFilter)
+                                showBottomSheet {
+                                    NoteBottomSheet(
+                                        typeFilter = uiState.typeFilter,
+                                        countryFilter = uiState.countryFilter,
+                                        selectedTypeFilter = uiState.selectedTypeFilter,
+                                        selectedCountryFilter = uiState.selectedCountryFilter,
+                                        onSelectTypeFilter = viewModel::updateSelectedTypeFilter,
+                                        onSelectCountryFilter = viewModel::updateSelectedCountryFilter,
+                                        onResetFilter = viewModel::resetFilter,
+                                        onApplyFilter = {
+                                            hideBottomSheet()
+                                            viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                        }
+                                    )
+                                }
+                            }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_filter_24),
+                            contentDescription = "IC_FILTER",
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp, vertical = 5.dp)
+                                .size(24.dp),
+                            tint = WineyTheme.colors.gray_50
+                        )
+                    }
+                }
+                HeightSpacer(height = 18.dp)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(21.dp),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp)
+                ) {
+                    items(
+                        count = tastingNotes.itemCount,
+                        key = tastingNotes.itemKey(),
+                        contentType = tastingNotes.itemContentType()
+                    ) { index ->
+                        tastingNotes[index]?.let {
+                            NoteWineCard(
+                                color = it.wineType,
+                                name = it.name,
+                                origin = it.country,
+                                starRating = it.starRating
+                            )
+                        }
+                    }
+                }
+            }
         }
 
-        if (tastingNotes.itemCount == 0) {
-            EmptyNote()
-        } else {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                ) {
-                    uiState.sortedGroup.forEach { radioButton ->
-                        NoteRadioButton(
-                            name = radioButton,
-                            isEnable = uiState.selectedSort == uiState.sortedGroup.indexOf(
-                                radioButton
-                            ),
-                            onClick = {
-                                viewModel.updateSelectedSort(radioButton)
-                                viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                            }
-                        )
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(WineyTheme.colors.gray_900)
-                        .clickable {
-                            viewModel.processEvent(NoteContract.Event.ShowFilter)
-                            showBottomSheet {
-                                NoteBottomSheet(
-                                    typeFilter = uiState.typeFilter,
-                                    countryFilter = uiState.countryFilter,
-                                    selectedTypeFilter = uiState.selectedTypeFilter,
-                                    selectedCountryFilter = uiState.selectedCountryFilter,
-                                    onSelectTypeFilter = viewModel::updateSelectedTypeFilter,
-                                    onSelectCountryFilter = viewModel::updateSelectedCountryFilter,
-                                    onResetFilter = viewModel::resetFilter,
-                                    onApplyFilter = {
-                                        hideBottomSheet()
-                                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                                    }
-                                )
-                            }
-                        }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_filter_24),
-                        contentDescription = "IC_FILTER",
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 5.dp)
-                            .size(24.dp),
-                        tint = WineyTheme.colors.gray_50
-                    )
-                }
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp)
+                .size(60.dp),
+            shape = CircleShape,
+            containerColor = WineyTheme.colors.main_2,
+            onClick = {
+                // TODO 노트 작성페이지로 이동
             }
-            HeightSpacer(height = 18.dp)
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(21.dp),
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
-                items(
-                    count = tastingNotes.itemCount,
-                    key = tastingNotes.itemKey(),
-                    contentType = tastingNotes.itemContentType()
-                ) { index ->
-                    tastingNotes[index]?.let {
-                        NoteWineCard(
-                            color = it.wineType,
-                            name = it.name,
-                            origin = it.country,
-                            starRating = it.starRating
-                        )
-                    }
-                }
-            }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_pencil_29),
+                contentDescription = "IC_ADD",
+                tint = WineyTheme.colors.gray_50,
+                modifier = Modifier.size(29.dp)
+            )
         }
     }
 }
