@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.WineCountry
-import com.teamwiney.data.network.model.response.WineType
+import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.data.pagingsource.TastingNotesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +28,7 @@ class NoteViewModel @Inject constructor(
                 is NoteContract.Event.ShowFilter -> {
                     getTastingNoteFilters()
                 }
+
                 is NoteContract.Event.ApplyFilter -> {
                     getTastingNotes()
                 }
@@ -90,7 +91,7 @@ class NoteViewModel @Inject constructor(
         updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(radioButton)))
     }
 
-    fun updateSelectedTypeFilter(filterItem: WineType) = viewModelScope.launch {
+    fun updateSelectedTypeFilter(filterItem: WineTypeResponse) = viewModelScope.launch {
         val updatedSelectedFilter = currentState.selectedTypeFilter.toMutableSet()
 
         if (filterItem in updatedSelectedFilter) {
@@ -131,7 +132,7 @@ class NoteViewModel @Inject constructor(
             )
         )
     }
-    
+
     fun resetFilter() = viewModelScope.launch {
         updateState(
             currentState.copy(

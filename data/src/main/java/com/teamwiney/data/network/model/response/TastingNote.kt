@@ -1,6 +1,7 @@
 package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
+import com.teamwiney.core.common.model.WineType
 
 data class TastingNote(
     @SerializedName("noteId")
@@ -23,14 +24,6 @@ fun TastingNote.toDomain() = TastingNote(
     country = this.country,
     starRating = this.starRating,
     buyAgain = this.buyAgain,
-    wineType = convertTypeToColor(this.wineType),
+    wineType = WineType.convertToNoteType(this.wineType),
 )
 
-private fun convertTypeToColor(type: String): String {
-    return when(type) {
-        "SPARKLING" -> "SPARKL"
-        "FORTIFIED" -> "PORT"
-        "OTHER" -> "ETC"
-        else -> type
-    }
-}
