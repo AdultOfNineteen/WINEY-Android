@@ -47,6 +47,7 @@ object NoteDestinations {
     const val ROUTE = "noteRoute"
 
     const val NOTE = "note"
+    const val DETAIL = "detail"
 }
 
 object MyPageDestinations {

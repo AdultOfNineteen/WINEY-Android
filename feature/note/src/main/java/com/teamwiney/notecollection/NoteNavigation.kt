@@ -6,11 +6,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
+import com.teamwiney.notedetail.NoteDetailScreen
 
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
@@ -36,9 +40,24 @@ fun NavGraphBuilder.noteGraph(
             )
         }
 
-        // TODO : 노트 작성 / 수정
+        composable(
+            route = "${NoteDestinations.DETAIL}?wineId={wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                    defaultValue = -1L
+                }
+            )
+        ) {
+            NoteDetailScreen(
+                wineId = it.arguments?.getLong("wineId") ?: -1L,
+                appState = appState,
+                showBottomSheet = showBottomSheet,
+                hideBottomSheet = hideBottomSheet,
+            )
+        }
 
-        // TODO : 노트 상세보기
+        // TODO : 노트 작성
     }
 }
 

@@ -5,6 +5,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,7 +48,8 @@ fun NoteWineCard(
     color: String,
     name: String,
     origin: String,
-    starRating: Int
+    starRating: Int,
+    navigateToNoteDetail: () -> Unit,
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
         "RED" -> CardProperties(
@@ -109,6 +111,9 @@ fun NoteWineCard(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
+            .clickable {
+                navigateToNoteDetail()
+            }
     ) {
         Box(
             modifier = Modifier

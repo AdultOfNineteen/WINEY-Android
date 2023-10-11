@@ -50,6 +50,7 @@ dependencies {
         kapt(HILT_ANDROID_COMPILER)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
+        implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_PAGING)
         implementation(COMPOSE_PAGING_RUNTIME)
