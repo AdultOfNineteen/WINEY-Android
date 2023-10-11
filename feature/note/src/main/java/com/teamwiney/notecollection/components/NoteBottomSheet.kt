@@ -183,7 +183,7 @@ private fun TypeFilterItems(
                 Text(
                     text = buildAnnotatedString {
                         append(it.type)
-                        append(" ")
+                        append("  ")
                         withStyle(
                             style = SpanStyle(
                                 color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
@@ -237,7 +237,7 @@ private fun CountryFilterItems(
                 Text(
                     text = buildAnnotatedString {
                         append(it.country)
-                        append(" ")
+                        append("  ")
                         withStyle(
                             style = SpanStyle(
                                 color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
