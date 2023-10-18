@@ -6,6 +6,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.service.TastingNoteService
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +34,16 @@ class TastingNoteDataSourceImpl @Inject constructor(
         buyAgain: Int
     ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
         flow {
-            emit(tastingNoteService.getTastingNotes(page, size, order, countries, wineTypes, buyAgain))
+            emit(
+                tastingNoteService.getTastingNotes(
+                    page,
+                    size,
+                    order,
+                    countries,
+                    wineTypes,
+                    buyAgain
+                )
+            )
         }.flowOn(ioDispatcher)
 
     override fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>> =
@@ -41,4 +51,8 @@ class TastingNoteDataSourceImpl @Inject constructor(
             emit(tastingNoteService.getTastingNoteFilters())
         }.flowOn(ioDispatcher)
 
+    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>> =
+        flow {
+            emit(tastingNoteService.getTastingNoteDetail(noteId))
+        }.flowOn(ioDispatcher)
 }

@@ -5,6 +5,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -29,4 +30,10 @@ interface TastingNoteService {
     /** 테이스팅 노트 필터 목록 조회 API */
     @GET("/tasting-notes/filter")
     suspend fun getTastingNoteFilters(): ApiResult<ResponseWrapper<TastingNoteFilters>>
+
+    /** 테이스팅 노트 상세 조회 API */
+    @GET("/tasting-notes/{noteId}")
+    suspend fun getTastingNoteDetail(
+        @Query("noteId") noteId: Int
+    ): ApiResult<ResponseWrapper<TastingNoteDetail>>
 }

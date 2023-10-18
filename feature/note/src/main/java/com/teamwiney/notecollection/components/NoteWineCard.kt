@@ -5,6 +5,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,17 +48,19 @@ fun NoteWineCard(
     color: String,
     name: String,
     origin: String,
-    starRating: Int
+    starRating: Int,
+    navigateToNoteDetail: () -> Unit,
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
         "RED" -> CardProperties(
             color,
             R.drawable.ic_red_wine,
             Color(0xFFA87575),
-            listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
+            listOf(Color(0xFFC06868), Color(0xFF7C2B2B)),
             Color(0xFF640D0D),
             Color(0xFF441010)
         )
+
         "WHITE" -> CardProperties(
             color,
             R.drawable.ic_white_wine,
@@ -66,14 +69,16 @@ fun NoteWineCard(
             Color(0xFF898472),
             Color(0xFF7A706D)
         )
+
         "ROSE" -> CardProperties(
             color,
             R.drawable.ic_rose_wine,
             Color(0xFFC9A4A1),
-            listOf(Color(0xFFAA678F), Color(0xFFD29263)),
+            listOf(Color(0xFFAD96A4), Color(0xFFCFA98D)),
             Color(0xFFBA7A71),
             Color(0xFF8F6C64)
         )
+
         "SPARKL" -> CardProperties(
             color,
             R.drawable.ic_sparkl_wine,
@@ -82,6 +87,7 @@ fun NoteWineCard(
             Color(0xFF777151),
             Color(0xFF4F5144)
         )
+
         "PORT" -> CardProperties(
             color,
             R.drawable.ic_port_wine,
@@ -90,6 +96,7 @@ fun NoteWineCard(
             Color(0xFF4F3F28),
             Color(0xFF3A2F2F)
         )
+
         else -> CardProperties(
             color,
             R.drawable.ic_etc_wine,
@@ -104,6 +111,9 @@ fun NoteWineCard(
         modifier = modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
+            .clickable {
+                navigateToNoteDetail()
+            }
     ) {
         Box(
             modifier = Modifier
@@ -125,7 +135,6 @@ fun NoteWineCard(
         ) {
             NoteCardSurface(
                 modifier = Modifier.fillMaxSize(),
-                cardColor = cardColor,
                 gradientCircleColor = gradientCircleColor,
                 circleColor = circleColor
             )
@@ -190,7 +199,6 @@ fun NoteWineCard(
 @Composable
 private fun NoteCardSurface(
     modifier: Modifier = Modifier,
-    cardColor: Color,
     gradientCircleColor: List<Color>,
     circleColor: Color
 ) {
@@ -198,9 +206,9 @@ private fun NoteCardSurface(
         modifier = modifier
             .fillMaxSize()
             .blur(30.dp)
-            .alpha(0.6f)
+            .alpha(0.4f)
             .background(
-                color = cardColor,
+                color = Color(0x993F3F3F),
                 shape = RoundedCornerShape(5.dp)
             ),
         contentAlignment = Alignment.Center
@@ -229,8 +237,8 @@ private fun NoteWineCardCircle(
 
         drawCircle(
             color = circleColor,
-            radius = 75.dp.toPx(),
-            center = Offset(x = (size.width / 1.3f), y = (size.height / 1.3f))
+            radius = 65.dp.toPx(),
+            center = Offset(x = (size.width / 1.5f), y = (size.height / 1.5f))
         )
     }
 }

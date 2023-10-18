@@ -5,6 +5,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +24,5 @@ interface TastingNoteDataSource {
 
     fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
 
+    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
 }
