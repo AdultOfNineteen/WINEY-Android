@@ -86,9 +86,9 @@ fun VarietalContent(
     val textMeasureResults = remember(varietals) {
         varietals.mapIndexed { index, varietal ->
             val labelText = if (index == 0) {
-                "${formatVarietalText(varietal.varietal)}\n${varietal.percent}%"
+                "${varietal.varietal}\n${varietal.percent}%"
             } else {
-                formatVarietalText(varietal.varietal)
+                varietal.varietal
             }
             val labelStyle = when (index) {
                 0 -> {
@@ -226,18 +226,4 @@ fun VarietalContent(
             }
         }
     }
-}
-
-private fun formatVarietalText(varietal: String): String {
-    val lines = varietal.split(" ")
-    val formattedLines = mutableListOf<String>()
-    for (line in lines) {
-        val formattedLine = if (line.length > 6) {
-            line.substring(0, 5) + "..."
-        } else {
-            line
-        }
-        formattedLines.add(formattedLine)
-    }
-    return formattedLines.take(2).joinToString("\n")
 }
