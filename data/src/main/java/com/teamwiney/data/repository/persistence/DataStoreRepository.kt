@@ -10,4 +10,7 @@ interface DataStoreRepository {
 
     fun getBooleanValue(type: Preferences.Key<Boolean>): Flow<Boolean>
     suspend fun setBooleanValue(type: Preferences.Key<Boolean>, value: Boolean)
+
+    suspend fun deleteStringValue(type: Preferences.Key<String>)
+    suspend fun deleteBooleanValue(type: Preferences.Key<Boolean>)
 }

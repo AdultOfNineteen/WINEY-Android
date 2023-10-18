@@ -1,5 +1,7 @@
 package com.teamwiney.data.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.teamwiney.data.BuildConfig
 import com.teamwiney.data.network.adapter.ApiResultCallAdapterFactory
 import com.teamwiney.data.network.converter.EnumConverterFactory
@@ -10,6 +12,7 @@ import com.teamwiney.data.network.service.WineService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,7 +26,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
+    fun providesOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        @ApplicationContext context: Context
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .addNetworkInterceptor(authInterceptor)
             .addNetworkInterceptor(
@@ -34,6 +40,7 @@ object NetworkModule {
                         }
                     }
             )
+            .addNetworkInterceptor(ChuckerInterceptor(context))
             .build()
 
     @Provides

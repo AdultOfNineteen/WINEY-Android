@@ -62,6 +62,7 @@ dependencies {
         implementation(CONVERTER_GSON)
         implementation(OKHTTP)
         implementation(LOGGING_INTERCEPTOR)
+        debugImplementation(CHUCKER_LIBRARY)
         testImplementation(JUNIT)
     }
 }

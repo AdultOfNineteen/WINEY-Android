@@ -19,6 +19,7 @@ object Versions {
     const val DATASTORE = "1.0.0"
     const val RETROFIT2 = "2.9.0"
     const val OKHTTP3 = "5.0.0-alpha.11"
+    const val CHUCKER_LIBRARY = "4.0.0"
     const val TEST_EXT_JUNIT = "1.1.5"
     const val TEST_ESPRESSO_CORE = "3.5.1"
     const val JUNIT = "4.13.2"

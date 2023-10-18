@@ -54,4 +54,17 @@ class DataStoreRepositoryImpl(
         }
     }
 
+    override suspend fun deleteStringValue(type: Preferences.Key<String>) {
+        preferenceDataStore.edit { settings ->
+            settings.remove(type)
+        }
+    }
+
+    override suspend fun deleteBooleanValue(type: Preferences.Key<Boolean>) {
+        preferenceDataStore.edit { settings ->
+            settings.remove(type)
+        }
+    }
+
+
 }

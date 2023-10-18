@@ -8,11 +8,13 @@ import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
+import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -45,6 +47,10 @@ interface AuthService {
         @Path("social") social: SocialType,
         @Body socialLoginRequest: SocialLoginRequest
     ): ApiResult<ResponseWrapper<SocialLogin>>
+
+    /** 액세스토큰 재발급 API **/
+    @POST("/refresh")
+    suspend fun updateToken(): Response<ResponseWrapper<AccessToken>>
 
     /** 인증번호 전송 API */
     @POST("/users/{userId}/phone/code/send")
