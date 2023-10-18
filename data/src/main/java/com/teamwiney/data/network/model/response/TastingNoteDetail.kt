@@ -17,7 +17,40 @@ data class TastingNoteDetail(
     val defaultWineTaste: WineTaste,
     val tastingNoteImage: List<TastingNoteImage>,
     val memo: String,
-)
+) {
+    companion object {
+        fun default() = TastingNoteDetail(
+            noteId = 0L,
+            wineName = "캄포 마리나 프리미티도 디 만두리아",
+            noteDate = "2021.09.09",
+            wineType = "RED",
+            region = "region",
+            star = 4,
+            color = "RED",
+            buyAgain = true,
+            varietal = "varietal",
+            officialAlcohol = 0.0,
+            price = 0,
+            smellKeywordList = listOf("냄새1", "냄새2"),
+            myWineTaste = MyWineTaste(
+                sweetness = 3.0,
+                acidity = 2.0,
+                tannin = 3.0,
+                body = 2.0,
+                alcohol = 1.0,
+                finish = 2.0
+            ),
+            defaultWineTaste = WineTaste(
+                sweetness = 4.0,
+                acidity = 1.0,
+                tannin = 4.0,
+                body = 5.0,
+            ),
+            memo = "메모",
+            tastingNoteImage = listOf(TastingNoteImage("1", "1"), TastingNoteImage("2", "2"))
+        )
+    }
+}
 
 data class WineTaste(
     val sweetness: Double,

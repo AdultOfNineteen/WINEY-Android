@@ -6,6 +6,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingData
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -30,4 +31,6 @@ class TastingNoteRepositoryImpl @Inject constructor(
     override fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>> =
         tastingNoteDataSource.getTastingNoteFilters()
 
+    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>> =
+        tastingNoteDataSource.getTastingNoteDetail(noteId)
 }
