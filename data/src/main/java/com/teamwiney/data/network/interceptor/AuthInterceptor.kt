@@ -32,7 +32,6 @@ class AuthInterceptor @Inject constructor(
         val originalRequest = chain.request()
         val authenticationRequest = originalRequest.newBuilder()
             .addHeader("X-AUTH-TOKEN", accessToken)
-            .addHeader("X-REFRESH-TOKEN", refreshToken)
             .build()
 
         val response = chain.proceed(authenticationRequest)
@@ -49,8 +48,6 @@ class AuthInterceptor @Inject constructor(
                     val newAuthenticationRequest = originalRequest.newBuilder()
                         .header("X-AUTH-TOKEN", newAccessToken)
                         .build()
-
-                    response.close()
 
                     return chain.proceed(newAuthenticationRequest)
                 } else {
