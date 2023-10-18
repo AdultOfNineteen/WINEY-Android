@@ -41,6 +41,9 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteBottomSheet(
+    sortedGroup: List<String>,
+    selectedSort: Int,
+    onSelectSort: (String) -> Unit,
     typeFilter: List<WineType>,
     countryFilter: List<WineCountry>,
     selectedTypeFilter: List<WineType>,
@@ -79,6 +82,14 @@ fun NoteBottomSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
+            SortItems(
+                sortedGroup = sortedGroup,
+                selectedSort = selectedSort,
+                onSelectSort = {
+                    onSelectSort(it)
+                }
+            )
+
             TypeFilterItems(
                 filterGroup = typeFilter,
                 selectedFilter = selectedTypeFilter,
@@ -133,24 +144,14 @@ fun NoteBottomSheet(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                         .clickable {
-                            if (selectedTypeFilter.isNotEmpty() || selectedCountryFilter.isNotEmpty()) {
-                                onApplyFilter()
-                            }
+                            onApplyFilter()
                         }
                         .background(
-                            color = if (selectedTypeFilter.isEmpty() && selectedCountryFilter.isEmpty()) {
-                                WineyTheme.colors.gray_900
-                            } else {
-                                WineyTheme.colors.main_2
-                            },
+                            color = WineyTheme.colors.main_2,
                             shape = RoundedCornerShape(10.dp)
                         )
                         .padding(vertical = 16.dp),
-                    color = if (selectedTypeFilter.isEmpty() && selectedCountryFilter.isEmpty()) {
-                        WineyTheme.colors.gray_600
-                    } else {
-                        WineyTheme.colors.gray_50
-                    },
+                    color = WineyTheme.colors.gray_50,
                     style = WineyTheme.typography.bodyB2.copy(textAlign = TextAlign.Center)
                 )
             }
@@ -159,6 +160,51 @@ fun NoteBottomSheet(
     }
 }
 
+@Composable
+private fun SortItems(
+    sortedGroup: List<String>,
+    selectedSort: Int,
+    onSelectSort: (String) -> Unit
+) {
+    Column {
+        Text(
+            text = "정렬",
+            color = WineyTheme.colors.gray_400,
+            style = WineyTheme.typography.bodyB2
+        )
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            sortedGroup.forEach {
+                val isEnable = sortedGroup[selectedSort] == it
+                Text(
+                    text = it,
+                    color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
+                    style = WineyTheme.typography.captionB1,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(40.dp))
+                        .clickable {
+                            onSelectSort(it)
+                        }
+                        .border(
+                            BorderStroke(
+                                1.dp,
+                                if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900
+                            ),
+                            RoundedCornerShape(40.dp)
+                        )
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TypeFilterItems(
     filterGroup: List<WineType>,

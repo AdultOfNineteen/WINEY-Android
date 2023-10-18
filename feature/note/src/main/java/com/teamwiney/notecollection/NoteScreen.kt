@@ -6,14 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,15 +39,78 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.WineCountry
+import com.teamwiney.data.network.model.response.WineType
 import com.teamwiney.notecollection.components.EmptyNote
 import com.teamwiney.notecollection.components.NoteBottomSheet
-import com.teamwiney.notecollection.components.NoteRadioButton
+import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.notecollection.components.NoteWineCard
+import com.teamwiney.notecollection.components.ResetFilterButton
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
+
+@Composable
+fun SelectedFilterItems(
+    modifier: Modifier = Modifier,
+    selectedSort: Int,
+    sortedGroup: List<String>,
+    selectedTypeFilter: List<WineType>,
+    selectedCountryFilter: List<WineCountry>,
+    showFilter: () -> Unit,
+    resetFilter: () -> Unit
+) {
+    LazyRow(
+        modifier = modifier.verticalScroll(rememberScrollState()),
+        contentPadding = PaddingValues(end = 47.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        item {
+            ResetFilterButton {
+                resetFilter()
+            }
+        }
+
+        item {
+            NoteSelectedFilterChip(
+                name = sortedGroup[selectedSort],
+                isEnable = true,
+                onClick = { showFilter() }
+            )
+        }
+
+        item {
+            NoteSelectedFilterChip(
+                name = if (selectedTypeFilter.isEmpty()) {
+                    "와인종류"
+                } else if (selectedTypeFilter.size == 1) {
+                    selectedTypeFilter[0].type
+                } else {
+                    "${selectedTypeFilter[0].type} 외 ${selectedTypeFilter.size - 1}"
+                },
+                isEnable = selectedTypeFilter.isNotEmpty(),
+                onClick = { showFilter() }
+            )
+        }
+
+        item {
+            NoteSelectedFilterChip(
+                name = if (selectedCountryFilter.isEmpty()) {
+                    "생산지"
+                } else if (selectedCountryFilter.size == 1) {
+                    selectedCountryFilter[0].country
+                } else {
+                    "${selectedCountryFilter[0].country} 외 ${selectedCountryFilter.size - 1}"
+                },
+                isEnable = selectedCountryFilter.isNotEmpty(),
+                onClick = { showFilter() }
+            )
+        }
+    }
+}
+
 
 @Composable
 fun NoteScreen(
@@ -114,37 +179,36 @@ fun NoteScreen(
         if (tastingNotes.itemCount == 0) {
             EmptyNote()
         } else {
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(horizontal = 24.dp)
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                ) {
-                    uiState.sortedGroup.forEach { radioButton ->
-                        NoteRadioButton(
-                            name = radioButton,
-                            isEnable = uiState.selectedSort == uiState.sortedGroup.indexOf(
-                                radioButton
-                            ),
-                            onClick = {
-                                viewModel.updateSelectedSort(radioButton)
-                                viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                            }
-                        )
+                SelectedFilterItems(
+                    sortedGroup = uiState.sortedGroup,
+                    selectedSort = uiState.selectedSort,
+                    selectedTypeFilter = uiState.selectedTypeFilter,
+                    selectedCountryFilter = uiState.selectedCountryFilter,
+                    showFilter = {
+                        viewModel.processEvent(NoteContract.Event.ShowFilter)
+                    },
+                    resetFilter = {
+                        viewModel.resetFilter()
+                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
                     }
-                }
+                )
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
+                        .align(Alignment.CenterEnd)
                         .background(WineyTheme.colors.gray_900)
                         .clickable {
                             viewModel.processEvent(NoteContract.Event.ShowFilter)
                             showBottomSheet {
                                 NoteBottomSheet(
+                                    sortedGroup = uiState.sortedGroup,
+                                    selectedSort = uiState.selectedSort,
+                                    onSelectSort = viewModel::updateSelectedSort,
                                     typeFilter = uiState.typeFilter,
                                     countryFilter = uiState.countryFilter,
                                     selectedTypeFilter = uiState.selectedTypeFilter,
@@ -171,6 +235,20 @@ fun NoteScreen(
                 }
             }
             HeightSpacer(height = 18.dp)
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(end = 24.dp)
+                    .clickable {
+                        viewModel.updateBuyAgainSelected(uiState.buyAgainSelected != 1)
+                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                    },
+                text = "재구매 의사 ✓",
+                color = if (uiState.buyAgainSelected == 1) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700,
+                style = WineyTheme.typography.captionM2
+            )
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),

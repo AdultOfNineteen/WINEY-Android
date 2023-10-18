@@ -52,7 +52,7 @@ class NoteViewModel @Inject constructor(
                             wineTypes = currentState.selectedTypeFilter
                                 .filter { it.type != "전체" }
                                 .map { convertToWineType(it.type) },
-                            buyAgain = currentState.buyAgain
+                            buyAgain = currentState.buyAgainSelected
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -86,8 +86,8 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedSort(radioButton: String) = viewModelScope.launch {
-        updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(radioButton)))
+    fun updateSelectedSort(sortType: String) = viewModelScope.launch {
+        updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(sortType)))
     }
 
     fun updateSelectedTypeFilter(filterItem: WineType) = viewModelScope.launch {
@@ -128,6 +128,14 @@ class NoteViewModel @Inject constructor(
         updateState(
             currentState.copy(
                 selectedCountryFilter = updatedSelectedFilter.toList()
+            )
+        )
+    }
+
+    fun updateBuyAgainSelected(isSelected: Boolean) = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                buyAgainSelected = if (isSelected) 1 else 0
             )
         )
     }
