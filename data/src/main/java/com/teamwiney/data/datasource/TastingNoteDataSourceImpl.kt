@@ -3,7 +3,7 @@ package com.teamwiney.data.datasource
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.PagingData
+import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteFilters
@@ -31,7 +31,7 @@ class TastingNoteDataSourceImpl @Inject constructor(
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int
-    ): Flow<ApiResult<ResponseWrapper<PagingData<List<TastingNote>>>>> =
+    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
         flow {
             emit(tastingNoteService.getTastingNotes(page, size, order, countries, wineTypes, buyAgain))
         }.flowOn(ioDispatcher)

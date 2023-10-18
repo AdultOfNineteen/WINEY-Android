@@ -2,7 +2,7 @@ package com.teamwiney.data.datasource
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.PagingData
+import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteFilters
@@ -19,7 +19,7 @@ interface TastingNoteDataSource {
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int
-    ): Flow<ApiResult<ResponseWrapper<PagingData<List<TastingNote>>>>>
+    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
 

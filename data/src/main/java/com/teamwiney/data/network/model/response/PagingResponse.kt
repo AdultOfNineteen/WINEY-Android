@@ -2,7 +2,7 @@ package com.teamwiney.data.network.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class PagingData<out T>(
+data class PagingResponse<out T>(
     @SerializedName("isLast")
     val isLast: Boolean,
     @SerializedName("totalCnt")

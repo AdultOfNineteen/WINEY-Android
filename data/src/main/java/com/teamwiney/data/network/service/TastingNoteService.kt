@@ -2,7 +2,7 @@ package com.teamwiney.data.network.service
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.PagingData
+import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteFilters
@@ -24,7 +24,7 @@ interface TastingNoteService {
         @Query("countries") countries: List<String>,
         @Query("wineTypes") wineTypes: List<String>,
         @Query("buyAgain") buyAgain: Int
-    ): ApiResult<ResponseWrapper<PagingData<List<TastingNote>>>>
+    ): ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>
 
     /** 테이스팅 노트 필터 목록 조회 API */
     @GET("/tasting-notes/filter")

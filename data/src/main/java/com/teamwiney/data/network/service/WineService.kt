@@ -2,7 +2,7 @@ package com.teamwiney.data.network.service
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.PagingData
+import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.RecommendWine
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.data.network.model.response.WineTip
@@ -27,6 +27,6 @@ interface WineService {
     suspend fun getWineTips(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): ApiResult<ResponseWrapper<PagingData<List<WineTip>>>>
+    ): ApiResult<ResponseWrapper<PagingResponse<List<WineTip>>>>
 
 }
