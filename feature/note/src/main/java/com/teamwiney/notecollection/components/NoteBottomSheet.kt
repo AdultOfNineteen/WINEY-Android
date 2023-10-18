@@ -34,7 +34,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
-import com.teamwiney.data.network.model.response.WineType
+import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
@@ -44,11 +44,11 @@ fun NoteBottomSheet(
     sortedGroup: List<String>,
     selectedSort: Int,
     onSelectSort: (String) -> Unit,
-    typeFilter: List<WineType>,
+    typeFilter: List<WineTypeResponse>,
     countryFilter: List<WineCountry>,
-    selectedTypeFilter: List<WineType>,
+    selectedTypeFilter: List<WineTypeResponse>,
     selectedCountryFilter: List<WineCountry>,
-    onSelectTypeFilter: (WineType) -> Unit,
+    onSelectTypeFilter: (WineTypeResponse) -> Unit,
     onSelectCountryFilter: (WineCountry) -> Unit,
     onResetFilter: () -> Unit,
     onApplyFilter: () -> Unit,
@@ -207,9 +207,9 @@ private fun SortItems(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TypeFilterItems(
-    filterGroup: List<WineType>,
-    selectedFilter: List<WineType>,
-    onSelectFilter: (WineType) -> Unit,
+    filterGroup: List<WineTypeResponse>,
+    selectedFilter: List<WineTypeResponse>,
+    onSelectFilter: (WineTypeResponse) -> Unit,
 ) {
     Column {
         Text(

@@ -9,7 +9,7 @@ import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.WineCountry
-import com.teamwiney.data.network.model.response.WineType
+import com.teamwiney.data.network.model.response.WineTypeResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -30,8 +30,8 @@ class NoteContract {
         val sortedGroup: List<String> = listOf("최신순", "인기순"),
         val selectedSort: Int = 0,
         val buyAgainSelected: Int = 1,
-        val typeFilter: List<WineType> = emptyList(),
-        val selectedTypeFilter: List<WineType> = emptyList(),
+        val typeFilter: List<WineTypeResponse> = emptyList(),
+        val selectedTypeFilter: List<WineTypeResponse> = emptyList(),
         val countryFilter: List<WineCountry> = emptyList(),
         val selectedCountryFilter: List<WineCountry> = emptyList(),
     ) : UiState

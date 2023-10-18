@@ -40,7 +40,7 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
-import com.teamwiney.data.network.model.response.WineType
+import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.notecollection.components.EmptyNote
 import com.teamwiney.notecollection.components.NoteBottomSheet
 import com.teamwiney.notecollection.components.NoteSelectedFilterChip
@@ -57,7 +57,7 @@ fun SelectedFilterItems(
     modifier: Modifier = Modifier,
     selectedSort: Int,
     sortedGroup: List<String>,
-    selectedTypeFilter: List<WineType>,
+    selectedTypeFilter: List<WineTypeResponse>,
     selectedCountryFilter: List<WineCountry>,
     showFilter: () -> Unit,
     resetFilter: () -> Unit
@@ -265,7 +265,8 @@ fun NoteScreen(
                             color = it.wineType,
                             name = it.name,
                             origin = it.country,
-                            starRating = it.starRating
+                            starRating = it.starRating,
+                            navigateToNoteDetail = { },
                         )
                     }
                 }
