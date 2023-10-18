@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,17 +41,23 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.MyWineTaste
+import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteImage
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.data.network.model.response.WineSummary
-import com.teamwiney.notecollection.components.NoteRadioButton
+import com.teamwiney.data.network.model.response.WineTaste
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
@@ -72,23 +79,35 @@ fun NoteDetailScreen(
 //    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 //    val effectFlow = viewModel.effect
 
-    val testWine = Wine(
-        wineId = 0L,
-        name = "와인이름",
-        country = "국가",
-        type = "type",
-        sweetness = 1,
-        acidity = 1,
-        body = 1,
-        tannins = 1,
+    val testWine = TastingNoteDetail(
+        noteId = 0L,
+        wineName = "캄포 마리나 프리미티도 디 만두리아",
+        noteDate = "2021.09.09",
+        wineType = "RED",
+        region = "region",
+        star = 4,
+        color = "RED",
+        buyAgain = true,
         varietal = "varietal",
-        wineSummary = WineSummary(
-            avgSweetness = 1,
-            avgAcidity = 1,
-            avgBody = 1,
-            avgTannins = 1,
-            avgPrice = 1.0
-        )
+        officialAlcohol = 0.0,
+        price = 0,
+        smellKeywordList = listOf("냄새1", "냄새2"),
+        myWineTaste = MyWineTaste(
+            sweetness = 3.0,
+            acidity = 2.0,
+            tannin = 3.0,
+            body = 2.0,
+            alcohol = 1.0,
+            finish = 2.0
+        ),
+        defaultWineTaste = WineTaste(
+            sweetness = 4.0,
+            acidity = 1.0,
+            tannin = 4.0,
+            body = 5.0,
+        ),
+        memo = "메모",
+        tastingNoteImage = listOf(TastingNoteImage("1", "1"), TastingNoteImage("2", "2"))
     )
     LaunchedEffect(true) {
 //        viewModel.getWineDetail(wineId)
@@ -134,77 +153,161 @@ fun NoteDetailScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            TitleAndDescription(
-                type = "ETC",
-                name = "캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아"
-            )
-
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
-
-
-            WineOrigin(testWine)
             Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                modifier = Modifier.padding(horizontal = 24.dp)
             ) {
-                Text(
-                    text = "Feature",
-                    style = WineyTheme.typography.display2,
-                    color = WineyTheme.colors.gray_50
+
+                TitleAndDescription(
+                    type = "ETC",
+                    name = "캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아 캄포 마리나 프리미티도 디 만두리아"
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Row {
-                        Canvas(modifier = Modifier.size(41.dp)) {
-                            drawCircle(
-                                color = Color(0xFFEC7CA4),
-                                radius = size.minDimension / 2
-                            )
-                        }
-                        Spacer(
-                            modifier = Modifier
-                                .padding(horizontal = 7.dp)
-                                .width(1.dp)
-                                .height(43.dp)
-                                .background(WineyTheme.colors.gray_900)
-                        )
-                    }
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-                    LazyRow(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        items(listOf("레몬", "배", "제비꽃", "캐러멜", "레몬", "배", "제비꽃", "캐러멜")) {
-                            NoteFeatureText(
-                                name = it,
-                            )
-                        }
-                    }
-                }
+                WineOrigin(testWine)
+
+                WineSmellFeature()
+
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
+
+                WineInfo(testWine)
+
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
             }
-
-
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
-
-            WineInfo(testWine)
+            WineMemo()
 
             HeightSpacer(height = 33.dp)
+        }
+    }
+}
+
+@Composable
+fun WineMemo() {
+
+    val imgs = listOf<String>("1", "2", "3", "4")
+
+    Column() {
+        Text(
+            text = "Feature",
+            style = WineyTheme.typography.display2,
+            color = WineyTheme.colors.gray_50,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+
+        HeightSpacer(height = 20.dp)
+
+        if (imgs.isNotEmpty()) {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                item {
+                    Spacer(modifier = Modifier.width(14.dp))
+                }
+                items(imgs) {
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(WineyTheme.colors.gray_900)
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.width(14.dp))
+                }
+            }
+            HeightSpacer(height = 36.dp)
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .border(
+                    BorderStroke(
+                        1.dp, WineyTheme.colors.main_3
+                    ),
+                    RoundedCornerShape(10.dp)
+                )
+        ) {
+            Text(
+                text = "저희 조는 지난 MODE1에서는 1인가구와 푸드테크 소비트렌드를 중심으로 시작하여 버즈리포트 및 매체 조사를 진행하였고, 키워드를 모아 1인 가구를 위한 맞춤형 영양분석 간편식 서비스에 대해 기획하였는데요, 이부분에서 저희는 ‘사람’에 대한 그리고 위한 서비스를 만든다는 점을 보완하기 위해 타겟을 조금 더 세분화하여 장기적으로 건강관리가 필요한 만성질환자",
+                modifier = Modifier.padding(14.dp),
+                style = WineyTheme.typography.captionM1,
+                color = WineyTheme.colors.gray_50
+            )
+        }
+    }
+}
+
+@Composable
+private fun WineSmellFeature() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Text(
+            text = "Feature",
+            style = WineyTheme.typography.display2,
+            color = WineyTheme.colors.gray_50
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row {
+                Box(
+                    modifier = Modifier
+                        .size(41.dp)
+                        .blur(5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(5.dp)
+                            .clip(CircleShape)
+                            .background(
+                                color = Color(0xFFEC7CA4).copy(0.5f),
+                                shape = CircleShape
+                            )
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .padding(horizontal = 7.dp)
+                        .width(1.dp)
+                        .height(43.dp)
+                        .background(WineyTheme.colors.gray_900)
+                )
+            }
+
+            LazyRow(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                items(listOf("레몬", "배", "제비꽃", "캐러멜", "레몬", "배", "제비꽃", "캐러멜")) {
+                    NoteFeatureText(
+                        name = it,
+                    )
+                }
+            }
         }
     }
 }
@@ -230,9 +333,28 @@ private fun NoteFeatureText(
 }
 
 
-// 이것도 다 Design 으로 모듈로 빼고 싶은데 Wine이라는 객체를 Desing모듈에서 불러올수가 없어요
 @Composable
-private fun WineInfo(wine: Wine) {
+private fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
+
+    val wine = Wine(
+        wineId = -1,
+        type = tastingNoteDetail.wineType,
+        name = tastingNoteDetail.wineName,
+        country = tastingNoteDetail.region,
+        varietal = tastingNoteDetail.varietal,
+        sweetness = tastingNoteDetail.myWineTaste.sweetness.toInt(),
+        acidity = tastingNoteDetail.myWineTaste.acidity.toInt(),
+        body = tastingNoteDetail.myWineTaste.body.toInt(),
+        tannins = tastingNoteDetail.myWineTaste.tannin.toInt(),
+        wineSummary = WineSummary(
+            avgPrice = tastingNoteDetail.price.toDouble(),
+            avgSweetness = tastingNoteDetail.defaultWineTaste.sweetness.toInt(),
+            avgAcidity = tastingNoteDetail.defaultWineTaste.acidity.toInt(),
+            avgBody = tastingNoteDetail.defaultWineTaste.body.toInt(),
+            avgTannins = tastingNoteDetail.defaultWineTaste.tannin.toInt()
+        )
+    )
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -242,10 +364,26 @@ private fun WineInfo(wine: Wine) {
         val pagerState = rememberPagerState(pageCount = { pageCount })
 
         val tasteList = listOf(
-            Triple("당도", wine.sweetness, wine.wineSummary.avgSweetness),
-            Triple("산도", wine.acidity, wine.wineSummary.avgAcidity),
-            Triple("바디", wine.body, wine.wineSummary.avgBody),
-            Triple("탄닌", wine.tannins, wine.wineSummary.avgTannins)
+            Triple(
+                "당도",
+                tastingNoteDetail.myWineTaste.sweetness.toInt(),
+                tastingNoteDetail.defaultWineTaste.sweetness.toInt()
+            ),
+            Triple(
+                "산도",
+                tastingNoteDetail.myWineTaste.acidity.toInt(),
+                tastingNoteDetail.defaultWineTaste.acidity.toInt()
+            ),
+            Triple(
+                "바디",
+                tastingNoteDetail.myWineTaste.body.toInt(),
+                tastingNoteDetail.defaultWineTaste.body.toInt()
+            ),
+            Triple(
+                "탄닌",
+                tastingNoteDetail.myWineTaste.tannin.toInt(),
+                tastingNoteDetail.defaultWineTaste.tannin.toInt()
+            )
         )
 
         HorizontalPager(state = pagerState) { page ->
@@ -370,13 +508,13 @@ private fun WineInfoTotalBarGraph(
 
 @Composable
 private fun WineOrigin(
-    wine: Wine
+    wine: TastingNoteDetail
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
-        WineBadge(color = wine.type)
+        WineBadge(color = wine.wineType)
 
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -387,7 +525,7 @@ private fun WineOrigin(
                 )
 
                 Text(
-                    text = wine.country,
+                    text = wine.region,
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
@@ -409,13 +547,41 @@ private fun WineOrigin(
 
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
+                    text = "ABV",
+                    style = WineyTheme.typography.captionM3,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Text(
+                    text = "${wine.officialAlcohol.toInt()}%",
+                    style = WineyTheme.typography.captionB1,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
                     text = "Purchase price",
                     style = WineyTheme.typography.captionM3,
                     color = WineyTheme.colors.gray_50
                 )
 
                 Text(
-                    text = "${wine.wineSummary.avgPrice}",
+                    text = "${wine.price}",
+                    style = WineyTheme.typography.captionB1,
+                    color = WineyTheme.colors.gray_50
+                )
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "Vintage",
+                    style = WineyTheme.typography.captionM3,
+                    color = WineyTheme.colors.gray_50
+                )
+
+                Text(
+                    text = "${wine.noteDate}",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
