@@ -34,7 +34,7 @@ class WineTipsPagingSource(
                     LoadResult.Page(
                         data = contents,
                         prevKey = if (currentPage == 0) null else currentPage - 1,
-                        nextKey = if (contents.isEmpty()) null else currentPage + 1,
+                        nextKey = if (loadData.data.result.isLast) null else currentPage + 1,
                     )
                 } catch (e: Exception) {
                     LoadResult.Error(e)
