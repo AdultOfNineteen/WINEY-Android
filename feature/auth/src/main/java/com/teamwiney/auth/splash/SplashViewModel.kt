@@ -3,16 +3,17 @@ package com.teamwiney.auth.splash
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
-import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -42,15 +43,16 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun autoLoginCheck() = viewModelScope.launch {
-        val accessToken =
-            withContext(defaultDispatcher) { dataStoreRepository.getStringValue(ACCESS_TOKEN) }
-        val refreshToken =
-            withContext(defaultDispatcher) { dataStoreRepository.getStringValue(REFRESH_TOKEN) }
+        val accessToken = runBlocking { dataStoreRepository.getStringValue(ACCESS_TOKEN).first() }
 
-        // API 나오면 연결
-//        authRepository.autoLogin()
-        postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
-            popUpTo(AuthDestinations.SPLASH) { inclusive = true }
-        })
+        if (accessToken.isNotEmpty()) {
+            postEffect(SplashContract.Effect.NavigateTo(HomeDestinations.ROUTE) {
+                popUpTo(AuthDestinations.SPLASH) { inclusive = true }
+            })
+        } else {
+            postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
+                popUpTo(AuthDestinations.SPLASH) { inclusive = true }
+            })
+        }
     }
 }
