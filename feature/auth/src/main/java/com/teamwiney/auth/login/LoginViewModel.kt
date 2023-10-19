@@ -112,7 +112,7 @@ class LoginViewModel @Inject constructor(
                     when (result) {
                         is ApiResult.Success -> {
                             val userStatus = result.data.result.userStatus
-                            viewModelScope.launch {
+                            runBlocking {
                                 dataStoreRepository.setStringValue(
                                     ACCESS_TOKEN,
                                     result.data.result.accessToken
@@ -122,18 +122,19 @@ class LoginViewModel @Inject constructor(
                                     result.data.result.refreshToken
                                 )
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
-                            }
-                            if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
-                                postEffect(LoginContract.Effect.NavigateTo(
-                                    destination = HomeDestinations.ROUTE,
-                                    navOptions = navOptions {
-                                        popUpTo(AuthDestinations.Login.ROUTE) {
-                                            inclusive = true
+
+                                if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
+                                    postEffect(LoginContract.Effect.NavigateTo(
+                                        destination = HomeDestinations.ROUTE,
+                                        navOptions = navOptions {
+                                            popUpTo(AuthDestinations.Login.ROUTE) {
+                                                inclusive = true
+                                            }
                                         }
-                                    }
-                                ))
-                            } else {
-                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
+                                    ))
+                                } else {
+                                    postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
+                                }
                             }
                         }
 
