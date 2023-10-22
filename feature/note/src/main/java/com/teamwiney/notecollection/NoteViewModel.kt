@@ -89,7 +89,7 @@ class NoteViewModel @Inject constructor(
     }
 
     fun updateSelectedSort(sortType: String) = viewModelScope.launch {
-        updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(sortType)))
+        updateState(currentState.copy(selectedSort = currentState.sortItems.indexOf(sortType)))
     }
 
     fun removeFilter(option: String) {

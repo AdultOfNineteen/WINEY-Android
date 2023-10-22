@@ -39,41 +39,17 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
-import com.teamwiney.data.network.model.response.WineCountry
-import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.notecollection.components.EmptyNote
+import com.teamwiney.notecollection.components.NoteFilterDefaultItem
 import com.teamwiney.notecollection.components.NoteFilterResetButton
+import com.teamwiney.notecollection.components.NoteSelectedFilterChip
+import com.teamwiney.notecollection.components.NoteSortBottomSheet
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
-
-@Composable
-fun SelectedFilterItems(
-    modifier: Modifier = Modifier,
-    selectedSort: Int,
-    sortedGroup: List<String>,
-    selectedTypeFilter: List<WineTypeResponse>,
-    selectedCountryFilter: List<WineCountry>,
-    showFilter: () -> Unit,
-    resetFilter: () -> Unit
-) {
-    LazyRow(
-        modifier = modifier.verticalScroll(rememberScrollState()),
-        contentPadding = PaddingValues(end = 47.dp),
-        horizontalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        item {
-            NoteFilterResetButton {
-                resetFilter()
-            }
-        }
-
-    }
-}
-
 
 @Composable
 fun NoteScreen(
@@ -139,68 +115,143 @@ fun NoteScreen(
             )
         }
 
-        if (tastingNotes.itemCount == 0) {
-            EmptyNote()
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
+            LazyRow(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                contentPadding = PaddingValues(end = 47.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                SelectedFilterItems(
-                    sortedGroup = uiState.sortedGroup,
-                    selectedSort = uiState.selectedSort,
-                    selectedTypeFilter = uiState.selectedTypeFilter,
-                    selectedCountryFilter = uiState.selectedCountryFilter,
-                    showFilter = {
-                        viewModel.processEvent(NoteContract.Event.ShowFilter)
-                    },
-                    resetFilter = {
-                        viewModel.resetFilter()
-                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                    }
-                )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .align(Alignment.CenterEnd)
-                        .background(WineyTheme.colors.gray_900)
-                        .clickable {
-                            viewModel.processEvent(NoteContract.Event.ShowFilter)
+                if (uiState.buyAgainSelected ||
+                    uiState.selectedTypeFilter.isNotEmpty() ||
+                    uiState.selectedCountryFilter.isNotEmpty()) {
+                    item {
+                        NoteFilterResetButton {
+                            viewModel.resetFilter()
                         }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_filter_24),
-                        contentDescription = "IC_FILTER",
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 5.dp)
-                            .size(24.dp),
-                        tint = WineyTheme.colors.gray_50
+                    }
+                }
+
+                item {
+                    NoteFilterDefaultItem(
+                        name = uiState.sortItems[uiState.selectedSort],
+                        onClick = {
+                            showBottomSheet {
+                                NoteSortBottomSheet(
+                                    sortItems = uiState.sortItems,
+                                    selectedSort = uiState.sortItems[uiState.selectedSort],
+                                    onSelectSort = viewModel::updateSelectedSort,
+                                    applyFilter = {
+                                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                    }
+                                )
+                            }
+                        }
                     )
                 }
-            }
-            HeightSpacer(height = 15.dp)
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(21.dp),
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
-                items(
-                    count = tastingNotes.itemCount,
-                    key = tastingNotes.itemKey(),
-                    contentType = tastingNotes.itemContentType()
-                ) { index ->
-                    tastingNotes[index]?.let {
-                        NoteWineCard(
-                            color = it.wineType,
-                            name = it.name,
-                            origin = it.country,
-                            starRating = it.starRating,
-                            navigateToNoteDetail = { },
+                if (uiState.buyAgainSelected) {
+                    item {
+                        NoteSelectedFilterChip(
+                            name = "재구매 의사",
+                            onClose = { viewModel.updateBuyAgainSelected(true) },
+                            onClick = {
+                                viewModel.processEvent(NoteContract.Event.ShowFilter)
+                            }
                         )
                     }
+                }
+
+                if (uiState.selectedTypeFilter.isEmpty()) {
+                    item {
+                        NoteFilterDefaultItem(
+                            name = "와인종류",
+                            onClick = { viewModel.processEvent(NoteContract.Event.ShowFilter) }
+                        )
+                    }
+                } else {
+                    uiState.selectedTypeFilter.forEach { option ->
+                        item {
+                            NoteSelectedFilterChip(
+                                name = option.type,
+                                onClose = {
+                                    viewModel.removeFilter(option.type)
+                                    viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                }
+                            )
+                        }
+                    }
+                }
+
+                if (uiState.selectedCountryFilter.isEmpty()) {
+                    item {
+                        NoteFilterDefaultItem(
+                            name = "생산지",
+                            onClick = { viewModel.processEvent(NoteContract.Event.ShowFilter) }
+                        )
+                    }
+                } else {
+                    uiState.selectedCountryFilter.forEach { option ->
+                        item {
+                            NoteSelectedFilterChip(
+                                name = option.country,
+                                onClose = {
+                                    viewModel.removeFilter(option.country)
+                                    viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .align(Alignment.CenterEnd)
+                    .background(WineyTheme.colors.gray_900)
+                    .clickable {
+                        viewModel.processEvent(NoteContract.Event.ShowFilter)
+                    }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_filter_24),
+                    contentDescription = "IC_FILTER",
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 5.dp)
+                        .size(24.dp),
+                    tint = WineyTheme.colors.gray_50
+                )
+            }
+        }
+        HeightSpacer(height = 15.dp)
+
+        if (tastingNotes.itemCount == 0) {
+            EmptyNote()
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(21.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            items(
+                count = tastingNotes.itemCount,
+                key = tastingNotes.itemKey(),
+                contentType = tastingNotes.itemContentType()
+            ) { index ->
+                tastingNotes[index]?.let {
+                    NoteWineCard(
+                        color = it.wineType,
+                        name = it.name,
+                        origin = it.country,
+                        starRating = it.starRating,
+                        navigateToNoteDetail = { },
+                    )
                 }
             }
         }

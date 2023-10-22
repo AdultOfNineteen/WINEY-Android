@@ -106,7 +106,7 @@ fun NoteFilterScreen(
                 .fillMaxHeight()
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(30.dp)
+            verticalArrangement = Arrangement.spacedBy(28.dp)
         ) {
             BuyAgainItem(
                 selectedBuyAgain = uiState.buyAgainSelected,
@@ -195,6 +195,7 @@ fun NoteFilterScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BuyAgainItem(
     selectedBuyAgain: Boolean,
