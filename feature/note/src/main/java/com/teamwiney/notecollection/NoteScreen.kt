@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -45,7 +49,6 @@ import com.teamwiney.notecollection.components.NoteFilterResetButton
 import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.notecollection.components.NoteSortBottomSheet
 import com.teamwiney.notecollection.components.NoteWineCard
-import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
@@ -98,8 +101,9 @@ fun NoteScreen(
             },
             hintPopupOpen = false
         )
-        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
+        Column {
             Text(
+                modifier = Modifier.padding(horizontal = 24.dp),
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
                         append("${tastingNotes.itemCount}개")
@@ -110,24 +114,27 @@ fun NoteScreen(
                 style = WineyTheme.typography.headline
             )
             HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 14.dp),
+                modifier = Modifier.padding(vertical = 15.dp),
                 color = WineyTheme.colors.gray_900
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             LazyRow(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                contentPadding = PaddingValues(end = 47.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                contentPadding = PaddingValues(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 if (uiState.buyAgainSelected ||
                     uiState.selectedTypeFilter.isNotEmpty() ||
-                    uiState.selectedCountryFilter.isNotEmpty()) {
+                    uiState.selectedCountryFilter.isNotEmpty()
+                ) {
                     item {
                         NoteFilterResetButton {
                             viewModel.resetFilter()
@@ -208,26 +215,42 @@ fun NoteScreen(
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .align(Alignment.CenterEnd)
-                    .background(WineyTheme.colors.gray_900)
-                    .clickable {
-                        viewModel.processEvent(NoteContract.Event.ShowFilter)
-                    }
+            Row(
+                modifier = Modifier.padding(end = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_filter_24),
-                    contentDescription = "IC_FILTER",
+                Spacer(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 5.dp)
-                        .size(24.dp),
-                    tint = WineyTheme.colors.gray_50
+                        .width(1.dp)
+                        .height(45.dp)
+                        .background(color = WineyTheme.colors.gray_900)
                 )
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+
+                        .background(WineyTheme.colors.gray_900)
+                        .clickable {
+                            viewModel.processEvent(NoteContract.Event.ShowFilter)
+                        }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_filter_24),
+                        contentDescription = "IC_FILTER",
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 5.dp)
+                            .size(24.dp),
+                        tint = WineyTheme.colors.gray_50
+                    )
+                }
             }
         }
-        HeightSpacer(height = 15.dp)
+        HeightSpacerWithLine(
+            modifier = Modifier.padding(top = 15.dp),
+            color = WineyTheme.colors.gray_900
+        )
 
         if (tastingNotes.itemCount == 0) {
             EmptyNote()
@@ -235,7 +258,7 @@ fun NoteScreen(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
             verticalArrangement = Arrangement.spacedBy(21.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
