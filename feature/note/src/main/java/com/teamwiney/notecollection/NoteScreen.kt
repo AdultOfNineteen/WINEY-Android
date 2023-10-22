@@ -42,7 +42,6 @@ import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.notecollection.components.EmptyNote
-import com.teamwiney.notecollection.components.NoteBottomSheet
 import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.notecollection.components.ResetFilterButton
@@ -204,24 +203,6 @@ fun NoteScreen(
                         .background(WineyTheme.colors.gray_900)
                         .clickable {
                             viewModel.processEvent(NoteContract.Event.ShowFilter)
-                            showBottomSheet {
-                                NoteBottomSheet(
-                                    sortedGroup = uiState.sortedGroup,
-                                    selectedSort = uiState.selectedSort,
-                                    onSelectSort = viewModel::updateSelectedSort,
-                                    typeFilter = uiState.typeFilter,
-                                    countryFilter = uiState.countryFilter,
-                                    selectedTypeFilter = uiState.selectedTypeFilter,
-                                    selectedCountryFilter = uiState.selectedCountryFilter,
-                                    onSelectTypeFilter = viewModel::updateSelectedTypeFilter,
-                                    onSelectCountryFilter = viewModel::updateSelectedCountryFilter,
-                                    onResetFilter = viewModel::resetFilter,
-                                    onApplyFilter = {
-                                        hideBottomSheet()
-                                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                                    }
-                                )
-                            }
                         }
                 ) {
                     Icon(
@@ -234,20 +215,7 @@ fun NoteScreen(
                     )
                 }
             }
-            HeightSpacer(height = 18.dp)
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 24.dp)
-                    .clickable {
-                        viewModel.updateBuyAgainSelected(uiState.buyAgainSelected != 1)
-                        viewModel.processEvent(NoteContract.Event.ApplyFilter)
-                    },
-                text = "재구매 의사 ✓",
-                color = if (uiState.buyAgainSelected == 1) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700,
-                style = WineyTheme.typography.captionM2
-            )
+            HeightSpacer(height = 15.dp)
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),

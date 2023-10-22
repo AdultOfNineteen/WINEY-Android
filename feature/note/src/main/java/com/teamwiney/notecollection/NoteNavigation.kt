@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.notedetail.NoteDetailScreen
@@ -39,6 +38,19 @@ fun NavGraphBuilder.noteGraph(
                 hideBottomSheet = hideBottomSheet,
             )
         }
+
+        composable(route = NoteDestinations.FILTER) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteFilterScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
 
         composable(
             route = "${NoteDestinations.DETAIL}?wineId={wineId}",

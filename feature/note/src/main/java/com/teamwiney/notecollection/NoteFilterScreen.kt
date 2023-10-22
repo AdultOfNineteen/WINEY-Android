@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalLayoutApi::class)
 
-package com.teamwiney.notecollection.components
+package com.teamwiney.notecollection
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -11,18 +11,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,77 +34,72 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineTypeResponse
-import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun NoteBottomSheet(
-    sortedGroup: List<String>,
-    selectedSort: Int,
-    onSelectSort: (String) -> Unit,
-    typeFilter: List<WineTypeResponse>,
-    countryFilter: List<WineCountry>,
-    selectedTypeFilter: List<WineTypeResponse>,
-    selectedCountryFilter: List<WineCountry>,
-    onSelectTypeFilter: (WineTypeResponse) -> Unit,
-    onSelectCountryFilter: (WineCountry) -> Unit,
-    onResetFilter: () -> Unit,
-    onApplyFilter: () -> Unit,
+fun NoteFilterScreen(
+    appState: WineyAppState,
+    viewModel: NoteViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val selectedOptions = mutableListOf<String>().apply {
+        if (uiState.buyAgainSelected) add("재구매 의사")
+        addAll(uiState.selectedTypeFilter.map { it.type })
+        addAll(uiState.selectedCountryFilter.map { it.country })
+    }
+
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(600.dp)
-            .background(WineyTheme.colors.gray_950)
+            .fillMaxSize()
+            .background(WineyTheme.colors.background_1)
+            .statusBarsPadding()
+            .navigationBarsPadding()
             .padding(
                 top = 10.dp,
                 bottom = 20.dp
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+            )
     ) {
-        Spacer(
-            modifier = Modifier
-                .width(66.dp)
-                .height(5.dp)
-                .background(
-                    color = WineyTheme.colors.gray_900,
-                    shape = RoundedCornerShape(6.dp)
-                )
-        )
-        HeightSpacer(height = 20.dp)
+        TopBar(
+            content = "필터"
+        ) {
+            appState.navController.navigateUp()
+        }
 
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
+                .fillMaxHeight()
                 .weight(1f)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
-            SortItems(
-                sortedGroup = sortedGroup,
-                selectedSort = selectedSort,
-                onSelectSort = {
-                    onSelectSort(it)
-                }
+            BuyAgainItem(
+                selectedBuyAgain = uiState.buyAgainSelected,
+                onSelectBuyAgain = viewModel::updateBuyAgainSelected
             )
 
             TypeFilterItems(
-                filterGroup = typeFilter,
-                selectedFilter = selectedTypeFilter,
+                filterGroup = uiState.typeFilter,
+                selectedFilter = uiState.selectedTypeFilter,
                 onSelectFilter = {
-                    onSelectTypeFilter(it)
+                    viewModel.updateSelectedTypeFilter(it)
                 }
             )
 
             CountryFilterItems(
-                filterGroup = countryFilter,
-                selectedFilter = selectedCountryFilter,
+                filterGroup = uiState.countryFilter,
+                selectedFilter = uiState.selectedCountryFilter,
                 onSelectFilter = {
-                    onSelectCountryFilter(it)
+                    viewModel.updateSelectedCountryFilter(it)
                 }
             )
         }
@@ -123,7 +120,7 @@ fun NoteBottomSheet(
                     horizontalArrangement = Arrangement.spacedBy(3.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable {
-                        onResetFilter()
+                        viewModel.resetFilter()
                     }
                 ) {
                     Icon(
@@ -138,16 +135,28 @@ fun NoteBottomSheet(
                         color = WineyTheme.colors.gray_50
                     )
                 }
+
                 Text(
-                    text = "옵션 적용하기",
+                    text = if (selectedOptions.isNotEmpty()) {
+                        "${selectedOptions.size}개 옵션 적용하기"
+                    } else {
+                        "옵션 적용하기"
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                         .clickable {
-                            onApplyFilter()
+                            if (selectedOptions.isNotEmpty()) {
+                                viewModel.processEvent(NoteContract.Event.ApplyFilter)
+                                appState.navController.navigateUp()
+                            }
                         }
                         .background(
-                            color = WineyTheme.colors.main_2,
+                            color = if (selectedOptions.isEmpty()) {
+                                WineyTheme.colors.gray_900
+                            } else {
+                                WineyTheme.colors.main_2
+                            },
                             shape = RoundedCornerShape(10.dp)
                         )
                         .padding(vertical = 16.dp),
@@ -161,14 +170,13 @@ fun NoteBottomSheet(
 }
 
 @Composable
-private fun SortItems(
-    sortedGroup: List<String>,
-    selectedSort: Int,
-    onSelectSort: (String) -> Unit
+private fun BuyAgainItem(
+    selectedBuyAgain: Boolean,
+    onSelectBuyAgain: (Boolean) -> Unit
 ) {
     Column {
         Text(
-            text = "정렬",
+            text = "재구매 의사",
             color = WineyTheme.colors.gray_400,
             style = WineyTheme.typography.bodyB2
         )
@@ -179,27 +187,24 @@ private fun SortItems(
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            sortedGroup.forEach {
-                val isEnable = sortedGroup[selectedSort] == it
-                Text(
-                    text = it,
-                    color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
-                    style = WineyTheme.typography.captionB1,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(40.dp))
-                        .clickable {
-                            onSelectSort(it)
-                        }
-                        .border(
-                            BorderStroke(
-                                1.dp,
-                                if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900
-                            ),
-                            RoundedCornerShape(40.dp)
-                        )
-                        .padding(10.dp)
-                )
-            }
+            Text(
+                text = "재구매 의사",
+                color = if (selectedBuyAgain) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
+                style = WineyTheme.typography.captionB1,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(40.dp))
+                    .clickable {
+                        onSelectBuyAgain(selectedBuyAgain)
+                    }
+                    .border(
+                        BorderStroke(
+                            1.dp,
+                            if (selectedBuyAgain) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900
+                        ),
+                        RoundedCornerShape(40.dp)
+                    )
+                    .padding(10.dp)
+            )
         }
     }
 }

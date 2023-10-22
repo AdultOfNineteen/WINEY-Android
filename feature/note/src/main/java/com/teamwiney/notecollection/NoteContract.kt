@@ -29,7 +29,7 @@ class NoteContract {
         ),
         val sortedGroup: List<String> = listOf("최신순", "인기순"),
         val selectedSort: Int = 0,
-        val buyAgainSelected: Int = 1,
+        val buyAgainSelected: Boolean = true,
         val typeFilter: List<WineTypeResponse> = emptyList(),
         val selectedTypeFilter: List<WineTypeResponse> = emptyList(),
         val countryFilter: List<WineCountry> = emptyList(),

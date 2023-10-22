@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineTypeResponse
@@ -52,7 +53,7 @@ class NoteViewModel @Inject constructor(
                             wineTypes = currentState.selectedTypeFilter
                                 .filter { it.type != "전체" }
                                 .map { convertToWineType(it.type) },
-                            buyAgain = currentState.buyAgainSelected
+                            buyAgain = if (currentState.buyAgainSelected) 1 else 0
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -73,6 +74,7 @@ class NoteViewModel @Inject constructor(
                             countryFilter = it.data.result.countries
                         )
                     )
+                    postEffect(NoteContract.Effect.NavigateTo(NoteDestinations.FILTER))
                 }
 
                 is ApiResult.ApiError -> {
@@ -135,7 +137,7 @@ class NoteViewModel @Inject constructor(
     fun updateBuyAgainSelected(isSelected: Boolean) = viewModelScope.launch {
         updateState(
             currentState.copy(
-                buyAgainSelected = if (isSelected) 1 else 0
+                buyAgainSelected = !isSelected
             )
         )
     }
