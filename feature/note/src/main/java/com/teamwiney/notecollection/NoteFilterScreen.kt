@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -40,6 +43,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineTypeResponse
+import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -68,10 +72,32 @@ fun NoteFilterScreen(
                 bottom = 20.dp
             )
     ) {
-        TopBar(
-            content = "필터"
-        ) {
-            appState.navController.navigateUp()
+        Column(modifier = Modifier.fillMaxWidth()) {
+            TopBar(
+                content = "필터"
+            ) {
+                appState.navController.navigateUp()
+            }
+
+            if (selectedOptions.isNotEmpty()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(horizontal = 24.dp)
+                ) {
+                    items(selectedOptions) { option ->
+                        NoteSelectedFilterChip(
+                            name = option,
+                            onClose = {
+                                viewModel.removeFilter(option)
+                            }
+                        )
+                    }
+                }
+                HeightSpacerWithLine(
+                    color = WineyTheme.colors.gray_900,
+                    modifier = Modifier.padding(vertical = 20.dp)
+                )
+            }
         }
 
         Column(

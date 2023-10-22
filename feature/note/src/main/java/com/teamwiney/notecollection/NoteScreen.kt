@@ -42,9 +42,8 @@ import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountry
 import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.notecollection.components.EmptyNote
-import com.teamwiney.notecollection.components.NoteSelectedFilterChip
+import com.teamwiney.notecollection.components.NoteFilterResetButton
 import com.teamwiney.notecollection.components.NoteWineCard
-import com.teamwiney.notecollection.components.ResetFilterButton
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.home.HomeLogo
@@ -67,46 +66,11 @@ fun SelectedFilterItems(
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         item {
-            ResetFilterButton {
+            NoteFilterResetButton {
                 resetFilter()
             }
         }
 
-        item {
-            NoteSelectedFilterChip(
-                name = sortedGroup[selectedSort],
-                isEnable = true,
-                onClick = { showFilter() }
-            )
-        }
-
-        item {
-            NoteSelectedFilterChip(
-                name = if (selectedTypeFilter.isEmpty()) {
-                    "와인종류"
-                } else if (selectedTypeFilter.size == 1) {
-                    selectedTypeFilter[0].type
-                } else {
-                    "${selectedTypeFilter[0].type} 외 ${selectedTypeFilter.size - 1}"
-                },
-                isEnable = selectedTypeFilter.isNotEmpty(),
-                onClick = { showFilter() }
-            )
-        }
-
-        item {
-            NoteSelectedFilterChip(
-                name = if (selectedCountryFilter.isEmpty()) {
-                    "생산지"
-                } else if (selectedCountryFilter.size == 1) {
-                    selectedCountryFilter[0].country
-                } else {
-                    "${selectedCountryFilter[0].country} 외 ${selectedCountryFilter.size - 1}"
-                },
-                isEnable = selectedCountryFilter.isNotEmpty(),
-                onClick = { showFilter() }
-            )
-        }
     }
 }
 

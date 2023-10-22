@@ -92,6 +92,21 @@ class NoteViewModel @Inject constructor(
         updateState(currentState.copy(selectedSort = currentState.sortedGroup.indexOf(sortType)))
     }
 
+    fun removeFilter(option: String) {
+        if (option == "재구매 의사") {
+            updateBuyAgainSelected(currentState.buyAgainSelected)
+        } else {
+            val selectedType = currentState.selectedTypeFilter.firstOrNull { it.type == option }
+            val selectedCountry = currentState.selectedCountryFilter.firstOrNull { it.country == option }
+
+            if (selectedType != null) {
+                updateSelectedTypeFilter(selectedType)
+            } else if (selectedCountry != null) {
+                updateSelectedCountryFilter(selectedCountry)
+            }
+        }
+    }
+
     fun updateSelectedTypeFilter(filterItem: WineTypeResponse) = viewModelScope.launch {
         val updatedSelectedFilter = currentState.selectedTypeFilter.toMutableSet()
 

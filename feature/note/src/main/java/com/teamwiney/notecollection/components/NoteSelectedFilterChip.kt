@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,25 +18,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.theme.WineyTheme
 
+@Preview
 @Composable
 fun NoteSelectedFilterChip(
-    name: String,
-    isEnable: Boolean = true,
-    onClick: () -> Unit
+    name: String = "전체",
+    onClose: () -> Unit = {},
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(40.dp))
-            .background(if (isEnable) WineyTheme.colors.gray_900 else Color.Transparent)
-            .border(
-                BorderStroke(
-                    1.dp,
-                    if (isEnable) Color.Transparent else WineyTheme.colors.gray_900
-                ),
-                RoundedCornerShape(40.dp)
+            .background(
+                color = WineyTheme.colors.gray_900,
+                shape = RoundedCornerShape(40.dp)
             )
             .padding(10.dp)
             .clickable { onClick() },
@@ -44,20 +43,24 @@ fun NoteSelectedFilterChip(
     ) {
         Text(
             text = name,
-            color = if (isEnable) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700,
+            color = WineyTheme.colors.gray_50,
             style = WineyTheme.typography.captionB1
         )
 
         Icon(
-            painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_arrow_down),
-            contentDescription = "IC_ARROW_DOWN",
-            tint = Color.Unspecified
+            modifier = Modifier
+                .size(18.dp)
+                .clip(shape = CircleShape)
+                .clickable { onClose() },
+            painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_close),
+            contentDescription = "IC_CLOSE",
+            tint = Color.White
         )
     }
 }
 
 @Composable
-fun ResetFilterButton(
+fun NoteFilterResetButton(
     onClick: () -> Unit
 ) {
     Row(
