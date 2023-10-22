@@ -49,6 +49,7 @@ import com.teamwiney.notecollection.components.NoteFilterResetButton
 import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.notecollection.components.NoteSortBottomSheet
 import com.teamwiney.notecollection.components.NoteWineCard
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
@@ -101,23 +102,65 @@ fun NoteScreen(
             },
             hintPopupOpen = false
         )
-        Column {
-            Text(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                        append("${tastingNotes.itemCount}개")
-                    }
-                    append("의 노트를 작성했어요!")
-                },
-                color = WineyTheme.colors.gray_50,
-                style = WineyTheme.typography.headline
-            )
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 15.dp),
-                color = WineyTheme.colors.gray_900
-            )
+        Text(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                    append("${tastingNotes.itemCount}개")
+                }
+                append("의 노트를 작성했어요!")
+            },
+            color = WineyTheme.colors.gray_50,
+            style = WineyTheme.typography.headline
+        )
+        HeightSpacer(height = 14.dp)
+
+        NoteFilterSection(
+            uiState = uiState,
+            viewModel = viewModel,
+            showBottomSheet = showBottomSheet
+        )
+
+        if (tastingNotes.itemCount == 0) {
+            EmptyNote()
         }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
+            verticalArrangement = Arrangement.spacedBy(21.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            items(
+                count = tastingNotes.itemCount,
+                key = tastingNotes.itemKey(),
+                contentType = tastingNotes.itemContentType()
+            ) { index ->
+                tastingNotes[index]?.let {
+                    NoteWineCard(
+                        color = it.wineType,
+                        name = it.name,
+                        origin = it.country,
+                        starRating = it.starRating,
+                        navigateToNoteDetail = { },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NoteFilterSection(
+    uiState: NoteContract.State,
+    viewModel: NoteViewModel,
+    showBottomSheet: (SheetContent) -> Unit
+) {
+    Column {
+        HeightSpacerWithLine(
+            modifier = Modifier.padding(bottom = 15.dp),
+            color = WineyTheme.colors.gray_900
+        )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -230,7 +273,6 @@ fun NoteScreen(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-
                         .background(WineyTheme.colors.gray_900)
                         .clickable {
                             viewModel.processEvent(NoteContract.Event.ShowFilter)
@@ -247,36 +289,10 @@ fun NoteScreen(
                 }
             }
         }
+
         HeightSpacerWithLine(
             modifier = Modifier.padding(top = 15.dp),
             color = WineyTheme.colors.gray_900
         )
-
-        if (tastingNotes.itemCount == 0) {
-            EmptyNote()
-        }
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
-            verticalArrangement = Arrangement.spacedBy(21.dp),
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            items(
-                count = tastingNotes.itemCount,
-                key = tastingNotes.itemKey(),
-                contentType = tastingNotes.itemContentType()
-            ) { index ->
-                tastingNotes[index]?.let {
-                    NoteWineCard(
-                        color = it.wineType,
-                        name = it.name,
-                        origin = it.country,
-                        starRating = it.starRating,
-                        navigateToNoteDetail = { },
-                    )
-                }
-            }
-        }
     }
 }
