@@ -1,13 +1,16 @@
 package com.teamwiney.data.network.service
 
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TastingNoteService {
@@ -34,6 +37,12 @@ interface TastingNoteService {
     /** 테이스팅 노트 상세 조회 API */
     @GET("/tasting-notes/{noteId}")
     suspend fun getTastingNoteDetail(
-        @Query("noteId") noteId: Int
+        @Path("noteId") noteId: Int
     ): ApiResult<ResponseWrapper<TastingNoteDetail>>
+
+    /** 테이스팅 노트 삭제 API */
+    @DELETE("/tasting-notes/{noteId}")
+    suspend fun deleteTastingNote(
+        @Path("noteId") noteId: Int
+    ): ApiResult<BaseResponse>
 }

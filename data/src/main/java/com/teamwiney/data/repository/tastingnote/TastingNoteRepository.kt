@@ -1,6 +1,7 @@
 package com.teamwiney.data.repository.tastingnote
 
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
@@ -25,4 +26,6 @@ interface TastingNoteRepository {
     fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
 
     fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
+
+    fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 }

@@ -8,7 +8,8 @@ import com.teamwiney.data.network.model.response.TastingNoteDetail
 
 class NoteDetailContract {
     data class State(
-        val tastingNoteDetail: TastingNoteDetail = TastingNoteDetail.default(),
+        val isLoading: Boolean = true,
+        val noteDetail: TastingNoteDetail = TastingNoteDetail.default(),
     ) : UiState
 
     sealed class Event : UiEvent {
@@ -21,6 +22,7 @@ class NoteDetailContract {
         ) : Effect()
 
         data class ShowSnackBar(val message: String) : Effect()
+        object NoteDeleted : Effect()
     }
 
 }

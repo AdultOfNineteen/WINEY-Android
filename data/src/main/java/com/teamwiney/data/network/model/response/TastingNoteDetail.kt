@@ -21,35 +21,54 @@ data class TastingNoteDetail(
     companion object {
         fun default() = TastingNoteDetail(
             noteId = 0L,
-            wineName = "캄포 마리나 프리미티도 디 만두리아",
-            noteDate = "2021.09.09",
-            wineType = "RED",
-            region = "region",
+            wineName = "-",
+            noteDate = "0000.00.00",
+            wineType = "Loading",
+            region = "Region",
             star = 4,
             color = "RED",
             buyAgain = true,
             varietal = "varietal",
             officialAlcohol = 0.0,
             price = 0,
-            smellKeywordList = listOf("냄새1", "냄새2"),
+            smellKeywordList = listOf("-"),
             myWineTaste = MyWineTaste(
-                sweetness = 3.0,
-                acidity = 2.0,
-                tannin = 3.0,
-                body = 2.0,
-                alcohol = 1.0,
-                finish = 2.0
+                sweetness = 0.0,
+                acidity = 0.0,
+                tannin = 0.0,
+                body = 0.0,
+                alcohol = 0.0,
+                finish = 0.0
             ),
             defaultWineTaste = WineTaste(
-                sweetness = 4.0,
-                acidity = 1.0,
-                tannin = 4.0,
-                body = 5.0,
+                sweetness = 0.0,
+                acidity = 0.0,
+                tannin = 0.0,
+                body = 0.0,
             ),
-            memo = "메모",
-            tastingNoteImage = listOf(TastingNoteImage("1", "1"), TastingNoteImage("2", "2"))
+            memo = "-",
+            tastingNoteImage = listOf(TastingNoteImage("1", "1")),
         )
     }
+
+    fun getWine() = Wine(
+        wineId = -1,
+        type = this.wineType,
+        name = this.wineName,
+        country = this.region,
+        varietal = this.varietal,
+        sweetness = this.myWineTaste.sweetness.toInt(),
+        acidity = this.myWineTaste.acidity.toInt(),
+        body = this.myWineTaste.body.toInt(),
+        tannins = this.myWineTaste.tannin.toInt(),
+        wineSummary = WineSummary(
+            avgPrice = this.price.toDouble(),
+            avgSweetness = this.defaultWineTaste.sweetness.toInt(),
+            avgAcidity = this.defaultWineTaste.acidity.toInt(),
+            avgBody = this.defaultWineTaste.body.toInt(),
+            avgTannins = this.defaultWineTaste.tannin.toInt()
+        )
+    )
 }
 
 data class WineTaste(
@@ -72,50 +91,3 @@ data class TastingNoteImage(
     val imgId: String,
     val imgUrl: String
 )
-
-//{
-//    @Schema(name = "noteId")
-//    private Long noteId;
-//
-//    @Schema(description = "작성 날짜")
-//    private String noteDate;
-//
-//    @Schema(description = "와인 타입 RED, WHITE 등등")
-//    private WineType wineType;
-//
-//    @Schema(description = "와인 이름")
-//    private String wineName;
-//
-//    @Schema(description = "와인 생상지")
-//    private String region;
-//
-//    @Schema(description = "별점")
-//    private int star;
-//
-//    @Schema(description = "사용자가 지정한 색")
-//    private String color;
-//
-//    @Schema(description = "재구매 의사")
-//    private boolean buyAgain;
-//
-//    @Schema(description = "varietal")
-//    private String varietal;
-//
-//    @Schema(description = "사용자가 입력한 알코올 도수")
-//    private Double officialAlcohol;
-//
-//    @Schema(description = "사용자가 입력한 가격")
-//    private int price;
-//
-//    private List<String> smellKeywordList;
-//
-//    @Schema(description = "내가 느낀 와인의 맛")
-//    private MyWineTaste myWineTaste;
-//
-//    @Schema(description = "와인의 기본맛")
-//    private DefaultWineTaste defaultWineTaste;
-//
-//    private List<TastingNoteImage> tastingNoteImage;
-//
-//    private String memo;
-//}

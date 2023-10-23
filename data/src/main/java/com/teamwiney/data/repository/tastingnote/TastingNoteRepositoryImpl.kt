@@ -1,6 +1,7 @@
 package com.teamwiney.data.repository.tastingnote
 
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.datasource.TastingNoteDataSource
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
@@ -33,4 +34,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
 
     override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>> =
         tastingNoteDataSource.getTastingNoteDetail(noteId)
+
+    override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =
+        tastingNoteDataSource.deleteTastingNote(noteId)
 }

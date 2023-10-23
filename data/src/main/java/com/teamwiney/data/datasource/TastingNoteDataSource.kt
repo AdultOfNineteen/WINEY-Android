@@ -25,4 +25,5 @@ interface TastingNoteDataSource {
     fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
 
     fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
+    fun deleteTastingNote(noteId: Int): Flow<ApiResult<ResponseWrapper<String>>>
 }

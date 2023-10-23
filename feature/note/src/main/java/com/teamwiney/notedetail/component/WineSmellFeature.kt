@@ -23,11 +23,12 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineSmellFeature() {
+fun WineSmellFeature(noteDetail: TastingNoteDetail) {
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -74,7 +75,7 @@ fun WineSmellFeature() {
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                items(listOf("레몬", "배", "제비꽃", "캐러멜", "레몬", "배", "제비꽃", "캐러멜")) {
+                items(noteDetail.smellKeywordList) {
                     NoteFeatureText(
                         name = it,
                     )

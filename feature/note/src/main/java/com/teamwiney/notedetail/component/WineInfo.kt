@@ -18,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teamwiney.data.network.model.response.TastingNoteDetail
-import com.teamwiney.data.network.model.response.Wine
-import com.teamwiney.data.network.model.response.WineSummary
 import com.teamwiney.ui.components.detail.DetailPageIndicator
 import com.teamwiney.ui.components.detail.WineInfoBarGraph
 
@@ -27,24 +25,7 @@ import com.teamwiney.ui.components.detail.WineInfoBarGraph
 @Composable
 fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
 
-    val wine = Wine(
-        wineId = -1,
-        type = tastingNoteDetail.wineType,
-        name = tastingNoteDetail.wineName,
-        country = tastingNoteDetail.region,
-        varietal = tastingNoteDetail.varietal,
-        sweetness = tastingNoteDetail.myWineTaste.sweetness.toInt(),
-        acidity = tastingNoteDetail.myWineTaste.acidity.toInt(),
-        body = tastingNoteDetail.myWineTaste.body.toInt(),
-        tannins = tastingNoteDetail.myWineTaste.tannin.toInt(),
-        wineSummary = WineSummary(
-            avgPrice = tastingNoteDetail.price.toDouble(),
-            avgSweetness = tastingNoteDetail.defaultWineTaste.sweetness.toInt(),
-            avgAcidity = tastingNoteDetail.defaultWineTaste.acidity.toInt(),
-            avgBody = tastingNoteDetail.defaultWineTaste.body.toInt(),
-            avgTannins = tastingNoteDetail.defaultWineTaste.tannin.toInt()
-        )
-    )
+    val wine = tastingNoteDetail.getWine()
 
     Column(
         modifier = Modifier
@@ -53,7 +34,6 @@ fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
     ) {
         val pageCount = 5
         val pagerState = rememberPagerState(pageCount = { pageCount })
-
         val tasteList = listOf(
             Triple(
                 "당도",

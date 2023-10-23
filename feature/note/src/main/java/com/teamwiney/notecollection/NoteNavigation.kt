@@ -53,16 +53,16 @@ fun NavGraphBuilder.noteGraph(
 
 
         composable(
-            route = "${NoteDestinations.DETAIL}?wineId={wineId}",
+            route = "${NoteDestinations.DETAIL}?noteId={noteId}",
             arguments = listOf(
-                navArgument("wineId") {
-                    type = NavType.LongType
-                    defaultValue = -1L
+                navArgument("noteId") {
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             )
         ) {
             NoteDetailScreen(
-                wineId = it.arguments?.getLong("wineId") ?: -1L,
+                noteId = it.arguments?.getInt("noteId") ?: 0,
                 appState = appState,
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,

@@ -41,6 +41,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.notecollection.components.EmptyNote
@@ -142,7 +143,9 @@ fun NoteScreen(
                         name = it.name,
                         origin = it.country,
                         starRating = it.starRating,
-                        navigateToNoteDetail = { },
+                        navigateToNoteDetail = {
+                            appState.navigate("${NoteDestinations.DETAIL}?noteId=${it.id}")
+                        },
                     )
                 }
             }

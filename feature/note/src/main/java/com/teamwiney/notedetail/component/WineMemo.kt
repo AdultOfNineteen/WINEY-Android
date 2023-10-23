@@ -21,14 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineMemo() {
-
-    val imgs = listOf<String>("1", "2", "3", "4")
+fun WineMemo(noteDetail: TastingNoteDetail) {
 
     Column() {
         Text(
@@ -40,7 +39,7 @@ fun WineMemo() {
 
         HeightSpacer(height = 20.dp)
 
-        if (imgs.isNotEmpty()) {
+        if (noteDetail.tastingNoteImage.isNotEmpty()) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -49,7 +48,7 @@ fun WineMemo() {
                 item {
                     Spacer(modifier = Modifier.width(14.dp))
                 }
-                items(imgs) {
+                items(noteDetail.tastingNoteImage.map { it.imgUrl }) {
                     Box(
                         modifier = Modifier
                             .size(120.dp)
@@ -78,7 +77,7 @@ fun WineMemo() {
                 )
         ) {
             Text(
-                text = "저희 조는 지난 MODE1에서는 1인가구와 푸드테크 소비트렌드를 중심으로 시작하여 버즈리포트 및 매체 조사를 진행하였고, 키워드를 모아 1인 가구를 위한 맞춤형 영양분석 간편식 서비스에 대해 기획하였는데요, 이부분에서 저희는 ‘사람’에 대한 그리고 위한 서비스를 만든다는 점을 보완하기 위해 타겟을 조금 더 세분화하여 장기적으로 건강관리가 필요한 만성질환자",
+                text = noteDetail.memo,
                 modifier = Modifier.padding(14.dp),
                 style = WineyTheme.typography.captionM1,
                 color = WineyTheme.colors.gray_50
