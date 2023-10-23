@@ -1,5 +1,6 @@
 package com.teamwiney.auth.splash
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -45,6 +46,7 @@ class SplashViewModel @Inject constructor(
     private fun autoLoginCheck() = viewModelScope.launch {
         val accessToken = runBlocking { dataStoreRepository.getStringValue(ACCESS_TOKEN).first() }
 
+        Log.i("[ACCESS_TOKEN] : ", accessToken)
         if (accessToken.isNotEmpty()) {
             postEffect(SplashContract.Effect.NavigateTo(HomeDestinations.ROUTE) {
                 popUpTo(AuthDestinations.SPLASH) { inclusive = true }
