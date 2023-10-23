@@ -102,6 +102,7 @@ dependencies {
         implementation(KOTLIN_BOM)
         implementation(COMPOSE_BOM)
 
+        implementation(HILT_NAVIGATION_COMPOSE)
         implementation(HILT_ANDROID)
         implementation(DAGGER)
         kapt(DAGGER_COMPILER)

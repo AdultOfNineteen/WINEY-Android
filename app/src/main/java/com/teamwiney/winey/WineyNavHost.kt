@@ -24,16 +24,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.createnote.mapGraph
+import com.teamwiney.home.HomeViewModel
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
+import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.notecollection.noteGraph
 import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -77,6 +84,10 @@ fun WineyNavHost() {
         }
     }
 
+    // 메인화면 뷰 모델들
+    val noteViewModel: NoteViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()
+
     ModalBottomSheetLayout(
         sheetContent = {
             bottomSheetContent?.invoke(this)
@@ -101,7 +112,7 @@ fun WineyNavHost() {
                         }
                     }
                 )
-           },
+            },
             bottomBar = {
                 AnimatedVisibility(
                     appState.shouldShowBottomBar,
@@ -147,11 +158,12 @@ fun WineyNavHost() {
                 )
                 noteGraph(
                     appState = appState,
+                    noteViewModel = noteViewModel,
                     showBottomSheet = showBottomSheet,
                     hideBottomSheet = hideBottomSheet,
                     setOnHideBottomSheet = { event ->
                         onHideBottomSheet = event
-                    }
+                    },
                 )
                 myPageGraph(
                     navController = navController,
@@ -194,4 +206,13 @@ private fun WineyBottomNavigationBar(
             )
         }
     }
+}
+
+@Composable
+fun rememberNavControllerBackStackEntry(
+    entry: NavBackStackEntry,
+    navController: NavController,
+    graph: String,
+) = remember(entry) {
+    navController.getBackStackEntry(graph)
 }

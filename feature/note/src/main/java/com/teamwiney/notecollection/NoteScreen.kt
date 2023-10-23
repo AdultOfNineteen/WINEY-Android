@@ -83,7 +83,6 @@ fun NoteScreen(
     }
 
     LaunchedEffect(true) {
-        viewModel.processEvent(NoteContract.Event.ApplyFilter)
 
         effectFlow.collectLatest { effect ->
             when (effect) {

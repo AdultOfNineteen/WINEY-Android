@@ -17,9 +17,10 @@ import com.teamwiney.notedetail.NoteDetailScreen
 
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
+    noteViewModel: NoteViewModel,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit
+    setOnHideBottomSheet: (() -> Unit) -> Unit,
 ) {
     navigation(
         route = NoteDestinations.ROUTE,
@@ -34,7 +35,7 @@ fun NavGraphBuilder.noteGraph(
             NoteScreen(
                 appState = appState,
                 showBottomSheet = showBottomSheet,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = noteViewModel,
                 hideBottomSheet = hideBottomSheet,
             )
         }

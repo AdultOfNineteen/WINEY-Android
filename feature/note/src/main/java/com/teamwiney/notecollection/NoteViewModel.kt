@@ -24,6 +24,10 @@ class NoteViewModel @Inject constructor(
 ) : BaseViewModel<NoteContract.State, NoteContract.Event, NoteContract.Effect>(
     initialState = NoteContract.State()
 ) {
+    init {
+        getTastingNotes()
+    }
+
     override fun reduceState(event: NoteContract.Event) {
         viewModelScope.launch {
             when (event) {
