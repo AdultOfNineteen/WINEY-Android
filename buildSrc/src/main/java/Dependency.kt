@@ -38,11 +38,13 @@ object Dependency {
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT2}"
     const val CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT2}"
     const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP3}"
-    const val LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Versions.CHUCKER_LIBRARY}"
+    const val LOGGING_INTERCEPTOR =
+        "com.squareup.okhttp3:logging-interceptor:${Versions.CHUCKER_LIBRARY}"
     const val CHUCKER_LIBRARY = "com.github.chuckerteam.chucker:library:${Versions.CHUCKER_LIBRARY}"
     const val KOTLIN_BOM = "org.jetbrains.kotlin:kotlin-bom:${Versions.KOTLIN_BOM}"
     const val TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.TEST_EXT_JUNIT}"
     const val TEST_ESPRESSO_CORE =
         "androidx.test.espresso:espresso-core:${Versions.TEST_ESPRESSO_CORE}"
     const val JUNIT = "junit:junit:4.13.2"
+    const val COMPOSE_GLIDE = "com.github.bumptech.glide:compose:${Versions.COMPOSE_GLIDE}"
 }

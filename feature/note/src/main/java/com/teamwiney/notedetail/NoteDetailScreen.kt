@@ -51,11 +51,11 @@ fun NoteDetailScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
         viewModel.getNoteDetail(noteId)
-        effectFlow.collectLatest { effect ->
+        viewModel.effect.collectLatest { effect ->
+            hideBottomSheet()
             when (effect) {
                 is NoteDetailContract.Effect.NavigateTo -> {
                     appState.navigate(effect.destination, effect.navOptions)
@@ -68,7 +68,6 @@ fun NoteDetailScreen(
                 NoteDetailContract.Effect.NoteDeleted -> {
                     appState.showSnackbar("노트가 삭제되었습니다.")
                     appState.navController.navigateUp()
-                    hideBottomSheet()
                 }
             }
         }

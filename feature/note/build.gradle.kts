@@ -48,6 +48,7 @@ dependencies {
 
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
+        implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_MATERIAL)

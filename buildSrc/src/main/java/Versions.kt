@@ -23,4 +23,5 @@ object Versions {
     const val TEST_EXT_JUNIT = "1.1.5"
     const val TEST_ESPRESSO_CORE = "3.5.1"
     const val JUNIT = "4.13.2"
+    const val COMPOSE_GLIDE = "1.0.0-beta01"
 }
