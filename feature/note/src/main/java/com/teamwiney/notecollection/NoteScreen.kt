@@ -1,13 +1,17 @@
 package com.teamwiney.notecollection
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +32,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -123,7 +129,11 @@ fun NoteScreen(
         )
 
         if (tastingNotes.itemCount == 0) {
-            EmptyNote()
+            if (uiState.isLoading) {
+                SkeletonNote()
+            } else {
+                EmptyNote()
+            }
         }
 
         LazyVerticalGrid(
@@ -148,6 +158,45 @@ fun NoteScreen(
                         },
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkeletonNote() {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
+        verticalArrangement = Arrangement.spacedBy(21.dp),
+        horizontalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        items(
+            count = 4,
+        ) { index ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(7.dp))
+                        .border(
+                            BorderStroke(
+                                1.dp, brush = Brush.linearGradient(
+                                    colors = listOf(
+                                        Color(0xFF9671FF),
+                                        Color(0x109671FF),
+                                    )
+                                )
+                            ),
+                            RoundedCornerShape(7.dp)
+                        )
+                        .background(WineyTheme.colors.gray_950)
+                )
             }
         }
     }

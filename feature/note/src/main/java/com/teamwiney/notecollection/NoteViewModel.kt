@@ -13,6 +13,7 @@ import com.teamwiney.data.pagingsource.TastingNotesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,6 +30,7 @@ class NoteViewModel @Inject constructor(
                 is NoteContract.Event.ShowFilter -> {
                     getTastingNoteFilters()
                 }
+
                 is NoteContract.Event.ApplyFilter -> {
                     getTastingNotes()
                 }
@@ -56,7 +58,11 @@ class NoteViewModel @Inject constructor(
                             buyAgain = if (currentState.buyAgainSelected) 1 else 0
                         )
                     }
-                ).flow.cachedIn(viewModelScope)
+                ).flow.cachedIn(viewModelScope).onStart {
+                    updateState(currentState.copy(isLoading = true))
+                }.onCompletion {
+                    updateState(currentState.copy(isLoading = false))
+                }
             )
         )
     }
@@ -97,7 +103,8 @@ class NoteViewModel @Inject constructor(
             updateBuyAgainSelected(currentState.buyAgainSelected)
         } else {
             val selectedType = currentState.selectedTypeFilter.firstOrNull { it.type == option }
-            val selectedCountry = currentState.selectedCountryFilter.firstOrNull { it.country == option }
+            val selectedCountry =
+                currentState.selectedCountryFilter.firstOrNull { it.country == option }
 
             if (selectedType != null) {
                 updateSelectedTypeFilter(selectedType)
@@ -156,7 +163,7 @@ class NoteViewModel @Inject constructor(
             )
         )
     }
-    
+
     fun resetFilter() = viewModelScope.launch {
         updateState(
             currentState.copy(
