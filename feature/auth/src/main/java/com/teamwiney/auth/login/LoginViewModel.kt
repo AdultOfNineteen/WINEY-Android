@@ -113,16 +113,6 @@ class LoginViewModel @Inject constructor(
                         is ApiResult.Success -> {
                             val userStatus = result.data.result.userStatus
                             runBlocking {
-                                dataStoreRepository.setStringValue(
-                                    ACCESS_TOKEN,
-                                    result.data.result.accessToken
-                                )
-                                dataStoreRepository.setStringValue(
-                                    REFRESH_TOKEN,
-                                    result.data.result.refreshToken
-                                )
-                                dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
-
                                 if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
                                     postEffect(LoginContract.Effect.NavigateTo(
                                         destination = HomeDestinations.ROUTE,
@@ -132,6 +122,15 @@ class LoginViewModel @Inject constructor(
                                             }
                                         }
                                     ))
+                                    dataStoreRepository.setStringValue(
+                                        ACCESS_TOKEN,
+                                        result.data.result.accessToken
+                                    )
+                                    dataStoreRepository.setStringValue(
+                                        REFRESH_TOKEN,
+                                        result.data.result.refreshToken
+                                    )
+                                    dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
                                 } else {
                                     postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
                                 }
