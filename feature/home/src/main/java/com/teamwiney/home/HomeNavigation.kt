@@ -18,8 +18,7 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 fun NavGraphBuilder.homeGraph(
     appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit
+    hideBottomSheet: () -> Unit
 ) {
     navigation(
         route = HomeDestinations.ROUTE,
@@ -89,8 +88,7 @@ fun NavGraphBuilder.homeGraph(
     analysisGraph(
         appState = appState,
         showBottomSheet = showBottomSheet,
-        hideBottomSheet = hideBottomSheet,
-        setOnHideBottomSheet = setOnHideBottomSheet
+        hideBottomSheet = hideBottomSheet
     )
 }
 

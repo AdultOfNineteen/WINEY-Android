@@ -42,7 +42,7 @@ fun NavGraphBuilder.signUpGraph(
             SignUpPhoneScreen(
                 showBottomSheet = showBottomSheet,
                 hideBottomSheet = hideBottomSheet,
-                onHideBottomSheet = setOnHideBottomSheet,
+                setOnHideBottomSheet = setOnHideBottomSheet,
                 appState = appState,
                 userId = userId,
                 viewModel = hiltViewModel(backStackEntry)

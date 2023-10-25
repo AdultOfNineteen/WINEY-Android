@@ -10,8 +10,7 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 fun NavGraphBuilder.analysisGraph(
     appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit
+    hideBottomSheet: () -> Unit
 ) {
     navigation(
         route = HomeDestinations.Analysis.ROUTE,

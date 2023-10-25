@@ -13,8 +13,7 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 fun NavGraphBuilder.myPageGraph(
     navController: NavController,
     showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit
+    hideBottomSheet: () -> Unit
 ) {
     navigation(
         route = MyPageDestinations.ROUTE,

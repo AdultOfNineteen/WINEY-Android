@@ -40,11 +40,11 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignUpPhoneScreen(
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
-    appState: WineyAppState,
+    setOnHideBottomSheet: (() -> Unit) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
-    onHideBottomSheet: (() -> Unit) -> Unit = {},
     userId: String = "",
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -52,12 +52,12 @@ fun SignUpPhoneScreen(
 
     DisposableEffect(true) {
         viewModel.updateUserId(userId)
-        onHideBottomSheet {
+        setOnHideBottomSheet {
             hideBottomSheet()
             appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
         }
         onDispose {
-            onHideBottomSheet { }
+            setOnHideBottomSheet { }
         }
     }
 

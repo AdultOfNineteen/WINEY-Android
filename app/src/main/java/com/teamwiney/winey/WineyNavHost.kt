@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +63,16 @@ fun WineyNavHost() {
     }
 
     val appState = rememberWineyAppState(
+        bottomSheetState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            confirmValueChange = {
+                if (it == ModalBottomSheetValue.Hidden) {
+                    onHideBottomSheet()
+                }
+                true
+            },
+            skipHalfExpanded = true
+        ),
         setBottomSheet = showBottomSheet,
         clearBottomSheet = hideBottomSheet
     )
@@ -119,42 +131,30 @@ fun WineyNavHost() {
                     appState = appState,
                     showBottomSheet = appState::showBottomSheet,
                     hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { event ->
-                        onHideBottomSheet = event
+                    setOnHideBottomSheet = { onHide ->
+                        onHideBottomSheet = onHide
                     }
                 )
                 homeGraph(
                     appState = appState,
                     showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { event ->
-                        onHideBottomSheet = event
-                    }
+                    hideBottomSheet = appState::hideBottomSheet
                 )
                 mapGraph(
                     navController = navController,
                     showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { event ->
-                        onHideBottomSheet = event
-                    }
+                    hideBottomSheet = appState::hideBottomSheet
                 )
                 noteGraph(
                     appState = appState,
                     noteViewModel = noteViewModel,
                     showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { event ->
-                        onHideBottomSheet = event
-                    },
+                    hideBottomSheet = appState::hideBottomSheet
                 )
                 myPageGraph(
                     navController = navController,
                     showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { event ->
-                        onHideBottomSheet = event
-                    }
+                    hideBottomSheet = appState::hideBottomSheet
                 )
             }
         }

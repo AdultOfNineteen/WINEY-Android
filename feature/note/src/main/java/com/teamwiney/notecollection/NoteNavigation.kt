@@ -19,8 +19,7 @@ fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
     noteViewModel: NoteViewModel,
     showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit,
+    hideBottomSheet: () -> Unit
 ) {
     navigation(
         route = NoteDestinations.ROUTE,
