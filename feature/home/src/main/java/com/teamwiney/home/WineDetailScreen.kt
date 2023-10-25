@@ -20,12 +20,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,22 +32,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
 import com.teamwiney.ui.components.TopBar
-import com.teamwiney.ui.components.VerticalBarGraph
-import com.teamwiney.ui.components.VerticalBarGraphData
 import com.teamwiney.ui.components.WineBadge
 import com.teamwiney.ui.components.detail.DetailPageIndicator
 import com.teamwiney.ui.components.detail.TitleAndDescription
@@ -58,9 +49,8 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-@Preview
 fun WineDetailScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     wineId: Long = 0L,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -126,6 +116,7 @@ fun WineDetailScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun WineInfo(wine: Wine) {
     Column(

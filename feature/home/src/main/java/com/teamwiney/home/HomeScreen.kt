@@ -40,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,7 +52,6 @@ import androidx.paging.compose.itemKey
 import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.RecommendWine
 import com.teamwiney.data.network.model.response.WineTip
@@ -64,13 +62,9 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.math.absoluteValue
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-)
 @Composable
 fun HomeScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

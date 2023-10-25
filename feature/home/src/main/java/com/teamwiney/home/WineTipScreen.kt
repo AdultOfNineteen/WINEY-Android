@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,15 +27,13 @@ import androidx.paging.compose.itemKey
 import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.data.network.model.response.WineTip
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview
 @Composable
 fun WineTipScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

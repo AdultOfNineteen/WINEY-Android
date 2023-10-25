@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteDetailBottomSheet
@@ -43,7 +42,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun NoteDetailScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     noteId: Int = 0,
     showBottomSheet: (SheetContent) -> Unit,
     hideBottomSheet: () -> Unit,

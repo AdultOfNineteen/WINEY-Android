@@ -21,7 +21,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,7 +29,6 @@ import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PhoneNumberVisualTransformation
@@ -40,16 +38,11 @@ import com.teamwiney.ui.components.WTextField
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFF1F2126
-)
 @Composable
 fun SignUpPhoneScreen(
     showBottomSheet: (SheetContent) -> Unit = { },
     hideBottomSheet: () -> Unit = { },
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel(),
     onHideBottomSheet: (() -> Unit) -> Unit = {},
     userId: String = "",

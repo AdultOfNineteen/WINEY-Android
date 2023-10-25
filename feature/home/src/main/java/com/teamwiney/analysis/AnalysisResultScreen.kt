@@ -28,7 +28,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,7 +38,6 @@ import com.teamwiney.analysis.component.pagercontent.WineTasteContent
 import com.teamwiney.analysis.component.pagercontent.WineTypeContent
 import com.teamwiney.analysis.component.pagercontent.WineVarietyContent
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
@@ -48,10 +46,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview
 @Composable
 fun AnalysisResultScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     viewModel: AnalysisViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

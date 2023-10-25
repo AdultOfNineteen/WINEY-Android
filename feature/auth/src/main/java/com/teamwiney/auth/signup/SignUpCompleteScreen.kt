@@ -10,26 +10,18 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    backgroundColor = 0xFF1F2126
-)
 @Composable
 fun SignUpCompleteScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
 

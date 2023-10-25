@@ -25,14 +25,12 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.navOptions
 import com.teamwiney.analysis.component.AnalysisBottomContent
 import com.teamwiney.analysis.component.AnalysisStartButton
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
@@ -42,10 +40,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview
 @Composable
 fun AnalysisScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     showBottomSheet: (SheetContent) -> Unit = {},
     hideBottomSheet: () -> Unit = {},
     setOnHideBottomSheet: (() -> Unit) -> Unit = {}

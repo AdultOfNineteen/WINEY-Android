@@ -14,17 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview
 @Composable
 fun WebViewScreen(
-    appState: WineyAppState = rememberWineyAppState(),
+    appState: WineyAppState,
     url: String = ""
 ) {
     Column(
