@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -30,7 +32,8 @@ fun rememberWineyAppState(
     scope: CoroutineScope = rememberCoroutineScope(),
     bottomSheetState: ModalBottomSheetState,
     setBottomSheet: (SheetContent) -> Unit,
-    clearBottomSheet: () -> Unit
+    clearBottomSheet: () -> Unit,
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ): WineyAppState {
     return remember(Unit) {
         WineyAppState(
@@ -39,7 +42,8 @@ fun rememberWineyAppState(
             scope,
             bottomSheetState,
             setBottomSheet,
-            clearBottomSheet
+            clearBottomSheet,
+            keyboardController
         )
     }
 }
@@ -51,7 +55,8 @@ class WineyAppState @OptIn(ExperimentalMaterialApi::class) constructor(
     val scope: CoroutineScope,
     val bottomSheetState: ModalBottomSheetState,
     val setBottomSheet: (SheetContent) -> Unit,
-    val clearBottomSheet: () -> Unit
+    val clearBottomSheet: () -> Unit,
+    val keyboardController: SoftwareKeyboardController?
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController
@@ -65,12 +70,14 @@ class WineyAppState @OptIn(ExperimentalMaterialApi::class) constructor(
 
     @OptIn(ExperimentalMaterialApi::class)
     fun showBottomSheet(content: SheetContent) = scope.launch {
+        keyboardController?.hide()
         setBottomSheet(content)
         bottomSheetState.show()
     }
 
     @OptIn(ExperimentalMaterialApi::class)
     fun hideBottomSheet() = scope.launch {
+        keyboardController?.hide()
         clearBottomSheet()
         bottomSheetState.hide()
     }

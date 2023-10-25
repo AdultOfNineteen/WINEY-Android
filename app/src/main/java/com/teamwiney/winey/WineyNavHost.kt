@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -45,21 +44,18 @@ import com.teamwiney.ui.theme.WineyTheme
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WineyNavHost() {
-    var onHideBottomSheet by remember {
-        mutableStateOf<() -> Unit>({})
+    var bottomSheetContent: SheetContent? by remember {
+        mutableStateOf(null)
     }
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    var bottomSheetContent: SheetContent? by remember { mutableStateOf(null) }
-
     val showBottomSheet: (SheetContent) -> Unit = { content: SheetContent ->
-        keyboardController?.hide()
         bottomSheetContent = content
     }
     val hideBottomSheet: () -> Unit = {
-        keyboardController?.hide()
         bottomSheetContent = null
+    }
+    var onHideBottomSheet by remember {
+        mutableStateOf<() -> Unit>({})
     }
 
     val appState = rememberWineyAppState(
