@@ -48,10 +48,10 @@ fun WineyNavHost() {
         mutableStateOf(null)
     }
 
-    val showBottomSheet: (SheetContent) -> Unit = { content: SheetContent ->
+    val setBottomSheet: (SheetContent) -> Unit = { content: SheetContent ->
         bottomSheetContent = content
     }
-    val hideBottomSheet: () -> Unit = {
+    val clearBottomSheet: () -> Unit = {
         bottomSheetContent = null
     }
     var onHideBottomSheet by remember {
@@ -69,8 +69,8 @@ fun WineyNavHost() {
             },
             skipHalfExpanded = true
         ),
-        setBottomSheet = showBottomSheet,
-        clearBottomSheet = hideBottomSheet
+        setBottomSheet = setBottomSheet,
+        clearBottomSheet = clearBottomSheet
     )
 
     val navController = appState.navController
