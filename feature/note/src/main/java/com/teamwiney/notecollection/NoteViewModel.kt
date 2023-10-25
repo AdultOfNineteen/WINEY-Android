@@ -1,5 +1,6 @@
 package com.teamwiney.notecollection
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -84,6 +85,8 @@ class NoteViewModel @Inject constructor(
                             countryFilter = it.data.result.countries
                         )
                     )
+                    Log.d("data", it.data.result.wineTypes.toString())
+                    Log.d("data", it.data.result.countries.toString())
                     postEffect(NoteContract.Effect.NavigateTo(NoteDestinations.FILTER))
                 }
 

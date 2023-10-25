@@ -2,7 +2,6 @@ package com.teamwiney.notecollection
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -47,7 +46,7 @@ fun NavGraphBuilder.noteGraph(
             )
             NoteFilterScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = noteViewModel,
             )
         }
 
