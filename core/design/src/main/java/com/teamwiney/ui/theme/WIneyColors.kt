@@ -24,7 +24,7 @@ class WineyColors(
     gray_700: Color = Color(0xFF7B7F83),
     gray_800: Color = Color(0xFF63666A),
     gray_900: Color = Color(0xFF3A3D40),
-    gray_950: Color = Color(0xFF262525),
+    gray_950: Color = Color(0xFF2C2F33),
     black: Color = Color(0xFF121212)
 ) {
     var main_1 by mutableStateOf(main_1)
