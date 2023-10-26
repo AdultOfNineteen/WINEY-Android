@@ -324,7 +324,7 @@ fun NoteFilterSection(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(WineyTheme.colors.gray_900)
+                        .background(WineyTheme.colors.point_1)
                         .clickable {
                             viewModel.processEvent(NoteContract.Event.ShowFilter)
                         }
