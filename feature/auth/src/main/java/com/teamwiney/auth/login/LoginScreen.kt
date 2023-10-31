@@ -38,7 +38,6 @@ import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.dashedBorder
@@ -49,7 +48,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun LoginScreen(
     appState: WineyAppState,
     viewModel: LoginViewModel,
-    showBottomSheet: (SheetContent) -> Unit = { }
+    onInit: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -75,7 +74,10 @@ fun LoginScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    appState.navigate(effect.destination)
+                    if(effect.destination==HomeDestinations.ROUTE){
+                        onInit()
+                    }
+                    appState.navigate(effect.destination,effect.navOptions)
                 }
 
                 is LoginContract.Effect.ShowSnackBar -> {
@@ -138,6 +140,7 @@ fun LoginScreen(
                 }
                 // 홈화면 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_lock) {
+                    onInit()
                     appState.navigate(HomeDestinations.ROUTE) {
                         popUpTo(AuthDestinations.Login.ROUTE) {
                             inclusive = true

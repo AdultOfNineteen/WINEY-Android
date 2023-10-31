@@ -22,10 +22,11 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun SignUpCompleteScreen(
     appState: WineyAppState,
-    viewModel: SignUpViewModel = hiltViewModel()
+    onInit: () -> Unit
 ) {
 
     val onSignUpComplete = {
+        onInit()
         appState.navigate(HomeDestinations.ROUTE) {
             popUpTo(AuthDestinations.SignUp.ROUTE) {
                 inclusive = true

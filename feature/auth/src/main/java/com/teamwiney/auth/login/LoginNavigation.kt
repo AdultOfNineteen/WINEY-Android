@@ -8,7 +8,8 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 
 fun NavGraphBuilder.loginGraph(
-    appState: WineyAppState
+    appState: WineyAppState,
+    onInit: () -> Unit
 ) {
     navigation(
         route = AuthDestinations.Login.ROUTE,
@@ -19,7 +20,8 @@ fun NavGraphBuilder.loginGraph(
 
             LoginScreen(
                 appState = appState,
-                viewModel = viewModel
+                viewModel = viewModel,
+                onInit = onInit
             )
         }
     }

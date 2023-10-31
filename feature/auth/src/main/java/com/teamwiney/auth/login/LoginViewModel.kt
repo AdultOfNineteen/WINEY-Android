@@ -36,7 +36,6 @@ class LoginViewModel @Inject constructor(
 ) {
     init {
         val lastLoginType = runBlocking { dataStoreRepository.getStringValue(LOGIN_TYPE).first() }
-
         updateState(
             currentState.copy(
                 lastLoginMethod = when (lastLoginType) {
@@ -112,28 +111,27 @@ class LoginViewModel @Inject constructor(
                     when (result) {
                         is ApiResult.Success -> {
                             val userStatus = result.data.result.userStatus
-                            runBlocking {
-                                if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
-                                    postEffect(LoginContract.Effect.NavigateTo(
-                                        destination = HomeDestinations.ROUTE,
-                                        navOptions = navOptions {
-                                            popUpTo(AuthDestinations.Login.ROUTE) {
-                                                inclusive = true
-                                            }
+                            if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
+                                dataStoreRepository.setStringValue(
+                                    ACCESS_TOKEN,
+                                    result.data.result.accessToken
+                                )
+                                dataStoreRepository.setStringValue(
+                                    REFRESH_TOKEN,
+                                    result.data.result.refreshToken
+                                )
+                                dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
+
+                                postEffect(LoginContract.Effect.NavigateTo(
+                                    destination = HomeDestinations.ROUTE,
+                                    navOptions = navOptions {
+                                        popUpTo(AuthDestinations.Login.ROUTE) {
+                                            inclusive = true
                                         }
-                                    ))
-                                    dataStoreRepository.setStringValue(
-                                        ACCESS_TOKEN,
-                                        result.data.result.accessToken
-                                    )
-                                    dataStoreRepository.setStringValue(
-                                        REFRESH_TOKEN,
-                                        result.data.result.refreshToken
-                                    )
-                                    dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
-                                } else {
-                                    postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
-                                }
+                                    }
+                                ))
+                            } else {
+                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
                             }
                         }
 

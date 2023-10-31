@@ -13,6 +13,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 fun NavGraphBuilder.authGraph(
     appState: WineyAppState,
     wineyBottomSheetState: WineyBottomSheetState,
+    onInit: () -> Unit,
 ) {
     navigation(
         route = AuthDestinations.ROUTE,
@@ -20,17 +21,20 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(route = AuthDestinations.SPLASH) {
             SplashScreen(
-                appState = appState
+                appState = appState,
+                onInit = onInit,
             )
         }
 
         loginGraph(
-            appState = appState
+            appState = appState,
+            onInit = onInit,
         )
 
         signUpGraph(
             appState = appState,
             wineyBottomSheetState = wineyBottomSheetState,
+            onInit = onInit,
         )
     }
 }

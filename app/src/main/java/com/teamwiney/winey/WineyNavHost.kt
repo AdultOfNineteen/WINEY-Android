@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
+import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -43,8 +44,15 @@ fun WineyNavHost() {
     val navController = appState.navController
 
     // 메인화면 뷰 모델들
-    val noteViewModel: NoteViewModel = viewModel()
     val homeViewModel: HomeViewModel = viewModel()
+    val noteViewModel: NoteViewModel = viewModel()
+
+    // 초기 메인 화면 진입 시 수행해야할 작업을 정의합니다.
+    val onInit: () -> Unit = {
+        homeViewModel.getRecommendWines()
+        homeViewModel.getWineTips()
+        noteViewModel.getTastingNotes()
+    }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -81,10 +89,12 @@ fun WineyNavHost() {
                 authGraph(
                     appState = appState,
                     wineyBottomSheetState = wineyBottomSheetState,
+                    onInit = onInit
                 )
                 homeGraph(
                     appState = appState,
                     wineyBottomSheetState = wineyBottomSheetState,
+                    homeViewModel = homeViewModel,
                 )
                 mapGraph(
                     appState = appState,
@@ -99,10 +109,15 @@ fun WineyNavHost() {
                     appState = appState,
                     wineyBottomSheetState = wineyBottomSheetState,
                 )
+                analysisGraph(
+                    appState = appState,
+                    wineyBottomSheetState = wineyBottomSheetState
+                )
             }
         }
     }
 }
+
 
 @Composable
 private fun WineySnackBar(appState: WineyAppState) {

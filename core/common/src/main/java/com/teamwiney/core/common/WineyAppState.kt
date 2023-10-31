@@ -1,6 +1,5 @@
 package com.teamwiney.core.common
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -36,7 +35,7 @@ fun rememberWineyAppState(
 }
 
 @Stable
-class WineyAppState @OptIn(ExperimentalMaterialApi::class) constructor(
+class WineyAppState(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,

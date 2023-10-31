@@ -25,9 +25,6 @@ class NoteViewModel @Inject constructor(
 ) : BaseViewModel<NoteContract.State, NoteContract.Event, NoteContract.Effect>(
     initialState = NoteContract.State()
 ) {
-    init {
-        getTastingNotes()
-    }
 
     override fun reduceState(event: NoteContract.Event) {
         viewModelScope.launch {
@@ -43,7 +40,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    private fun getTastingNotes() = viewModelScope.launch {
+    fun getTastingNotes() = viewModelScope.launch {
         updateState(
             currentState.copy(
                 tastingNotes = Pager(
