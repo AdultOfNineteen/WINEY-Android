@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
+import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
@@ -31,6 +32,7 @@ import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.notecollection.noteGraph
 import com.teamwiney.ui.components.BottomNavigationBar
+import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -55,19 +57,7 @@ fun WineyNavHost() {
         Scaffold(
             backgroundColor = WineyTheme.colors.background_1,
             snackbarHost = {
-                SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
-                    snackbar = { data ->
-                        Snackbar(
-                            modifier = Modifier.padding(
-                                bottom = 50.dp,
-                                start = 20.dp,
-                                end = 20.dp
-                            )
-                        ) {
-                            Text(text = data.message)
-                        }
-                    }
-                )
+                WineySnackBar(appState)
             },
             bottomBar = {
                 AnimatedVisibility(
@@ -90,34 +80,45 @@ fun WineyNavHost() {
             ) {
                 authGraph(
                     appState = appState,
-                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet,
-                    setOnHideBottomSheet = wineyBottomSheetState.setOnHideBottomSheet
+                    wineyBottomSheetState = wineyBottomSheetState,
                 )
                 homeGraph(
                     appState = appState,
-                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
+                    wineyBottomSheetState = wineyBottomSheetState,
                 )
                 mapGraph(
-                    navController = navController,
-                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
+                    appState = appState,
+                    wineyBottomSheetState = wineyBottomSheetState,
                 )
                 noteGraph(
                     appState = appState,
                     noteViewModel = noteViewModel,
-                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
+                    wineyBottomSheetState = wineyBottomSheetState,
                 )
                 myPageGraph(
-                    navController = navController,
-                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
+                    appState = appState,
+                    wineyBottomSheetState = wineyBottomSheetState,
                 )
             }
         }
     }
+}
+
+@Composable
+private fun WineySnackBar(appState: WineyAppState) {
+    SnackbarHost(hostState = appState.scaffoldState.snackbarHostState,
+        snackbar = { data ->
+            Snackbar(
+                modifier = Modifier.padding(
+                    bottom = 50.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                )
+            ) {
+                Text(text = data.message)
+            }
+        }
+    )
 }
 
 @Composable
@@ -137,7 +138,7 @@ private fun WineyBottomNavigationBar(
         destinations.forEach { destination ->
             val selected = currentDestination?.route == destination.route
 
-            com.teamwiney.ui.components.BottomNavigationItem(
+            BottomNavigationItem(
                 label = destination.label,
                 selected = selected,
                 selectedIcon = destination.selectedIcon,

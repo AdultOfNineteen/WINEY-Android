@@ -12,13 +12,12 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.homeGraph(
     appState: WineyAppState,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit
+    wineyBottomSheetState: WineyBottomSheetState,
 ) {
     navigation(
         route = HomeDestinations.ROUTE,
@@ -87,8 +86,7 @@ fun NavGraphBuilder.homeGraph(
 
     analysisGraph(
         appState = appState,
-        showBottomSheet = showBottomSheet,
-        hideBottomSheet = hideBottomSheet
+        wineyBottomSheetState = wineyBottomSheetState
     )
 }
 

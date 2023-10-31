@@ -11,14 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.signUpGraph(
     appState: WineyAppState,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    setOnHideBottomSheet: (() -> Unit) -> Unit
+    wineyBottomSheetState: WineyBottomSheetState,
 ) {
     navigation(
         route = "${AuthDestinations.SignUp.ROUTE}?userId={userId}",
@@ -40,9 +38,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpPhoneScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
-                setOnHideBottomSheet = setOnHideBottomSheet,
+                wineyBottomSheetState = wineyBottomSheetState,
                 appState = appState,
                 userId = userId,
                 viewModel = hiltViewModel(backStackEntry)
@@ -56,8 +52,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpAuthenticationScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
+                wineyBottomSheetState = wineyBottomSheetState,
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
@@ -70,8 +65,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpFavoriteTasteScreen(
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
+                wineyBottomSheetState = wineyBottomSheetState,
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )

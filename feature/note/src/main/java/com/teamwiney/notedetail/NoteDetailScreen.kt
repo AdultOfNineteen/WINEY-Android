@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.`typealias`.SheetContent
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteDetailBottomSheet
 import com.teamwiney.notedetail.component.WineInfo
@@ -44,9 +44,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun NoteDetailScreen(
     appState: WineyAppState,
     noteId: Int = 0,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    viewModel: NoteDetailViewModel = hiltViewModel()
+    viewModel: NoteDetailViewModel = hiltViewModel(),
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +53,7 @@ fun NoteDetailScreen(
     LaunchedEffect(true) {
         viewModel.getNoteDetail(noteId)
         viewModel.effect.collectLatest { effect ->
-            hideBottomSheet()
+            wineyBottomSheetState.hideBottomSheet()
             when (effect) {
                 is NoteDetailContract.Effect.NavigateTo -> {
                     appState.navigate(effect.destination, effect.navOptions)
@@ -92,8 +91,10 @@ fun NoteDetailScreen(
                         .clip(CircleShape)
                         .size(28.dp)
                         .clickable {
-                            showBottomSheet {
-                                NoteDetailBottomSheet(showBottomSheet, hideBottomSheet,
+                            wineyBottomSheetState.showBottomSheet {
+                                NoteDetailBottomSheet(
+                                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet,
                                     deleteNote = {
                                         viewModel.deleteNote(uiState.noteDetail.noteId.toInt())
                                     },

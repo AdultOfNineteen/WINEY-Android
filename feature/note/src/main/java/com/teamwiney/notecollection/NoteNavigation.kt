@@ -10,15 +10,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.notedetail.NoteDetailScreen
 
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
     noteViewModel: NoteViewModel,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = NoteDestinations.ROUTE,
@@ -32,9 +31,8 @@ fun NavGraphBuilder.noteGraph(
             )
             NoteScreen(
                 appState = appState,
-                showBottomSheet = showBottomSheet,
+                wineyBottomSheetState = wineyBottomSheetState,
                 viewModel = noteViewModel,
-                hideBottomSheet = hideBottomSheet,
             )
         }
 
@@ -63,8 +61,7 @@ fun NavGraphBuilder.noteGraph(
             NoteDetailScreen(
                 noteId = it.arguments?.getInt("noteId") ?: 0,
                 appState = appState,
-                showBottomSheet = showBottomSheet,
-                hideBottomSheet = hideBottomSheet,
+                wineyBottomSheetState = wineyBottomSheetState,
             )
         }
 

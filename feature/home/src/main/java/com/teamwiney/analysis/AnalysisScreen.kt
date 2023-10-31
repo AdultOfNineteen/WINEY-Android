@@ -30,6 +30,7 @@ import androidx.navigation.navOptions
 import com.teamwiney.analysis.component.AnalysisBottomContent
 import com.teamwiney.analysis.component.AnalysisStartButton
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
@@ -43,9 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AnalysisScreen(
     appState: WineyAppState,
-    showBottomSheet: (SheetContent) -> Unit = {},
-    hideBottomSheet: () -> Unit = {},
-    setOnHideBottomSheet: (() -> Unit) -> Unit = {}
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
 
     val pagerState = rememberPagerState(pageCount = { 2 })
@@ -70,9 +69,9 @@ fun AnalysisScreen(
         ) {
             when (it) {
                 0 -> AnalysisStartContent(
-                    showBottomSheet,
+                    wineyBottomSheetState::showBottomSheet,
                     hideBottomSheet = {
-                        hideBottomSheet()
+                        wineyBottomSheetState.hideBottomSheet()
                         appState.scope.launch {
                             pagerState.animateScrollToPage(1)
                         }

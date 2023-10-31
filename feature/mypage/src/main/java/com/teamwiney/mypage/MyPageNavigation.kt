@@ -7,13 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.myPageGraph(
-    navController: NavController,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit
+    appState: WineyAppState,
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = MyPageDestinations.ROUTE,
@@ -22,7 +22,7 @@ fun NavGraphBuilder.myPageGraph(
         composable(route = MyPageDestinations.MY_PAGE) {
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = MyPageDestinations.ROUTE
             )
             MyPageScreen()

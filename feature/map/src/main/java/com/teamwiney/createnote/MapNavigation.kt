@@ -7,13 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MapDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 
 fun NavGraphBuilder.mapGraph(
-    navController: NavController,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit
+    appState: WineyAppState,
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = MapDestinations.ROUTE,
@@ -22,7 +22,7 @@ fun NavGraphBuilder.mapGraph(
         composable(route = MapDestinations.MAP) {
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
-                navController = navController,
+                navController = appState.navController,
                 graph = MapDestinations.ROUTE
             )
             MapScreen()

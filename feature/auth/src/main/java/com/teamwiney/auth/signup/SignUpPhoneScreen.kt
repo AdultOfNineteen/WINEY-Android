@@ -28,8 +28,8 @@ import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.PhoneNumberVisualTransformation
 import com.teamwiney.ui.components.TopBar
@@ -41,9 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun SignUpPhoneScreen(
     appState: WineyAppState,
-    showBottomSheet: (SheetContent) -> Unit = { },
-    hideBottomSheet: () -> Unit = { },
-    setOnHideBottomSheet: (() -> Unit) -> Unit,
+    wineyBottomSheetState: WineyBottomSheetState,
     viewModel: SignUpViewModel = hiltViewModel(),
     userId: String = "",
 ) {
@@ -52,12 +50,12 @@ fun SignUpPhoneScreen(
 
     DisposableEffect(true) {
         viewModel.updateUserId(userId)
-        setOnHideBottomSheet {
-            hideBottomSheet()
+        wineyBottomSheetState.setOnHideBottomSheet {
+            wineyBottomSheetState.hideBottomSheet()
             appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
         }
         onDispose {
-            setOnHideBottomSheet { }
+            wineyBottomSheetState.setOnHideBottomSheet { }
         }
     }
 
@@ -71,19 +69,19 @@ fun SignUpPhoneScreen(
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.SendMessage -> {
-                            showBottomSheet {
+                            wineyBottomSheetState.showBottomSheet {
                                 SendMessageBottomSheet(
                                     text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
                                 ) {
-                                    hideBottomSheet()
+                                    wineyBottomSheetState.hideBottomSheet()
                                     appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
                                 }
                             }
                         }
 
                         is SignUpContract.BottomSheet.UserAlreadyExists -> {
-                            showBottomSheet {
+                            wineyBottomSheetState.showBottomSheet {
                                 val message = buildAnnotatedString {
                                     append("${formatPhoneNumber(uiState.phoneNumber)}님은\n")
                                     withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
@@ -97,7 +95,7 @@ fun SignUpPhoneScreen(
                                     annotatedText = message,
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.USER_ALREADY_EXIST
                                 ) {
-                                    hideBottomSheet()
+                                    wineyBottomSheetState.hideBottomSheet()
                                     appState.navigate(AuthDestinations.Login.ROUTE) {
                                         popUpTo(AuthDestinations.SignUp.ROUTE) {
                                             inclusive = true

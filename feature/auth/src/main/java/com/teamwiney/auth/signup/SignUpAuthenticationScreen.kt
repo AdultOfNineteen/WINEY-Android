@@ -28,8 +28,8 @@ import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -40,8 +40,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignUpAuthenticationScreen(
-    showBottomSheet: (SheetContent) -> Unit = { },
-    hideBottomSheet: () -> Unit = { },
+    wineyBottomSheetState: WineyBottomSheetState,
     appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
@@ -65,10 +64,10 @@ fun SignUpAuthenticationScreen(
                     when (effect.bottomSheet) {
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
-                            showBottomSheet {
+                            wineyBottomSheetState.showBottomSheet {
                                 ReturnToLoginBottomSheet(
                                     onConfirm = {
-                                        hideBottomSheet()
+                                        wineyBottomSheetState.hideBottomSheet()
                                         appState.navigate(AuthDestinations.Login.ROUTE) {
                                             popUpTo(AuthDestinations.SignUp.ROUTE) {
                                                 inclusive = true
@@ -76,16 +75,16 @@ fun SignUpAuthenticationScreen(
                                         }
                                     },
                                     onCancel = {
-                                        hideBottomSheet()
+                                        wineyBottomSheetState.hideBottomSheet()
                                     }
                                 )
                             }
                         }
 
                         is SignUpContract.BottomSheet.AuthenticationFailed -> {
-                            showBottomSheet {
+                            wineyBottomSheetState.showBottomSheet {
                                 AuthenticationFailedBottomSheet {
-                                    hideBottomSheet()
+                                    wineyBottomSheetState.hideBottomSheet()
                                 }
                             }
                         }

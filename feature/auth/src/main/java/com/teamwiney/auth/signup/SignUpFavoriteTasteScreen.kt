@@ -25,8 +25,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.component.SignUpFavoriteItemContainer
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -37,8 +37,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SignUpFavoriteTasteScreen(
-    showBottomSheet: (SheetContent) -> Unit = { },
-    hideBottomSheet: () -> Unit = { },
+    wineyBottomSheetState: WineyBottomSheetState,
     appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
@@ -62,10 +61,10 @@ fun SignUpFavoriteTasteScreen(
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
-                            showBottomSheet {
+                            wineyBottomSheetState.showBottomSheet {
                                 ReturnToLoginBottomSheet(
                                     onConfirm = {
-                                        hideBottomSheet()
+                                        wineyBottomSheetState.hideBottomSheet()
                                         appState.navigate(AuthDestinations.Login.ROUTE) {
                                             popUpTo(AuthDestinations.SignUp.ROUTE) {
                                                 inclusive = true
@@ -73,7 +72,7 @@ fun SignUpFavoriteTasteScreen(
                                         }
                                     },
                                     onCancel = {
-                                        hideBottomSheet()
+                                        wineyBottomSheetState.hideBottomSheet()
                                     }
                                 )
                             }
@@ -97,7 +96,7 @@ fun SignUpFavoriteTasteScreen(
     ) {
         Box {
             TopBar(
-                leadingIconOnClick =  {
+                leadingIconOnClick = {
                     if (pagerState.currentPage == 0) {
                         viewModel.processEvent(SignUpContract.Event.CancelTasteSelection)
                     } else {

@@ -46,6 +46,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.`typealias`.SheetContent
@@ -65,9 +66,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NoteScreen(
     appState: WineyAppState,
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
-    viewModel: NoteViewModel = hiltViewModel()
+    viewModel: NoteViewModel = hiltViewModel(),
+    wineyBottomSheetState: WineyBottomSheetState
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -124,7 +124,7 @@ fun NoteScreen(
         NoteFilterSection(
             uiState = uiState,
             viewModel = viewModel,
-            showBottomSheet = showBottomSheet
+            showBottomSheet = wineyBottomSheetState::showBottomSheet
         )
 
         if (tastingNotes.itemCount == 0) {
