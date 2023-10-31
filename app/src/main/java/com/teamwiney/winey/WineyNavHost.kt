@@ -8,30 +8,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.common.`typealias`.SheetContent
+import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.HomeViewModel
 import com.teamwiney.home.homeGraph
@@ -44,35 +36,8 @@ import com.teamwiney.ui.theme.WineyTheme
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WineyNavHost() {
-    var bottomSheetContent: SheetContent? by remember {
-        mutableStateOf(null)
-    }
-
-    val setBottomSheet: (SheetContent) -> Unit = { content: SheetContent ->
-        bottomSheetContent = content
-    }
-    val clearBottomSheet: () -> Unit = {
-        bottomSheetContent = null
-    }
-    var onHideBottomSheet by remember {
-        mutableStateOf<() -> Unit>({})
-    }
-
-    val appState = rememberWineyAppState(
-        bottomSheetState = rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
-            confirmValueChange = {
-                if (it == ModalBottomSheetValue.Hidden) {
-                    onHideBottomSheet()
-                }
-                true
-            },
-            skipHalfExpanded = true
-        ),
-        setBottomSheet = setBottomSheet,
-        clearBottomSheet = clearBottomSheet
-    )
-
+    val appState = rememberWineyAppState()
+    val wineyBottomSheetState = rememberWineyBottomSheetState()
     val navController = appState.navController
 
     // 메인화면 뷰 모델들
@@ -81,9 +46,9 @@ fun WineyNavHost() {
 
     ModalBottomSheetLayout(
         sheetContent = {
-            bottomSheetContent?.invoke(this)
+            wineyBottomSheetState.bottomSheetContent.value?.invoke(this)
         },
-        sheetState = appState.bottomSheetState,
+        sheetState = wineyBottomSheetState.bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp),
         modifier = Modifier.navigationBarsPadding()
     ) {
@@ -125,32 +90,30 @@ fun WineyNavHost() {
             ) {
                 authGraph(
                     appState = appState,
-                    showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet,
-                    setOnHideBottomSheet = { onHide ->
-                        onHideBottomSheet = onHide
-                    }
+                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet,
+                    setOnHideBottomSheet = wineyBottomSheetState.setOnHideBottomSheet
                 )
                 homeGraph(
                     appState = appState,
-                    showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet
+                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
                 )
                 mapGraph(
                     navController = navController,
-                    showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet
+                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
                 )
                 noteGraph(
                     appState = appState,
                     noteViewModel = noteViewModel,
-                    showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet
+                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
                 )
                 myPageGraph(
                     navController = navController,
-                    showBottomSheet = appState::showBottomSheet,
-                    hideBottomSheet = appState::hideBottomSheet
+                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
+                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet
                 )
             }
         }
@@ -185,13 +148,4 @@ private fun WineyBottomNavigationBar(
             )
         }
     }
-}
-
-@Composable
-fun rememberNavControllerBackStackEntry(
-    entry: NavBackStackEntry,
-    navController: NavController,
-    graph: String,
-) = remember(entry) {
-    navController.getBackStackEntry(graph)
 }
