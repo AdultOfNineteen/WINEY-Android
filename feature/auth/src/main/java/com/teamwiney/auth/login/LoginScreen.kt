@@ -146,7 +146,7 @@ fun LoginScreen(
                 }
                 // 회원가입 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_winey_logo_title) {
-                    appState.navigate("${AuthDestinations.SignUp.ROUTE}/6")
+                    appState.navigate("${AuthDestinations.SignUp.ROUTE}?userId=15")
                 }
             }
             Text(
