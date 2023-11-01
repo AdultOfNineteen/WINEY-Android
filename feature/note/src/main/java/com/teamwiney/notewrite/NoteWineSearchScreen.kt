@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.notewrite.components.WineSearchTextField
@@ -26,7 +27,7 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 @Preview
-fun NoteWriteScreen(
+fun NoteWineSearchScreen(
     appState: WineyAppState = rememberWineyAppState(),
     wineyBottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
 ) {
@@ -62,7 +63,7 @@ fun NoteWriteScreen(
                 Text(
                     text = "와인 검색 결과",
                     modifier = Modifier.clickable {
-
+                        appState.navigate(NoteDestinations.Write.SELECT_WINE)
                     },
                     style = WineyTheme.typography.bodyM1.copy(color = WineyTheme.colors.gray_600),
                 )

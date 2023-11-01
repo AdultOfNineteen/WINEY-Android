@@ -13,7 +13,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notedetail.NoteDetailScreen
-import com.teamwiney.notewrite.NoteWriteScreen
+import com.teamwiney.notewrite.NoteWineSearchScreen
 import com.teamwiney.notewrite.NoteWriteSelectWineScreen
 
 fun NavGraphBuilder.noteGraph(
@@ -72,12 +72,12 @@ fun NavGraphBuilder.noteGraph(
             startDestination = NoteDestinations.Write.SEARCH_WINE
         ) {
             composable(route = NoteDestinations.Write.SEARCH_WINE) {
-                NoteWriteScreen(
+                NoteWineSearchScreen(
                     appState = appState,
                     wineyBottomSheetState = wineyBottomSheetState,
                 )
             }
-            composable(route = NoteDestinations.Write.SEARCH_WINE) {
+            composable(route = NoteDestinations.Write.SELECT_WINE) {
                 NoteWriteSelectWineScreen(
                     appState = appState,
                     wineyBottomSheetState = wineyBottomSheetState,
