@@ -10,9 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.theme.WineyTheme
+import com.teamwiney.ui.theme.WineyTypography
 
 @Preview
 @Composable
@@ -26,6 +28,9 @@ fun WButton(
     disableTextColor: Color = WineyTheme.colors.gray_600,
     enableBackgroundColor: Color = WineyTheme.colors.main_1,
     disableBackgroundColor: Color = WineyTheme.colors.gray_900,
+    enableTextStyle: TextStyle = WineyTheme.typography.headline,
+    disableTextStyle: TextStyle = WineyTheme.typography.headline,
+    shape: RoundedCornerShape = RoundedCornerShape(5.dp),
 ) {
     Button(
         onClick = onClick,
@@ -35,13 +40,13 @@ fun WButton(
             containerColor = enableBackgroundColor,
             disabledContainerColor = disableBackgroundColor,
         ),
-        shape = RoundedCornerShape(5.dp),
+        shape = shape,
         enabled = enabled
     ) {
         Text(
             text = text,
             color = if (enabled) enableTextColor else disableTextColor,
-            style = WineyTheme.typography.headline,
+            style = if (enabled) enableTextStyle else disableTextStyle,
             modifier = Modifier.padding(vertical = 8.5.dp)
         )
     }
