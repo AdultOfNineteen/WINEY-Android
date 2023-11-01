@@ -16,10 +16,12 @@ import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
+import java.util.concurrent.Flow
 
 enum class SocialType {
     @SerializedName("KAKAO")
@@ -72,4 +74,10 @@ interface AuthService {
         @Path("userId") userId: String,
         @Body preferences: SetPreferencesRequest
     ): ApiResult<ResponseWrapper<SetPreferences>>
+
+
+    @POST("/refresh")
+    suspend fun refreshToken(
+        @Header("X-REFRESH-TOKEN") refreshToken: String
+    ): ApiResult<ResponseWrapper<AccessToken>>
 }

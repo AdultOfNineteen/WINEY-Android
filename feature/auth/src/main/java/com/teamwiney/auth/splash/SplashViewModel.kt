@@ -7,14 +7,17 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
+import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -22,7 +25,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository,
-    @DispatcherModule.DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
+    @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<SplashContract.State, SplashContract.Event, SplashContract.Effect>(
     initialState = SplashContract.State()
 ) {
@@ -44,17 +47,43 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun autoLoginCheck() = viewModelScope.launch {
-        val accessToken = runBlocking { dataStoreRepository.getStringValue(ACCESS_TOKEN).first() }
-
-        Log.i("[ACCESS_TOKEN] : ", accessToken)
-        if (accessToken.isNotEmpty()) {
-            postEffect(SplashContract.Effect.NavigateTo(HomeDestinations.ROUTE) {
-                popUpTo(AuthDestinations.SPLASH) { inclusive = true }
-            })
+        val refreshToken =
+            withContext(ioDispatcher) { dataStoreRepository.getStringValue(REFRESH_TOKEN).first() }
+        Log.i("[REFRESH_TOKEN] : ", refreshToken)
+        if (refreshToken.isNotEmpty()) {
+            refreshToken(refreshToken)
         } else {
-            postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
-                popUpTo(AuthDestinations.SPLASH) { inclusive = true }
-            })
+            naviagateToLogin()
         }
+    }
+
+    private fun refreshToken(refreshToken: String) = viewModelScope.launch {
+        authRepository.refreshToken(refreshToken).collectLatest { apiResult ->
+            when (apiResult) {
+                is ApiResult.Success -> {
+                    val accessToken = apiResult.data.result.accessToken
+                    withContext(ioDispatcher) {
+                        dataStoreRepository.setStringValue(ACCESS_TOKEN, accessToken)
+                    }
+                    navigateToMain()
+                }
+
+                else -> {
+                    naviagateToLogin()
+                }
+            }
+        }
+    }
+
+    private fun navigateToMain() {
+        postEffect(SplashContract.Effect.NavigateTo(HomeDestinations.ROUTE) {
+            popUpTo(AuthDestinations.SPLASH) { inclusive = true }
+        })
+    }
+
+    private fun naviagateToLogin() {
+        postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
+            popUpTo(AuthDestinations.SPLASH) { inclusive = true }
+        })
     }
 }

@@ -1,14 +1,18 @@
 package com.teamwiney.data.datasource
 
+import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
+import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.SocialType
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -56,5 +60,10 @@ class AuthDataSourceImpl @Inject constructor(
     ) = flow {
         emit(authService.setPreferences(userId, preferences))
     }.flowOn(ioDispatcher)
+
+    override fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>> =
+        flow {
+            emit(authService.refreshToken(refreshToken))
+        }.flowOn(ioDispatcher)
 
 }

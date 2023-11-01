@@ -7,6 +7,7 @@ import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
+import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
@@ -40,4 +41,6 @@ interface AuthDataSource {
         userId: String,
         preferences: SetPreferencesRequest
     ): Flow<ApiResult<ResponseWrapper<SetPreferences>>>
+
+    fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>>
 }

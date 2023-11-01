@@ -5,6 +5,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
+import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
@@ -41,4 +42,8 @@ interface AuthRepository {
         userId: String,
         request: SetPreferencesRequest
     ): Flow<ApiResult<ResponseWrapper<SetPreferences>>>
+
+    fun refreshToken(
+        refreshToken: String
+    ): Flow<ApiResult<ResponseWrapper<AccessToken>>>
 }
