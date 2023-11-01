@@ -1,4 +1,4 @@
-package com.teamwiney.noteadd.components
+package com.teamwiney.notewrite.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

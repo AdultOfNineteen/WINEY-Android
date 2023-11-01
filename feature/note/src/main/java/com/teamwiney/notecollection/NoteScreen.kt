@@ -22,8 +22,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,69 +99,96 @@ fun NoteScreen(
         }
     }
 
-    Column(
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
     ) {
-        HomeLogo(
-            onClick = {
-                appState.navigate(HomeDestinations.Analysis.ROUTE)
-            },
-            hintPopupOpen = false
-        )
-        Text(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                    append("${tastingNotes.itemCount}개")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WineyTheme.colors.background_1)
+        ) {
+            HomeLogo(
+                onClick = {
+                    appState.navigate(HomeDestinations.Analysis.ROUTE)
+                },
+                hintPopupOpen = false
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
+                        append("${tastingNotes.itemCount}개")
+                    }
+                    append("의 노트를 작성했어요!")
+                },
+                color = WineyTheme.colors.gray_50,
+                style = WineyTheme.typography.headline
+            )
+            HeightSpacer(height = 14.dp)
+
+            NoteFilterSection(
+                uiState = uiState,
+                viewModel = viewModel,
+                showBottomSheet = wineyBottomSheetState::showBottomSheet
+            )
+
+            if (tastingNotes.itemCount == 0) {
+                if (uiState.isLoading) {
+                    SkeletonNote()
+                } else {
+                    EmptyNote()
                 }
-                append("의 노트를 작성했어요!")
-            },
-            color = WineyTheme.colors.gray_50,
-            style = WineyTheme.typography.headline
-        )
-        HeightSpacer(height = 14.dp)
+            }
 
-        NoteFilterSection(
-            uiState = uiState,
-            viewModel = viewModel,
-            showBottomSheet = wineyBottomSheetState::showBottomSheet
-        )
-
-        if (tastingNotes.itemCount == 0) {
-            if (uiState.isLoading) {
-                SkeletonNote()
-            } else {
-                EmptyNote()
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
+                verticalArrangement = Arrangement.spacedBy(21.dp),
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                items(
+                    count = tastingNotes.itemCount,
+                    key = tastingNotes.itemKey(),
+                    contentType = tastingNotes.itemContentType()
+                ) { index ->
+                    tastingNotes[index]?.let {
+                        NoteWineCard(
+                            color = it.wineType,
+                            name = it.name,
+                            origin = it.country,
+                            starRating = it.starRating,
+                            navigateToNoteDetail = {
+                                appState.navigate("${NoteDestinations.DETAIL}?noteId=${it.id}")
+                            },
+                        )
+                    }
+                }
             }
         }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 15.dp),
-            verticalArrangement = Arrangement.spacedBy(21.dp),
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            items(
-                count = tastingNotes.itemCount,
-                key = tastingNotes.itemKey(),
-                contentType = tastingNotes.itemContentType()
-            ) { index ->
-                tastingNotes[index]?.let {
-                    NoteWineCard(
-                        color = it.wineType,
-                        name = it.name,
-                        origin = it.country,
-                        starRating = it.starRating,
-                        navigateToNoteDetail = {
-                            appState.navigate("${NoteDestinations.DETAIL}?noteId=${it.id}")
-                        },
-                    )
-                }
-            }
+
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(bottom = 34.dp, end = 24.dp),
+            shape = CircleShape,
+            containerColor = WineyTheme.colors.main_2,
+            contentColor = WineyTheme.colors.gray_50,
+            onClick = {
+                appState.navigate(NoteDestinations.Write.ROUTE)
+            }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_pencil_29),
+                contentDescription = "IC_PENCIL",
+                modifier = Modifier.size(29.dp),
+                tint = WineyTheme.colors.gray_50
+            )
         }
     }
+
 }
 
 @Composable
