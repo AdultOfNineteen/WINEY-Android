@@ -4,6 +4,7 @@ import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.RecommendWine
+import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.data.network.model.response.WineTip
 import retrofit2.http.GET
@@ -29,4 +30,12 @@ interface WineService {
         @Query("size") size: Int
     ): ApiResult<ResponseWrapper<PagingResponse<List<WineTip>>>>
 
+
+    /** 와인 검색 API */
+    @GET("/wines/search")
+    suspend fun searchWines(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("content") content: String
+    ): ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>
 }
