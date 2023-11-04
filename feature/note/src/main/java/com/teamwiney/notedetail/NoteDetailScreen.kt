@@ -63,7 +63,7 @@ fun NoteDetailScreen(
                     appState.showSnackbar(effect.message)
                 }
 
-                NoteDetailContract.Effect.NoteDeleted -> {
+                is NoteDetailContract.Effect.NoteDeleted -> {
                     appState.showSnackbar("노트가 삭제되었습니다.")
                     appState.navController.navigateUp()
                 }
@@ -137,7 +137,7 @@ fun NoteDetailScreen(
                 WineInfo(uiState.noteDetail)
 
                 HeightSpacerWithLine(
-                    modifier = Modifier.padding(vertical = 20.dp),
+                    modifier = Modifier.padding(vertical = 25.dp),
                     color = WineyTheme.colors.gray_900
                 )
             }

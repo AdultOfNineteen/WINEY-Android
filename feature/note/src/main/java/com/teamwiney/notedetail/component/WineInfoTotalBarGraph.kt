@@ -14,95 +14,66 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.TasteScoreHorizontalBar
+import com.teamwiney.ui.components.ScoreHorizontalBar
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
 fun WineInfoTotalBarGraph(
     progress: Float,
-    wine: Wine
+    label: String,
+    labelColor: Color,
+    data: List<Pair<String, Int>>
 ) {
     Column {
-        Column(
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(WineyTheme.colors.main_2)
-                        .size(12.dp)
-                )
-                Text(
-                    text = "취향이 비슷한 사람들이 느낀 와인의 맛",
-                    style = WineyTheme.typography.captionM2,
-                    color = WineyTheme.colors.gray_50
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(WineyTheme.colors.point_1)
-                        .size(12.dp)
-                )
-                Text(
-                    text = "와인의 기본 맛",
-                    style = WineyTheme.typography.captionM2,
-                    color = WineyTheme.colors.gray_50
-                )
-            }
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(WineyTheme.colors.main_2)
+                    .size(12.dp)
+            )
+            Text(
+                text = label,
+                style = WineyTheme.typography.captionM2,
+                color = WineyTheme.colors.gray_50
+            )
         }
-
-        HeightSpacer(height = 17.dp)
+        
+        HeightSpacer(height = 20.dp)
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp),
+                .height(377.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            TasteScoreHorizontalBar(
-                progress = progress,
-                label = "당도",
-                peopleScore = wine.wineSummary.avgSweetness,
-                defaultScore = wine.sweetness
-            )
-
-            TasteScoreHorizontalBar(
-                progress = progress,
-                label = "산도",
-                peopleScore = wine.wineSummary.avgAcidity,
-                defaultScore = wine.acidity
-            )
-
-            TasteScoreHorizontalBar(
-                progress = progress,
-                label = "바디",
-                peopleScore = wine.wineSummary.avgBody,
-                defaultScore = wine.body
-            )
-
-            TasteScoreHorizontalBar(
-                progress = progress,
-                label = "탄닌",
-                peopleScore = wine.wineSummary.avgTannins,
-                defaultScore = wine.tannins
-            )
+            data.forEach { (label, score) ->
+                if (score == 0) {
+                    ScoreHorizontalBar(
+                        progress = progress,
+                        label = label,
+                        score = score,
+                        labelColor = WineyTheme.colors.gray_900,
+                        barColor = WineyTheme.colors.gray_900
+                    )
+                } else {
+                    ScoreHorizontalBar(
+                        progress = progress,
+                        label = label,
+                        score = score,
+                        labelColor = WineyTheme.colors.gray_50,
+                        barColor = labelColor
+                    )
+                }
+            }
         }
     }
 }
