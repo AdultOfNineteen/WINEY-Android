@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -128,7 +129,7 @@ fun <T> ListItemPicker(
             )
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 8.dp)
                     .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
             ) {
                 val baseLabelModifier = Modifier.align(Alignment.Center)
@@ -267,16 +268,24 @@ fun PreviewNumberPicker() {
             modifier = Modifier.fillMaxSize().background(WineyTheme.colors.background_1),
             contentAlignment = Alignment.Center
         ) {
-            NumberPicker(
-                value = value,
-                onValueChange = {
-                    value = it
-                },
-                range = 0..40,
-                textStyle = WineyTheme.typography.title1.copy(
-                    color = WineyTheme.colors.gray_50
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                NumberPicker(
+                    value = value,
+                    onValueChange = {
+                        value = it
+                    },
+                    range = 0..40,
+                    textStyle = WineyTheme.typography.title1.copy(
+                        color = WineyTheme.colors.gray_50
+                    )
                 )
-            )
+                Text(
+                    text = "°",
+                    style = WineyTheme.typography.title1.copy(
+                        color = WineyTheme.colors.gray_50
+                    )
+                )
+            }
         }
     }
 }
