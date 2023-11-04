@@ -46,7 +46,7 @@ fun TasteScoreHorizontalBar(
         val density = LocalDensity.current
 
         Row(
-            modifier = Modifier.width(maxOf(barWidth + 8.dp, 25.dp)),
+            modifier = Modifier.width(maxOf(barWidth + 8.dp, (12.5 * label.length).dp)),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -95,6 +95,59 @@ fun TasteScoreHorizontalBar(
                     targetProgress = defaultScore / 5f,
                     color = WineyTheme.colors.point_1
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun ScoreHorizontalBar(
+    progress: Float = 1f,
+    label: String,
+    labelColor: Color = WineyTheme.colors.gray_50,
+    score: Int,
+    barColor: Color
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
+        var barWidth by remember { mutableStateOf(0.dp) }
+        val density = LocalDensity.current
+
+        Row(
+            modifier = Modifier.width(maxOf(barWidth + 8.dp, (12.5 * label.length).dp)),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = label,
+                style = WineyTheme.typography.bodyB2,
+                color = labelColor,
+            )
+
+            if (score != 0) {
+                ScoreIndicator(
+                    score = score,
+                    color = barColor
+                )
+            }
+        }
+        Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+            if (score != 0) {
+                RoundedHorizontalBar(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f * (score / 5f) * progress)
+                        .onGloballyPositioned { coordinates ->
+                            barWidth = density.run { coordinates.size.width.toDp() }
+                        },
+                    targetProgress = score / 5f,
+                    color = barColor
+                )
+            } else {
+                RoundedHorizontalBar(
+                    modifier = Modifier.width(15.dp),
+                    targetProgress = 1f,
+                    color = barColor
+                )
+                barWidth = 15.dp
             }
         }
     }
