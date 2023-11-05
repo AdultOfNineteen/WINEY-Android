@@ -21,10 +21,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,8 +34,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.notecollection.components.NoteWineCard
@@ -45,15 +50,40 @@ import com.teamwiney.notewrite.components.WineSearchTextField
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 @Preview
 fun NoteWineSearchScreen(
     appState: WineyAppState = rememberWineyAppState(),
+    viewModel: NoteWriteViewModel = hiltViewModel(),
     wineyBottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
 ) {
-    var text by remember {
-        mutableStateOf("")
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
+    val searchWines = uiState.searchWines.collectAsLazyPagingItems()
+    val searchWinesRefreshState = searchWines.loadState.refresh
+
+    LaunchedEffect(searchWinesRefreshState) {
+        if (searchWinesRefreshState is LoadState.Error) {
+            val errorMessage = searchWinesRefreshState.error.message ?: "네트워크 오류가 발생했습니다."
+            appState.showSnackbar(errorMessage)
+        }
+    }
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is NoteWriteContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is NoteWriteContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
     }
 
     Column(
@@ -65,8 +95,9 @@ fun NoteWineSearchScreen(
     ) {
         WineSearchTopBar(
             appState = appState,
-            text = text,
-            onValueChange = { text = it }
+            searchKeyword = uiState.searchKeyword,
+            onValueChange = viewModel::updateSearchKeyword,
+            onSearch = viewModel::searchWines
         )
         
         HeightSpacer(height = 8.dp)
@@ -76,7 +107,7 @@ fun NoteWineSearchScreen(
             text = buildAnnotatedString {
                 append("검색 결과 ")
                 withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                    append("${1}개")
+                    append("${searchWines.itemCount}개")
                 }
             },
             color = WineyTheme.colors.gray_50,
@@ -88,39 +119,28 @@ fun NoteWineSearchScreen(
             color = WineyTheme.colors.gray_900
         )
 
+        if (searchWines.itemCount == 0) EmptySearch()
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 26.dp),
             verticalArrangement = Arrangement.spacedBy(21.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            item {
-                NoteWineCard(
-                    color = "RED", name = "와인", origin = "미국", starRating = 5) {
-                }
-            }
-
-            item {
-                NoteWineCard(
-                    color = "RED", name = "와인", origin = "미국", starRating = 5) {
-                }
-            }
-
-            item {
-                NoteWineCard(
-                    color = "RED", name = "와인", origin = "미국", starRating = 5) {
-                }
-            }
-
-            item {
-                NoteWineCard(
-                    color = "RED", name = "와인", origin = "미국", starRating = 5) {
-                }
-            }
-
-            item {
-                NoteWineCard(
-                    color = "RED", name = "와인", origin = "미국", starRating = 5) {
+            items(
+                count = searchWines.itemCount,
+                key = searchWines.itemKey(),
+                contentType = searchWines.itemContentType()
+            ) { index ->
+                searchWines[index]?.let {
+                    NoteWineCard(
+                        color = it.type.type,
+                        name = it.name,
+                        origin = it.country,
+                        onClick = {
+                            appState.navigate(NoteDestinations.Write.SELECT_WINE)
+                        }
+                    )
                 }
             }
         }
@@ -130,8 +150,9 @@ fun NoteWineSearchScreen(
 @Composable
 fun WineSearchTopBar(
     appState: WineyAppState,
-    text: String,
-    onValueChange: (String) -> Unit
+    searchKeyword: String,
+    onValueChange: (String) -> Unit,
+    onSearch: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -151,9 +172,10 @@ fun WineSearchTopBar(
         )
         WineSearchTextField(
             modifier = Modifier.weight(1f),
-            value = text,
+            value = searchKeyword,
             onValueChange = onValueChange,
-            placeholderText = "기록할 와인을 검색해주세요!"
+            placeholderText = "기록할 와인을 검색해주세요!",
+            onSearch = onSearch
         )
 
         Spacer(modifier = Modifier.width(24.dp))

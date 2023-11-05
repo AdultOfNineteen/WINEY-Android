@@ -1,6 +1,7 @@
 package com.teamwiney.notewrite.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
@@ -34,8 +36,10 @@ fun WineSearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: String = "",
+    onSearch: () -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-    keyboardActions: KeyboardActions? = null
+    keyboardActions: KeyboardActions = KeyboardActions(onSearch = { onSearch() })
+
 ) {
     BasicTextField(
         modifier = modifier,
@@ -72,7 +76,12 @@ fun WineSearchTextField(
                         innerTextField()
                     }
                     Icon(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(CircleShape)
+                            .clickable {
+                                onSearch()
+                            },
                         painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_search),
                         contentDescription = "IC_SEARCH",
                         tint = Color.White
@@ -100,7 +109,8 @@ fun PreviewWineSearchTextField() {
                 onValueChange = {
                     text = it
                 },
-                placeholderText = "기록할 와인을 검색해주세요!"
+                placeholderText = "기록할 와인을 검색해주세요!",
+                onSearch = { }
             )
         }
     }
