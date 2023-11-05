@@ -26,13 +26,13 @@ class NoteWriteViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is NoteWriteContract.Event.SearchWine -> {
-                    searchWines()
+                    getSearchWines()
                 }
             }
         }
     }
 
-    fun searchWines() = viewModelScope.launch {
+    fun getSearchWines() = viewModelScope.launch {
         getSearchWinesCount()
 
         updateState(

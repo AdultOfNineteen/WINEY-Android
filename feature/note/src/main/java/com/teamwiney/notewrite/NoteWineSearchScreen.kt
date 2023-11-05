@@ -97,7 +97,7 @@ fun NoteWineSearchScreen(
             appState = appState,
             searchKeyword = uiState.searchKeyword,
             onValueChange = viewModel::updateSearchKeyword,
-            onSearch = viewModel::searchWines
+            onSearch = viewModel::getSearchWines
         )
         
         HeightSpacer(height = 8.dp)

@@ -12,7 +12,7 @@ class WineRepositoryImpl @Inject constructor(
     override fun getWineDetail(wineId: Long) = wineDataSource.getWineDetail(wineId)
 
     override fun getWineTips(page: Int, size: Int) = wineDataSource.getWineTips(page, size)
-    override fun searchWines(
+    override fun getSearchWines(
         page: Int,
         size: Int,
         content: String

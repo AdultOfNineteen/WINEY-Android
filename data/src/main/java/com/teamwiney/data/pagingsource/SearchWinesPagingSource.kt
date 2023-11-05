@@ -23,7 +23,7 @@ class SearchWinesPagingSource(
         val currentPage = params.key ?: 0
 
         val loadData =
-            wineRepository.searchWines(
+            wineRepository.getSearchWines(
                 page = currentPage,
                 size = params.loadSize,
                 content = searchKeyword
