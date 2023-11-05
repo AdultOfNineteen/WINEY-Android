@@ -27,6 +27,7 @@ class NoteContract {
                 )
             )
         ),
+        val tastingNotesCount: Long = 0,
         val sortItems: List<String> = listOf("최신순", "인기순"),
         val selectedSort: Int = 0,
         val buyAgainSelected: Boolean = false,

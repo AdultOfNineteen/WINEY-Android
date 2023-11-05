@@ -1,6 +1,5 @@
 package com.teamwiney.notecollection
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -41,6 +40,8 @@ class NoteViewModel @Inject constructor(
     }
 
     fun getTastingNotes() = viewModelScope.launch {
+        getTastingNotesCount()
+
         updateState(
             currentState.copy(
                 tastingNotes = Pager(
@@ -69,6 +70,39 @@ class NoteViewModel @Inject constructor(
         )
     }
 
+    private fun getTastingNotesCount() = viewModelScope.launch {
+        tastingNoteRepository.getTastingNotesCount(
+            order = currentState.selectedSort,
+            countries = currentState.selectedCountryFilter
+                .filter { it.country != "전체" }
+                .map { it.country },
+            wineTypes = currentState.selectedTypeFilter
+                .filter { it.type != "전체" }
+                .map { convertToWineType(it.type) },
+            buyAgain = if (currentState.buyAgainSelected) 1 else 0
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    updateState(
+                        currentState.copy(
+                            tastingNotesCount = it.data.result.totalCnt
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(NoteContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(NoteContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
     private fun getTastingNoteFilters() = viewModelScope.launch {
         tastingNoteRepository.getTastingNoteFilters().onStart {
             updateState(currentState.copy(isLoading = true))
@@ -82,8 +116,6 @@ class NoteViewModel @Inject constructor(
                             countryFilter = it.data.result.countries
                         )
                     )
-                    Log.d("data", it.data.result.wineTypes.toString())
-                    Log.d("data", it.data.result.countries.toString())
                     postEffect(NoteContract.Effect.NavigateTo(NoteDestinations.FILTER))
                 }
 

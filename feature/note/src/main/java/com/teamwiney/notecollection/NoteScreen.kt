@@ -85,7 +85,6 @@ fun NoteScreen(
     }
 
     LaunchedEffect(true) {
-
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is NoteContract.Effect.NavigateTo -> {
@@ -98,7 +97,6 @@ fun NoteScreen(
             }
         }
     }
-
 
     Box(
         modifier = Modifier
@@ -120,7 +118,7 @@ fun NoteScreen(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                        append("${tastingNotes.itemCount}개")
+                        append("${uiState.tastingNotesCount}개")
                     }
                     append("의 노트를 작성했어요!")
                 },
@@ -135,7 +133,7 @@ fun NoteScreen(
                 showBottomSheet = wineyBottomSheetState::showBottomSheet
             )
 
-            if (tastingNotes.itemCount == 0) {
+            if (uiState.tastingNotesCount == 0L) {
                 if (uiState.isLoading) {
                     SkeletonNote()
                 } else {
