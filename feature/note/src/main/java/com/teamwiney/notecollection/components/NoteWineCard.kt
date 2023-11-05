@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -48,8 +49,8 @@ fun NoteWineCard(
     color: String,
     name: String,
     origin: String,
-    starRating: Int,
-    navigateToNoteDetail: () -> Unit,
+    starRating: Int? = null,
+    onClick: () -> Unit,
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
         "RED" -> CardProperties(
@@ -112,7 +113,7 @@ fun NoteWineCard(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .clickable {
-                navigateToNoteDetail()
+                onClick()
             }
     ) {
         Box(
@@ -189,7 +190,10 @@ fun NoteWineCard(
         )
         HeightSpacer(height = 2.dp)
         Text(
-            text = "$origin / ${starRating}점",
+            text = buildAnnotatedString {
+                append(origin)
+                starRating?.let { append(" / ${it}점")}
+            },
             color = WineyTheme.colors.gray_700,
             style = WineyTheme.typography.captionM2
         )

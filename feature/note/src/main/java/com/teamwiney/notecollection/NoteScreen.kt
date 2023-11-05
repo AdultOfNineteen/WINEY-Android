@@ -160,7 +160,7 @@ fun NoteScreen(
                             name = it.name,
                             origin = it.country,
                             starRating = it.starRating,
-                            navigateToNoteDetail = {
+                            onClick = {
                                 appState.navigate("${NoteDestinations.DETAIL}?noteId=${it.id}")
                             },
                         )
