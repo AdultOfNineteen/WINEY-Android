@@ -25,7 +25,8 @@ class NoteWriteContract {
                     refresh = LoadState.NotLoading(endOfPaginationReached = true),
                 )
             )
-        )
+        ),
+        val searchWinesCount: Long = 0,
     ) : UiState
 
     sealed class Event : UiEvent {
@@ -40,6 +41,5 @@ class NoteWriteContract {
 
         data class ShowSnackBar(val message: String) : Effect()
     }
-
-
+    
 }

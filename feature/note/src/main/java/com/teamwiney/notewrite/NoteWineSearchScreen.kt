@@ -107,7 +107,7 @@ fun NoteWineSearchScreen(
             text = buildAnnotatedString {
                 append("검색 결과 ")
                 withStyle(style = SpanStyle(WineyTheme.colors.main_3)) {
-                    append("${searchWines.itemCount}개")
+                    append("${uiState.searchWinesCount}개")
                 }
             },
             color = WineyTheme.colors.gray_50,
@@ -119,7 +119,7 @@ fun NoteWineSearchScreen(
             color = WineyTheme.colors.gray_900
         )
 
-        if (searchWines.itemCount == 0) EmptySearch()
+        if (uiState.searchWinesCount == 0L) EmptySearch()
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),

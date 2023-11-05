@@ -5,9 +5,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.wine.WineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -31,6 +33,8 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun searchWines() = viewModelScope.launch {
+        getSearchWinesCount()
+
         updateState(
             currentState.copy(
                 searchWines = Pager(
@@ -51,6 +55,33 @@ class NoteWriteViewModel @Inject constructor(
             )
         )
     }
+
+    private fun getSearchWinesCount() = viewModelScope.launch {
+        wineRepository.getSearchWinesCount(
+            currentState.searchKeyword
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    updateState(
+                        currentState.copy(
+                            searchWinesCount = it.data.result.totalCnt
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(NoteWriteContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(NoteWriteContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
 
     fun updateSearchKeyword(searchKeyword: String) = viewModelScope.launch {
         updateState(currentState.copy(searchKeyword = searchKeyword))

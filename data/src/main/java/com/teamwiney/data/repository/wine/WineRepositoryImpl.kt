@@ -18,4 +18,8 @@ class WineRepositoryImpl @Inject constructor(
         content: String
     ) = wineDataSource.searchWines(page, size, content)
 
+    override fun getSearchWinesCount(
+        content: String
+    ) = wineDataSource.searchWines(1, 1, content)
+
 }

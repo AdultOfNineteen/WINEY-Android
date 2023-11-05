@@ -18,4 +18,6 @@ interface WineRepository {
     fun getWineTips(page: Int, size: Int): Flow<ApiResult<ResponseWrapper<PagingResponse<List<WineTip>>>>>
 
     fun searchWines(page: Int, size: Int, content: String): Flow<ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>>
+
+    fun getSearchWinesCount(content: String): Flow<ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>>
 }
