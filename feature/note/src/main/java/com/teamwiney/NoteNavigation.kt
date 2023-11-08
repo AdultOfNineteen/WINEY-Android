@@ -2,7 +2,6 @@ package com.teamwiney
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -17,8 +16,7 @@ import com.teamwiney.notecollection.NoteFilterScreen
 import com.teamwiney.notecollection.NoteScreen
 import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.notedetail.NoteDetailScreen
-import com.teamwiney.notewrite.NoteWineSearchScreen
-import com.teamwiney.notewrite.NoteWriteSelectWineScreen
+import com.teamwiney.notewrite.noteWriteGraph
 
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
@@ -70,37 +68,10 @@ fun NavGraphBuilder.noteGraph(
             )
         }
 
-        navigation(
-            route = NoteDestinations.Write.ROUTE,
-            startDestination = NoteDestinations.Write.SEARCH_WINE
-        ) {
-            composable(route = NoteDestinations.Write.SEARCH_WINE) {
-                val backStackEntry = rememberNavControllerBackStackEntry(
-                    entry = it,
-                    navController = appState.navController,
-                    graph = NoteDestinations.ROUTE
-                )
-                NoteWineSearchScreen(
-                    appState = appState,
-                    viewModel = hiltViewModel(backStackEntry),
-                    wineyBottomSheetState = wineyBottomSheetState,
-                )
-            }
-
-            composable(route = NoteDestinations.Write.SELECT_WINE) {
-                val backStackEntry = rememberNavControllerBackStackEntry(
-                    entry = it,
-                    navController = appState.navController,
-                    graph = NoteDestinations.ROUTE
-                )
-                NoteWriteSelectWineScreen(
-                    appState = appState,
-                    viewModel = hiltViewModel(backStackEntry),
-                    wineyBottomSheetState = wineyBottomSheetState,
-                )
-            }
-        }
-
+        noteWriteGraph(
+            appState = appState,
+            wineyBottomSheetState = wineyBottomSheetState
+        )
     }
 }
 
