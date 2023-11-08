@@ -52,12 +52,8 @@ class NoteViewModel @Inject constructor(
                         TastingNotesPagingSource(
                             tastingNoteRepository = tastingNoteRepository,
                             order = currentState.selectedSort,
-                            countries = currentState.selectedCountryFilter
-                                .filter { it.country != "전체" }
-                                .map { it.country },
-                            wineTypes = currentState.selectedTypeFilter
-                                .filter { it.type != "전체" }
-                                .map { convertToWineType(it.type) },
+                            countries = currentState.selectedCountryFilter.map { it.country },
+                            wineTypes = currentState.selectedTypeFilter.map { convertToWineType(it.type) },
                             buyAgain = if (currentState.buyAgainSelected) 1 else 0
                         )
                     }
@@ -73,12 +69,8 @@ class NoteViewModel @Inject constructor(
     private fun getTastingNotesCount() = viewModelScope.launch {
         tastingNoteRepository.getTastingNotesCount(
             order = currentState.selectedSort,
-            countries = currentState.selectedCountryFilter
-                .filter { it.country != "전체" }
-                .map { it.country },
-            wineTypes = currentState.selectedTypeFilter
-                .filter { it.type != "전체" }
-                .map { convertToWineType(it.type) },
+            countries = currentState.selectedCountryFilter.map { it.country },
+            wineTypes = currentState.selectedTypeFilter.map { convertToWineType(it.type) },
             buyAgain = if (currentState.buyAgainSelected) 1 else 0
         ).onStart {
             updateState(currentState.copy(isLoading = true))
@@ -155,13 +147,8 @@ class NoteViewModel @Inject constructor(
 
         if (filterItem in updatedSelectedFilter) {
             updatedSelectedFilter.remove(filterItem)
-        } else if (filterItem.type == "전체") {
-            updatedSelectedFilter.clear()
-            updatedSelectedFilter.add(filterItem)
         } else {
-            if (!updatedSelectedFilter.any { it.type == "전체" }) {
-                updatedSelectedFilter.add(filterItem)
-            }
+            updatedSelectedFilter.add(filterItem)
         }
 
         updateState(
@@ -176,13 +163,8 @@ class NoteViewModel @Inject constructor(
 
         if (filterItem in updatedSelectedFilter) {
             updatedSelectedFilter.remove(filterItem)
-        } else if (filterItem.country == "전체") {
-            updatedSelectedFilter.clear()
-            updatedSelectedFilter.add(filterItem)
         } else {
-            if (!updatedSelectedFilter.any { it.country == "전체" }) {
-                updatedSelectedFilter.add(filterItem)
-            }
+            updatedSelectedFilter.add(filterItem)
         }
 
         updateState(
@@ -207,6 +189,7 @@ class NoteViewModel @Inject constructor(
                 selectedCountryFilter = emptyList()
             )
         )
+        getTastingNotes()
     }
 
     private fun convertToWineType(input: String): String {
