@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.wine.WineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,6 +86,10 @@ class NoteWriteViewModel @Inject constructor(
 
     fun updateSearchKeyword(searchKeyword: String) = viewModelScope.launch {
         updateState(currentState.copy(searchKeyword = searchKeyword))
+    }
+
+    fun updateSelectedWine(wine: SearchWine) = viewModelScope.launch {
+        updateState(currentState.copy(selectedWine = wine))
     }
 
 }

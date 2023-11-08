@@ -1,7 +1,8 @@
-package com.teamwiney.notecollection
+package com.teamwiney
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -12,6 +13,9 @@ import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
+import com.teamwiney.notecollection.NoteFilterScreen
+import com.teamwiney.notecollection.NoteScreen
+import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.notedetail.NoteDetailScreen
 import com.teamwiney.notewrite.NoteWineSearchScreen
 import com.teamwiney.notewrite.NoteWriteSelectWineScreen
@@ -50,7 +54,6 @@ fun NavGraphBuilder.noteGraph(
             )
         }
 
-
         composable(
             route = "${NoteDestinations.DETAIL}?noteId={noteId}",
             arguments = listOf(
@@ -72,14 +75,27 @@ fun NavGraphBuilder.noteGraph(
             startDestination = NoteDestinations.Write.SEARCH_WINE
         ) {
             composable(route = NoteDestinations.Write.SEARCH_WINE) {
+                val backStackEntry = rememberNavControllerBackStackEntry(
+                    entry = it,
+                    navController = appState.navController,
+                    graph = NoteDestinations.ROUTE
+                )
                 NoteWineSearchScreen(
                     appState = appState,
+                    viewModel = hiltViewModel(backStackEntry),
                     wineyBottomSheetState = wineyBottomSheetState,
                 )
             }
+
             composable(route = NoteDestinations.Write.SELECT_WINE) {
+                val backStackEntry = rememberNavControllerBackStackEntry(
+                    entry = it,
+                    navController = appState.navController,
+                    graph = NoteDestinations.ROUTE
+                )
                 NoteWriteSelectWineScreen(
                     appState = appState,
+                    viewModel = hiltViewModel(backStackEntry),
                     wineyBottomSheetState = wineyBottomSheetState,
                 )
             }

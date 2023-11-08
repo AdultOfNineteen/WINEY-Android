@@ -138,6 +138,7 @@ fun NoteWineSearchScreen(
                         name = it.name,
                         origin = it.country,
                         onClick = {
+                            viewModel.updateSelectedWine(it)
                             appState.navigate(NoteDestinations.Write.SELECT_WINE)
                         }
                     )

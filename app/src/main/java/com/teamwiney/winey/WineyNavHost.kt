@@ -30,8 +30,8 @@ import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.HomeViewModel
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
+import com.teamwiney.noteGraph
 import com.teamwiney.notecollection.NoteViewModel
-import com.teamwiney.notecollection.noteGraph
 import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme

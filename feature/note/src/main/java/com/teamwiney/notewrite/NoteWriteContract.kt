@@ -27,6 +27,7 @@ class NoteWriteContract {
             )
         ),
         val searchWinesCount: Long = 0,
+        val selectedWine: SearchWine = SearchWine.default()
     ) : UiState
 
     sealed class Event : UiEvent {
