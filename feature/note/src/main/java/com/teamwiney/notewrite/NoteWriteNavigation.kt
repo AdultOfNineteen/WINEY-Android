@@ -42,5 +42,43 @@ fun NavGraphBuilder.noteWriteGraph(
                 wineyBottomSheetState = wineyBottomSheetState,
             )
         }
+
+        composable(route = NoteDestinations.Write.INFO_LEVEL) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoLevelScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
+        composable(route = NoteDestinations.Write.INFO_VINTAGE_AND_PRICE) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoVintageAndPriceScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
+        composable(route = NoteDestinations.Write.INFO_MEMO) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoMemoScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
+
     }
 }
