@@ -3,6 +3,7 @@ package com.teamwiney.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,6 +21,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,6 +48,7 @@ fun WTextField(
     onErrorState: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     maxLength: Int = 25,
+    placeholderTextAlign: TextAlign = TextAlign.Start,
 ) {
     val localColors = LocalColors.current
     val bottomLineColor = remember {
@@ -83,11 +86,13 @@ fun WTextField(
                     Box(Modifier.weight(1f)) {
                         if (value.isEmpty()) {
                             Text(
-                                placeholderText,
+                                modifier = Modifier.fillMaxWidth(),
+                                text = placeholderText,
                                 style = LocalTextStyle.current.copy(
                                     color = localColors.gray_800,
                                     fontSize = fontSize,
                                 ),
+                                textAlign = placeholderTextAlign,
                             )
                         }
                         innerTextField()
