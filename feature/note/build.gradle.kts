@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:common"))
     implementation(project(":data"))
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)

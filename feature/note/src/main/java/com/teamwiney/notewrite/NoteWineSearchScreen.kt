@@ -23,10 +23,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -64,6 +69,7 @@ fun NoteWineSearchScreen(
 
     val searchWines = uiState.searchWines.collectAsLazyPagingItems()
     val searchWinesRefreshState = searchWines.loadState.refresh
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(searchWinesRefreshState) {
         if (searchWinesRefreshState is LoadState.Error) {
@@ -97,11 +103,14 @@ fun NoteWineSearchScreen(
             appState = appState,
             searchKeyword = uiState.searchKeyword,
             onValueChange = viewModel::updateSearchKeyword,
-            onSearch = viewModel::getSearchWines
+            onSearch = {
+                viewModel.getSearchWines()
+                keyboardController?.hide()
+            }
         )
-        
+
         HeightSpacer(height = 8.dp)
-        
+
         Text(
             modifier = Modifier.padding(horizontal = 24.dp),
             text = buildAnnotatedString {
@@ -113,7 +122,7 @@ fun NoteWineSearchScreen(
             color = WineyTheme.colors.gray_50,
             style = WineyTheme.typography.headline
         )
-        
+
         HeightSpacerWithLine(
             modifier = Modifier.padding(top = 20.dp),
             color = WineyTheme.colors.gray_900
@@ -146,6 +155,7 @@ fun NoteWineSearchScreen(
             }
         }
     }
+
 }
 
 @Composable
@@ -155,6 +165,12 @@ fun WineSearchTopBar(
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit
 ) {
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+
+    LaunchedEffect(key1 = Unit) {
+        focusRequester.requestFocus()
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,7 +188,9 @@ fun WineSearchTopBar(
                 .clickable { appState.navController.navigateUp() }
         )
         WineSearchTextField(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .focusRequester(focusRequester = focusRequester),
             value = searchKeyword,
             onValueChange = onValueChange,
             placeholderText = "기록할 와인을 검색해주세요!",
