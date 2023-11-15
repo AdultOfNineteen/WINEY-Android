@@ -57,6 +57,9 @@ object NoteDestinations {
         const val SELECT_WINE = "selectWine"
         const val INFO_LEVEL = "infoLevel"
         const val INFO_MEMO = "infoMemo"
+        const val INFO_COLOR_SMELL = "infoColorSmell"
+        const val INFO_STANDARD_SMELL = "infoStandardSmell"
+        const val INFO_FLAVOR = "infoFlavor"
         const val INFO_VINTAGE_AND_PRICE = "infoVintageAndPrice"
     }
 

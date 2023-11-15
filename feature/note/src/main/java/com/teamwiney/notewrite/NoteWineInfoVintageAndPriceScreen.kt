@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,7 +19,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,7 +29,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -45,14 +41,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.design.R
-import com.teamwiney.notewrite.components.NoteBackgroundSurface
-import com.teamwiney.ui.components.HeightSpacer
-import com.teamwiney.ui.components.HeightSpacerWithLine
-import com.teamwiney.ui.components.NumberPicker
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
-import com.teamwiney.ui.components.WTextField
 import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
@@ -182,7 +172,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                 enableTextColor = WineyTheme.colors.gray_50,
                 enabled = price.isNotEmpty() && vintage.isNotEmpty(),
                 onClick = {
-                    appState.navController.navigate(NoteDestinations.Write.INFO_MEMO)
+                    appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                 }
             )
         }

@@ -67,6 +67,42 @@ fun NavGraphBuilder.noteWriteGraph(
             )
         }
 
+        composable(route = NoteDestinations.Write.INFO_COLOR_SMELL) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoColorAndSmellScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
+        composable(route = NoteDestinations.Write.INFO_FLAVOR) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoFlavorScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
+        composable(route = NoteDestinations.Write.INFO_STANDARD_SMELL) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
+            NoteWineInfoStandardFlavorScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
+        }
+
         composable(route = NoteDestinations.Write.INFO_MEMO) {
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
