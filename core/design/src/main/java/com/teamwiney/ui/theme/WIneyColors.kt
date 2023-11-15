@@ -11,7 +11,7 @@ class WineyColors(
     main_2: Color = Color(0xFF774BFF),
     main_3: Color = Color(0xFFAC8FFE),
     point_1: Color = Color(0xFF4B2EFF),
-    point_2: Color = Color.White,
+    point_2: Color = Color(0xFFF1ECFF),
     error: Color = Color(0xFFFF2633),
     background_1: Color = Color(0xFF1F2126),
     gray_50: Color = Color(0xFFFFFFFF),
