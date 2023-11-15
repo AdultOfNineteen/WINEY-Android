@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,12 +29,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -45,6 +53,8 @@ import com.teamwiney.ui.components.NumberPicker
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.WTextField
+import com.teamwiney.ui.components.bottomBorder
+import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
 
 @Preview
@@ -93,7 +103,7 @@ fun NoteWineInfoVintageAndPriceScreen(
             )
 
 
-            WTextField(
+            WineInfoTextField(
                 value = vintage, onValueChanged = { vintage = it },
                 placeholderText = "ex) 1990",
                 trailingIcon = {
@@ -107,11 +117,14 @@ fun NoteWineInfoVintageAndPriceScreen(
                     .padding(horizontal = 90.dp)
                     .focusRequester(focusRequester = focusRequester),
                 placeholderTextAlign = TextAlign.Center,
-                textAlign = Alignment.Center,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next,keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
                 keyboardActions = KeyboardActions(onNext = {
                     focusRequester2.requestFocus()
                 }),
+                maxLength = 4
             )
 
             Text(
@@ -123,7 +136,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            WTextField(
+            WineInfoTextField(
                 value = price, onValueChanged = { price = it },
                 placeholderText = "ex) 30000",
                 trailingIcon = {
@@ -137,9 +150,12 @@ fun NoteWineInfoVintageAndPriceScreen(
                     .padding(horizontal = 90.dp)
                     .focusRequester(focusRequester2),
                 placeholderTextAlign = TextAlign.Center,
-                textAlign = Alignment.Center,
-                keyboardOptions = KeyboardOptions(imeAction=ImeAction.Done, keyboardType = KeyboardType.Number),
-                keyboardActions = KeyboardActions(onDone = null)
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Number
+                ),
+                keyboardActions = KeyboardActions(onDone = null),
+                maxLength = 7
             )
         }
 
@@ -170,5 +186,88 @@ fun NoteWineInfoVintageAndPriceScreen(
                 }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun WineInfoTextField(
+    value: String = "asdasd",
+    onValueChanged: (String) -> Unit = {},
+    modifier: Modifier = Modifier,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    placeholderText: String = "",
+    fontSize: TextUnit = 16.sp,
+    focusRequest: FocusRequester? = null,
+    keyboardOptions: KeyboardOptions? = null,
+    keyboardActions: KeyboardActions? = null,
+    onFocusedChange: (Boolean) -> Unit = {},
+    onErrorState: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    maxLength: Int = 25,
+    placeholderTextAlign: TextAlign = TextAlign.Center,
+) {
+    val localColors = LocalColors.current
+    val bottomLineColor = remember {
+        mutableStateOf(localColors.gray_800)
+    }
+
+    Column(modifier = modifier) {
+        BasicTextField(
+            modifier = Modifier
+                .onFocusChanged {
+                    onFocusedChange(it.isFocused)
+                    if (it.isFocused) {
+                        bottomLineColor.value = localColors.gray_50
+                    } else {
+                        bottomLineColor.value = localColors.gray_800
+                    }
+                }
+                .bottomBorder(1.dp, if (onErrorState) localColors.error else bottomLineColor.value)
+                .focusRequester(focusRequest ?: FocusRequester()),
+            value = value,
+            onValueChange = {
+                if (it.length <= maxLength) onValueChanged(it)
+            },
+            singleLine = true,
+            cursorBrush = SolidColor(Color.White),
+            textStyle = WineyTheme.typography.bodyM1.copy(
+                color = localColors.gray_50,
+                textAlign = TextAlign.Center
+            ),
+            keyboardOptions = keyboardOptions ?: KeyboardOptions(),
+            keyboardActions = keyboardActions ?: KeyboardActions(),
+            decorationBox = { innerTextField ->
+                Box(
+                    Modifier
+                        .padding(0.dp, 9.dp)
+                        .fillMaxWidth()
+                ) {
+                    if (value.isEmpty()) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = placeholderText,
+                            style = LocalTextStyle.current.copy(
+                                color = localColors.gray_800,
+                                fontSize = fontSize,
+                            ),
+                            textAlign = placeholderTextAlign,
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        innerTextField()
+                    }
+                    if (trailingIcon != null) Box(modifier = Modifier.align(Alignment.CenterEnd)) {
+                        trailingIcon()
+                    }
+                }
+            },
+            visualTransformation = visualTransformation,
+        )
     }
 }
