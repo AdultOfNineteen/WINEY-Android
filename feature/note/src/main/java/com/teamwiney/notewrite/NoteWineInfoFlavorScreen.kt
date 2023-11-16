@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
@@ -69,6 +70,7 @@ fun NoteWineInfoFlavorScreen(
                     }
                 )
             }
+            HeightSpacer(30.dp)
             // TODO 동천의 슬라이드
             Text(
                 text = "산도",
