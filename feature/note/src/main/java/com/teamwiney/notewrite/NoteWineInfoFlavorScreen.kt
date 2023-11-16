@@ -42,7 +42,7 @@ fun NoteWineInfoFlavorScreen(
             .navigationBarsPadding()
     ) {
         TopBar(content = "와인 정보 입력") {
-            // appState.navController.navigateUp()
+            appState.navController.navigateUp()
         }
         Column(
             modifier = Modifier
@@ -65,11 +65,19 @@ fun NoteWineInfoFlavorScreen(
                     color = WineyTheme.colors.gray_500,
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.clickable {
-                        // appState.navController.navigate(NoteDestinations.NOTE_WRITE_FLAVOR_STANDARD)
+                        appState.navController.navigate(NoteDestinations.Write.INFO_STANDARD_FLAVOR)
                     }
                 )
             }
+            // TODO 동천의 슬라이드
+            Text(
+                text = "산도",
+                style = WineyTheme.typography.bodyB1,
+                color = WineyTheme.colors.gray_500
+            )
         }
+
+
         Row(
             modifier = Modifier
                 .padding(horizontal = 24.dp)

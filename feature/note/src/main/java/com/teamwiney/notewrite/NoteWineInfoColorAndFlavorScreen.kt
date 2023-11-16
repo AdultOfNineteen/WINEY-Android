@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -70,7 +71,7 @@ private data class WineSmell(
 
 private data class WineSmellOption(
     val name: String,
-    val isSelected: Boolean = false
+    var isSelected: Boolean = false
 )
 
 
@@ -148,6 +149,21 @@ fun NoteWineInfoColorAndSmellScreen(
             HeightSpacer(35.dp)
             WineFavorPicker(
                 wineSmells = wineSmells,
+                updateWineSmell = { wineSmellOption ->
+                    wineSmells.find { it.options.any { it.name == wineSmellOption.name } }
+                        ?.let { wineSmell ->
+                            val index = wineSmells.indexOfFirst { it.title == wineSmell.title }
+                            wineSmells[index] = wineSmell.copy(
+                                options = wineSmell.options.map {
+                                    if (it.name == wineSmellOption.name) {
+                                        wineSmellOption
+                                    } else {
+                                        it
+                                    }
+                                }
+                            )
+                        }
+                },
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
                 }
@@ -176,7 +192,10 @@ fun NoteWineInfoColorAndSmellScreen(
 }
 
 @Composable
-private fun WineFavorPicker(wineSmells: List<WineSmell>, navigateToStandardSmell: () -> Unit) {
+private fun WineFavorPicker(
+    wineSmells: List<WineSmell>,
+    updateWineSmell: (WineSmellOption) -> Unit = {}, navigateToStandardSmell: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -223,15 +242,18 @@ private fun WineFavorPicker(wineSmells: List<WineSmell>, navigateToStandardSmell
         Column(
             verticalArrangement = Arrangement.spacedBy(25.dp)
         ) {
-            wineSmells.forEach() {
-                WineSmellContainer(wineSmell = it)
+            wineSmells.forEach {
+                WineSmellContainer(wineSmell = it, updateWineSmell = updateWineSmell)
             }
         }
     }
 }
 
 @Composable
-private fun WineSmellContainer(wineSmell: WineSmell) {
+private fun WineSmellContainer(
+    wineSmell: WineSmell,
+    updateWineSmell: (WineSmellOption) -> Unit = {}
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
@@ -249,7 +271,10 @@ private fun WineSmellContainer(wineSmell: WineSmell) {
             wineSmell.options.forEach {
                 NoteFeatureText(
                     name = it.name,
-                )
+                    enable = it.isSelected,
+                ) {
+                    updateWineSmell(it.copy(isSelected = !it.isSelected))
+                }
             }
             Spacer(modifier = Modifier.width(14.dp))
         }
