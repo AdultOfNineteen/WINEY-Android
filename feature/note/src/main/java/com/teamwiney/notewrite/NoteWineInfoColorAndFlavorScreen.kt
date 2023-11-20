@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,9 +26,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.SpanStyle
@@ -56,6 +57,7 @@ import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations.Write.INFO_STANDARD_SMELL
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.notedetail.component.NoteFeatureText
+import com.teamwiney.ui.components.ColorSlider
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -125,6 +127,11 @@ fun NoteWineInfoColorAndSmellScreen(
         )
     }
 
+    val startColor = Color.Red
+    val endColor = Color.White
+    var currentColor by remember { mutableStateOf(startColor) }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -145,7 +152,11 @@ fun NoteWineInfoColorAndSmellScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
         ) {
-            WineColorPicker()
+            WineColorPicker(
+                currentColor = currentColor,
+                startColor = startColor,
+                endColor = endColor
+            ) { currentColor = it }
             HeightSpacer(35.dp)
             WineFavorPicker(
                 wineSmells = wineSmells,
@@ -282,7 +293,12 @@ private fun WineSmellContainer(
 }
 
 @Composable
-private fun WineColorPicker() {
+private fun WineColorPicker(
+    currentColor: Color,
+    startColor: Color,
+    endColor: Color,
+    updateCurrentColor: (Color) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -308,29 +324,37 @@ private fun WineColorPicker() {
         ) {
             Box(
                 modifier = Modifier
-                    .size(41.dp)
-                    .blur(5.dp),
+                    .fillMaxSize()
+                    .background(WineyTheme.colors.background_1),
                 contentAlignment = Alignment.Center
             ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(5.dp)
-                        .clip(CircleShape)
-                        .background(
-                            color = Color(0xFFEC7CA4).copy(0.5f),
-                            shape = CircleShape
-                        )
-                )
-            }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    Spacer(
+                        modifier = Modifier
+                            .background(
+                                brush = Brush.radialGradient(
+                                    listOf(
+                                        currentColor,
+                                        Color.Transparent
+                                    )
+                                ),
+                                shape = CircleShape
+                            )
+                            .size(48.dp)
+                    )
 
-            // TODO 컬러 수정
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(Color(0xFFEC7CA4))
-            )
+                    ColorSlider(
+                        onValueChange = updateCurrentColor,
+                        startColor = startColor,
+                        endColor = endColor,
+                        trackHeight = 10.dp,
+                        thumbSize = 22.dp
+                    )
+                }
+            }
         }
     }
 }

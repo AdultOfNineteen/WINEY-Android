@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -100,6 +101,8 @@ fun NoteWineInfoMemoScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp)
+                .weight(1f)
+                .verticalScroll(rememberScrollState()),
         ) {
             Text(
                 text = "마지막이에요!",
@@ -295,22 +298,21 @@ fun NoteWineInfoMemoScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
-
-            WButton(
-                text = "작성완료",
-                modifier = Modifier
-                    .padding(bottom = 40.dp),
-                enableBackgroundColor = WineyTheme.colors.main_2,
-                disableBackgroundColor = WineyTheme.colors.gray_900,
-                disableTextColor = WineyTheme.colors.gray_600,
-                enableTextColor = WineyTheme.colors.gray_50,
-                enabled = score != 0 && repurchase != null,
-                onClick = {
-                    // TODO 작성 완료 화면 이동
-                }
-            )
         }
 
+        WButton(
+            text = "작성완료",
+            modifier = Modifier
+                .padding(bottom = 40.dp)
+                .padding(horizontal = 20.dp),
+            enableBackgroundColor = WineyTheme.colors.main_2,
+            disableBackgroundColor = WineyTheme.colors.gray_900,
+            disableTextColor = WineyTheme.colors.gray_600,
+            enableTextColor = WineyTheme.colors.gray_50,
+            enabled = score != 0 && repurchase != null,
+            onClick = {
+                // TODO 작성 완료 화면 이동
+            }
+        )
     }
 }
