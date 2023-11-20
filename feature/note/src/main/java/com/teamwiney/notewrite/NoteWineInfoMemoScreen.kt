@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalGlideComposeApi::class)
+@file:OptIn(ExperimentalGlideComposeApi::class, ExperimentalGlideComposeApi::class)
 
 package com.teamwiney.notewrite
 
@@ -53,6 +53,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.teamwiney.core.common.WineyAppState
@@ -70,17 +71,11 @@ fun NoteWineInfoMemoScreen(
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 
-    var wineMemo by remember { mutableStateOf("") }
-    val selectedImage = remember { mutableStateListOf<Uri?>() }
-    var repurchase by remember { mutableStateOf<Boolean?>(null) }
-    var score by remember { mutableIntStateOf(0) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
         onResult = { uris ->
-            selectedImage.apply {
-                clear()
-                addAll(uris)
-            }
+            viewModel.updateUris(uris)
         }
     )
 
@@ -136,7 +131,7 @@ fun NoteWineInfoMemoScreen(
                     .padding(vertical = 15.dp)
                     .horizontalScroll(rememberScrollState())
             ) {
-                selectedImage.map {
+                uiState.wineNote.imgs.map {
                     Box {
                         GlideImage(
                             model = it,
@@ -154,7 +149,7 @@ fun NoteWineInfoMemoScreen(
                                 .padding(7.dp)
                                 .align(Alignment.TopEnd)
                                 .clickable {
-                                    selectedImage.remove(it)
+                                    viewModel.removeUri(it)
                                 }
                                 .size(18.dp),
                             tint = Color.Unspecified
@@ -210,8 +205,8 @@ fun NoteWineInfoMemoScreen(
                     )
             ) {
                 BasicTextField(
-                    value = wineMemo,
-                    onValueChange = { wineMemo = it },
+                    value = uiState.wineNote.memo,
+                    onValueChange = viewModel::updateMemo,
                     modifier = Modifier
                         .padding(14.dp)
                         .fillMaxWidth()
@@ -221,7 +216,7 @@ fun NoteWineInfoMemoScreen(
                     ),
                     decorationBox = { innerTextField ->
                         Box {
-                            if (wineMemo.isEmpty()) {
+                            if (uiState.wineNote.memo.isEmpty()) {
                                 androidx.compose.material3.Text(
                                     modifier = Modifier.fillMaxWidth(),
                                     text = "와인에 대한 생각을 작성해주세요 :)",
@@ -263,12 +258,12 @@ fun NoteWineInfoMemoScreen(
                 ) {
                     repeat(5) {
                         Icon(
-                            painter = painterResource(id = if (score > it) R.drawable.ic_wine_fill_30 else R.drawable.ic_wine_unfill_30),
+                            painter = painterResource(id = if (uiState.wineNote.rating > it) R.drawable.ic_wine_fill_30 else R.drawable.ic_wine_unfill_30),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
                                 .clickable {
-                                    score = it + 1
+                                    viewModel.updateRating(it + 1)
                                 },
                             tint = Color.Unspecified
                         )
@@ -290,11 +285,11 @@ fun NoteWineInfoMemoScreen(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    NoteFeatureText(name = "있어요", enable = repurchase == true) {
-                        repurchase = true
+                    NoteFeatureText(name = "있어요", enable = uiState.wineNote.buyAgain == true) {
+                        viewModel.updateBuyAgain(true)
                     }
-                    NoteFeatureText(name = "없어요", enable = repurchase == false) {
-                        repurchase = false
+                    NoteFeatureText(name = "없어요", enable = uiState.wineNote.buyAgain == false) {
+                        viewModel.updateBuyAgain(false)
                     }
                 }
             }
@@ -309,7 +304,7 @@ fun NoteWineInfoMemoScreen(
             disableBackgroundColor = WineyTheme.colors.gray_900,
             disableTextColor = WineyTheme.colors.gray_600,
             enableTextColor = WineyTheme.colors.gray_50,
-            enabled = score != 0 && repurchase != null,
+            enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null,
             onClick = {
                 // TODO 작성 완료 화면 이동
             }

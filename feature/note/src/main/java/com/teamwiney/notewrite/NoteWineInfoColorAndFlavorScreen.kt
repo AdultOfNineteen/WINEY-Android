@@ -33,8 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -66,12 +64,12 @@ import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
 
-private data class WineSmell(
+data class WineSmell(
     val title: String,
     val options: List<WineSmellOption>,
 )
 
-private data class WineSmellOption(
+data class WineSmellOption(
     val name: String,
     var isSelected: Boolean = false
 )
@@ -126,11 +124,9 @@ fun NoteWineInfoColorAndSmellScreen(
             ),
         )
     }
-
     val startColor = Color.Red
     val endColor = Color.White
     var currentColor by remember { mutableStateOf(startColor) }
-
 
     Column(
         modifier = Modifier
@@ -195,6 +191,10 @@ fun NoteWineInfoColorAndSmellScreen(
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
+                    // TODO 컬러 파싱 어떻게?
+                    viewModel.updateColor(currentColor.toString())
+                    viewModel.updateSmellKeywordList(
+                        wineSmells.map { it.options }.flatten().filter { it.isSelected })
                     appState.navController.navigate(NoteDestinations.Write.INFO_FLAVOR)
                 }
             )

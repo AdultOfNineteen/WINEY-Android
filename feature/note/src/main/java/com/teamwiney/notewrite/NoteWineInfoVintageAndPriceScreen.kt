@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -54,8 +55,7 @@ fun NoteWineInfoVintageAndPriceScreen(
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 
-    var vintage by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusRequester2 by remember { mutableStateOf(FocusRequester()) }
 
@@ -94,7 +94,8 @@ fun NoteWineInfoVintageAndPriceScreen(
 
 
             WineInfoTextField(
-                value = vintage, onValueChanged = { vintage = it },
+                value = uiState.wineNote.vintage,
+                onValueChanged = { viewModel.updateVintage(it) },
                 placeholderText = "ex) 1990",
                 trailingIcon = {
                     Text(
@@ -127,7 +128,7 @@ fun NoteWineInfoVintageAndPriceScreen(
             )
 
             WineInfoTextField(
-                value = price, onValueChanged = { price = it },
+                value = uiState.wineNote.price, onValueChanged = { viewModel.updatePrice(it) },
                 placeholderText = "ex) 30000",
                 trailingIcon = {
                     Text(
@@ -170,7 +171,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
-                enabled = price.isNotEmpty() && vintage.isNotEmpty(),
+                enabled = uiState.wineNote.price.isNotEmpty() && uiState.wineNote.vintage.isNotEmpty(),
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                 }

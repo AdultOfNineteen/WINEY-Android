@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -49,6 +50,7 @@ fun NoteWineInfoLevelScreen(
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val systemUiController = rememberSystemUiController()
 
     DisposableEffect(key1 = Unit) {
@@ -124,12 +126,11 @@ fun NoteWineInfoLevelScreen(
                 color = WineyTheme.colors.gray_50,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            // TODO 넘버피커
-            var value by remember { mutableIntStateOf(20) }
+
             NumberPicker(
-                value = 12,
+                value = uiState.wineNote.alcohol,
                 onValueChange = {
-                    value = it
+                    viewModel.updateAlcohol(it)
                 },
                 range = 0..40,
                 textStyle = WineyTheme.typography.title1.copy(

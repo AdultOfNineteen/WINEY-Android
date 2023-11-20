@@ -8,6 +8,7 @@ import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.data.network.model.response.SearchWine
+import com.teamwiney.notewrite.model.WineNote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -27,7 +28,8 @@ class NoteWriteContract {
             )
         ),
         val searchWinesCount: Long = 0,
-        val selectedWine: SearchWine = SearchWine.default()
+        val selectedWine: SearchWine = SearchWine.default(),
+        val wineNote: WineNote = WineNote.default(),
     ) : UiState
 
     sealed class Event : UiEvent {
@@ -42,5 +44,5 @@ class NoteWriteContract {
 
         data class ShowSnackBar(val message: String) : Effect()
     }
-    
+
 }

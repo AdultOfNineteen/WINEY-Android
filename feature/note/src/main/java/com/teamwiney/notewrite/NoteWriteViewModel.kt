@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -9,6 +10,7 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.wine.WineRepository
+import com.teamwiney.notewrite.model.SmellKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
@@ -31,6 +33,53 @@ class NoteWriteViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+
+    fun updateVintage(vintage: String) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))
+    }
+
+    fun updateAlcohol(alcohol: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(alcohol = alcohol)))
+    }
+
+    fun updatePrice(price: String) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(price = price)))
+    }
+
+    fun updateColor(color: String) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(color = color)))
+    }
+
+    fun updateSmellKeywordList(smellKeywordList: List<WineSmellOption>) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(smellKeywordList = smellKeywordList.mapNotNull {
+            SmellKeyword.find(
+                it.name
+            )
+        })))
+    }
+
+    fun updateUris(uris: List<Uri>) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(imgs = uris)))
+    }
+
+    fun removeUri(uri: Uri) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(imgs = currentState.wineNote.imgs.filter {
+            it != uri
+        })))
+    }
+
+    fun updateMemo(memo: String) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(memo = memo)))
+    }
+
+    fun updateRating(rating: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(rating = rating)))
+    }
+
+    fun updateBuyAgain(buyAgain: Boolean) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(buyAgain = buyAgain)))
     }
 
     fun getSearchWines() = viewModelScope.launch {
@@ -83,12 +132,12 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
-
     fun updateSearchKeyword(searchKeyword: String) = viewModelScope.launch {
         updateState(currentState.copy(searchKeyword = searchKeyword))
     }
 
     fun updateSelectedWine(wine: SearchWine) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(wineId = wine.wineId)))
         updateState(currentState.copy(selectedWine = wine))
     }
 
