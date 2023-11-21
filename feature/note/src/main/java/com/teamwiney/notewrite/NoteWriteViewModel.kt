@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.FileUtils.copy
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,7 +15,9 @@ import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
+import com.teamwiney.data.util.fileFromContentUri
 import com.teamwiney.data.util.getFileExtension
+import com.teamwiney.data.util.toPlainRequestBody
 import com.teamwiney.notewrite.model.SmellKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -90,6 +93,7 @@ class NoteWriteViewModel @Inject constructor(
             smellKeywordList = smellKeywordList,
             multipartFiles = multipartFiles
         ).collectLatest {
+            Log.i("NoteWriteViewModel", "writeTastingNote: $it")
             when (it) {
                 is ApiResult.ApiError -> TODO()
                 is ApiResult.NetworkError -> TODO()
@@ -105,35 +109,6 @@ class NoteWriteViewModel @Inject constructor(
             MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
         }
     }
-
-    private fun fileFromContentUri(context: Context, contentUri: Uri): File {
-        val fileExtension = getFileExtension(context, contentUri)
-        val fileName = "temp_file" + if (fileExtension != null) ".$fileExtension" else ""
-
-        val tempFile = File(context.cacheDir, fileName)
-        tempFile.createNewFile()
-        try {
-            val oStream = FileOutputStream(tempFile)
-            val inputStream = context.contentResolver.openInputStream(contentUri)
-
-            inputStream?.let {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    copy(inputStream, oStream)
-                } else {
-                    TODO("VERSION.SDK_INT < Q")
-                }
-            }
-
-            oStream.flush()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return tempFile
-    }
-
-    private fun String.toPlainRequestBody() =
-        requireNotNull(this).toRequestBody("text/plain".toMediaType())
 
     fun updateVintage(vintage: String) = viewModelScope.launch {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))

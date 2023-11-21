@@ -1,7 +1,5 @@
 package com.teamwiney.data.util
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
@@ -47,8 +45,3 @@ private fun copy(source: InputStream, target: OutputStream) {
     }
 }
 
-fun Context.copyToClipboard(text: CharSequence) {
-    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText("label", text)
-    clipboard.setPrimaryClip(clip)
-}
