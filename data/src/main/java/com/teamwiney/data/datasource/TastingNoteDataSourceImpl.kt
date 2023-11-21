@@ -9,11 +9,14 @@ import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
+import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import com.teamwiney.data.network.service.TastingNoteService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class TastingNoteDataSourceImpl @Inject constructor(
@@ -61,4 +64,19 @@ class TastingNoteDataSourceImpl @Inject constructor(
         flow {
             emit(tastingNoteService.deleteTastingNote(noteId))
         }.flowOn(ioDispatcher)
+
+    override fun postTastingNote(
+        wineNoteWriteRequest: HashMap<String, RequestBody>,
+        smellKeywordList: List<MultipartBody.Part>,
+        multipartFiles: List<MultipartBody.Part>
+    ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>> = flow {
+        emit(
+            tastingNoteService.postTastingNote(
+                wineNoteWriteRequest,
+                smellKeywordList,
+                multipartFiles
+            )
+        )
+    }.flowOn(ioDispatcher)
+
 }

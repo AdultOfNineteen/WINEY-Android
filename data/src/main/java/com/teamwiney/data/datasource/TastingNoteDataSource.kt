@@ -7,7 +7,11 @@ import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
+import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Part
 
 interface TastingNoteDataSource {
 
@@ -26,4 +30,10 @@ interface TastingNoteDataSource {
 
     fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<ResponseWrapper<String>>>
+
+    fun postTastingNote(
+        wineNoteWriteRequest: HashMap<String, RequestBody>,
+        smellKeywordList: List<MultipartBody.Part>,
+        multipartFiles: List<MultipartBody.Part>,
+    ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
 }

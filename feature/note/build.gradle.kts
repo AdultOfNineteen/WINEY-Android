@@ -59,6 +59,8 @@ dependencies {
         implementation(COMPOSE_UI_TOOLING)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(NAVIGATION_COMPOSE)
+        implementation(RETROFIT)
+        implementation(OKHTTP)
         implementation(HILT_ANDROID)
         implementation(HILT_NAVIGATION_COMPOSE)
         implementation(LIFECYCLE_RUNTIME_COMPOSE)

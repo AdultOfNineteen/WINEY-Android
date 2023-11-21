@@ -8,10 +8,18 @@ import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
+import com.teamwiney.data.network.model.response.TastingNoteIdRes
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.PrimitiveIterator.OfInt
 
 interface TastingNoteService {
 
@@ -45,4 +53,13 @@ interface TastingNoteService {
     suspend fun deleteTastingNote(
         @Path("noteId") noteId: Int
     ): ApiResult<BaseResponse>
+
+    /** 테이스팅 노트 작성 API */
+    @Multipart
+    @POST("/tasting-notes")
+    suspend fun postTastingNote(
+        @PartMap wineNoteWriteRequest: HashMap<String, RequestBody>,
+        @Part smellKeywordList: List<MultipartBody.Part>,
+        @Part multipartFiles: List<MultipartBody.Part>,
+    ): ApiResult<ResponseWrapper<TastingNoteIdRes>>
 }
