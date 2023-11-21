@@ -145,11 +145,14 @@ fun NoteWineInfoVintageAndPriceScreen(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Number
                 ),
-                keyboardActions = KeyboardActions(onDone = null),
+                keyboardActions = KeyboardActions(onDone = {
+                    if (uiState.wineNote.price.isNotEmpty() && uiState.wineNote.vintage.isNotEmpty()) {
+                        appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
+                    }
+                }),
                 maxLength = 7
             )
         }
-
 
         Row(
             modifier = Modifier.padding(horizontal = 24.dp),
