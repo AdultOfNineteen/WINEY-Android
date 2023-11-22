@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,19 +18,12 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 @Preview
 fun WineTasteSlider(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp),
-    score: Int = 1,
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    score: Int = 0,
     onValueChange: (Int) -> Unit = { },
     title: String = "당도",
     subTitle: String = "단맛의 정도"
 ) {
-
-    var level by remember {
-        mutableStateOf<Int?>(null)
-    }
-
     Column(modifier = modifier) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp),

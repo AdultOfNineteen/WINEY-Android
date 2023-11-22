@@ -74,8 +74,6 @@ fun ScoreSelector(
                         .background(
                             color = if (i > value) {
                                 WineyTheme.colors.gray_800
-                            } else if (value == range.first() && i == range.first()) {
-                                WineyTheme.colors.gray_800
                             } else {
                                WineyTheme.colors.main_2
                             },

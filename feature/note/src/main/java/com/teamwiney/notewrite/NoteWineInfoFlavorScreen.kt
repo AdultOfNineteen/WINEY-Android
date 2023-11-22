@@ -14,6 +14,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.notewrite.components.WineTasteSlider
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -42,6 +47,13 @@ fun NoteWineInfoFlavorScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
+        var sweetness by remember { mutableIntStateOf(0) }
+        var acidity by remember { mutableIntStateOf(0) }
+        var body by remember { mutableIntStateOf(0) }
+        var tannins by remember { mutableIntStateOf(0) }
+        var alcohol by remember { mutableIntStateOf(0) }
+        var finish by remember { mutableIntStateOf(0) }
+
         TopBar(content = "와인 정보 입력") {
             appState.navController.navigateUp()
         }
@@ -71,14 +83,49 @@ fun NoteWineInfoFlavorScreen(
                 )
             }
             HeightSpacer(30.dp)
-            // TODO 동천의 슬라이드
-            Text(
-                text = "산도",
-                style = WineyTheme.typography.bodyB1,
-                color = WineyTheme.colors.gray_500
+            WineTasteSlider(
+                score = sweetness,
+                onValueChange = { sweetness = it },
+                title = "당도",
+                subTitle = "단맛의 정도",
             )
+            HeightSpacer(30.dp)
+            WineTasteSlider(
+                score = acidity,
+                onValueChange = { acidity = it },
+                title = "산도",
+                subTitle = "신맛의 정도"
+            )
+            HeightSpacer(30.dp)
+            WineTasteSlider(
+                score = body,
+                onValueChange = { body = it },
+                title = "바디",
+                subTitle = "농도와 질감의 정도"
+            )
+            HeightSpacer(30.dp)
+            WineTasteSlider(
+                score = tannins,
+                onValueChange = { tannins = it },
+                title = "탄닌",
+                subTitle = "떫고 씁쓸함의 정도"
+            )
+            HeightSpacer(30.dp)
+            WineTasteSlider(
+                score = alcohol,
+                onValueChange = { alcohol = it },
+                title = "알코올",
+                subTitle = "알코올 세기의 정도"
+            )
+            HeightSpacer(30.dp)
+            WineTasteSlider(
+                score = finish,
+                onValueChange = { finish = it },
+                title = "여운",
+                subTitle = "마신 후 맛과 항야 지속되는 정도"
+            )
+            HeightSpacer(30.dp)
         }
-
 
         Row(
             modifier = Modifier
