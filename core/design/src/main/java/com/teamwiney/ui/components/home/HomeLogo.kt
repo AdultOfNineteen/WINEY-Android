@@ -52,13 +52,14 @@ fun HomeLogo(
 
             AnalysisButton(
                 modifier = Modifier.onGloballyPositioned { coordinates ->
-                    buttonHeight = density.run { coordinates.size.height / 2 + 12.dp.roundToPx() }
+                    buttonHeight = density.run { coordinates.size.height / 2 + 6.dp.roundToPx() }
                 },
                 onClick = onClick
             )
             if (hintPopupOpen) {
                 HintPopUp(
-                    offset = IntOffset(0, buttonHeight)
+                    offset = IntOffset(0, buttonHeight),
+                    text = "나에게 맞는 와인을 분석해줘요!"
                 )
             }
         }
