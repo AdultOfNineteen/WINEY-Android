@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,17 +28,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.notewrite.components.NoteBackgroundSurface
+import com.teamwiney.notewrite.components.NoteDeleteBottomSheet
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.HintPopUp
@@ -45,15 +46,22 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteWineInfoLevelScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
+    appState: WineyAppState,
+    bottomSheetState: WineyBottomSheetState,
+    viewModel: NoteWriteViewModel
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val systemUiController = rememberSystemUiController()
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     DisposableEffect(key1 = Unit) {
         systemUiController.setSystemBarsColor(
@@ -165,6 +173,23 @@ fun NoteWineInfoLevelScreen(
                             },
                         text = "건너뛰기",
                         enableBackgroundColor = WineyTheme.colors.gray_950,
+                        onClick = {
+                            bottomSheetState.showBottomSheet {
+                                NoteDeleteBottomSheet(
+                                    onConfirm = {
+                                        bottomSheetState.hideBottomSheet()
+                                        appState.navigate(NoteDestinations.ROUTE) {
+                                            popUpTo(NoteDestinations.Write.ROUTE) {
+                                                inclusive = true
+                                            }
+                                        }
+                                    },
+                                    onCancel = {
+                                        bottomSheetState.hideBottomSheet()
+                                    }
+                                )
+                            }
+                        }
                     )
                     if (uiState.hintPopupOpen) {
                         HintPopUp(

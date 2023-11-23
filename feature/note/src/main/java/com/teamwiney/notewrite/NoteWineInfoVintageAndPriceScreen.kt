@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -41,11 +43,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.notewrite.components.NoteDeleteBottomSheet
 import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -53,16 +55,23 @@ import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteWineInfoVintageAndPriceScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
+    appState: WineyAppState,
+    bottomSheetState: WineyBottomSheetState,
+    viewModel: NoteWriteViewModel
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusRequester2 by remember { mutableStateOf(FocusRequester()) }
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     LaunchedEffect(key1 = Unit) {
         focusRequester.requestFocus()
@@ -179,6 +188,23 @@ fun NoteWineInfoVintageAndPriceScreen(
                         },
                     text = "건너뛰기",
                     enableBackgroundColor = WineyTheme.colors.gray_950,
+                    onClick = {
+                        bottomSheetState.showBottomSheet {
+                            NoteDeleteBottomSheet(
+                                onConfirm = {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(NoteDestinations.ROUTE) {
+                                        popUpTo(NoteDestinations.Write.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
+                                },
+                                onCancel = {
+                                    bottomSheetState.hideBottomSheet()
+                                }
+                            )
+                        }
+                    }
                 )
                 if (uiState.hintPopupOpen) {
                     HintPopUp(

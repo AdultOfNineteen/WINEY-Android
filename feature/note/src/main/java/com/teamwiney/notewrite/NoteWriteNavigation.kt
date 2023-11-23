@@ -51,6 +51,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoLevelScreen(
                 appState = appState,
+                bottomSheetState = wineyBottomSheetState,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }
@@ -63,6 +64,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoVintageAndPriceScreen(
                 appState = appState,
+                bottomSheetState = wineyBottomSheetState,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }
