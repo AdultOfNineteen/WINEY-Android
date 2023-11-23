@@ -14,6 +14,7 @@ import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.data.util.fileFromContentUri
+import com.teamwiney.data.util.resizeAndSaveImage
 import com.teamwiney.data.util.toPlainRequestBody
 import com.teamwiney.notewrite.model.SmellKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -81,7 +82,7 @@ class NoteWriteViewModel @Inject constructor(
         }
 
         /** TODO 이미지 파일 변환 */
-        val multipartFiles = convetProfileImageToMultipartFile()
+        val multipartFiles = convertImageToMultipartFile()
 
         tastingNoteRepository.postTastingNote(
             wineNoteWriteRequest = wineNoteWriteRequest,
@@ -97,11 +98,12 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
-    private fun convetProfileImageToMultipartFile(): List<MultipartBody.Part> {
+    private fun convertImageToMultipartFile(): List<MultipartBody.Part> {
         return currentState.wineNote.imgs.map {
-            val file = fileFromContentUri(context, it)
-            val requestBody: RequestBody = file.asRequestBody("image/*".toMediaType())
-            MultipartBody.Part.createFormData("multipartFile", file.name, requestBody)
+            val originalFile = fileFromContentUri(context, it)
+            val compressedFile = resizeAndSaveImage(context, originalFile)
+            val requestBody: RequestBody = compressedFile.asRequestBody("image/*".toMediaType())
+            MultipartBody.Part.createFormData("multipartFile", compressedFile.name, requestBody)
         }
     }
 
