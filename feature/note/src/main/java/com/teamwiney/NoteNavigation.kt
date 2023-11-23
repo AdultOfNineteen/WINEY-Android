@@ -21,7 +21,7 @@ import com.teamwiney.notewrite.noteWriteGraph
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
     noteViewModel: NoteViewModel,
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = NoteDestinations.ROUTE,
@@ -35,7 +35,7 @@ fun NavGraphBuilder.noteGraph(
             )
             NoteScreen(
                 appState = appState,
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 viewModel = noteViewModel,
             )
         }
@@ -64,13 +64,13 @@ fun NavGraphBuilder.noteGraph(
             NoteDetailScreen(
                 noteId = it.arguments?.getInt("noteId") ?: 0,
                 appState = appState,
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
             )
         }
 
         noteWriteGraph(
             appState = appState,
-            wineyBottomSheetState = wineyBottomSheetState
+            bottomSheetState = bottomSheetState
         )
     }
 }

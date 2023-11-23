@@ -1,5 +1,6 @@
 package com.teamwiney.auth.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,10 +36,10 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun SignUpFavoriteTasteScreen(
-    wineyBottomSheetState: WineyBottomSheetState,
+    bottomSheetState: WineyBottomSheetState,
     appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
@@ -46,6 +48,12 @@ fun SignUpFavoriteTasteScreen(
 
     val pagerState = rememberPagerState(pageCount = { uiState.favoriteTastes.size })
     val scope = rememberCoroutineScope()
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -61,10 +69,10 @@ fun SignUpFavoriteTasteScreen(
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
-                            wineyBottomSheetState.showBottomSheet {
+                            bottomSheetState.showBottomSheet {
                                 ReturnToLoginBottomSheet(
                                     onConfirm = {
-                                        wineyBottomSheetState.hideBottomSheet()
+                                        bottomSheetState.hideBottomSheet()
                                         appState.navigate(AuthDestinations.Login.ROUTE) {
                                             popUpTo(AuthDestinations.SignUp.ROUTE) {
                                                 inclusive = true
@@ -72,7 +80,7 @@ fun SignUpFavoriteTasteScreen(
                                         }
                                     },
                                     onCancel = {
-                                        wineyBottomSheetState.hideBottomSheet()
+                                        bottomSheetState.hideBottomSheet()
                                     }
                                 )
                             }

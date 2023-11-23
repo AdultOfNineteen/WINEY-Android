@@ -2,6 +2,7 @@
 
 package com.teamwiney.analysis
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,12 +42,17 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun AnalysisScreen(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     val pagerState = rememberPagerState(pageCount = { 2 })
 
@@ -69,9 +76,9 @@ fun AnalysisScreen(
         ) {
             when (it) {
                 0 -> AnalysisStartContent(
-                    wineyBottomSheetState::showBottomSheet,
+                    bottomSheetState::showBottomSheet,
                     hideBottomSheet = {
-                        wineyBottomSheetState.hideBottomSheet()
+                        bottomSheetState.hideBottomSheet()
                         appState.scope.launch {
                             pagerState.animateScrollToPage(1)
                         }

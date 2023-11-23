@@ -46,10 +46,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.notewrite.components.WineSearchTextField
 import com.teamwiney.ui.components.HeightSpacer
@@ -61,8 +59,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Preview
 fun NoteWineSearchScreen(
     appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
-    wineyBottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
+    viewModel: NoteWriteViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect

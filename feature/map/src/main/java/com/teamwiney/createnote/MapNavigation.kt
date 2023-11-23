@@ -13,7 +13,7 @@ import com.teamwiney.core.common.navigation.MapDestinations
 
 fun NavGraphBuilder.mapGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = MapDestinations.ROUTE,

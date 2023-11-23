@@ -45,7 +45,7 @@ fun NoteDetailScreen(
     appState: WineyAppState,
     noteId: Int = 0,
     viewModel: NoteDetailViewModel = hiltViewModel(),
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -53,7 +53,7 @@ fun NoteDetailScreen(
     LaunchedEffect(true) {
         viewModel.getNoteDetail(noteId)
         viewModel.effect.collectLatest { effect ->
-            wineyBottomSheetState.hideBottomSheet()
+            bottomSheetState.hideBottomSheet()
             when (effect) {
                 is NoteDetailContract.Effect.NavigateTo -> {
                     appState.navigate(effect.destination, effect.navOptions)
@@ -91,10 +91,10 @@ fun NoteDetailScreen(
                         .clip(CircleShape)
                         .size(28.dp)
                         .clickable {
-                            wineyBottomSheetState.showBottomSheet {
+                            bottomSheetState.showBottomSheet {
                                 NoteDetailBottomSheet(
-                                    showBottomSheet = wineyBottomSheetState::showBottomSheet,
-                                    hideBottomSheet = wineyBottomSheetState::hideBottomSheet,
+                                    showBottomSheet = bottomSheetState::showBottomSheet,
+                                    hideBottomSheet = bottomSheetState::hideBottomSheet,
                                     deleteNote = {
                                         viewModel.deleteNote(uiState.noteDetail.noteId.toInt())
                                     },

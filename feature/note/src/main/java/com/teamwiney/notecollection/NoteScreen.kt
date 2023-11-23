@@ -1,5 +1,6 @@
 package com.teamwiney.notecollection
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -65,17 +67,24 @@ import com.teamwiney.ui.components.home.HomeLogo
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteScreen(
     appState: WineyAppState,
     viewModel: NoteViewModel = hiltViewModel(),
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     val tastingNotes = uiState.tastingNotes.collectAsLazyPagingItems()
     val tastingNotesRefreshState = tastingNotes.loadState.refresh
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     LaunchedEffect(tastingNotesRefreshState) {
         if (tastingNotesRefreshState is LoadState.Error) {
@@ -130,7 +139,7 @@ fun NoteScreen(
             NoteFilterSection(
                 uiState = uiState,
                 viewModel = viewModel,
-                showBottomSheet = wineyBottomSheetState::showBottomSheet
+                showBottomSheet = bottomSheetState::showBottomSheet
             )
 
             if (uiState.tastingNotesCount == 0L) {

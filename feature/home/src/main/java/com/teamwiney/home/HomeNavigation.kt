@@ -6,13 +6,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
 
 
 fun NavGraphBuilder.homeGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState,
     homeViewModel: HomeViewModel,
 ) {
 

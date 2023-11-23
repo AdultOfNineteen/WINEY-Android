@@ -40,7 +40,7 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WineyNavHost() {
     val appState = rememberWineyAppState()
-    val wineyBottomSheetState = rememberWineyBottomSheetState()
+    val bottomSheetState = rememberWineyBottomSheetState()
     val navController = appState.navController
 
     // 메인화면 뷰 모델들
@@ -56,9 +56,9 @@ fun WineyNavHost() {
 
     ModalBottomSheetLayout(
         sheetContent = {
-            wineyBottomSheetState.bottomSheetContent.value?.invoke(this)
+            bottomSheetState.bottomSheetContent.value?.invoke(this)
         },
-        sheetState = wineyBottomSheetState.bottomSheetState,
+        sheetState = bottomSheetState.bottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp),
         modifier = Modifier.navigationBarsPadding()
     ) {
@@ -88,30 +88,29 @@ fun WineyNavHost() {
             ) {
                 authGraph(
                     appState = appState,
-                    wineyBottomSheetState = wineyBottomSheetState,
+                    bottomSheetState = bottomSheetState,
                     onInit = onInit
                 )
                 homeGraph(
                     appState = appState,
-                    wineyBottomSheetState = wineyBottomSheetState,
                     homeViewModel = homeViewModel,
                 )
                 mapGraph(
                     appState = appState,
-                    wineyBottomSheetState = wineyBottomSheetState,
+                    bottomSheetState = bottomSheetState,
                 )
                 noteGraph(
                     appState = appState,
                     noteViewModel = noteViewModel,
-                    wineyBottomSheetState = wineyBottomSheetState,
+                    bottomSheetState = bottomSheetState,
                 )
                 myPageGraph(
                     appState = appState,
-                    wineyBottomSheetState = wineyBottomSheetState,
+                    bottomSheetState = bottomSheetState,
                 )
                 analysisGraph(
                     appState = appState,
-                    wineyBottomSheetState = wineyBottomSheetState
+                    bottomSheetState = bottomSheetState
                 )
             }
         }

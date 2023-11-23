@@ -12,7 +12,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 
 fun NavGraphBuilder.authGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState,
+    bottomSheetState: WineyBottomSheetState,
     onInit: () -> Unit,
 ) {
     navigation(
@@ -33,7 +33,7 @@ fun NavGraphBuilder.authGraph(
 
         signUpGraph(
             appState = appState,
-            wineyBottomSheetState = wineyBottomSheetState,
+            bottomSheetState = bottomSheetState,
             onInit = onInit,
         )
     }

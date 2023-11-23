@@ -1,18 +1,18 @@
 package com.teamwiney.notewrite
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,12 +38,13 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 @Preview
 fun NoteWriteSelectWineScreen(
     appState: WineyAppState = rememberWineyAppState(),
     viewModel: NoteWriteViewModel = hiltViewModel(),
-    wineyBottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
+    bottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -52,6 +53,12 @@ fun NoteWriteSelectWineScreen(
     val deviceWidth = LocalContext.current.resources.displayMetrics.widthPixels
 
     val selectedWine = uiState.selectedWine
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->

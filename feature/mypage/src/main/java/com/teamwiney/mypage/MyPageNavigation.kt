@@ -13,7 +13,7 @@ import com.teamwiney.core.common.navigation.MyPageDestinations
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = MyPageDestinations.ROUTE,

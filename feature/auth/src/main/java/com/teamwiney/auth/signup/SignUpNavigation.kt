@@ -16,7 +16,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 
 fun NavGraphBuilder.signUpGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState,
+    bottomSheetState: WineyBottomSheetState,
     onInit: () -> Unit,
 ) {
     navigation(
@@ -39,7 +39,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpPhoneScreen(
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 appState = appState,
                 userId = userId,
                 viewModel = hiltViewModel(backStackEntry)
@@ -53,7 +53,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpAuthenticationScreen(
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )
@@ -66,7 +66,7 @@ fun NavGraphBuilder.signUpGraph(
                 graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
             )
             SignUpFavoriteTasteScreen(
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry)
             )

@@ -9,7 +9,7 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 
 fun NavGraphBuilder.analysisGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState,
+    bottomSheetState: WineyBottomSheetState,
 ) {
     navigation(
         route = HomeDestinations.Analysis.ROUTE,
@@ -20,7 +20,7 @@ fun NavGraphBuilder.analysisGraph(
         ) {
             AnalysisScreen(
                 appState = appState,
-                wineyBottomSheetState = wineyBottomSheetState
+                bottomSheetState = bottomSheetState
             )
         }
 

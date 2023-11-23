@@ -1,5 +1,6 @@
 package com.teamwiney.auth.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,15 +40,22 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignUpAuthenticationScreen(
-    wineyBottomSheetState: WineyBottomSheetState,
+    bottomSheetState: WineyBottomSheetState,
     appState: WineyAppState,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -64,10 +73,10 @@ fun SignUpAuthenticationScreen(
                     when (effect.bottomSheet) {
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
-                            wineyBottomSheetState.showBottomSheet {
+                            bottomSheetState.showBottomSheet {
                                 ReturnToLoginBottomSheet(
                                     onConfirm = {
-                                        wineyBottomSheetState.hideBottomSheet()
+                                        bottomSheetState.hideBottomSheet()
                                         appState.navigate(AuthDestinations.Login.ROUTE) {
                                             popUpTo(AuthDestinations.SignUp.ROUTE) {
                                                 inclusive = true
@@ -75,16 +84,16 @@ fun SignUpAuthenticationScreen(
                                         }
                                     },
                                     onCancel = {
-                                        wineyBottomSheetState.hideBottomSheet()
+                                        bottomSheetState.hideBottomSheet()
                                     }
                                 )
                             }
                         }
 
                         is SignUpContract.BottomSheet.AuthenticationFailed -> {
-                            wineyBottomSheetState.showBottomSheet {
+                            bottomSheetState.showBottomSheet {
                                 AuthenticationFailedBottomSheet {
-                                    wineyBottomSheetState.hideBottomSheet()
+                                    bottomSheetState.hideBottomSheet()
                                 }
                             }
                         }

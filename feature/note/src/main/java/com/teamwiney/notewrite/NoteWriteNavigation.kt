@@ -11,7 +11,7 @@ import com.teamwiney.rememberNavControllerBackStackEntry
 
 fun NavGraphBuilder.noteWriteGraph(
     appState: WineyAppState,
-    wineyBottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
         route = NoteDestinations.Write.ROUTE,
@@ -25,8 +25,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineSearchScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry),
-                wineyBottomSheetState = wineyBottomSheetState,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -39,7 +38,7 @@ fun NavGraphBuilder.noteWriteGraph(
             NoteWriteSelectWineScreen(
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry),
-                wineyBottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
             )
         }
 
@@ -51,7 +50,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoLevelScreen(
                 appState = appState,
-                bottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }
@@ -64,7 +63,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoVintageAndPriceScreen(
                 appState = appState,
-                bottomSheetState = wineyBottomSheetState,
+                bottomSheetState = bottomSheetState,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }
