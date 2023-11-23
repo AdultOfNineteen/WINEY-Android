@@ -39,7 +39,6 @@ fun NoteWineInfoFlavorScreen(
     appState: WineyAppState = rememberWineyAppState(),
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -136,6 +135,7 @@ fun NoteWineInfoFlavorScreen(
                 text = "다음",
                 modifier = Modifier
                     .weight(3f),
+                enabled = sweetness != 0 && acidity != 0 && body != 0 && tannins != 0 && alcohol != 0 && finish != 0,
                 enableBackgroundColor = WineyTheme.colors.main_2,
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,

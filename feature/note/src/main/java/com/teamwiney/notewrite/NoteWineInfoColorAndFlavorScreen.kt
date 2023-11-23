@@ -61,7 +61,6 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
-import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
 
 data class WineSmell(
@@ -221,23 +220,21 @@ private fun WineFavorPicker(
                 text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            fontFamily = Pretendard,
-                            color = WineyTheme.colors.gray_50,
-                            fontSize = 17.sp
+                            color = WineyTheme.colors.gray_50
                         )
                     ) {
                         append("와인 향은요? ")
                     }
                     withStyle(
                         style = SpanStyle(
-                            fontFamily = Pretendard,
                             color = WineyTheme.colors.gray_600,
                             fontSize = 14.sp
                         )
                     ) {
                         append("(선택)")
                     }
-                }
+                },
+                style = WineyTheme.typography.bodyB1
             )
             Text(
                 text = "향표현이 어려워요!",
@@ -302,7 +299,7 @@ private fun WineColorPicker(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp)
+            .padding(start = 24.dp, end = 24.dp, top = 20.dp)
     ) {
         Text(
             text = "와인 컬러는요?",

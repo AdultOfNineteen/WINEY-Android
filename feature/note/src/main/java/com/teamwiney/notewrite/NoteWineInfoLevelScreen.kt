@@ -17,11 +17,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,6 +39,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.notewrite.components.NoteBackgroundSurface
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.NumberPicker
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -52,6 +59,7 @@ fun NoteWineInfoLevelScreen(
         systemUiController.setSystemBarsColor(
             color = Color.Transparent
         )
+        viewModel.showHintPopup()
         onDispose {
             systemUiController.setSystemBarsColor(
                 color = Color(0xFF1F2126)
@@ -122,7 +130,9 @@ fun NoteWineInfoLevelScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Box(
-                modifier = Modifier.fillMaxSize().weight(1f),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 NumberPicker(
@@ -140,12 +150,31 @@ fun NoteWineInfoLevelScreen(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                WButton(
-                    modifier = Modifier
-                        .weight(2f),
-                    text = "건너뛰기",
-                    enableBackgroundColor = WineyTheme.colors.gray_950,
-                )
+                Box(
+                    modifier = Modifier.weight(2f)
+                ) {
+                    var buttonHeight by remember { mutableIntStateOf(0) }
+                    val density = LocalDensity.current
+
+                    WButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { coordinates ->
+                                buttonHeight =
+                                    density.run { coordinates.size.height + 15.dp.roundToPx() }
+                            },
+                        text = "건너뛰기",
+                        enableBackgroundColor = WineyTheme.colors.gray_950,
+                    )
+                    if (uiState.hintPopupOpen) {
+                        HintPopUp(
+                            isReversed = true,
+                            backgroundColor = WineyTheme.colors.gray_900,
+                            text = "건너뛰기를 누르면 내용이 저장되지 않아요",
+                            offset = IntOffset(density.run { 30.dp.roundToPx() }, -buttonHeight)
+                        )
+                    }
+                }
 
                 WButton(
                     text = "다음",

@@ -30,6 +30,7 @@ class NoteWriteContract {
         val searchWinesCount: Long = 0,
         val selectedWine: SearchWine = SearchWine.default(),
         val wineNote: WineNote = WineNote.default(),
+        val hintPopupOpen: Boolean = false
     ) : UiState
 
     sealed class Event : UiEvent {

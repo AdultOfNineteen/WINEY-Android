@@ -19,6 +19,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,11 +30,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +46,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.bottomBorder
@@ -61,6 +66,7 @@ fun NoteWineInfoVintageAndPriceScreen(
 
     LaunchedEffect(key1 = Unit) {
         focusRequester.requestFocus()
+        viewModel.showHintPopup()
     }
 
     Column(
@@ -158,12 +164,31 @@ fun NoteWineInfoVintageAndPriceScreen(
             modifier = Modifier.padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            WButton(
-                modifier = Modifier
-                    .weight(2f),
-                text = "건너뛰기",
-                enableBackgroundColor = WineyTheme.colors.gray_950,
-            )
+            Box(
+                modifier = Modifier.weight(2f)
+            ) {
+                var buttonHeight by remember { mutableIntStateOf(0) }
+                val density = LocalDensity.current
+
+                WButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            buttonHeight =
+                                density.run { coordinates.size.height + 15.dp.roundToPx() }
+                        },
+                    text = "건너뛰기",
+                    enableBackgroundColor = WineyTheme.colors.gray_950,
+                )
+                if (uiState.hintPopupOpen) {
+                    HintPopUp(
+                        isReversed = true,
+                        backgroundColor = WineyTheme.colors.gray_900,
+                        text = "건너뛰기를 누르면 내용이 저장되지 않아요",
+                        offset = IntOffset(density.run { 30.dp.roundToPx() }, -buttonHeight)
+                    )
+                }
+            }
 
             WButton(
                 text = "다음",

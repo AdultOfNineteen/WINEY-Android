@@ -2,8 +2,6 @@ package com.teamwiney.notewrite
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.os.FileUtils.copy
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -16,11 +14,11 @@ import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.data.util.fileFromContentUri
-import com.teamwiney.data.util.getFileExtension
 import com.teamwiney.data.util.toPlainRequestBody
 import com.teamwiney.notewrite.model.SmellKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -29,9 +27,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -110,6 +105,12 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
+    fun showHintPopup() = viewModelScope.launch {
+        updateState(currentState.copy(hintPopupOpen = true))
+        delay(5000)
+        updateState(currentState.copy(hintPopupOpen = false))
+    }
+
     fun updateVintage(vintage: String) = viewModelScope.launch {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))
     }
@@ -145,7 +146,9 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun updateMemo(memo: String) = viewModelScope.launch {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(memo = memo)))
+        if (memo.length <= 200) {
+            updateState(currentState.copy(wineNote = currentState.wineNote.copy(memo = memo)))
+        }
     }
 
     fun updateRating(rating: Int) = viewModelScope.launch {
