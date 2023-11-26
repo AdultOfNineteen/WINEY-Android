@@ -89,7 +89,21 @@ fun NoteWineInfoVintageAndPriceScreen(
         TopBar(
             content = "와인 정보 입력",
         ) {
-            appState.navController.navigateUp()
+            bottomSheetState.showBottomSheet {
+                NoteDeleteBottomSheet(
+                    onConfirm = {
+                        bottomSheetState.hideBottomSheet()
+                        appState.navigate(NoteDestinations.ROUTE) {
+                            popUpTo(NoteDestinations.Write.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onCancel = {
+                        bottomSheetState.hideBottomSheet()
+                    }
+                )
+            }
         }
         Column(
             modifier = Modifier
@@ -189,21 +203,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                     text = "건너뛰기",
                     enableBackgroundColor = WineyTheme.colors.gray_950,
                     onClick = {
-                        bottomSheetState.showBottomSheet {
-                            NoteDeleteBottomSheet(
-                                onConfirm = {
-                                    bottomSheetState.hideBottomSheet()
-                                    appState.navigate(NoteDestinations.ROUTE) {
-                                        popUpTo(NoteDestinations.Write.ROUTE) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
-                                onCancel = {
-                                    bottomSheetState.hideBottomSheet()
-                                }
-                            )
-                        }
+                        appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                     }
                 )
                 if (uiState.hintPopupOpen) {

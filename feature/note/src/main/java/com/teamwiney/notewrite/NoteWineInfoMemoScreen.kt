@@ -32,6 +32,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +58,7 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun NoteWineInfoMemoScreen(
@@ -65,12 +67,28 @@ fun NoteWineInfoMemoScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
         onResult = { uris ->
             viewModel.updateUris(uris)
         }
     )
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is NoteWriteContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is NoteWriteContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -300,6 +318,7 @@ fun NoteWineInfoMemoScreen(
             enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null,
             onClick = {
                 // TODO 작성 완료 화면 이동
+                viewModel.writeTastingNote()
             }
         )
     }
