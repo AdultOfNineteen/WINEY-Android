@@ -8,6 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
@@ -49,6 +50,34 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
+    fun getSelectWineFlavor() = viewModelScope.launch {
+        wineRepository.getWineDetail(currentState.selectedWine.wineId)
+            .onStart {
+                updateState(currentState.copy(isLoading = true))
+            }
+            .collectLatest {
+                updateState(currentState.copy(isLoading = false))
+                when (it) {
+                    is ApiResult.Success -> {
+                        updateState(
+                            currentState.copy(
+                                selectedWineInfo = it.data.result
+                            )
+                        )
+                    }
+
+                    is ApiResult.ApiError -> {
+                        postEffect(NoteWriteContract.Effect.ShowSnackBar(it.message))
+                    }
+
+                    else -> {
+                        postEffect(NoteWriteContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                    }
+                }
+            }
+    }
+
+
     fun writeTastingNote() = viewModelScope.launch {
         /** List형태 MultiPart 설정 */
         val smellKeywordList: ArrayList<MultipartBody.Part> =
@@ -88,12 +117,23 @@ class NoteWriteViewModel @Inject constructor(
             wineNoteWriteRequest = wineNoteWriteRequest,
             smellKeywordList = smellKeywordList,
             multipartFiles = multipartFiles
-        ).collectLatest {
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             Log.i("NoteWriteViewModel", "writeTastingNote: $it")
             when (it) {
-                is ApiResult.ApiError -> TODO()
-                is ApiResult.NetworkError -> TODO()
-                is ApiResult.Success -> TODO()
+                is ApiResult.Success -> {
+                    postEffect(NoteWriteContract.Effect.NavigateTo(NoteDestinations.ROUTE))
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(NoteWriteContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(NoteWriteContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
             }
         }
     }

@@ -23,7 +23,22 @@ data class Wine(
     val tannins: Int,
     @SerializedName("wineSummary")
     val wineSummary: WineSummary
-)
+) {
+    companion object {
+        fun default() = Wine(
+            wineId = 0L,
+            type = "RED",
+            name = "",
+            country = "",
+            varietal = "",
+            sweetness = 0,
+            acidity = 0,
+            body = 0,
+            tannins = 0,
+            wineSummary = WineSummary.default()
+        )
+    }
+}
 
 fun Wine.toDomain() = Wine(
     wineId = this.wineId,
@@ -49,7 +64,17 @@ data class WineSummary(
     val avgBody: Int,
     @SerializedName("avgTannins")
     val avgTannins: Int
-)
+) {
+    companion object {
+        fun default() = WineSummary(
+            avgPrice = 0.0,
+            avgSweetness = 0,
+            avgAcidity = 0,
+            avgBody = 0,
+            avgTannins = 0
+        )
+    }
+}
 
 private fun convertTypeToColor(type: String): String {
     return when(type) {

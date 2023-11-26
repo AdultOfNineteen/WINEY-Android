@@ -72,7 +72,7 @@ fun NoteWineInfoFlavorScreen(
                     color = WineyTheme.colors.gray_50,
                 )
                 Text(
-                    text = "향표현이 어려워요!",
+                    text = "맛 표현이 어려워요!",
                     style = WineyTheme.typography.captionM2,
                     color = WineyTheme.colors.gray_500,
                     textDecoration = TextDecoration.Underline,

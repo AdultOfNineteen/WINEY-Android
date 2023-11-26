@@ -8,6 +8,7 @@ import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
 import com.teamwiney.data.network.model.response.SearchWine
+import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.notewrite.model.WineNote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -29,6 +30,7 @@ class NoteWriteContract {
         ),
         val searchWinesCount: Long = 0,
         val selectedWine: SearchWine = SearchWine.default(),
+        val selectedWineInfo: Wine = Wine.default(),
         val wineNote: WineNote = WineNote.default(),
         val hintPopupOpen: Boolean = false
     ) : UiState
