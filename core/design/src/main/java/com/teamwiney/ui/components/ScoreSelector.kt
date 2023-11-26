@@ -57,7 +57,7 @@ fun ScoreSelector(
             drawLine(
                 color = activeColor,
                 start = Offset(x = 0f, y = size.height / 2),
-                end = Offset(x = size.width / (range.last() - 1) * (value - 1), y = size.height / 2),
+                end = Offset(x = size.width / (range.last() - 1) * 0.coerceAtLeast((value - 1)), y = size.height / 2),
                 strokeWidth = 1.dp.toPx()
             )
         }
@@ -73,9 +73,9 @@ fun ScoreSelector(
                         .size(14.dp)
                         .background(
                             color = if (i > value) {
-                                WineyTheme.colors.gray_800
+                               inactiveColor
                             } else {
-                               WineyTheme.colors.main_2
+                               activeColor
                             },
                             shape = CircleShape
                         )

@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
@@ -21,6 +22,8 @@ fun WineTasteSlider(
     modifier: Modifier = Modifier.fillMaxWidth(),
     score: Int = 0,
     onValueChange: (Int) -> Unit = { },
+    inactiveColor: Color = WineyTheme.colors.gray_800,
+    activeColor: Color = WineyTheme.colors.main_2,
     title: String = "당도",
     subTitle: String = "단맛의 정도"
 ) {
@@ -66,7 +69,9 @@ fun WineTasteSlider(
             modifier = Modifier.padding(horizontal = 5.dp),
             value = score,
             valueRange = 1..5,
-            onValueChange = onValueChange
+            onValueChange = onValueChange,
+            inactiveColor = inactiveColor,
+            activeColor = activeColor
         )
     }
 }
