@@ -190,8 +190,7 @@ fun NoteWineInfoColorAndSmellScreen(
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
-                    // TODO 컬러 파싱 어떻게?
-                    viewModel.updateColor(currentColor.toString())
+                    viewModel.updateColor(currentColor)
                     viewModel.updateSmellKeywordList(
                         wineSmells.map { it.options }.flatten().filter { it.isSelected })
                     appState.navController.navigate(NoteDestinations.Write.INFO_FLAVOR)

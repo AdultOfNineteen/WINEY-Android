@@ -3,6 +3,8 @@ package com.teamwiney.notewrite
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -147,6 +149,15 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
+    private fun colorToHexString(color: Color): String {
+        val argb = color.toArgb()
+        val red = (argb shr 16 and 0xFF).toString(16).padStart(2, '0')
+        val green = (argb shr 8 and 0xFF).toString(16).padStart(2, '0')
+        val blue = (argb and 0xFF).toString(16).padStart(2, '0')
+
+        return "#$red$green$blue"
+    }
+
     fun showHintPopup() = viewModelScope.launch {
         updateState(currentState.copy(hintPopupOpen = true))
         delay(5000)
@@ -165,8 +176,8 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(price = price)))
     }
 
-    fun updateColor(color: String) = viewModelScope.launch {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(color = color)))
+    fun updateColor(color: Color) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(color = colorToHexString(color))))
     }
 
     fun updateSmellKeywordList(smellKeywordList: List<WineSmellOption>) = viewModelScope.launch {
