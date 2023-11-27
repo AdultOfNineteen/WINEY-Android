@@ -3,6 +3,7 @@ package com.teamwiney.ui.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -11,23 +12,20 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -47,8 +45,8 @@ fun ColorSlider(
     trackHeight: Dp,
     thumbSize: Dp
 ) {
-    var thumbX by remember { mutableStateOf(0f) }
-    val isDragging by remember { mutableStateOf(true) }
+    var thumbX by remember { mutableFloatStateOf(0f) }
+    var isDragging by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier.height(IntrinsicSize.Min)
@@ -68,6 +66,13 @@ fun ColorSlider(
             modifier = modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
+                .pointerInput(true) {
+                    detectTapGestures(
+                        onPress = { offset ->
+                            isDragging = isInCircle(offset.x, offset.y, thumbX, size.height.toFloat() / 2, thumbSize.toPx() / 2)
+                        }
+                    )
+                }
                 .pointerInput(true) {
                     detectHorizontalDragGestures { _, dragAmount ->
                         if (isDragging) {
@@ -96,7 +101,6 @@ fun ColorSlider(
     }
 }
 
-// TODO : 지금 현재 슬라이더의 어느 영역을 드래그 하더라도 색이 변경되는데, 원을 클릭 후 드래그해야 바뀌도록 수정 예정
 private fun isInCircle(x: Float, y: Float, centerX: Float, centerY: Float, radius: Float): Boolean {
     val dx = x - centerX
     val dy = y - centerY
