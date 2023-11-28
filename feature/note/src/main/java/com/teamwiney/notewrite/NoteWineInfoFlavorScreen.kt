@@ -15,14 +15,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
@@ -46,12 +44,7 @@ fun NoteWineInfoFlavorScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        var sweetness by remember { mutableIntStateOf(0) }
-        var acidity by remember { mutableIntStateOf(0) }
-        var body by remember { mutableIntStateOf(0) }
-        var tannins by remember { mutableIntStateOf(0) }
-        var alcohol by remember { mutableIntStateOf(0) }
-        var finish by remember { mutableIntStateOf(0) }
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         TopBar(content = "와인 정보 입력") {
             appState.navController.navigateUp()
@@ -83,43 +76,43 @@ fun NoteWineInfoFlavorScreen(
             }
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = sweetness,
-                onValueChange = { sweetness = it },
+                score = uiState.wineNote.sweetness,
+                onValueChange = { viewModel.updateSweetness(it) },
                 title = "당도",
                 subTitle = "단맛의 정도",
             )
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = acidity,
-                onValueChange = { acidity = it },
+                score = uiState.wineNote.acidity,
+                onValueChange = { viewModel.updateAcidity(it) },
                 title = "산도",
                 subTitle = "신맛의 정도"
             )
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = body,
-                onValueChange = { body = it },
+                score = uiState.wineNote.body,
+                onValueChange = { viewModel.updateBody(it) },
                 title = "바디",
                 subTitle = "농도와 질감의 정도"
             )
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = tannins,
-                onValueChange = { tannins = it },
+                score = uiState.wineNote.tannin,
+                onValueChange = { viewModel.updateTannin(it) },
                 title = "탄닌",
                 subTitle = "떫고 씁쓸함의 정도"
             )
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = alcohol,
-                onValueChange = { alcohol = it },
+                score = uiState.wineNote.alcohol,
+                onValueChange = { viewModel.updateWineNoteAlcohol(it) },
                 title = "알코올",
                 subTitle = "알코올 세기의 정도"
             )
             HeightSpacer(30.dp)
             WineTasteSlider(
-                score = finish,
-                onValueChange = { finish = it },
+                score = uiState.wineNote.finish,
+                onValueChange = { viewModel.updateFinish(it) },
                 title = "여운",
                 subTitle = "마신 후 맛과 항야 지속되는 정도"
             )
@@ -135,7 +128,8 @@ fun NoteWineInfoFlavorScreen(
                 text = "다음",
                 modifier = Modifier
                     .weight(3f),
-                enabled = sweetness != 0 && acidity != 0 && body != 0 && tannins != 0 && alcohol != 0 && finish != 0,
+                enabled = uiState.wineNote.sweetness != 0 && uiState.wineNote.acidity != 0 && uiState.wineNote.body != 0 &&
+                        uiState.wineNote.tannin != 0 && uiState.wineNote.alcohol != 0 && uiState.wineNote.finish != 0,
                 enableBackgroundColor = WineyTheme.colors.main_2,
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,

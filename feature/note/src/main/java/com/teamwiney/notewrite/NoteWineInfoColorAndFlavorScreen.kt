@@ -27,10 +27,8 @@ import androidx.compose.material.Text
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -50,6 +48,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations.Write.INFO_STANDARD_SMELL
@@ -62,6 +61,7 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.Job
 
 data class WineSmell(
     val title: String,
@@ -81,51 +81,9 @@ fun NoteWineInfoColorAndSmellScreen(
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 
-    val wineSmells = remember {
-        mutableStateListOf<WineSmell>(
-            WineSmell(
-                title = "과일향",
-                options = listOf(
-                    WineSmellOption("과일향"),
-                    WineSmellOption("베리류"),
-                    WineSmellOption("레몬/라임"),
-                    WineSmellOption("사과/배"),
-                    WineSmellOption("복숭아/자두")
-                )
-            ),
-            WineSmell(
-                title = "내추럴",
-                options = listOf(
-                    WineSmellOption("꽃향"),
-                    WineSmellOption("풀/나무"),
-                    WineSmellOption("허브향")
-                )
-            ),
-            WineSmell(
-                title = "오크향",
-                options = listOf(
-                    WineSmellOption("오크향"),
-                    WineSmellOption("향신로"),
-                    WineSmellOption("견과류"),
-                    WineSmellOption("바닐라"),
-                    WineSmellOption("초콜릿")
-                )
-            ),
-            WineSmell(
-                title = "기타",
-                options = listOf(
-                    WineSmellOption("부싯돌"),
-                    WineSmellOption("빵"),
-                    WineSmellOption("고무"),
-                    WineSmellOption("흙/재"),
-                    WineSmellOption("약품")
-                )
-            ),
-        )
-    }
     val startColor = Color.Red
     val endColor = Color.White
-    var currentColor by remember { mutableStateOf(startColor) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -148,27 +106,17 @@ fun NoteWineInfoColorAndSmellScreen(
             verticalArrangement = Arrangement.Center,
         ) {
             WineColorPicker(
-                currentColor = currentColor,
+                currentColor = uiState.wineNote.color,
                 startColor = startColor,
-                endColor = endColor
-            ) { currentColor = it }
+                endColor = endColor,
+                thumbX = uiState.thumbX,
+                updateThumbX = { viewModel.updateThumbX(it) },
+            ) { viewModel.updateColor(it) }
             HeightSpacer(35.dp)
             WineFavorPicker(
-                wineSmells = wineSmells,
+                wineSmells = uiState.wineSmells,
                 updateWineSmell = { wineSmellOption ->
-                    wineSmells.find { it.options.any { it.name == wineSmellOption.name } }
-                        ?.let { wineSmell ->
-                            val index = wineSmells.indexOfFirst { it.title == wineSmell.title }
-                            wineSmells[index] = wineSmell.copy(
-                                options = wineSmell.options.map {
-                                    if (it.name == wineSmellOption.name) {
-                                        wineSmellOption
-                                    } else {
-                                        it
-                                    }
-                                }
-                            )
-                        }
+                    viewModel.updateWineSmells(wineSmellOption)
                 },
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
@@ -190,9 +138,6 @@ fun NoteWineInfoColorAndSmellScreen(
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
-                    viewModel.updateColor(currentColor)
-                    viewModel.updateSmellKeywordList(
-                        wineSmells.map { it.options }.flatten().filter { it.isSelected })
                     appState.navController.navigate(NoteDestinations.Write.INFO_FLAVOR)
                 }
             )
@@ -293,7 +238,9 @@ private fun WineColorPicker(
     currentColor: Color,
     startColor: Color,
     endColor: Color,
-    updateCurrentColor: (Color) -> Unit
+    thumbX: Float,
+    updateThumbX: (Float) -> Unit,
+    updateCurrentColor: (Color) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -347,7 +294,9 @@ private fun WineColorPicker(
                         startColor = startColor,
                         endColor = endColor,
                         trackHeight = 10.dp,
-                        thumbSize = 22.dp
+                        thumbSize = 22.dp,
+                        thumbX = thumbX,
+                        updateThumbX = updateThumbX,
                     )
                 }
             }

@@ -43,9 +43,11 @@ fun ColorSlider(
     startColor: Color = Color.Red,
     endColor: Color = Color.White,
     trackHeight: Dp,
-    thumbSize: Dp
+    thumbSize: Dp,
+    thumbX: Float = 0f,
+    updateThumbX: (Float) -> Unit = {}
 ) {
-    var thumbX by remember { mutableFloatStateOf(0f) }
+    var thumbX by remember { mutableFloatStateOf(thumbX) }
     var isDragging by remember { mutableStateOf(false) }
 
     Box(
@@ -69,12 +71,22 @@ fun ColorSlider(
                 .pointerInput(true) {
                     detectTapGestures(
                         onPress = { offset ->
-                            isDragging = isInCircle(offset.x, offset.y, thumbX, size.height.toFloat() / 2, thumbSize.toPx() / 2)
+                            isDragging = isInCircle(
+                                offset.x,
+                                offset.y,
+                                thumbX,
+                                size.height.toFloat() / 2,
+                                thumbSize.toPx() / 2
+                            )
                         }
                     )
                 }
                 .pointerInput(true) {
-                    detectHorizontalDragGestures { _, dragAmount ->
+                    detectHorizontalDragGestures(
+                        onDragEnd = {
+                            updateThumbX(thumbX)
+                        }
+                    ) { _, dragAmount ->
                         if (isDragging) {
                             thumbX += dragAmount
                             thumbX = thumbX.coerceIn(0f, size.width.toFloat())
