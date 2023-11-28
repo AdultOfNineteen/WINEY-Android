@@ -70,6 +70,23 @@ fun NoteWineInfoVintageAndPriceScreen(
     BackHandler {
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
+        } else {
+            viewModel.hideHintPopup()
+            bottomSheetState.showBottomSheet {
+                NoteDeleteBottomSheet(
+                    onConfirm = {
+                        bottomSheetState.hideBottomSheet()
+                        appState.navigate(NoteDestinations.ROUTE) {
+                            popUpTo(NoteDestinations.Write.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onCancel = {
+                        bottomSheetState.hideBottomSheet()
+                    }
+                )
+            }
         }
     }
 
@@ -89,6 +106,7 @@ fun NoteWineInfoVintageAndPriceScreen(
         TopBar(
             content = "와인 정보 입력",
         ) {
+            viewModel.hideHintPopup()
             bottomSheetState.showBottomSheet {
                 NoteDeleteBottomSheet(
                     onConfirm = {

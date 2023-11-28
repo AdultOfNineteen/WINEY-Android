@@ -164,6 +164,10 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(hintPopupOpen = false))
     }
 
+    fun hideHintPopup() = viewModelScope.launch {
+        updateState(currentState.copy(hintPopupOpen = false))
+    }
+
     fun updateVintage(vintage: String) = viewModelScope.launch {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))
     }
