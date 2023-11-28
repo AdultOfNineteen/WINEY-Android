@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="naver_map_sdk_client_id" translatable="false">네이버지도토큰</string>
+</resources>

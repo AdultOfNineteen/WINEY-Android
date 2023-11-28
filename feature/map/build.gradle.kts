@@ -45,6 +45,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":data"))
 
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
+    implementation("io.github.fornewid:naver-map-compose:1.3.3")
+    implementation("io.github.fornewid:naver-map-location:16.0.0")
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)
