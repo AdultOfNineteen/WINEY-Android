@@ -1,13 +1,14 @@
 package com.teamwiney.notewrite.model
 
 import android.net.Uri
+import androidx.compose.ui.graphics.Color
 
 data class WineNote(
     val wineId: Long,
     val vintage: String,
     val officialAlcohol: Double,
     val price: String,
-    val color: String,
+    val color: Color,
     val sweetness: Int,
     val acidity: Int,
     val alcohol: Int,
@@ -27,7 +28,7 @@ data class WineNote(
                 vintage = "",
                 officialAlcohol = 0.0,
                 price = "",
-                color = "",
+                color = Color.Red,
                 sweetness = 0,
                 acidity = 0,
                 alcohol = 12,

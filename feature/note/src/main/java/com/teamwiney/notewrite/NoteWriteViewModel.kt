@@ -94,7 +94,7 @@ class NoteWriteViewModel @Inject constructor(
         with(currentState.wineNote) {
             wineNoteWriteRequest["wineId"] = wineId.toString().toPlainRequestBody()
             wineNoteWriteRequest["alcohol"] = alcohol.toString().toPlainRequestBody()
-            wineNoteWriteRequest["color"] = color.toPlainRequestBody()
+            wineNoteWriteRequest["color"] = colorToHexString(color).toPlainRequestBody()
             wineNoteWriteRequest["sweetness"] = sweetness.toString().toPlainRequestBody()
             wineNoteWriteRequest["acidity"] = acidity.toString().toPlainRequestBody()
             wineNoteWriteRequest["body"] = body.toString().toPlainRequestBody()
@@ -164,6 +164,10 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(hintPopupOpen = false))
     }
 
+    fun hideHintPopup() = viewModelScope.launch {
+        updateState(currentState.copy(hintPopupOpen = false))
+    }
+
     fun updateVintage(vintage: String) = viewModelScope.launch {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))
     }
@@ -177,15 +181,13 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun updateColor(color: Color) = viewModelScope.launch {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(color = colorToHexString(color))))
-    }
-
-    fun updateSmellKeywordList(smellKeywordList: List<WineSmellOption>) = viewModelScope.launch {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(smellKeywordList = smellKeywordList.mapNotNull {
-            SmellKeyword.find(
-                it.name
+        updateState(
+            currentState.copy(
+                wineNote = currentState.wineNote.copy(
+                    color = color
+                )
             )
-        })))
+        )
     }
 
     fun updateUris(uris: List<Uri>) = viewModelScope.launch {
@@ -271,4 +273,49 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(selectedWine = wine))
     }
 
+    fun updateSweetness(sweetness: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(sweetness = sweetness)))
+    }
+
+    fun updateAcidity(acidity: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(acidity = acidity)))
+    }
+
+    fun updateBody(body: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(body = body)))
+    }
+
+    fun updateTannin(tannins: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(tannin = tannins)))
+    }
+
+    fun updateFinish(finish: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(finish = finish)))
+    }
+
+    fun updateWineNoteAlcohol(alcohol: Int) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(alcohol = alcohol)))
+    }
+
+    fun updateWineSmells(wineSmellOption: WineSmellOption) = viewModelScope.launch {
+        val wineSmells = currentState.wineSmells.toMutableList()
+        wineSmells.find { it.options.any { it.name == wineSmellOption.name } }
+            ?.let { wineSmell ->
+                val index = wineSmells.indexOfFirst { it.title == wineSmell.title }
+                wineSmells[index] = wineSmell.copy(
+                    options = wineSmell.options.map {
+                        if (it.name == wineSmellOption.name) {
+                            wineSmellOption
+                        } else {
+                            it
+                        }
+                    }
+                )
+            }
+        updateState(currentState.copy(wineSmells = wineSmells))
+    }
+
+    fun updateThumbX(thumbX: Float) = viewModelScope.launch {
+        updateState(currentState.copy(thumbX = thumbX))
+    }
 }

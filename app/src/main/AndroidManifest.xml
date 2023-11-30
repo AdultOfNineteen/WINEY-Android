@@ -17,6 +17,11 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Winey"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="@string/NAVER_CLIENT_ID" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
