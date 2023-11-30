@@ -40,6 +40,11 @@ android {
             "KAKAO_NATIVE_APP_KEY_FULL",
             properties["kakao.native.app.key.full"] as String
         )
+        resValue(
+            "string",
+            "NAVER_CLIENT_ID",
+            properties["naver.client.id"] as String
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

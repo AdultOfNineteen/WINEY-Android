@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <meta-data
-        android:name="com.naver.maps.map.CLIENT_ID"
-        android:value="네이버지도토큰" />
+
 </manifest>
