@@ -180,7 +180,7 @@ fun NoteWineInfoLevelScreen(
                     onValueChange = {
                         viewModel.updateAlcohol(it)
                     },
-                    range = 0..40,
+                    range = 0..20,
                     textStyle = WineyTheme.typography.title1.copy(
                         color = WineyTheme.colors.gray_50
                     )

@@ -31,7 +31,7 @@ data class WineNote(
                 color = Color.Red,
                 sweetness = 0,
                 acidity = 0,
-                alcohol = 12,
+                alcohol = 0,
                 body = 0,
                 tannin = 0,
                 finish = 0,
