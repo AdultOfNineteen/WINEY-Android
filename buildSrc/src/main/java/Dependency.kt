@@ -19,6 +19,8 @@ object Dependency {
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES_ANDROID}"
     const val LIFECYCLE_RUNTIME_VIEWMODEL =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
+    const val LIFECYCLE_RUNTIME_VIEWMODEL_COMPOSE =
+        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_KTX =
         "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
     const val LIFECYCLE_RUNTIME_COMPOSE =

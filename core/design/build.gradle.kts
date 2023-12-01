@@ -43,9 +43,11 @@ android {
 }
 
 dependencies {
-
     with(Dependency) {
+        implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
+        implementation(ACTIVITY_COMPOSE)
+        implementation(LIFECYCLE_RUNTIME_VIEWMODEL_COMPOSE)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)

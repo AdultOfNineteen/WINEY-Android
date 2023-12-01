@@ -2,6 +2,14 @@
 
 package com.teamwiney.notewrite
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -39,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -46,6 +55,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -56,6 +67,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
+import com.teamwiney.ui.components.imagepicker.ImagePickerContract
 import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -69,12 +81,48 @@ fun NoteWineInfoMemoScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = { uris ->
-            viewModel.updateUris(uris)
+    val context = LocalContext.current
+
+    val permissions = arrayOf(
+        Manifest.permission.CAMERA,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
         }
     )
+    val allPermissionsGranted = permissions.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ImagePickerContract(),
+        onResult = { uris ->
+            uris?.let {
+                viewModel.updateUris(it)
+            }
+        }
+    )
+
+    val launchMultiplePermissions = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionMap ->
+        val areGranted = permissionMap.values.reduce { acc, next -> acc && next }
+        if (areGranted) {
+            imagePicker.launch(3 - uiState.wineNote.imgs.size)
+        } else {
+            appState.showSnackbar("미디어 권한과 카메라 권한을 허용해야 갤러리를 사용할 수 있습니다.")
+
+            // 허용하지 않았을 경우 설정창으로 이동
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(context, intent, null)
+            }, 500)
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -171,7 +219,13 @@ fun NoteWineInfoMemoScreen(
 
             Button(
                 onClick = {
-                    imagePicker.launch("image/*")
+                    if (uiState.wineNote.imgs.isNotEmpty()) {
+                        if (!allPermissionsGranted) {
+                            launchMultiplePermissions.launch(permissions)
+                        } else {
+                            imagePicker.launch(3 - uiState.wineNote.imgs.size)
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
