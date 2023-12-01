@@ -72,6 +72,7 @@ import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NoteWineInfoMemoScreen(
     appState: WineyAppState = rememberWineyAppState(),
@@ -111,7 +112,7 @@ fun NoteWineInfoMemoScreen(
         if (areGranted) {
             imagePicker.launch(3 - uiState.wineNote.imgs.size)
         } else {
-            appState.showSnackbar("미디어 권한과 카메라 권한을 허용해야 갤러리를 사용할 수 있습니다.")
+            appState.showSnackbar("미디어 권한과 카메라 권한을 허용해야 갤러리를 사용할 수 있습니다")
 
             // 허용하지 않았을 경우 설정창으로 이동
             Handler(Looper.getMainLooper()).postDelayed({
@@ -219,12 +220,14 @@ fun NoteWineInfoMemoScreen(
 
             Button(
                 onClick = {
-                    if (uiState.wineNote.imgs.isNotEmpty()) {
+                    if (uiState.wineNote.imgs.size < 3) {
                         if (!allPermissionsGranted) {
                             launchMultiplePermissions.launch(permissions)
                         } else {
                             imagePicker.launch(3 - uiState.wineNote.imgs.size)
                         }
+                    } else {
+                        appState.showSnackbar("사진은 최대 3장까지 첨부 가능합니다")
                     }
                 },
                 modifier = Modifier
