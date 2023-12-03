@@ -7,6 +7,7 @@ plugins {
         id(DAGGER_HILT_ANDROID)
         id(KOTLIN_KAPT)
     }
+    id("com.google.gms.google-services")
 }
 
 val properties = Properties().apply {
@@ -91,7 +92,9 @@ dependencies {
     implementation(project(":feature:mypage"))
     implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
     implementation("com.google.android.gms:play-services-auth:20.6.0")
-
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(APPCOMPAT)

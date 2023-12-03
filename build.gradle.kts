@@ -12,4 +12,5 @@ plugins {
         id(JETBRAINS_KOTLIN_ANDROID) version Versions.KOTLIN apply false
         id(DAGGER_HILT_PLUGIN) version Versions.HILT apply false
     }
+    id("com.google.gms.google-services") version "4.4.0" apply false
 }
