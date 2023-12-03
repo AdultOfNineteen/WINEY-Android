@@ -16,6 +16,10 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: grant permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
       - name: build release
         run: ./gradlew assembleDebug
 
