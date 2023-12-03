@@ -32,6 +32,16 @@ android {
             "GOOGLE_OAUTH_CLIENT_SECRET",
             properties["google.oauth.client.secret"] as String
         )
+        buildConfigField(
+            "String",
+            "DEBUG_ACCESSTOKEN",
+            properties["debug.access.token"] as String
+        )
+        buildConfigField(
+            "String",
+            "DEBUG_REFRESHTOKEN",
+            properties["debug.refresh.token"] as String
+        )
     }
 
     buildTypes {
