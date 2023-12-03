@@ -11,6 +11,7 @@ jobs:
 
     env:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
     steps:
       - uses: actions/checkout@v1
@@ -31,6 +32,9 @@ jobs:
 
       - name: Create local.properties
         run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+
+      - name: Create google-services.json
+        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
 
       - name: build release
         run: ./gradlew assembleDebug
