@@ -2,8 +2,8 @@ name: Build & upload to Firebase App Distribution
 
 on:
   push:
-    branches: [ feature/app-distribution-cicd ]
-  workflow_dispatch: # 수동 실행 옵션 (생략)
+    branches: [ dev ]
+  workflow_dispatch: # 수동 실행 옵션 (생략가능)
 
 jobs:
   build:

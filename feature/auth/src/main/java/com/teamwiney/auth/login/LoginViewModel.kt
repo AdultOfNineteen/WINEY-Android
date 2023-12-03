@@ -14,6 +14,7 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
+import com.teamwiney.feature.auth.BuildConfig
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.service.SocialType
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -112,6 +114,14 @@ class LoginViewModel @Inject constructor(
                         is ApiResult.Success -> {
                             val userStatus = result.data.result.userStatus
                             if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
+                                Log.i(
+                                    "[ACCESS_TOKEN]",
+                                    "accessToken: ${result.data.result.accessToken}"
+                                )
+                                Log.i(
+                                    "[REFRESH_TOKEN]",
+                                    "refreshToken: ${result.data.result.refreshToken}"
+                                )
                                 dataStoreRepository.setStringValue(
                                     ACCESS_TOKEN,
                                     result.data.result.accessToken
@@ -121,6 +131,7 @@ class LoginViewModel @Inject constructor(
                                     result.data.result.refreshToken
                                 )
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
+
 
                                 postEffect(LoginContract.Effect.NavigateTo(
                                     destination = HomeDestinations.ROUTE,
@@ -146,4 +157,22 @@ class LoginViewModel @Inject constructor(
                 }
         }
     }
+
+    fun testLogin(callback: () -> Unit) = viewModelScope.launch {
+        val accessToken = BuildConfig.DEBUG_ACCESSTOKEN
+        val refreshToken = BuildConfig.DEBUG_REFRESHTOKEN
+
+        withContext(coroutineContext) {
+            dataStoreRepository.setStringValue(
+                ACCESS_TOKEN,
+                accessToken
+            )
+            dataStoreRepository.setStringValue(
+                REFRESH_TOKEN,
+                refreshToken
+            )
+        }
+        callback()
+    }
+
 }

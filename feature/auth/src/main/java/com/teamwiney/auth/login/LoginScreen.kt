@@ -74,10 +74,10 @@ fun LoginScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    if(effect.destination==HomeDestinations.ROUTE){
+                    if (effect.destination == HomeDestinations.ROUTE) {
                         onInit()
                     }
-                    appState.navigate(effect.destination,effect.navOptions)
+                    appState.navigate(effect.destination, effect.navOptions)
                 }
 
                 is LoginContract.Effect.ShowSnackBar -> {
@@ -140,15 +140,19 @@ fun LoginScreen(
                 }
                 // 홈화면 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_lock) {
-                    onInit()
-                    appState.navigate(HomeDestinations.ROUTE) {
-                        popUpTo(AuthDestinations.Login.ROUTE) {
-                            inclusive = true
+                    appState.showSnackbar("홈 화면 테스트 입니다.")
+                    viewModel.testLogin {
+                        onInit()
+                        appState.navigate(HomeDestinations.ROUTE) {
+                            popUpTo(AuthDestinations.Login.ROUTE) {
+                                inclusive = true
+                            }
                         }
                     }
                 }
                 // 회원가입 테스트용 아이콘
                 SocialLoginButton(drawable = R.mipmap.img_winey_logo_title) {
+                    appState.showSnackbar("회원가입 화면 테스트 입니다.")
                     appState.navigate("${AuthDestinations.SignUp.ROUTE}?userId=15")
                 }
             }
