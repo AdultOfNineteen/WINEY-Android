@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -61,15 +62,15 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.Job
 
-data class WineSmell(
+data class WineSmellKeyword(
     val title: String,
     val options: List<WineSmellOption>,
 )
 
 data class WineSmellOption(
     val name: String,
+    val value: String,
     var isSelected: Boolean = false
 )
 
@@ -113,8 +114,9 @@ fun NoteWineInfoColorAndSmellScreen(
                 updateThumbX = { viewModel.updateThumbX(it) },
             ) { viewModel.updateColor(it) }
             HeightSpacer(35.dp)
-            WineFavorPicker(
-                wineSmells = uiState.wineSmells,
+            WineFlavorPicker(
+                wineSmellKeywords = uiState.wineSmellKeywords,
+                isWineSmellKeywordSelected = viewModel::isWineSmellSelected,
                 updateWineSmell = { wineSmellOption ->
                     viewModel.updateWineSmells(wineSmellOption)
                 },
@@ -146,8 +148,9 @@ fun NoteWineInfoColorAndSmellScreen(
 }
 
 @Composable
-private fun WineFavorPicker(
-    wineSmells: List<WineSmell>,
+private fun WineFlavorPicker(
+    wineSmellKeywords: List<WineSmellKeyword>,
+    isWineSmellKeywordSelected: (WineSmellOption) -> Boolean,
     updateWineSmell: (WineSmellOption) -> Unit = {}, navigateToStandardSmell: () -> Unit
 ) {
     Column(
@@ -194,41 +197,46 @@ private fun WineFavorPicker(
         Column(
             verticalArrangement = Arrangement.spacedBy(25.dp)
         ) {
-            wineSmells.forEach {
-                WineSmellContainer(wineSmell = it, updateWineSmell = updateWineSmell)
+            wineSmellKeywords.forEach {
+                WineSmellContainer(
+                    wineSmellKeyword = it,
+                    isWineSmellKeywordSelected = isWineSmellKeywordSelected,
+                    updateWineSmell = updateWineSmell
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun WineSmellContainer(
-    wineSmell: WineSmell,
+    wineSmellKeyword: WineSmellKeyword,
+    isWineSmellKeywordSelected: (WineSmellOption) -> Boolean,
     updateWineSmell: (WineSmellOption) -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Text(
-            text = wineSmell.title,
+            text = wineSmellKeyword.title,
             modifier = Modifier.padding(start = 24.dp),
             style = WineyTheme.typography.bodyB2,
             color = WineyTheme.colors.gray_500
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        FlowRow(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Spacer(modifier = Modifier.width(14.dp))
-            wineSmell.options.forEach {
+            wineSmellKeyword.options.forEach {
                 NoteFeatureText(
                     name = it.name,
-                    enable = it.isSelected,
+                    enable = isWineSmellKeywordSelected(it),
                 ) {
                     updateWineSmell(it.copy(isSelected = !it.isSelected))
                 }
             }
-            Spacer(modifier = Modifier.width(14.dp))
         }
     }
 }

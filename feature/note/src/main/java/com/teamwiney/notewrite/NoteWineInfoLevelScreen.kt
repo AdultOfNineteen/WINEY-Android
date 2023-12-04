@@ -175,16 +175,24 @@ fun NoteWineInfoLevelScreen(
                     .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                NumberPicker(
-                    value = uiState.wineNote.alcohol,
-                    onValueChange = {
-                        viewModel.updateAlcohol(it)
-                    },
-                    range = 0..20,
-                    textStyle = WineyTheme.typography.title1.copy(
-                        color = WineyTheme.colors.gray_50
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    NumberPicker(
+                        value = uiState.wineNote.officialAlcohol.toInt(),
+                        onValueChange = {
+                            viewModel.updateOfficialAlcohol(it.toDouble())
+                        },
+                        range = 0..20,
+                        textStyle = WineyTheme.typography.title1.copy(
+                            color = WineyTheme.colors.gray_50
+                        )
                     )
-                )
+                    Text(
+                        text = "°",
+                        style = WineyTheme.typography.title1.copy(
+                            color = WineyTheme.colors.gray_50
+                        )
+                    )
+                }
             }
             Row(
                 modifier = Modifier.padding(horizontal = 24.dp),

@@ -11,7 +11,6 @@ import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Part
 
 interface TastingNoteDataSource {
 
@@ -32,8 +31,7 @@ interface TastingNoteDataSource {
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<ResponseWrapper<String>>>
 
     fun postTastingNote(
-        wineNoteWriteRequest: HashMap<String, RequestBody>,
-        smellKeywordList: List<MultipartBody.Part>,
+        request: RequestBody,
         multipartFiles: List<MultipartBody.Part>,
     ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
 }

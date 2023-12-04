@@ -66,17 +66,10 @@ class TastingNoteDataSourceImpl @Inject constructor(
         }.flowOn(ioDispatcher)
 
     override fun postTastingNote(
-        wineNoteWriteRequest: HashMap<String, RequestBody>,
-        smellKeywordList: List<MultipartBody.Part>,
+        request: RequestBody,
         multipartFiles: List<MultipartBody.Part>
     ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>> = flow {
-        emit(
-            tastingNoteService.postTastingNote(
-                wineNoteWriteRequest,
-                smellKeywordList,
-                multipartFiles
-            )
-        )
+        emit(tastingNoteService.postTastingNote(request, multipartFiles))
     }.flowOn(ioDispatcher)
 
 }

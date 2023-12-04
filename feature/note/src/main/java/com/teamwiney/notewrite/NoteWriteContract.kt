@@ -1,8 +1,5 @@
 package com.teamwiney.notewrite
 
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavOptions
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
@@ -10,6 +7,7 @@ import androidx.paging.PagingData
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
+import com.teamwiney.core.common.model.WineSmell
 import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.notewrite.model.WineNote
@@ -36,47 +34,25 @@ class NoteWriteContract {
         val selectedWineInfo: Wine = Wine.default(),
         val wineNote: WineNote = WineNote.default(),
         val hintPopupOpen: Boolean = false,
-        val wineSmells: List<WineSmell> = listOf(
-            WineSmell(
+        val wineSmellKeywords: List<WineSmellKeyword> = listOf(
+            WineSmellKeyword(
                 title = "과일향",
-                options = listOf(
-                    WineSmellOption("과일향"),
-                    WineSmellOption("베리류"),
-                    WineSmellOption("레몬/라임"),
-                    WineSmellOption("사과/배"),
-                    WineSmellOption("복숭아/자두")
-                )
+                options = WineSmell.values().filter { it.type == "FRUIT" }.map { WineSmellOption(it.korName, it.value) }
             ),
-            WineSmell(
+            WineSmellKeyword(
                 title = "내추럴",
-                options = listOf(
-                    WineSmellOption("꽃향"),
-                    WineSmellOption("풀/나무"),
-                    WineSmellOption("허브향")
-                )
+                options = WineSmell.values().filter { it.type == "NATURAL" }.map { WineSmellOption(it.korName, it.value) }
             ),
-            WineSmell(
+            WineSmellKeyword(
                 title = "오크향",
-                options = listOf(
-                    WineSmellOption("오크향"),
-                    WineSmellOption("향신로"),
-                    WineSmellOption("견과류"),
-                    WineSmellOption("바닐라"),
-                    WineSmellOption("초콜릿")
-                )
+                options = WineSmell.values().filter { it.type == "OAK" }.map { WineSmellOption(it.korName, it.value) }
             ),
-            WineSmell(
+            WineSmellKeyword(
                 title = "기타",
-                options = listOf(
-                    WineSmellOption("부싯돌"),
-                    WineSmellOption("빵"),
-                    WineSmellOption("고무"),
-                    WineSmellOption("흙/재"),
-                    WineSmellOption("약품")
-                )
-            ),
+                options = WineSmell.values().filter { it.type == "OTHER" }.map { WineSmellOption(it.korName, it.value) }
+            )
         ),
-        val thumbX: Float = 0f,
+        val thumbX: Float = 0f
     ) : UiState
 
     sealed class Event : UiEvent {

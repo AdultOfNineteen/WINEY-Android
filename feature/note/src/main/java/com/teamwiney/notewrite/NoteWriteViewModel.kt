@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.graphics.Color
@@ -16,28 +15,18 @@ import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
-import com.teamwiney.data.util.fileFromContentUri
-import com.teamwiney.data.util.resizeAndSaveImage
-import com.teamwiney.data.util.toPlainRequestBody
-import com.teamwiney.notewrite.model.SmellKeyword
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteWriteViewModel @Inject constructor(
     private val wineRepository: WineRepository,
-    private val tastingNoteRepository: TastingNoteRepository,
-    @ApplicationContext private val context: Context,
+    private val tastingNoteRepository: TastingNoteRepository
 ) : BaseViewModel<NoteWriteContract.State, NoteWriteContract.Event, NoteWriteContract.Effect>(
     initialState = NoteWriteContract.State()
 ) {
@@ -79,46 +68,26 @@ class NoteWriteViewModel @Inject constructor(
             }
     }
 
-
     fun writeTastingNote() = viewModelScope.launch {
-        /** List형태 MultiPart 설정 */
-        val smellKeywordList: ArrayList<MultipartBody.Part> =
-            ArrayList<MultipartBody.Part>().apply {
-                currentState.wineNote.smellKeywordList.forEach {
-                    add(MultipartBody.Part.createFormData("smellKeywordList", it))
-                }
-            }
-
-        /** 단일 인자 MultiPart 설정 */
-        val wineNoteWriteRequest = hashMapOf<String, RequestBody>()
-        with(currentState.wineNote) {
-            wineNoteWriteRequest["wineId"] = wineId.toString().toPlainRequestBody()
-            wineNoteWriteRequest["alcohol"] = alcohol.toString().toPlainRequestBody()
-            wineNoteWriteRequest["color"] = colorToHexString(color).toPlainRequestBody()
-            wineNoteWriteRequest["sweetness"] = sweetness.toString().toPlainRequestBody()
-            wineNoteWriteRequest["acidity"] = acidity.toString().toPlainRequestBody()
-            wineNoteWriteRequest["body"] = body.toString().toPlainRequestBody()
-            wineNoteWriteRequest["tannin"] = body.toString().toPlainRequestBody()
-            wineNoteWriteRequest["finish"] = body.toString().toPlainRequestBody()
-            wineNoteWriteRequest["memo"] = memo.toPlainRequestBody()
-            if (vintage.isNotEmpty()) {
-                wineNoteWriteRequest["vintage"] = vintage.toPlainRequestBody()
-            }
-            if (price.isNotEmpty()) {
-                wineNoteWriteRequest["price"] = price.toPlainRequestBody()
-            }
-            buyAgain?.let {
-                wineNoteWriteRequest["buyAgain"] = buyAgain.toString().toPlainRequestBody()
-            }
-        }
-
-        /** TODO 이미지 파일 변환 */
-        val multipartFiles = convertImageToMultipartFile()
+        val wineNote = currentState.wineNote
 
         tastingNoteRepository.postTastingNote(
-            wineNoteWriteRequest = wineNoteWriteRequest,
-            smellKeywordList = smellKeywordList,
-            multipartFiles = multipartFiles
+            wineId = wineNote.wineId,
+            officialAlcohol = wineNote.officialAlcohol,
+            alcohol = wineNote.alcohol,
+            color = colorToHexString(wineNote.color),
+            sweetness = wineNote.sweetness,
+            acidity = wineNote.acidity,
+            body = wineNote.body,
+            tannin = wineNote.tannin,
+            finish = wineNote.finish,
+            memo = wineNote.memo,
+            rating = wineNote.rating,
+            vintage = wineNote.vintage,
+            price = wineNote.price,
+            buyAgain = wineNote.buyAgain,
+            smellKeywordList = wineNote.smellKeywordList,
+            imgUris = wineNote.imgs
         ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
@@ -140,15 +109,6 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
-    private fun convertImageToMultipartFile(): List<MultipartBody.Part> {
-        return currentState.wineNote.imgs.map {
-            val originalFile = fileFromContentUri(context, it)
-            val compressedFile = resizeAndSaveImage(context, originalFile)
-            val requestBody: RequestBody = compressedFile.asRequestBody("image/*".toMediaType())
-            MultipartBody.Part.createFormData("multipartFile", compressedFile.name, requestBody)
-        }
-    }
-
     private fun colorToHexString(color: Color): String {
         val argb = color.toArgb()
         val red = (argb shr 16 and 0xFF).toString(16).padStart(2, '0')
@@ -166,6 +126,10 @@ class NoteWriteViewModel @Inject constructor(
 
     fun hideHintPopup() = viewModelScope.launch {
         updateState(currentState.copy(hintPopupOpen = false))
+    }
+
+    fun updateOfficialAlcohol(officialAlcohol: Double) = viewModelScope.launch {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(officialAlcohol = officialAlcohol)))
     }
 
     fun updateVintage(vintage: String) = viewModelScope.launch {
@@ -293,29 +257,22 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(finish = finish)))
     }
 
-    fun updateWineNoteAlcohol(alcohol: Int) = viewModelScope.launch {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(alcohol = alcohol)))
-    }
-
     fun updateWineSmells(wineSmellOption: WineSmellOption) = viewModelScope.launch {
-        val wineSmells = currentState.wineSmells.toMutableList()
-        wineSmells.find { it.options.any { it.name == wineSmellOption.name } }
-            ?.let { wineSmell ->
-                val index = wineSmells.indexOfFirst { it.title == wineSmell.title }
-                wineSmells[index] = wineSmell.copy(
-                    options = wineSmell.options.map {
-                        if (it.name == wineSmellOption.name) {
-                            wineSmellOption
-                        } else {
-                            it
-                        }
-                    }
-                )
-            }
-        updateState(currentState.copy(wineSmells = wineSmells))
+        val wineNote = currentState.wineNote
+        val updatedSmellKeywordList = if (wineNote.smellKeywordList.contains(wineSmellOption.value)) {
+            wineNote.smellKeywordList.filter { it != wineSmellOption.value }
+        } else {
+            wineNote.smellKeywordList + wineSmellOption.value
+        }
+        updateState(currentState.copy(wineNote = wineNote.copy(smellKeywordList = updatedSmellKeywordList)))
     }
 
     fun updateThumbX(thumbX: Float) = viewModelScope.launch {
         updateState(currentState.copy(thumbX = thumbX))
+    }
+
+    fun isWineSmellSelected(wineSmellOption: WineSmellOption): Boolean {
+        val wineNote = currentState.wineNote
+        return wineNote.smellKeywordList.contains(wineSmellOption.value)
     }
 }
