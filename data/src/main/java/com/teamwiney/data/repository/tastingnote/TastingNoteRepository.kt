@@ -1,5 +1,6 @@
 package com.teamwiney.data.repository.tastingnote
 
+import android.net.Uri
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
@@ -10,8 +11,6 @@ import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import kotlinx.coroutines.flow.Flow
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 interface TastingNoteRepository {
 
@@ -40,7 +39,21 @@ interface TastingNoteRepository {
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 
     fun postTastingNote(
-        request: RequestBody,
-        multipartFiles: List<MultipartBody.Part>,
+        wineId: Long,
+        officialAlcohol: Double,
+        alcohol: Int,
+        color: String,
+        sweetness: Int,
+        acidity: Int,
+        body: Int,
+        tannin: Int,
+        finish: Int,
+        memo: String,
+        rating: Int,
+        vintage: String,
+        price: String,
+        buyAgain: Boolean?,
+        smellKeywordList: List<String>,
+        imgUris: List<Uri>
     ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
 }

@@ -1,5 +1,6 @@
 package com.teamwiney.data.di
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.teamwiney.data.datasource.AuthDataSource
@@ -22,6 +23,7 @@ import com.teamwiney.data.repository.wine.WineRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
@@ -67,8 +69,9 @@ object DataModule {
     @Provides
     @Singleton
     fun providesTastingNotRepository(
-        tastingNoteDataSource: TastingNoteDataSource
-    ): TastingNoteRepository = TastingNoteRepositoryImpl(tastingNoteDataSource)
+        tastingNoteDataSource: TastingNoteDataSource,
+        @ApplicationContext context: Context
+    ): TastingNoteRepository = TastingNoteRepositoryImpl(tastingNoteDataSource, context)
 
     @Provides
     @Singleton

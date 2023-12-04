@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.graphics.Color
@@ -16,29 +15,18 @@ import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
-import com.teamwiney.data.util.fileFromContentUri
-import com.teamwiney.data.util.resizeAndSaveImage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteWriteViewModel @Inject constructor(
     private val wineRepository: WineRepository,
-    private val tastingNoteRepository: TastingNoteRepository,
-    @ApplicationContext private val context: Context,
+    private val tastingNoteRepository: TastingNoteRepository
 ) : BaseViewModel<NoteWriteContract.State, NoteWriteContract.Event, NoteWriteContract.Effect>(
     initialState = NoteWriteContract.State()
 ) {
@@ -83,43 +71,23 @@ class NoteWriteViewModel @Inject constructor(
     fun writeTastingNote() = viewModelScope.launch {
         val wineNote = currentState.wineNote
 
-        val jsonObjectBuilder = JSONObject().apply {
-            put("wineId", wineNote.wineId)
-            put("officialAlcohol", wineNote.officialAlcohol)
-            put("alcohol", wineNote.alcohol)
-            put("color", colorToHexString(wineNote.color))
-            put("sweetness", wineNote.sweetness)
-            put("acidity", wineNote.acidity)
-            put("body", wineNote.body)
-            put("tannin", wineNote.tannin)
-            put("finish", wineNote.finish)
-            put("memo", wineNote.memo)
-            put("rating", wineNote.rating)
-
-            if (wineNote.vintage.isNotEmpty()) {
-                put("vintage", wineNote.vintage.toInt())
-            }
-
-            if (wineNote.price.isNotEmpty()) {
-                put("price", wineNote.price.toInt())
-            }
-
-            wineNote.buyAgain?.let {
-                put("buyAgain", it)
-            }
-
-            val smellKeywordsArray = JSONArray().apply {
-                wineNote.smellKeywordList.forEach { put(it) }
-            }
-            put("smellKeywordList", smellKeywordsArray)
-        }
-
-        val request = jsonObjectBuilder.toString().toRequestBody("application/json".toMediaType())
-        val multipartFiles = convertImageToMultipartFile()
-
         tastingNoteRepository.postTastingNote(
-            request = request,
-            multipartFiles = multipartFiles
+            wineId = wineNote.wineId,
+            officialAlcohol = wineNote.officialAlcohol,
+            alcohol = wineNote.alcohol,
+            color = colorToHexString(wineNote.color),
+            sweetness = wineNote.sweetness,
+            acidity = wineNote.acidity,
+            body = wineNote.body,
+            tannin = wineNote.tannin,
+            finish = wineNote.finish,
+            memo = wineNote.memo,
+            rating = wineNote.rating,
+            vintage = wineNote.vintage,
+            price = wineNote.price,
+            buyAgain = wineNote.buyAgain,
+            smellKeywordList = wineNote.smellKeywordList,
+            imgUris = wineNote.imgs
         ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
@@ -138,15 +106,6 @@ class NoteWriteViewModel @Inject constructor(
                     postEffect(NoteWriteContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
-        }
-    }
-
-    private fun convertImageToMultipartFile(): List<MultipartBody.Part> {
-        return currentState.wineNote.imgs.map {
-            val originalFile = fileFromContentUri(context, it)
-            val compressedFile = resizeAndSaveImage(context, originalFile)
-            val requestBody: RequestBody = compressedFile.asRequestBody("image/*".toMediaType())
-            MultipartBody.Part.createFormData("multipartFiles", compressedFile.name, requestBody)
         }
     }
 
