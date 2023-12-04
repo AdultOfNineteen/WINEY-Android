@@ -26,7 +26,7 @@ data class WineNote(
             return WineNote(
                 wineId = 0,
                 vintage = "",
-                officialAlcohol = 0.0,
+                officialAlcohol = 12.0,
                 price = "",
                 color = Color.Red,
                 sweetness = 0,

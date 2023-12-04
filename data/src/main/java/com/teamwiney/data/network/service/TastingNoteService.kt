@@ -16,10 +16,8 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
-import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.PrimitiveIterator.OfInt
 
 interface TastingNoteService {
 
@@ -58,8 +56,7 @@ interface TastingNoteService {
     @Multipart
     @POST("/tasting-notes")
     suspend fun postTastingNote(
-        @PartMap wineNoteWriteRequest: HashMap<String, RequestBody>,
-        @Part smellKeywordList: List<MultipartBody.Part>,
+        @Part("request") request: RequestBody,
         @Part multipartFiles: List<MultipartBody.Part>,
     ): ApiResult<ResponseWrapper<TastingNoteIdRes>>
 }

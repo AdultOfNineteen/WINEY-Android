@@ -40,8 +40,7 @@ interface TastingNoteRepository {
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 
     fun postTastingNote(
-        wineNoteWriteRequest: HashMap<String, RequestBody>,
-        smellKeywordList: List<MultipartBody.Part>,
+        request: RequestBody,
         multipartFiles: List<MultipartBody.Part>,
     ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
 }

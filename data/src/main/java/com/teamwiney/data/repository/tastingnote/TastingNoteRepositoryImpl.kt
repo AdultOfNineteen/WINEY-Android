@@ -50,14 +50,9 @@ class TastingNoteRepositoryImpl @Inject constructor(
         tastingNoteDataSource.deleteTastingNote(noteId)
 
     override fun postTastingNote(
-        wineNoteWriteRequest: HashMap<String, RequestBody>,
-        smellKeywordList: List<MultipartBody.Part>,
+        request: RequestBody,
         multipartFiles: List<MultipartBody.Part>
     ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>> {
-        return tastingNoteDataSource.postTastingNote(
-            wineNoteWriteRequest,
-            smellKeywordList,
-            multipartFiles
-        )
+        return tastingNoteDataSource.postTastingNote(request, multipartFiles)
     }
 }
