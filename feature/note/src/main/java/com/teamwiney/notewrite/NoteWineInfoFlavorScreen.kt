@@ -105,7 +105,7 @@ fun NoteWineInfoFlavorScreen(
             HeightSpacer(30.dp)
             WineTasteSlider(
                 score = uiState.wineNote.alcohol,
-                onValueChange = { viewModel.updateWineNoteAlcohol(it) },
+                onValueChange = { viewModel.updateAlcohol(it) },
                 title = "알코올",
                 subTitle = "알코올 세기의 정도"
             )

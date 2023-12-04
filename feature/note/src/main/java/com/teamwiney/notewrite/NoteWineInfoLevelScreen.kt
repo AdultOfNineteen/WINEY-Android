@@ -176,9 +176,9 @@ fun NoteWineInfoLevelScreen(
                 contentAlignment = Alignment.Center
             ) {
                 NumberPicker(
-                    value = uiState.wineNote.alcohol,
+                    value = uiState.wineNote.officialAlcohol.toInt(),
                     onValueChange = {
-                        viewModel.updateAlcohol(it)
+                        viewModel.updateOfficialAlcohol(it.toDouble())
                     },
                     range = 0..20,
                     textStyle = WineyTheme.typography.title1.copy(
