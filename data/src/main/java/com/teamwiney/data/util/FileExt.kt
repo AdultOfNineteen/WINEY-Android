@@ -11,11 +11,9 @@ import java.security.SecureRandom
 import java.util.*
 
 fun fileFromContentUri(context: Context, contentUri: Uri): File {
-    // Preparing Temp file name
     val fileExtension = getFileExtension(context, contentUri)
     val fileName = "temp_file" + if (fileExtension != null) ".$fileExtension" else ""
 
-    // Creating Temp file
     val tempFile = File(context.cacheDir, fileName)
     tempFile.createNewFile()
 
@@ -97,7 +95,7 @@ private fun createFile(context: Context): File {
 
     val storageDir = context.cacheDir
 
-    return File(storageDir, fileName)
+    return File(storageDir, "${fileName}.jpg")
 }
 
 private fun generateRandomFileName(length: Int): String {
