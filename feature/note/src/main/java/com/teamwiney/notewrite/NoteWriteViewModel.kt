@@ -30,6 +30,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -93,20 +94,24 @@ class NoteWriteViewModel @Inject constructor(
             put("tannin", wineNote.tannin)
             put("finish", wineNote.finish)
             put("memo", wineNote.memo)
+            put("rating", wineNote.rating)
 
             if (wineNote.vintage.isNotEmpty()) {
-                put("vintage", wineNote.vintage)
+                put("vintage", wineNote.vintage.toInt())
             }
 
             if (wineNote.price.isNotEmpty()) {
-                put("price", wineNote.price)
+                put("price", wineNote.price.toInt())
             }
 
             wineNote.buyAgain?.let {
                 put("buyAgain", it)
             }
 
-            put("smellKeywordsList", wineNote.smellKeywordList)
+            val smellKeywordsArray = JSONArray().apply {
+                wineNote.smellKeywordList.forEach { put(it) }
+            }
+            put("smellKeywordList", smellKeywordsArray)
         }
 
         val request = jsonObjectBuilder.toString().toRequestBody("application/json".toMediaType())
@@ -141,7 +146,7 @@ class NoteWriteViewModel @Inject constructor(
             val originalFile = fileFromContentUri(context, it)
             val compressedFile = resizeAndSaveImage(context, originalFile)
             val requestBody: RequestBody = compressedFile.asRequestBody("image/*".toMediaType())
-            MultipartBody.Part.createFormData("multipartFile", compressedFile.name, requestBody)
+            MultipartBody.Part.createFormData("multipartFiles", compressedFile.name, requestBody)
         }
     }
 
