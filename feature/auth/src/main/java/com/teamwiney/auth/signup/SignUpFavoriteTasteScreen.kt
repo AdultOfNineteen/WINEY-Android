@@ -52,6 +52,8 @@ fun SignUpFavoriteTasteScreen(
     BackHandler {
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
+        } else {
+            appState.navController.navigateUp()
         }
     }
 
