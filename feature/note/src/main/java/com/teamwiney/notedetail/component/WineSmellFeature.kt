@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.ui.theme.WineyTheme
 
@@ -55,7 +56,7 @@ fun WineSmellFeature(noteDetail: TastingNoteDetail) {
                             .padding(5.dp)
                             .clip(CircleShape)
                             .background(
-                                color = Color(0xFFEC7CA4).copy(0.5f),
+                                color = Color(noteDetail.color.toColorInt()),
                                 shape = CircleShape
                             )
                     )

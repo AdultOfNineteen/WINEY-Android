@@ -26,7 +26,7 @@ data class TastingNoteDetail(
             wineType = "Loading",
             region = "Region",
             star = 4,
-            color = "RED",
+            color = "#FF0000",
             buyAgain = true,
             varietal = "varietal",
             officialAlcohol = 0,
