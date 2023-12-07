@@ -296,7 +296,10 @@ fun NoteFilterSection(
                     item {
                         NoteSelectedFilterChip(
                             name = "재구매 의사",
-                            onClose = { viewModel.updateBuyAgainSelected(true) },
+                            onClose = {
+                                viewModel.updateBuyAgainSelected(true)
+                                viewModel.getTastingNotes()
+                            },
                             onClick = {
                                 viewModel.processEvent(NoteContract.Event.ShowFilter)
                             }
