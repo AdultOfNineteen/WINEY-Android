@@ -2,11 +2,9 @@ package com.teamwiney.notedetail.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,8 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
@@ -44,23 +41,19 @@ fun WineSmellFeature(noteDetail: TastingNoteDetail) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row {
-                Box(
+                Spacer(
                     modifier = Modifier
+                        .background(
+                            brush = Brush.radialGradient(
+                                listOf(
+                                    Color(noteDetail.color.toColorInt()),
+                                    Color.Transparent
+                                )
+                            ),
+                            shape = CircleShape
+                        )
                         .size(41.dp)
-                        .blur(5.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(5.dp)
-                            .clip(CircleShape)
-                            .background(
-                                color = Color(noteDetail.color.toColorInt()),
-                                shape = CircleShape
-                            )
-                    )
-                }
+                )
 
                 Spacer(
                     modifier = Modifier
