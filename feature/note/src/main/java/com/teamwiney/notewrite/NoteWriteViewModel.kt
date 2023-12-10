@@ -9,7 +9,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
-import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
@@ -95,7 +94,7 @@ class NoteWriteViewModel @Inject constructor(
             Log.i("NoteWriteViewModel", "writeTastingNote: $it")
             when (it) {
                 is ApiResult.Success -> {
-                    postEffect(NoteWriteContract.Effect.NavigateTo(NoteDestinations.ROUTE))
+                    postEffect(NoteWriteContract.Effect.NoteWriteSuccess)
                 }
 
                 is ApiResult.ApiError -> {

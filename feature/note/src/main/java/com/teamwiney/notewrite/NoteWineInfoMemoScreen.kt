@@ -59,9 +59,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.navOptions
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteFeatureText
@@ -76,6 +78,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NoteWineInfoMemoScreen(
     appState: WineyAppState = rememberWineyAppState(),
+    refreshNote: () -> Unit,
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 
@@ -134,6 +137,17 @@ fun NoteWineInfoMemoScreen(
 
                 is NoteWriteContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
+                }
+
+                is NoteWriteContract.Effect.NoteWriteSuccess -> {
+                    appState.navigate(
+                        destination = NoteDestinations.ROUTE,
+                        navOptions = navOptions {
+                            popUpTo(NoteDestinations.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
             }
         }

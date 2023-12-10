@@ -63,6 +63,7 @@ fun NavGraphBuilder.noteGraph(
         ) {
             NoteDetailScreen(
                 noteId = it.arguments?.getInt("noteId") ?: 0,
+                refreshNote = noteViewModel::getTastingNotes,
                 appState = appState,
                 bottomSheetState = bottomSheetState,
             )
@@ -70,6 +71,7 @@ fun NavGraphBuilder.noteGraph(
 
         noteWriteGraph(
             appState = appState,
+            refreshNote = noteViewModel::getTastingNotes,
             bottomSheetState = bottomSheetState
         )
     }

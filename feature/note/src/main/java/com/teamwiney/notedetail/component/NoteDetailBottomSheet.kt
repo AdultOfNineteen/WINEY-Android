@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -55,7 +54,7 @@ fun NoteDetailBottomSheet(
                 .clickable {
                     localScope.launch {
                         hideBottomSheet()
-                        delay(100L)
+                        
                         showBottomSheet {
                             NoteDeleteBottomSheet(
                                 onConfirm = deleteNote,

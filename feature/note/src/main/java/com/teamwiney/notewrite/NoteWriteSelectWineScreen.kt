@@ -68,6 +68,8 @@ fun NoteWriteSelectWineScreen(
                 is NoteWriteContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
                 }
+
+                else -> { }
             }
         }
     }

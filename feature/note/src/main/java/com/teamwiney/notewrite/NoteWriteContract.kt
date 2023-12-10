@@ -66,6 +66,8 @@ class NoteWriteContract {
         ) : Effect()
 
         data class ShowSnackBar(val message: String) : Effect()
+
+        object NoteWriteSuccess : Effect()
     }
 
 }

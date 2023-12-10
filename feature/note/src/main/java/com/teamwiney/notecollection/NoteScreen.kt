@@ -96,6 +96,8 @@ fun NoteScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.getTastingNotes()
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is NoteContract.Effect.NavigateTo -> {

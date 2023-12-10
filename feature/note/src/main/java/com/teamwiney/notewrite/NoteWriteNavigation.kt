@@ -11,6 +11,7 @@ import com.teamwiney.rememberNavControllerBackStackEntry
 
 fun NavGraphBuilder.noteWriteGraph(
     appState: WineyAppState,
+    refreshNote: () -> Unit,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -126,6 +127,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoMemoScreen(
                 appState = appState,
+                refreshNote = refreshNote,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }

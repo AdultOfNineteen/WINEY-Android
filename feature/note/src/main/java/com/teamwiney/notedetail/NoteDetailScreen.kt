@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun NoteDetailScreen(
     appState: WineyAppState,
     noteId: Int = 0,
+    refreshNote: () -> Unit,
     viewModel: NoteDetailViewModel = hiltViewModel(),
     bottomSheetState: WineyBottomSheetState
 ) {
@@ -66,6 +67,7 @@ fun NoteDetailScreen(
                 is NoteDetailContract.Effect.NoteDeleted -> {
                     appState.showSnackbar("노트가 삭제되었습니다.")
                     appState.navController.navigateUp()
+                    refreshNote()
                 }
             }
         }
