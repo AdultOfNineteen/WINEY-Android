@@ -8,25 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.ui.theme.WineyTheme
-import kotlinx.coroutines.launch
 
 
 @Composable
 fun NoteDetailBottomSheet(
-    showBottomSheet: (SheetContent) -> Unit,
-    hideBottomSheet: () -> Unit,
     deleteNote: () -> Unit,
     patchNote: () -> Unit
 ) {
-
-    val localScope = rememberCoroutineScope()
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,18 +43,7 @@ fun NoteDetailBottomSheet(
             style = WineyTheme.typography.bodyB1,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    localScope.launch {
-                        hideBottomSheet()
-                        
-                        showBottomSheet {
-                            NoteDeleteBottomSheet(
-                                onConfirm = deleteNote,
-                                onCancel = hideBottomSheet
-                            )
-                        }
-                    }
-                }
+                .clickable { deleteNote() }
                 .padding(20.dp)
         )
         Text(

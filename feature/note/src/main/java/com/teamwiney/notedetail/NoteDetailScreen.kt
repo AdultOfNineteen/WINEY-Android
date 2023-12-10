@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.design.R
+import com.teamwiney.notedetail.component.NoteDeleteBottomSheet
 import com.teamwiney.notedetail.component.NoteDetailBottomSheet
 import com.teamwiney.notedetail.component.WineInfo
 import com.teamwiney.notedetail.component.WineMemo
@@ -64,6 +65,34 @@ fun NoteDetailScreen(
                     appState.showSnackbar(effect.message)
                 }
 
+                is NoteDetailContract.Effect.ShowBottomSheet -> {
+                    bottomSheetState.showBottomSheet {
+                        when (effect.bottomSheet) {
+                            is NoteDetailContract.BottomSheet.NoteOption -> {
+                                NoteDetailBottomSheet(
+                                    deleteNote = {
+                                        bottomSheetState.hideBottomSheet()
+                                        viewModel.processEvent(
+                                            NoteDetailContract.Event.ShowNoteDeleteBottomSheet
+                                        )
+                                    },
+                                    patchNote = {
+                                    }
+                                )
+                            }
+
+                            is NoteDetailContract.BottomSheet.NoteDelete -> {
+                                NoteDeleteBottomSheet(
+                                    onConfirm = {
+                                        viewModel.deleteNote(uiState.noteDetail.noteId.toInt())
+                                    },
+                                    onCancel = bottomSheetState::hideBottomSheet
+                                )
+                            }
+                        }
+                    }
+                }
+
                 is NoteDetailContract.Effect.NoteDeleted -> {
                     appState.showSnackbar("노트가 삭제되었습니다.")
                     appState.navController.navigateUp()
@@ -93,17 +122,7 @@ fun NoteDetailScreen(
                         .clip(CircleShape)
                         .size(28.dp)
                         .clickable {
-                            bottomSheetState.showBottomSheet {
-                                NoteDetailBottomSheet(
-                                    showBottomSheet = bottomSheetState::showBottomSheet,
-                                    hideBottomSheet = bottomSheetState::hideBottomSheet,
-                                    deleteNote = {
-                                        viewModel.deleteNote(uiState.noteDetail.noteId.toInt())
-                                    },
-                                    patchNote = {
-                                    }
-                                )
-                            }
+                            viewModel.processEvent(NoteDetailContract.Event.ShowNoteOptionBottomSheet)
                         }
                 )
             }

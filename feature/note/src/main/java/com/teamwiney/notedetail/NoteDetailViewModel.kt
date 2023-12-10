@@ -18,7 +18,20 @@ class NoteDetailViewModel @Inject constructor(
     override fun reduceState(event: NoteDetailContract.Event) {
         viewModelScope.launch {
             when (event) {
-                else -> {}
+                is NoteDetailContract.Event.ShowNoteOptionBottomSheet -> {
+                    postEffect(
+                        NoteDetailContract.Effect.ShowBottomSheet(
+                            NoteDetailContract.BottomSheet.NoteOption
+                        )
+                    )
+                }
+                is NoteDetailContract.Event.ShowNoteDeleteBottomSheet -> {
+                    postEffect(
+                        NoteDetailContract.Effect.ShowBottomSheet(
+                            NoteDetailContract.BottomSheet.NoteDelete
+                        )
+                    )
+                }
             }
         }
     }

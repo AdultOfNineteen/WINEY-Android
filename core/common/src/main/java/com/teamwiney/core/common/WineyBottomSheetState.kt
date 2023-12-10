@@ -72,6 +72,7 @@ class WineyBottomSheetState(
     @OptIn(ExperimentalMaterialApi::class)
     fun showBottomSheet(content: SheetContent) = scope.launch {
         keyboardController?.hide()
+        bottomSheetState.hide()
         setBottomSheet(content)
         bottomSheetState.show()
     }

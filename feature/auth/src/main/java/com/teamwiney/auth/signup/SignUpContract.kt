@@ -81,7 +81,6 @@ class SignUpContract {
         object BackToLogin : Event()
         object CancelTasteSelection : Event()
         object SetPreferences : Event()
-
         object VerifyCode : Event()
     }
 
