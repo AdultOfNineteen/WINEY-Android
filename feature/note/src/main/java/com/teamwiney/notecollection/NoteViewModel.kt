@@ -75,6 +75,7 @@ class NoteViewModel @Inject constructor(
         ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
                     updateState(
