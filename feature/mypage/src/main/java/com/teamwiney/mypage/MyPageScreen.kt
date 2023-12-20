@@ -1,5 +1,7 @@
 package com.teamwiney.mypage
 
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,20 +29,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
 
-@Preview
 @Composable
-fun MyPageScreen() {
+fun MyPageScreen(
+    appState: WineyAppState
+) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +83,13 @@ fun MyPageScreen() {
         }
         HeightSpacer(height = 5.dp)
         MyProfileMenuItem(menu = "FAQ") {
+            val builder = CustomTabsIntent.Builder()
 
+            builder.setShowTitle(true)
+            builder.setInstantAppsEnabled(true)
+
+            val customBuilder = builder.build()
+            customBuilder.launchUrl(context, Uri.parse("https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4"))
         }
         MyProfileAppVersionItem()
     }

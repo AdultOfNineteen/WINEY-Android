@@ -48,6 +48,7 @@ dependencies {
 
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
+        implementation(BROWSER)
         implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL3)

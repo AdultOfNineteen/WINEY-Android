@@ -20,12 +20,15 @@ fun NavGraphBuilder.myPageGraph(
         startDestination = MyPageDestinations.MY_PAGE
     ) {
         composable(route = MyPageDestinations.MY_PAGE) {
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = MyPageDestinations.ROUTE
+            MyPageScreen(
+                appState = appState
             )
-            MyPageScreen()
+        }
+
+        composable(route = MyPageDestinations.BADGE) {
+            MyPageBadgeScreen(
+                appState = appState
+            )
         }
 
         // TODO : 프로필

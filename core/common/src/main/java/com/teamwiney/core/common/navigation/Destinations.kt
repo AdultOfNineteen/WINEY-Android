@@ -70,4 +70,5 @@ object MyPageDestinations {
     const val ROUTE = "myPageRoute"
 
     const val MY_PAGE = "myPage"
+    const val BADGE = "badge"
 }

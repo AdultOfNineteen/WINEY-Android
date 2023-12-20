@@ -2,6 +2,7 @@ object Dependency {
     const val ANDROID_CORE_KTX = "androidx.core:core-ktx:${Versions.ANDROID_CORE_KTX}"
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Versions.APPCOMPAT}"
     const val ACTIVITY_COMPOSE = "androidx.activity:activity-compose:${Versions.ACTIVITY_COMPOSE}"
+    const val BROWSER = "androidx.browser:browser:${Versions.BROWSER}"
     const val COMPOSE_BOM = "androidx.compose:compose-bom:${Versions.COMPOSE_BOM}"
     const val COMPOSE_COIL = "io.coil-kt:coil-compose:${Versions.COMPOSE_COIL}"
     const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.MATERIAL}"

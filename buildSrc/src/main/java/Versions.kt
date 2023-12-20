@@ -1,6 +1,7 @@
 object Versions {
     const val HILT_NAVIGATION_COMPOSE: String = "1.0.0-alpha02"
     const val AGP = "8.0.2"
+    const val BROWSER = "1.7.0"
     const val KOTLIN = "1.8.10"
     const val ANDROID_CORE_KTX = "1.10.1"
     const val ACTIVITY_COMPOSE = "1.7.2"
