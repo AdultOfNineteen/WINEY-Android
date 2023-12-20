@@ -1,6 +1,7 @@
 package com.teamwiney.core.common.util
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object Constants {
@@ -11,4 +12,5 @@ object Constants {
     val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
     val LOGIN_TYPE = stringPreferencesKey("login_type")
     val IS_FIRST_SCROLL = booleanPreferencesKey("is_first_scroll")
+    val USER_ID = intPreferencesKey("user_id")
 }
