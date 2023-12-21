@@ -31,6 +31,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        signingConfig = signingConfigs.getByName("debug")
+
         buildConfigField(
             "String",
             "KAKAO_NATIVE_APP_KEY",
@@ -49,6 +51,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = properties["SIGNED_KEY_ALIAS"] as String?
+            keyPassword = properties["SIGNED_KEY_PASSWORD"] as String?
+            storeFile = properties["SIGNED_STORE_FILE"]?.let { file(it) }
+            storePassword = properties["SIGNED_STORE_PASSWORD"] as String?
+        }
     }
 
     buildTypes {
