@@ -1,6 +1,7 @@
-package com.teamwiney.data.datasource
+package com.teamwiney.data.datasource.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
@@ -10,7 +11,6 @@ import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.service.AuthService
-import com.teamwiney.data.network.service.SocialType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

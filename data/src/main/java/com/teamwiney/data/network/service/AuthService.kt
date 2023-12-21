@@ -1,7 +1,7 @@
 package com.teamwiney.data.network.service
 
-import com.google.gson.annotations.SerializedName
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
@@ -21,18 +21,6 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
-import java.util.concurrent.Flow
-
-enum class SocialType {
-    @SerializedName("KAKAO")
-    KAKAO,
-
-    @SerializedName("GOOGLE")
-    GOOGLE,
-
-    @SerializedName("normal")
-    normal
-}
 
 interface AuthService {
 

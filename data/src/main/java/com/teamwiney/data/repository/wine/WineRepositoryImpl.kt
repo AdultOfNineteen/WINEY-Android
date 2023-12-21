@@ -1,6 +1,6 @@
 package com.teamwiney.data.repository.wine
 
-import com.teamwiney.data.datasource.WineDataSource
+import com.teamwiney.data.datasource.wine.WineDataSource
 import javax.inject.Inject
 
 class WineRepositoryImpl @Inject constructor(

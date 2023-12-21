@@ -9,6 +9,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
@@ -17,7 +18,6 @@ import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SocialLogin
-import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.feature.auth.BuildConfig
