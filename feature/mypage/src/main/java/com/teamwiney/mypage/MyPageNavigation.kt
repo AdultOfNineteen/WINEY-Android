@@ -33,9 +33,15 @@ fun NavGraphBuilder.myPageGraph(
             )
         }
 
+        composable(route = MyPageDestinations.ACCOUNT) {
+            MyPageAccountScreen(
+                appState = appState,
+                viewModel = myPageViewModel
+            )
+        }
+
         // TODO : 프로필
 
-        // TODO : 설정
 
         // TODO : 버전 정보
 

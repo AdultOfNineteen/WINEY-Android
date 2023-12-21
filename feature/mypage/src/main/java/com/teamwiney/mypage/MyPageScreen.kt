@@ -36,11 +36,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
+import com.teamwiney.core.common.navigation.MyPageDestinations
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
@@ -79,7 +79,10 @@ fun MyPageScreen(
     ) {
         MyProfileAppBar()
         MyPageProfile(
-            name = "김희연"
+            name = "김희연",
+            onProfileClick = {
+                appState.navigate(MyPageDestinations.ACCOUNT)
+            }
         )
 
         MyPageGradeProgressBar(
@@ -142,10 +145,10 @@ fun MyProfileAppBar() {
     )
 }
 
-@Preview
 @Composable
 fun MyPageProfile(
-    name: String = "김희연"
+    name: String,
+    onProfileClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -194,7 +197,9 @@ fun MyPageProfile(
                 )
 
                 Icon(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { onProfileClick() },
                     painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_arrow_right),
                     contentDescription = "IC_ARROW_RIGHT",
                     tint = Color.Unspecified
