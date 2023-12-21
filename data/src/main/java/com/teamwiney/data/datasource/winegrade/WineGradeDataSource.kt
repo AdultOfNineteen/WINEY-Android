@@ -12,6 +12,6 @@ interface WineGradeDataSource {
         userId: String
     ): Flow<ApiResult<ResponseWrapper<UserWineGrade>>>
 
-    fun getWineGradeStandard(): Flow<ApiResult<ResponseWrapper<WineGradeStandard>>>
+    fun getWineGradeStandard(): Flow<ApiResult<ResponseWrapper<List<WineGradeStandard>>>>
 
 }

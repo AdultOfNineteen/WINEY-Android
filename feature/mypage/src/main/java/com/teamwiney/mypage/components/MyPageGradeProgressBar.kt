@@ -13,42 +13,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
+import com.teamwiney.data.network.model.response.WineGradeStandard
 import com.teamwiney.ui.theme.WineyTheme
 
-data class Grade(
-    val name: String,
-    val count: Int
-)
-
-private val gradeData = listOf(
-    Grade("GLASS", 0),
-    Grade("BOTTLE", 3),
-    Grade("OAK", 7),
-    Grade("WINERY", 12)
-)
-
-@Preview
 @Composable
 fun MyPageGradeProgressBar(
     modifier: Modifier = Modifier,
-    noteCount: Int = 7,
-    grade: List<Grade> = gradeData,
+    noteCount: Int,
+    gradeData: List<WineGradeStandard>,
     inactiveColor: Color = WineyTheme.colors.gray_800,
     activeColor: Color = WineyTheme.colors.main_2,
     textStyle: TextStyle = WineyTheme.typography.captionM2.copy(
         color = inactiveColor
     )
 ) {
-    val maxCount: Int = grade.maxOfOrNull { it.count } ?: 0
+    val maxValue: Int = gradeData.maxOfOrNull { it.minCount } ?: 0
 
     val textMeasurer = rememberTextMeasurer()
-    val textMeasureResults = remember(grade) {
-        grade.map { grade ->
+    val textMeasureResults = remember(gradeData) {
+        gradeData.map { grade ->
             textMeasurer.measure(
-                text = grade.name,
+                text = grade.name.name,
                 style = textStyle
             )
         }
@@ -64,7 +51,6 @@ fun MyPageGradeProgressBar(
                 .height(32.dp)
         ) {
             val width = size.width
-            val height = size.height
 
             drawLine(
                 color = inactiveColor,
@@ -73,12 +59,14 @@ fun MyPageGradeProgressBar(
                 strokeWidth = 1.dp.toPx()
             )
 
-            for (i in grade.indices) {
+            for (i in gradeData.indices) {
+                val progress = gradeData[i].minCount / maxValue.toFloat()
+
                 drawCircle(
                     color = inactiveColor,
                     radius = 7.dp.toPx(),
                     center = Offset(
-                        x = width * (grade[i].count / maxCount.toFloat()),
+                        x = width * progress,
                         y = 7.dp.toPx()
                     )
                 )
@@ -89,7 +77,7 @@ fun MyPageGradeProgressBar(
                 drawText(
                     textLayoutResult = textMeasureResults[i],
                     topLeft = Offset(
-                        x = width * (grade[i].count / maxCount.toFloat()) - textCenter.x,
+                        x = width * progress - textCenter.x,
                         y = 21.dp.toPx()
                     )
                 )
@@ -99,7 +87,7 @@ fun MyPageGradeProgressBar(
                 color = activeColor,
                 radius = 7.dp.toPx(),
                 center = Offset(
-                    x = width * (noteCount / maxCount.toFloat()),
+                    x = width * minOf(noteCount / maxValue.toFloat(), 1f),
                     y = 7.dp.toPx()
                 )
             )

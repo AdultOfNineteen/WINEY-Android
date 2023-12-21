@@ -13,6 +13,7 @@ import com.teamwiney.core.common.navigation.MyPageDestinations
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
+    myPageViewModel: MyPageViewModel,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -21,7 +22,8 @@ fun NavGraphBuilder.myPageGraph(
     ) {
         composable(route = MyPageDestinations.MY_PAGE) {
             MyPageScreen(
-                appState = appState
+                appState = appState,
+                viewModel = myPageViewModel
             )
         }
 

@@ -16,7 +16,7 @@ interface WineGradeService {
     ): ApiResult<ResponseWrapper<UserWineGrade>>
 
     /** 와인 등급 기준 조회 API */
-    @GET("/users/wine-grade")
-    suspend fun getWineGradeStandard(): ApiResult<ResponseWrapper<WineGradeStandard>>
+    @GET("/users/wine-grades")
+    suspend fun getWineGradeStandard(): ApiResult<ResponseWrapper<List<WineGradeStandard>>>
 
 }

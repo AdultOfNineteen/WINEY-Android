@@ -25,6 +25,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,17 +38,38 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.model.WineGrade
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun MyPageScreen(
-    appState: WineyAppState
+    appState: WineyAppState,
+    viewModel: MyPageViewModel
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val effectFlow = viewModel.effect
+
     val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is MyPageContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is MyPageContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -60,10 +83,18 @@ fun MyPageScreen(
         )
 
         MyPageGradeProgressBar(
-            noteCount = 5
+            noteCount = uiState.noteCount,
+            gradeData = uiState.wineGradeStandard
         )
         HeightSpacer(height = 20.dp)
-        MyPageGrade()
+
+        MyPageGrade(
+            currentGrade = uiState.currentGrade,
+            expectedNextMonthGrade = uiState.expectedMonthGrade,
+            remainingNoteCount = maxOf(0,
+                uiState.wineGradeStandard.find { it.name == uiState.expectedMonthGrade }
+                    ?.minCount?.minus(uiState.noteCount) ?: 0)
+        )
         
         HeightSpacer(height = 15.dp)
         MyProfileMenuItem(menu = "서비스 이용약관") {
@@ -195,7 +226,11 @@ fun MyPageProfile(
 }
 
 @Composable
-fun MyPageGrade() {
+fun MyPageGrade(
+    currentGrade: WineGrade,
+    expectedNextMonthGrade: WineGrade,
+    remainingNoteCount: Int
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,7 +257,7 @@ fun MyPageGrade() {
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 Text(
-                    text = "BOTTLE",
+                    text = currentGrade.name,
                     style = WineyTheme.typography.bodyB2.copy(
                         color = WineyTheme.colors.gray_400
                     )
@@ -230,13 +265,13 @@ fun MyPageGrade() {
 
                 Text(
                     text = buildAnnotatedString {
-                        append("OAK까지 테이스팅 ")
+                        append("${expectedNextMonthGrade.name}까지 테이스팅 ")
                         withStyle(
                             style = SpanStyle(
                                 color = WineyTheme.colors.main_3
                             )
                         ) {
-                            append("노트 2번")
+                            append("노트 ${remainingNoteCount}번")
                         }
                     },
                     style = WineyTheme.typography.captionM2.copy(
