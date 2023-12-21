@@ -145,7 +145,9 @@ class LoginViewModel @Inject constructor(
                                 postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
                             }
 
-                            dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
+                            runBlocking {
+                                dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
+                            }
                         }
 
                         is ApiResult.ApiError -> {
