@@ -2,6 +2,7 @@ package com.teamwiney.data.repository.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -46,4 +47,12 @@ interface AuthRepository {
     fun refreshToken(
         refreshToken: String
     ): Flow<ApiResult<ResponseWrapper<AccessToken>>>
+
+    fun getConnections(): Flow<ApiResult<BaseResponse>>
+
+    fun registerFcmToken(
+        fcmToken: String,
+        deviceId: String
+    ): Flow<ApiResult<BaseResponse>>
+
 }

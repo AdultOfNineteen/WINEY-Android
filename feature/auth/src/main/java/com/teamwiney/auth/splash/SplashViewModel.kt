@@ -75,6 +75,17 @@ class SplashViewModel @Inject constructor(
         }
     }
 
+    fun registerFcmToken(
+        fcmToken: String,
+        deviceId: String
+    ) = viewModelScope.launch {
+        authRepository.registerFcmToken(fcmToken, deviceId)
+    }
+
+    fun getConnections() = viewModelScope.launch {
+        authRepository.getConnections()
+    }
+
     private fun navigateToMain() {
         postEffect(SplashContract.Effect.NavigateTo(HomeDestinations.ROUTE) {
             popUpTo(AuthDestinations.SPLASH) { inclusive = true }

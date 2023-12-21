@@ -28,6 +28,7 @@ fun SplashScreen(
     val viewModel: SplashViewModel = hiltViewModel()
 
     LaunchedEffect(true) {
+        viewModel.getConnections()
         delay(1000)
         viewModel.processEvent(SplashContract.Event.AutoLoginCheck)
         viewModel.effect.collectLatest {

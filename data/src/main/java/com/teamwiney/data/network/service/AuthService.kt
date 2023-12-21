@@ -2,7 +2,9 @@ package com.teamwiney.data.network.service
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.FcmTokenRequest
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -16,6 +18,7 @@ import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -56,7 +59,7 @@ interface AuthService {
         @Body phoneNumberWithVerificationCodeRequest: PhoneNumberWithVerificationCodeRequest
     ): ApiResult<ResponseWrapper<VerifyAuthenticationMessage>>
 
-    /** 취향 설정 */
+    /** 취향 설정 API */
     @PATCH("/users/{userId}/preferences")
     suspend fun setPreferences(
         @Path("userId") userId: String,
@@ -64,8 +67,19 @@ interface AuthService {
     ): ApiResult<ResponseWrapper<SetPreferences>>
 
 
+    /** 토큰 리프레쉬 API */
     @POST("/refresh")
     suspend fun refreshToken(
         @Header("X-REFRESH-TOKEN") refreshToken: String
     ): ApiResult<ResponseWrapper<AccessToken>>
+
+    /** 접속 API */
+    @GET("/connections")
+    suspend fun getConnections(): ApiResult<BaseResponse>
+
+    /** FCM 토큰 등록 API */
+    @POST("/fcm")
+    suspend fun registerFcmToken(
+        @Body fcmTokenRequest: FcmTokenRequest
+    ): ApiResult<BaseResponse>
 }

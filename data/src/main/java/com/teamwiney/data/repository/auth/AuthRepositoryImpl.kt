@@ -4,6 +4,7 @@ import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.FcmTokenRequest
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -57,5 +58,14 @@ class AuthRepositoryImpl @Inject constructor(
         userId: String,
         request: PhoneNumberWithVerificationCodeRequest
     ) = authDataSource.verifyAuthCodeMessage(userId, request)
+
+    override fun getConnections() = authDataSource.getConnections()
+
+    override fun registerFcmToken(
+        fcmToken: String,
+        deviceId: String
+    ) = authDataSource.registerFcmToken(
+        FcmTokenRequest(fcmToken, deviceId)
+    )
 
 }

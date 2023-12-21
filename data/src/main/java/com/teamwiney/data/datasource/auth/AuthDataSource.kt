@@ -2,7 +2,9 @@ package com.teamwiney.data.datasource.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.FcmTokenRequest
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -43,4 +45,9 @@ interface AuthDataSource {
     ): Flow<ApiResult<ResponseWrapper<SetPreferences>>>
 
     fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>>
+
+    fun getConnections(): Flow<ApiResult<BaseResponse>>
+
+    fun registerFcmToken(fcmTokenRequest: FcmTokenRequest): Flow<ApiResult<BaseResponse>>
+
 }
