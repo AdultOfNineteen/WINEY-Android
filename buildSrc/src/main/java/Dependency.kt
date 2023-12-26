@@ -30,6 +30,9 @@ object Dependency {
     const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
     const val HILT_COMPILER = "com.google.dagger:hilt-compiler:${Versions.HILT}"
     const val DAGGER = "com.google.dagger:dagger:${Versions.HILT}"
+    const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}"
+    const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
+    const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging-ktx"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.HILT}"
     const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
     const val HILT_ANDROID_GRADLE_PLUGIN =

@@ -7,6 +7,7 @@ object Versions {
     const val ACTIVITY_COMPOSE = "1.7.2"
     const val COMPOSE_COIL = "2.2.2"
     const val COMPOSE_BOM = "2023.06.01"
+    const val FIREBASE_BOM = "32.7.0"
     const val LIFECYCLE = "2.6.1"
     const val NAVIGATION_COMPOSE = "2.6.0"
     const val COROUTINES_ANDROID = "1.7.3"

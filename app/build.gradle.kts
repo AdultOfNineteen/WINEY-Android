@@ -103,8 +103,6 @@ dependencies {
     implementation(project(":feature:mypage"))
     implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
     implementation("com.google.android.gms:play-services-auth:20.6.0")
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
     
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
@@ -121,9 +119,14 @@ dependencies {
         implementation(KOTLIN_BOM)
         implementation(COMPOSE_BOM)
 
+        implementation(platform(FIREBASE_BOM))
+        implementation(FIREBASE_ANALYTICS)
+        implementation(FIREBASE_MESSAGING)
+
         implementation(HILT_NAVIGATION_COMPOSE)
         implementation(HILT_ANDROID)
         implementation(DAGGER)
+        implementation(DATASTORE)
         kapt(DAGGER_COMPILER)
         kapt(HILT_ANDROID_COMPILER)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)

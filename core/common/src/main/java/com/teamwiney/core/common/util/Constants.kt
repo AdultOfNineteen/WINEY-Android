@@ -10,6 +10,8 @@ object Constants {
     // PreferenceKeys
     val ACCESS_TOKEN = stringPreferencesKey("access_token")
     val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+    val FCM_TOKEN = stringPreferencesKey("fcm_token")
+    val DEVICE_ID = stringPreferencesKey("device_id")
     val LOGIN_TYPE = stringPreferencesKey("login_type")
     val IS_FIRST_SCROLL = booleanPreferencesKey("is_first_scroll")
     val USER_ID = intPreferencesKey("user_id")
