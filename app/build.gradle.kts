@@ -6,8 +6,9 @@ plugins {
         id(JETBRAINS_KOTLIN_ANDROID)
         id(DAGGER_HILT_ANDROID)
         id(KOTLIN_KAPT)
+        id(GOOGLE_SERVICES)
+        id(FIREBASE_CRASHLYTICS)
     }
-    id("com.google.gms.google-services")
 }
 
 val properties = Properties().apply {
@@ -121,6 +122,7 @@ dependencies {
 
         implementation(platform(FIREBASE_BOM))
         implementation(FIREBASE_ANALYTICS)
+        implementation(FIREBASE_CRASHLYTICS)
         implementation(FIREBASE_MESSAGING)
 
         implementation(HILT_NAVIGATION_COMPOSE)

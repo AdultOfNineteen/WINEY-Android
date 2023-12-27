@@ -32,6 +32,7 @@ object Dependency {
     const val DAGGER = "com.google.dagger:dagger:${Versions.HILT}"
     const val FIREBASE_BOM = "com.google.firebase:firebase-bom:${Versions.FIREBASE_BOM}"
     const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics-ktx"
+    const val FIREBASE_CRASHLYTICS = "com.google.firebase:firebase-crashlytics-ktx"
     const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging-ktx"
     const val DAGGER_COMPILER = "com.google.dagger:dagger-compiler:${Versions.HILT}"
     const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
@@ -39,6 +40,7 @@ object Dependency {
         "com.google.dagger:hilt-android-gradle-plugin:${Versions.HILT}"
     const val KOTLIN_GRADLE_PLUGIN =
         "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
+    const val TOOLS_BUILD_GRADLE_PULGIN = "com.android.tools.build:gradle:${Versions.TOOLS_BUILD_GRADLE}"
     const val HILT_NAVIGATION_COMPOSE =
         "androidx.hilt:hilt-navigation-compose:${Versions.HILT_NAVIGATION_COMPOSE}"
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT2}"
