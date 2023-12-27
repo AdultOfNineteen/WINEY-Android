@@ -40,6 +40,14 @@ fun NavGraphBuilder.myPageGraph(
             )
         }
 
+        composable(route = MyPageDestinations.WITHDRAWAL_REASON_SELECT) {
+            MyPageWithdrawalReasonSelectScreen(
+                appState = appState,
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
+            )
+        }
+
         // TODO : 프로필
 
 

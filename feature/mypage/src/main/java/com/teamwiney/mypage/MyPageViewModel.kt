@@ -25,7 +25,29 @@ class MyPageViewModel @Inject constructor(
     override fun reduceState(event: MyPageContract.Event) {
         viewModelScope.launch {
             when (event) {
-                else -> { }
+                is MyPageContract.Event.SelectReason -> {
+                    postEffect(
+                        MyPageContract.Effect.ShowBottomSheet(
+                            MyPageContract.BottomSheet.SelectWithdrawalReason
+                        )
+                    )
+                }
+
+                is MyPageContract.Event.CompleteWithdrawal -> {
+                    postEffect(
+                        MyPageContract.Effect.ShowBottomSheet(
+                            MyPageContract.BottomSheet.WithdrawalComplete
+                        )
+                    )
+                }
+
+                is MyPageContract.Event.LogOut -> {
+                    postEffect(
+                        MyPageContract.Effect.ShowBottomSheet(
+                            MyPageContract.BottomSheet.LogOut
+                        )
+                    )
+                }
             }
         }
     }
@@ -86,4 +108,20 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun updateWithdrawalReason(reason: String) = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                withdrawalReason = reason,
+                isWithdrawalReasonDirectInput = reason == "기타"
+            )
+        )
+    }
+
+    fun updateWithdrawalReasonDirectInput(reason: String) = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                withdrawalReasonDirectInput = reason
+            )
+        )
+    }
 }

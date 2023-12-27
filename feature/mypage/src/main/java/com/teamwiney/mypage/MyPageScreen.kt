@@ -67,6 +67,8 @@ fun MyPageScreen(
                 is MyPageContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
                 }
+
+                else -> { }
             }
         }
     }
