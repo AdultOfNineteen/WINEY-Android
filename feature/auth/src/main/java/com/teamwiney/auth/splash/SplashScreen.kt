@@ -26,18 +26,25 @@ fun SplashScreen(
     onInit: () -> Unit,
 ) {
     val viewModel: SplashViewModel = hiltViewModel()
+    val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
         viewModel.getConnections()
-        delay(1000)
+        viewModel.registerFcmToken()
+        delay(1500)
         viewModel.processEvent(SplashContract.Event.AutoLoginCheck)
-        viewModel.effect.collectLatest {
-            when (it) {
+
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is SplashContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+
                 is SplashContract.Effect.NavigateTo -> {
-                    if(it.destination == HomeDestinations.ROUTE){
+                    if (effect.destination == HomeDestinations.ROUTE) {
                         onInit()
                     }
-                    appState.navigate(it.destination, builder = it.builder)
+                    appState.navigate(effect.destination, builder = effect.builder)
                 }
             }
         }

@@ -7,6 +7,8 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
+import com.teamwiney.core.common.util.Constants.DEVICE_ID
+import com.teamwiney.core.common.util.Constants.FCM_TOKEN
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
@@ -75,15 +77,39 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun registerFcmToken(
-        fcmToken: String,
-        deviceId: String
-    ) = viewModelScope.launch {
-        authRepository.registerFcmToken(fcmToken, deviceId)
+    fun registerFcmToken() = viewModelScope.launch {
+        val fcmToken = dataStoreRepository.getStringValue(FCM_TOKEN).first()
+        val deviceId = dataStoreRepository.getStringValue(DEVICE_ID).first()
+
+        authRepository.registerFcmToken(fcmToken, deviceId).collectLatest {
+            when (it) {
+                is ApiResult.ApiError -> {
+                    postEffect(SplashContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(SplashContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+
+                else -> { }
+            }
+        }
     }
 
     fun getConnections() = viewModelScope.launch {
-        authRepository.getConnections()
+        authRepository.getConnections().collectLatest {
+            when (it) {
+                is ApiResult.ApiError -> {
+                    postEffect(SplashContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(SplashContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+
+                else -> { }
+            }
+        }
     }
 
     private fun navigateToMain() {
