@@ -75,57 +75,63 @@ fun MyPageScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(WineyTheme.colors.background_1)
-            .verticalScroll(rememberScrollState())
     ) {
         MyProfileAppBar()
-        MyPageProfile(
-            name = "김희연",
-            onProfileClick = {
-                appState.navigate(MyPageDestinations.ACCOUNT)
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            MyPageProfile(
+                name = "김희연",
+                onProfileClick = {
+                    appState.navigate(MyPageDestinations.ACCOUNT)
+                }
+            )
+
+            MyPageGradeProgressBar(
+                noteCount = uiState.noteCount,
+                gradeData = uiState.wineGradeStandard
+            )
+            HeightSpacer(height = 20.dp)
+
+            MyPageGrade(
+                currentGrade = uiState.currentGrade,
+                expectedNextMonthGrade = uiState.expectedMonthGrade,
+                remainingNoteCount = maxOf(0,
+                    uiState.wineGradeStandard.find { it.name == uiState.expectedMonthGrade }
+                        ?.minCount?.minus(uiState.noteCount) ?: 0)
+            )
+
+            HeightSpacer(height = 15.dp)
+            MyProfileMenuItem(menu = "서비스 이용약관") {
+
             }
-        )
+            HeightSpacer(height = 5.dp)
+            MyProfileMenuItem(menu = "개인정보 처리방침") {
 
-        MyPageGradeProgressBar(
-            noteCount = uiState.noteCount,
-            gradeData = uiState.wineGradeStandard
-        )
-        HeightSpacer(height = 20.dp)
+            }
 
-        MyPageGrade(
-            currentGrade = uiState.currentGrade,
-            expectedNextMonthGrade = uiState.expectedMonthGrade,
-            remainingNoteCount = maxOf(0,
-                uiState.wineGradeStandard.find { it.name == uiState.expectedMonthGrade }
-                    ?.minCount?.minus(uiState.noteCount) ?: 0)
-        )
-        
-        HeightSpacer(height = 15.dp)
-        MyProfileMenuItem(menu = "서비스 이용약관") {
+            HeightSpacer(height = 21.dp)
+            HeightSpacerWithLine(color = WineyTheme.colors.gray_900)
+            HeightSpacer(height = 7.dp)
 
+            MyProfileMenuItem(menu = "1:1 문의") {
+
+            }
+            HeightSpacer(height = 5.dp)
+            MyProfileMenuItem(menu = "FAQ") {
+                val builder = CustomTabsIntent.Builder()
+
+                builder.setShowTitle(true)
+                builder.setInstantAppsEnabled(true)
+
+                val customBuilder = builder.build()
+                customBuilder.launchUrl(
+                    context,
+                    Uri.parse("https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4")
+                )
+            }
+            MyProfileAppVersionItem()
         }
-        HeightSpacer(height = 5.dp)
-        MyProfileMenuItem(menu = "개인정보 처리방침") {
-
-        }
-
-        HeightSpacer(height = 21.dp)
-        HeightSpacerWithLine(color = WineyTheme.colors.gray_900)
-        HeightSpacer(height = 7.dp)
-
-        MyProfileMenuItem(menu = "1:1 문의") {
-            
-        }
-        HeightSpacer(height = 5.dp)
-        MyProfileMenuItem(menu = "FAQ") {
-            val builder = CustomTabsIntent.Builder()
-
-            builder.setShowTitle(true)
-            builder.setInstantAppsEnabled(true)
-
-            val customBuilder = builder.build()
-            customBuilder.launchUrl(context, Uri.parse("https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4"))
-        }
-        MyProfileAppVersionItem()
     }
 }
 
