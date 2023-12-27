@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +23,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -32,13 +30,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,7 +47,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,8 +64,8 @@ import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
+import com.teamwiney.ui.components.WRoundTextField
 import com.teamwiney.ui.components.imagepicker.ImagePickerContract
-import com.teamwiney.ui.theme.Pretendard
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -272,56 +267,10 @@ fun NoteWineInfoMemoScreen(
                 }
             }
 
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp)
-                    .heightIn(min = 150.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(
-                        BorderStroke(
-                            1.dp, WineyTheme.colors.main_3
-                        ),
-                        RoundedCornerShape(10.dp)
-                    )
-            ) {
-                BasicTextField(
-                    value = uiState.wineNote.memo,
-                    onValueChange = viewModel::updateMemo,
-                    modifier = Modifier
-                        .padding(14.dp)
-                        .fillMaxWidth()
-                        .heightIn(min = 150.dp),
-                    textStyle = WineyTheme.typography.captionM1.copy(
-                        color = WineyTheme.colors.gray_50
-                    ),
-                    decorationBox = { innerTextField ->
-                        Box {
-                            if (uiState.wineNote.memo.isEmpty()) {
-                                androidx.compose.material3.Text(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    text = "와인에 대한 생각을 작성해주세요 :)",
-                                    style = LocalTextStyle.current.copy(
-                                        color = WineyTheme.colors.gray_800,
-                                        fontSize = 13.sp,
-                                        fontFamily = Pretendard
-                                    ),
-                                    textAlign = TextAlign.Start,
-                                )
-                            }
-                            innerTextField()
-                        }
-                    },
-                )
-            }
-            Text(
-                text = "${uiState.wineNote.memo.length}/200",
-                style = WineyTheme.typography.bodyM2,
-                color = WineyTheme.colors.gray_500,
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .align(Alignment.End)
+            WRoundTextField(
+                value = uiState.wineNote.memo,
+                onValueChange = viewModel::updateMemo,
+                placeholderText = "와인에 대한 생각을 작성해주세요 :)"
             )
 
             Row(
