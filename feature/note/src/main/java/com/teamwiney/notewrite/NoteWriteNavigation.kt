@@ -11,7 +11,6 @@ import com.teamwiney.rememberNavControllerBackStackEntry
 
 fun NavGraphBuilder.noteWriteGraph(
     appState: WineyAppState,
-    refreshNote: () -> Unit,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -39,7 +38,7 @@ fun NavGraphBuilder.noteWriteGraph(
             NoteWriteSelectWineScreen(
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry),
-                bottomSheetState = bottomSheetState,
+                bottomSheetState = bottomSheetState
             )
         }
 
@@ -52,7 +51,7 @@ fun NavGraphBuilder.noteWriteGraph(
             NoteWineInfoLevelScreen(
                 appState = appState,
                 bottomSheetState = bottomSheetState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -65,7 +64,7 @@ fun NavGraphBuilder.noteWriteGraph(
             NoteWineInfoVintageAndPriceScreen(
                 appState = appState,
                 bottomSheetState = bottomSheetState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -89,7 +88,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoFlavorScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -101,7 +100,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoStandardSmellScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -114,7 +113,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoStandardFlavorScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -127,11 +126,8 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoMemoScreen(
                 appState = appState,
-                refreshNote = refreshNote,
-                viewModel = hiltViewModel(backStackEntry),
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
-
-
     }
 }

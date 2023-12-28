@@ -15,15 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.design.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SplashScreen(
-    appState: WineyAppState,
-    onInit: () -> Unit,
+    appState: WineyAppState
 ) {
     val viewModel: SplashViewModel = hiltViewModel()
     val effectFlow = viewModel.effect
@@ -41,9 +39,6 @@ fun SplashScreen(
                 }
 
                 is SplashContract.Effect.NavigateTo -> {
-                    if (effect.destination == HomeDestinations.ROUTE) {
-                        onInit()
-                    }
                     appState.navigate(effect.destination, builder = effect.builder)
                 }
             }

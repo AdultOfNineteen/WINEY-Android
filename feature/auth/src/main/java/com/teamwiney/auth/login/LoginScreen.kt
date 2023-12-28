@@ -47,8 +47,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun LoginScreen(
     appState: WineyAppState,
-    viewModel: LoginViewModel,
-    onInit: () -> Unit
+    viewModel: LoginViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -74,9 +73,6 @@ fun LoginScreen(
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {
-                    if (effect.destination == HomeDestinations.ROUTE) {
-                        onInit()
-                    }
                     appState.navigate(effect.destination, effect.navOptions)
                 }
 
@@ -142,7 +138,6 @@ fun LoginScreen(
                 SocialLoginButton(drawable = R.mipmap.img_lock) {
                     appState.showSnackbar("홈 화면 테스트 입니다.")
                     viewModel.testLogin {
-                        onInit()
                         appState.navigate(HomeDestinations.ROUTE) {
                             popUpTo(AuthDestinations.Login.ROUTE) {
                                 inclusive = true

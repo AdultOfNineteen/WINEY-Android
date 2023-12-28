@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
@@ -21,12 +20,10 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun SignUpCompleteScreen(
-    appState: WineyAppState,
-    onInit: () -> Unit
+    appState: WineyAppState
 ) {
 
     val onSignUpComplete = {
-        onInit()
         appState.navigate(HomeDestinations.ROUTE) {
             popUpTo(AuthDestinations.SignUp.ROUTE) {
                 inclusive = true
