@@ -81,6 +81,9 @@ fun HomeScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.getRecommendWines()
+        viewModel.getWineTips()
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is HomeContract.Effect.NavigateTo -> {
