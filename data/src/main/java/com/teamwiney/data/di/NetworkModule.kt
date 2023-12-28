@@ -8,6 +8,7 @@ import com.teamwiney.data.network.converter.EnumConverterFactory
 import com.teamwiney.data.network.interceptor.AuthInterceptor
 import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.TastingNoteService
+import com.teamwiney.data.network.service.WineGradeService
 import com.teamwiney.data.network.service.WineService
 import dagger.Module
 import dagger.Provides
@@ -68,5 +69,10 @@ object NetworkModule {
     @Singleton
     fun providesTastingNoteService(retrofit: Retrofit) =
         retrofit.create(TastingNoteService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesWineGradeService(retrofit: Retrofit) =
+        retrofit.create(WineGradeService::class.java)
 
 }

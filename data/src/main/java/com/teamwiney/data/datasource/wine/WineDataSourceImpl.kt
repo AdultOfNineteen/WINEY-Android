@@ -1,4 +1,4 @@
-package com.teamwiney.data.datasource
+package com.teamwiney.data.datasource.wine
 
 import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.di.DispatcherModule

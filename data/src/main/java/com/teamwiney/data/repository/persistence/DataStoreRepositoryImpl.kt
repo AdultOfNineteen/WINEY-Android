@@ -13,6 +13,25 @@ class DataStoreRepositoryImpl(
     private val preferenceDataStore: DataStore<Preferences>,
 ) : DataStoreRepository {
 
+    override fun getIntValue(type: Preferences.Key<Int>): Flow<Int> {
+        return preferenceDataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }.map { prefs ->
+                prefs[type] ?: 0
+            }
+    }
+
+    override suspend fun setIntValue(type: Preferences.Key<Int>, value: Int) {
+        preferenceDataStore.edit { settings ->
+            settings[type] = value
+        }
+    }
 
     override fun getStringValue(type: Preferences.Key<String>): Flow<String> {
         return preferenceDataStore.data
@@ -51,6 +70,12 @@ class DataStoreRepositoryImpl(
     override suspend fun setBooleanValue(type: Preferences.Key<Boolean>, value: Boolean) {
         preferenceDataStore.edit { settings ->
             settings[type] = value
+        }
+    }
+
+    override suspend fun deleteLongValue(type: Preferences.Key<Long>) {
+        preferenceDataStore.edit { settings ->
+            settings.remove(type)
         }
     }
 

@@ -9,17 +9,18 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
-import com.teamwiney.feature.auth.BuildConfig
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SocialLogin
-import com.teamwiney.data.network.service.SocialType
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
+import com.teamwiney.feature.auth.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -132,7 +133,6 @@ class LoginViewModel @Inject constructor(
                                 )
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
 
-
                                 postEffect(LoginContract.Effect.NavigateTo(
                                     destination = HomeDestinations.ROUTE,
                                     navOptions = navOptions {
@@ -143,6 +143,10 @@ class LoginViewModel @Inject constructor(
                                 ))
                             } else {
                                 postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
+                            }
+
+                            runBlocking {
+                                dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
                             }
                         }
 

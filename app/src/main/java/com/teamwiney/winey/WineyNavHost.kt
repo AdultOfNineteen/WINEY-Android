@@ -29,6 +29,7 @@ import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.createnote.mapGraph
 import com.teamwiney.home.HomeViewModel
 import com.teamwiney.home.homeGraph
+import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.noteGraph
 import com.teamwiney.notecollection.NoteViewModel
@@ -46,12 +47,15 @@ fun WineyNavHost() {
     // 메인화면 뷰 모델들
     val homeViewModel: HomeViewModel = viewModel()
     val noteViewModel: NoteViewModel = viewModel()
+    val myPageViewModel: MyPageViewModel = viewModel()
 
     // 초기 메인 화면 진입 시 수행해야할 작업을 정의합니다.
     val onInit: () -> Unit = {
         homeViewModel.getRecommendWines()
         homeViewModel.getWineTips()
         noteViewModel.getTastingNotes()
+        myPageViewModel.getUserWineGrade()
+        myPageViewModel.getWineGradeStandard()
     }
 
     ModalBottomSheetLayout(
@@ -106,6 +110,7 @@ fun WineyNavHost() {
                 )
                 myPageGraph(
                     appState = appState,
+                    myPageViewModel = myPageViewModel,
                     bottomSheetState = bottomSheetState,
                 )
                 analysisGraph(

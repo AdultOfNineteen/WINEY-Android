@@ -1,17 +1,19 @@
 package com.teamwiney.data.repository.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
+import com.teamwiney.data.network.model.response.DeleteUser
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
-import com.teamwiney.data.network.service.SocialType
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
@@ -46,4 +48,19 @@ interface AuthRepository {
     fun refreshToken(
         refreshToken: String
     ): Flow<ApiResult<ResponseWrapper<AccessToken>>>
+
+    fun getConnections(): Flow<ApiResult<BaseResponse>>
+
+    fun registerFcmToken(
+        fcmToken: String,
+        deviceId: String
+    ): Flow<ApiResult<BaseResponse>>
+
+    fun deleteUser(
+        userId: String,
+        reason: String
+    ): Flow<ApiResult<ResponseWrapper<DeleteUser>>>
+
+    fun logOut(deviceId: String): Flow<ApiResult<BaseResponse>>
+
 }

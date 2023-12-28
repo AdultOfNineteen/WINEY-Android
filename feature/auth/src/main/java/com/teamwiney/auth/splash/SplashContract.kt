@@ -1,6 +1,5 @@
 package com.teamwiney.auth.splash
 
-import android.content.Context
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import com.teamwiney.core.common.base.UiEffect
@@ -23,5 +22,7 @@ class SplashContract {
             val navOptions: NavOptions? = null,
             val builder: NavOptionsBuilder.() -> Unit = {}
         ) : Effect()
+
+        data class ShowSnackBar(val message: String) : Effect()
     }
 }

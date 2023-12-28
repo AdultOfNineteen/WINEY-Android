@@ -1,4 +1,4 @@
-package com.teamwiney.analysis.component
+package com.teamwiney.mypage.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,10 +23,9 @@ import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
-
 @Composable
-fun AnalysisBottomContent(
-    onClick: () -> Unit = {}
+fun MyPageWithdrawalCompleteBottomSheet(
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -53,7 +52,7 @@ fun AnalysisBottomContent(
         )
         HeightSpacer(height = 16.dp)
         Text(
-            text = "재구매 의사가 담긴\n테이스팅 노트가 있는 경우에 볼 수 있어요!",
+            text = "탈퇴가 완료되었어요.\n언젠가 다시 만나요!",
             style = WineyTheme.typography.bodyB1,
             color = WineyTheme.colors.gray_200,
             textAlign = TextAlign.Center

@@ -13,6 +13,7 @@ import com.teamwiney.core.common.navigation.MyPageDestinations
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
+    myPageViewModel: MyPageViewModel,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -20,17 +21,44 @@ fun NavGraphBuilder.myPageGraph(
         startDestination = MyPageDestinations.MY_PAGE
     ) {
         composable(route = MyPageDestinations.MY_PAGE) {
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = MyPageDestinations.ROUTE
+            MyPageScreen(
+                appState = appState,
+                viewModel = myPageViewModel
             )
-            MyPageScreen()
+        }
+
+        composable(route = MyPageDestinations.BADGE) {
+            MyPageBadgeScreen(
+                appState = appState
+            )
+        }
+
+        composable(route = MyPageDestinations.ACCOUNT) {
+            MyPageAccountScreen(
+                appState = appState,
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
+            )
+        }
+
+        composable(route = MyPageDestinations.WITHDRAWAL_REASON_SELECT) {
+            MyPageWithdrawalReasonSelectScreen(
+                appState = appState,
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
+            )
+        }
+
+        composable(route = MyPageDestinations.WITHDRAWAL_CONFIRM) {
+            MyPageWithdrawalConfirmScreen(
+                appState = appState,
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
+            )
         }
 
         // TODO : 프로필
 
-        // TODO : 설정
 
         // TODO : 버전 정보
 

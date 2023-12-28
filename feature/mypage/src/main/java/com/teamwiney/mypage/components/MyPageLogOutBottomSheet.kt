@@ -1,4 +1,4 @@
-package com.teamwiney.notedetail.component
+package com.teamwiney.mypage.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,7 +32,7 @@ import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun NoteDeleteBottomSheet(
+fun MyPageLogOutBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
     onConfirm: () -> Unit,
@@ -65,9 +65,9 @@ fun NoteDeleteBottomSheet(
         HeightSpacer(height = 16.dp)
         Text(
             text = buildAnnotatedString {
-                append("테이스팅 노트를 삭제하시겠어요?\n")
+                append("로그아웃 하시겠어요?\n")
                 withStyle(style = SpanStyle(WineyTheme.colors.gray_600)) {
-                    append("삭제한 노트는 복구할 수 없어요 :(")
+                    append("로그아웃 진행 시 초기 화면으로 돌아가요 :(")
                 }
             },
             style = WineyTheme.typography.bodyB1,
@@ -139,7 +139,7 @@ private fun BottomSheetSelectionButton(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "네, 지울래요",
+                    text = "예",
                     style = WineyTheme.typography.bodyB1,
                     color = WineyTheme.colors.gray_600
                 )

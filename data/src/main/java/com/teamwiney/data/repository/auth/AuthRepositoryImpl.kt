@@ -1,8 +1,10 @@
 package com.teamwiney.data.repository.auth
 
 import com.teamwiney.core.common.base.ResponseWrapper
-import com.teamwiney.data.datasource.AuthDataSource
+import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.request.FcmTokenRequest
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
@@ -10,7 +12,6 @@ import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
-import com.teamwiney.data.network.service.SocialType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -57,5 +58,21 @@ class AuthRepositoryImpl @Inject constructor(
         userId: String,
         request: PhoneNumberWithVerificationCodeRequest
     ) = authDataSource.verifyAuthCodeMessage(userId, request)
+
+    override fun getConnections() = authDataSource.getConnections()
+
+    override fun registerFcmToken(
+        fcmToken: String,
+        deviceId: String
+    ) = authDataSource.registerFcmToken(
+        FcmTokenRequest(fcmToken, deviceId)
+    )
+
+    override fun deleteUser(
+        userId: String,
+        reason: String
+    ) = authDataSource.deleteUser(userId, reason)
+
+    override fun logOut(deviceId: String) = authDataSource.logOut(deviceId)
 
 }

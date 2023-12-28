@@ -1,4 +1,4 @@
-package com.teamwiney.notedetail.component
+package com.teamwiney.mypage.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,11 +17,19 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
+val reasons = listOf(
+    "취향에 맞지 않은 와인을 추천해줘요",
+    "와인에 흥미를 잃었어요",
+    "콘텐츠가 한정적이며 잘못된 정보를 제공해요",
+    "더 나은 앱, 웹 또는 방법을 찾았어요",
+    "서비스 장애가 많고 이용이 불편해요",
+    "잘 사용하지 않아요",
+    "기타"
+)
 
 @Composable
-fun NoteDetailBottomSheet(
-    deleteNote: () -> Unit,
-    patchNote: () -> Unit
+fun MyPageReasonSelectBottomSheet(
+    onSelect: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -34,8 +42,8 @@ fun NoteDetailBottomSheet(
                 )
             )
             .padding(
+                end = 24.dp,
                 top = 10.dp,
-                bottom = 20.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -49,32 +57,26 @@ fun NoteDetailBottomSheet(
                 )
         )
         HeightSpacer(height = 10.dp)
-        Text(
-            text = "삭제하기",
-            color = WineyTheme.colors.gray_50,
-            style = WineyTheme.typography.bodyB1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { deleteNote() }
-                .padding(
-                    horizontal = 24.dp,
-                    vertical = 20.dp
+        Column {
+            reasons.forEachIndexed { index, reason ->
+                Text(
+                    text = reason,
+                    color = WineyTheme.colors.gray_50,
+                    style = WineyTheme.typography.bodyB1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onSelect(reason) }
+                        .padding(
+                            horizontal = 24.dp,
+                            vertical = 20.dp
+                        )
                 )
-        )
-        Spacer(modifier = Modifier.fillMaxWidth().background(WineyTheme.colors.gray_900))
-        Text(
-            text = "수정하기",
-            color = WineyTheme.colors.gray_50,
-            style = WineyTheme.typography.bodyB1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    patchNote()
+                if (index != reasons.size - 1) {
+                    Spacer(
+                        modifier = Modifier.fillMaxWidth().background(WineyTheme.colors.gray_900)
+                    )
                 }
-                .padding(
-                    horizontal = 24.dp,
-                    vertical = 20.dp
-                )
-        )
+            }
+        }
     }
 }
