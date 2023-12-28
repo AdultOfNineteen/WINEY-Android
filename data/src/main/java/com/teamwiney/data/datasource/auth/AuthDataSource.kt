@@ -12,6 +12,7 @@ import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
+import com.teamwiney.data.network.model.response.DeleteUser
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
@@ -49,5 +50,12 @@ interface AuthDataSource {
     fun getConnections(): Flow<ApiResult<BaseResponse>>
 
     fun registerFcmToken(fcmTokenRequest: FcmTokenRequest): Flow<ApiResult<BaseResponse>>
+
+    fun deleteUser(
+        userId: String,
+        reason: String
+    ): Flow<ApiResult<ResponseWrapper<DeleteUser>>>
+
+    fun logOut(deviceId: String): Flow<ApiResult<BaseResponse>>
 
 }

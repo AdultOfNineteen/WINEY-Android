@@ -68,4 +68,11 @@ class AuthRepositoryImpl @Inject constructor(
         FcmTokenRequest(fcmToken, deviceId)
     )
 
+    override fun deleteUser(
+        userId: String,
+        reason: String
+    ) = authDataSource.deleteUser(userId, reason)
+
+    override fun logOut(deviceId: String) = authDataSource.logOut(deviceId)
+
 }

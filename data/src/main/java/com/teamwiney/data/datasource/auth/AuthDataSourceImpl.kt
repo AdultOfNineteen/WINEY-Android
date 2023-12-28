@@ -70,4 +70,15 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.registerFcmToken(fcmTokenRequest))
     }.flowOn(ioDispatcher)
 
+    override fun deleteUser(
+        userId: String,
+        reason: String
+    ) = flow {
+        emit(authService.deleteUser(userId, reason))
+    }.flowOn(ioDispatcher)
+
+    override fun logOut(deviceId: String) = flow {
+        emit(authService.logOut(deviceId))
+    }.flowOn(ioDispatcher)
+
 }

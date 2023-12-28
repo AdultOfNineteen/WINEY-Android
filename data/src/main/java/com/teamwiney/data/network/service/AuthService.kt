@@ -12,17 +12,20 @@ import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.network.model.request.SocialLoginRequest
 import com.teamwiney.data.network.model.response.AccessToken
 import com.teamwiney.data.network.model.response.AuthenticationMessageCode
+import com.teamwiney.data.network.model.response.DeleteUser
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface AuthService {
@@ -81,5 +84,18 @@ interface AuthService {
     @POST("/fcm")
     suspend fun registerFcmToken(
         @Body fcmTokenRequest: FcmTokenRequest
+    ): ApiResult<BaseResponse>
+
+    /** 회원 탈퇴 API */
+    @DELETE("/users/{userId}")
+    suspend fun deleteUser(
+        @Path("userId") userId: String,
+        @Query("reason") reason: String
+    ): ApiResult<ResponseWrapper<DeleteUser>>
+
+    /** 로그아웃 API */
+    @GET("/users/logout")
+    suspend fun logOut(
+        @Query("deviceId") deviceId: String
     ): ApiResult<BaseResponse>
 }
