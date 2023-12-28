@@ -36,7 +36,8 @@ fun NavGraphBuilder.myPageGraph(
         composable(route = MyPageDestinations.ACCOUNT) {
             MyPageAccountScreen(
                 appState = appState,
-                viewModel = myPageViewModel
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
             )
         }
 

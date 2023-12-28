@@ -46,7 +46,7 @@ fun AnalysisBottomContent(
         )
         HeightSpacer(height = 20.dp)
         Image(
-            painter = painterResource(id = R.mipmap.img_analysic_note),
+            painter = painterResource(id = R.mipmap.img_analysis_note),
             contentDescription = null,
             modifier = Modifier.size(112.dp),
             contentScale = ContentScale.Crop

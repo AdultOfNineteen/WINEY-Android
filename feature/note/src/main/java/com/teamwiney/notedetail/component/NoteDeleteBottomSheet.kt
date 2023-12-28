@@ -59,7 +59,7 @@ fun NoteDeleteBottomSheet(
         )
         HeightSpacer(height = 20.dp)
         Image(
-            painter = painterResource(id = R.mipmap.img_lock),
+            painter = painterResource(id = R.mipmap.img_analysis_note),
             contentDescription = null
         )
         HeightSpacer(height = 16.dp)
