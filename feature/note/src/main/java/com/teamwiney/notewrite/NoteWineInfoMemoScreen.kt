@@ -73,7 +73,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NoteWineInfoMemoScreen(
     appState: WineyAppState = rememberWineyAppState(),
-    refreshNote: () -> Unit,
     viewModel: NoteWriteViewModel = hiltViewModel(),
 ) {
 

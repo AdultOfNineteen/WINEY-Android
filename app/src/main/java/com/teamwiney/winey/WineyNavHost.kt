@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import com.teamwiney.analysis.analysisGraph
@@ -27,12 +26,9 @@ import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.createnote.mapGraph
-import com.teamwiney.home.HomeViewModel
 import com.teamwiney.home.homeGraph
-import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.noteGraph
-import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme
@@ -43,20 +39,6 @@ fun WineyNavHost() {
     val appState = rememberWineyAppState()
     val bottomSheetState = rememberWineyBottomSheetState()
     val navController = appState.navController
-
-    // 메인화면 뷰 모델들
-    val homeViewModel: HomeViewModel = viewModel()
-    val noteViewModel: NoteViewModel = viewModel()
-    val myPageViewModel: MyPageViewModel = viewModel()
-
-    // 초기 메인 화면 진입 시 수행해야할 작업을 정의합니다.
-    val onInit: () -> Unit = {
-        homeViewModel.getRecommendWines()
-        homeViewModel.getWineTips()
-        noteViewModel.getTastingNotes()
-        myPageViewModel.getUserWineGrade()
-        myPageViewModel.getWineGradeStandard()
-    }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -92,26 +74,22 @@ fun WineyNavHost() {
             ) {
                 authGraph(
                     appState = appState,
-                    bottomSheetState = bottomSheetState,
-                    onInit = onInit
+                    bottomSheetState = bottomSheetState
                 )
                 homeGraph(
-                    appState = appState,
-                    homeViewModel = homeViewModel,
+                    appState = appState
                 )
                 mapGraph(
                     appState = appState,
-                    bottomSheetState = bottomSheetState,
+                    bottomSheetState = bottomSheetState
                 )
                 noteGraph(
                     appState = appState,
-                    noteViewModel = noteViewModel,
-                    bottomSheetState = bottomSheetState,
+                    bottomSheetState = bottomSheetState
                 )
                 myPageGraph(
                     appState = appState,
-                    myPageViewModel = myPageViewModel,
-                    bottomSheetState = bottomSheetState,
+                    bottomSheetState = bottomSheetState
                 )
                 analysisGraph(
                     appState = appState,

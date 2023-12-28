@@ -58,6 +58,9 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(true) {
+        viewModel.getUserWineGrade()
+        viewModel.getWineGradeStandard()
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is MyPageContract.Effect.NavigateTo -> {

@@ -17,7 +17,6 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 fun NavGraphBuilder.signUpGraph(
     appState: WineyAppState,
     bottomSheetState: WineyBottomSheetState,
-    onInit: () -> Unit,
 ) {
     navigation(
         route = "${AuthDestinations.SignUp.ROUTE}?userId={userId}",
@@ -73,10 +72,7 @@ fun NavGraphBuilder.signUpGraph(
         }
 
         composable(route = AuthDestinations.SignUp.COMPLETE) {
-            SignUpCompleteScreen(
-                appState = appState,
-                onInit = onInit
-            )
+            SignUpCompleteScreen(appState = appState)
         }
     }
 }

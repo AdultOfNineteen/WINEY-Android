@@ -2,6 +2,7 @@ package com.teamwiney
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,13 +15,11 @@ import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notecollection.NoteFilterScreen
 import com.teamwiney.notecollection.NoteScreen
-import com.teamwiney.notecollection.NoteViewModel
 import com.teamwiney.notedetail.NoteDetailScreen
 import com.teamwiney.notewrite.noteWriteGraph
 
 fun NavGraphBuilder.noteGraph(
     appState: WineyAppState,
-    noteViewModel: NoteViewModel,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -36,7 +35,7 @@ fun NavGraphBuilder.noteGraph(
             NoteScreen(
                 appState = appState,
                 bottomSheetState = bottomSheetState,
-                viewModel = noteViewModel,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -48,7 +47,7 @@ fun NavGraphBuilder.noteGraph(
             )
             NoteFilterScreen(
                 appState = appState,
-                viewModel = noteViewModel,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -61,17 +60,21 @@ fun NavGraphBuilder.noteGraph(
                 }
             )
         ) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = NoteDestinations.ROUTE
+            )
             NoteDetailScreen(
                 noteId = it.arguments?.getInt("noteId") ?: 0,
-                refreshNote = noteViewModel::getTastingNotes,
                 appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState,
             )
         }
 
         noteWriteGraph(
             appState = appState,
-            refreshNote = noteViewModel::getTastingNotes,
             bottomSheetState = bottomSheetState
         )
     }

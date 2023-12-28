@@ -2,6 +2,7 @@ package com.teamwiney.mypage
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -13,7 +14,6 @@ import com.teamwiney.core.common.navigation.MyPageDestinations
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
-    myPageViewModel: MyPageViewModel,
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
@@ -21,9 +21,14 @@ fun NavGraphBuilder.myPageGraph(
         startDestination = MyPageDestinations.MY_PAGE
     ) {
         composable(route = MyPageDestinations.MY_PAGE) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageScreen(
                 appState = appState,
-                viewModel = myPageViewModel
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 
@@ -34,25 +39,40 @@ fun NavGraphBuilder.myPageGraph(
         }
 
         composable(route = MyPageDestinations.ACCOUNT) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageAccountScreen(
                 appState = appState,
-                viewModel = myPageViewModel,
+                viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState
             )
         }
 
         composable(route = MyPageDestinations.WITHDRAWAL_REASON_SELECT) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageWithdrawalReasonSelectScreen(
                 appState = appState,
-                viewModel = myPageViewModel,
+                viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState
             )
         }
 
         composable(route = MyPageDestinations.WITHDRAWAL_CONFIRM) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageWithdrawalConfirmScreen(
                 appState = appState,
-                viewModel = myPageViewModel,
+                viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState
             )
         }
