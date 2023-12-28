@@ -86,6 +86,9 @@ fun MyPageScreen(
                 name = "김희연",
                 onProfileClick = {
                     appState.navigate(MyPageDestinations.ACCOUNT)
+                },
+                onWineyBadgeClick = {
+                    appState.navigate(MyPageDestinations.BADGE)
                 }
             )
 
@@ -156,7 +159,8 @@ fun MyProfileAppBar() {
 @Composable
 fun MyPageProfile(
     name: String,
-    onProfileClick: () -> Unit
+    onProfileClick: () -> Unit,
+    onWineyBadgeClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -216,7 +220,7 @@ fun MyPageProfile(
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { },
+                onClick = { onWineyBadgeClick() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = WineyTheme.colors.background_1
                 ),
