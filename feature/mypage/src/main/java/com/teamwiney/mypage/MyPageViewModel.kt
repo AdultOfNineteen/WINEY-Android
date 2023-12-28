@@ -1,9 +1,13 @@
 package com.teamwiney.mypage
 
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.util.Constants.DEVICE_ID
 import com.teamwiney.core.common.util.Constants.USER_ID
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.winegrade.WineGradeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
     private val wineGradeRepository: WineGradeRepository,
     private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<MyPageContract.State, MyPageContract.Event, MyPageContract.Effect>(
@@ -95,6 +100,63 @@ class MyPageViewModel @Inject constructor(
                             wineGradeStandard = it.data.result
                         )
                     )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun withdrawal() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+        val reason = if (currentState.isWithdrawalReasonDirectInput) {
+            currentState.withdrawalReasonDirectInput
+        } else {
+            currentState.withdrawalReason
+        }
+
+        authRepository.deleteUser("$userId", reason).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun logOut() = viewModelScope.launch {
+        val deviceId = runBlocking { dataStoreRepository.getStringValue(DEVICE_ID).first() }
+
+        authRepository.logOut(deviceId).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(MyPageContract.Effect.NavigateTo(
+                        HomeDestinations.ROUTE, navOptions = navOptions {
+                            popUpTo(HomeDestinations.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    ))
                 }
 
                 is ApiResult.ApiError -> {
