@@ -49,6 +49,14 @@ fun NavGraphBuilder.myPageGraph(
             )
         }
 
+        composable(route = MyPageDestinations.WITHDRAWAL_CONFIRM) {
+            MyPageWithdrawalConfirmScreen(
+                appState = appState,
+                viewModel = myPageViewModel,
+                bottomSheetState = bottomSheetState
+            )
+        }
+
         // TODO : 프로필
 
 

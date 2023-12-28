@@ -61,13 +61,19 @@ fun MyPageWithdrawalReasonSelectScreen(
                 }
 
                 is MyPageContract.Effect.ShowBottomSheet -> {
-                    bottomSheetState.showBottomSheet {
-                        MyPageReasonSelectBottomSheet(
-                            onSelect = { reason ->
-                                viewModel.updateWithdrawalReason(reason)
-                                bottomSheetState.hideBottomSheet()
+                    when (effect.bottomSheet) {
+                        is MyPageContract.BottomSheet.SelectWithdrawalReason -> {
+                            bottomSheetState.showBottomSheet {
+                                MyPageReasonSelectBottomSheet(
+                                    onSelect = { reason ->
+                                        viewModel.updateWithdrawalReason(reason)
+                                        bottomSheetState.hideBottomSheet()
+                                    }
+                                )
                             }
-                        )
+                        }
+
+                        else -> { }
                     }
                 }
             }
@@ -130,7 +136,7 @@ fun MyPageWithdrawalReasonSelectScreen(
                 WRoundTextField(
                     value = uiState.withdrawalReasonDirectInput,
                     onValueChange = viewModel::updateWithdrawalReasonDirectInput,
-                    placeholderText = "삭제할려는 이유를 작성해주세요."
+                    placeholderText = "이유를 작성해주세요 :)"
                 )
             }
             HeightSpacer(height = 30.dp)

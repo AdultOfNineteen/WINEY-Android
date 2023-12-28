@@ -23,9 +23,6 @@ class MyPageContract {
 
     sealed class Event : UiEvent {
         object SelectReason : Event()
-
-        object CompleteWithdrawal : Event()
-
         object LogOut : Event()
     }
 

@@ -38,14 +38,6 @@ class MyPageViewModel @Inject constructor(
                     )
                 }
 
-                is MyPageContract.Event.CompleteWithdrawal -> {
-                    postEffect(
-                        MyPageContract.Effect.ShowBottomSheet(
-                            MyPageContract.BottomSheet.WithdrawalComplete
-                        )
-                    )
-                }
-
                 is MyPageContract.Event.LogOut -> {
                     postEffect(
                         MyPageContract.Effect.ShowBottomSheet(
@@ -127,7 +119,11 @@ class MyPageViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
-
+                    postEffect(
+                        MyPageContract.Effect.ShowBottomSheet(
+                            MyPageContract.BottomSheet.WithdrawalComplete
+                        )
+                    )
                 }
 
                 is ApiResult.ApiError -> {
