@@ -1,4 +1,4 @@
-package com.teamwiney.createnote
+package com.teamwiney.map
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,7 +25,7 @@ fun NavGraphBuilder.mapGraph(
                 navController = appState.navController,
                 graph = MapDestinations.ROUTE
             )
-            MapScreen()
+            MapScreen(appState = appState)
         }
 
         // TODO : 매장 상세 정보?

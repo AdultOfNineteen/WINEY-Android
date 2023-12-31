@@ -1,4 +1,4 @@
-package com.teamwiney.createnote
+package com.teamwiney.map
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

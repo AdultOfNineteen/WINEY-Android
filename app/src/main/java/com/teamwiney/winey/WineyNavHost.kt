@@ -25,7 +25,7 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
-import com.teamwiney.createnote.mapGraph
+import com.teamwiney.map.mapGraph
 import com.teamwiney.home.homeGraph
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.noteGraph
