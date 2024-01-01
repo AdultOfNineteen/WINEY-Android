@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface WineBadgeDataSource {
 
-    fun getWineBadgeList(
+    fun getUserWineBadgeList(
         userId: Long
     ): Flow<ApiResult<ResponseWrapper<UserWineBadge>>>
 

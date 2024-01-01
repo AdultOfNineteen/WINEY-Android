@@ -7,7 +7,7 @@ class WineBadgeRepositoryImpl @Inject constructor(
     private val wineBadgeDataSource: WineBadgeDataSource
 ) : WineBadgeRepository {
 
-    override fun getWineBadgeList(userId: Long) = wineBadgeDataSource.getWineBadgeList(userId)
+    override fun getUserWineBadgeList(userId: Long) = wineBadgeDataSource.getUserWineBadgeList(userId)
 
     override fun getWineBadgeDetail(
         userId: Long,

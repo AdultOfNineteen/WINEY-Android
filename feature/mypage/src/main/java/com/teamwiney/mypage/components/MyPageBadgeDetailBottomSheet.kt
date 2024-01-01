@@ -38,7 +38,7 @@ fun MyPageBadgeDetailBottomSheet(
                 color = containerColor,
                 shape = RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)
             )
-            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 25.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(
@@ -87,10 +87,11 @@ fun MyPageBadgeDetailBottomSheet(
         HeightSpacerWithLine(color = WineyTheme.colors.gray_700)
         Text(
             modifier = Modifier
-                .padding(top = 23.dp)
-                .clickable { onConfirm() }
-            ,
+                .fillMaxWidth()
+                .padding(top = 23.dp, bottom = 25.dp)
+                .clickable { onConfirm() },
             text = "확인",
+            textAlign = TextAlign.Center,
             style = WineyTheme.typography.headline.copy(
                 color = WineyTheme.colors.gray_50
             )

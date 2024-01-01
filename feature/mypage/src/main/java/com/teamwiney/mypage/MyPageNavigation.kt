@@ -37,8 +37,15 @@ fun NavGraphBuilder.myPageGraph(
         }
 
         composable(route = MyPageDestinations.BADGE) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageBadgeScreen(
-                appState = appState
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+                bottomSheetState = bottomSheetState
             )
         }
 

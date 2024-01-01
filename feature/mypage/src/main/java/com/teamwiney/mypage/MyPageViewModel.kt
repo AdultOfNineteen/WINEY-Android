@@ -9,6 +9,7 @@ import com.teamwiney.core.common.util.Constants.USER_ID
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
+import com.teamwiney.data.repository.winebadge.WineBadgeRepository
 import com.teamwiney.data.repository.winegrade.WineGradeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val wineGradeRepository: WineGradeRepository,
+    private val wineBadgeRepository: WineBadgeRepository,
     private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<MyPageContract.State, MyPageContract.Event, MyPageContract.Effect>(
     initialState = MyPageContract.State()
@@ -90,6 +92,68 @@ class MyPageViewModel @Inject constructor(
                     updateState(
                         currentState.copy(
                             wineGradeStandard = it.data.result
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun getUserWineBadgeList() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        wineBadgeRepository.getUserWineBadgeList(userId.toLong()).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.result
+
+                    updateState(
+                        currentState.copy(
+                            sommelierBadges = result.sommelierBadgeList,
+                            activityBadges = result.activityBadgeList
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun getWineBadgeDetail(
+        wineBadgeId: Long
+    ) = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
+
+        wineBadgeRepository.getWineBadgeDetail(
+            userId = userId.toLong(),
+            wineBadgeId = wineBadgeId
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(
+                        MyPageContract.Effect.ShowBottomSheet(
+                            MyPageContract.BottomSheet.WineBadgeDetail(it.data.result)
                         )
                     )
                 }

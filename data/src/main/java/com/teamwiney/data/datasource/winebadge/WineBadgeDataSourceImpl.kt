@@ -12,7 +12,7 @@ class WineBadgeDataSourceImpl @Inject constructor(
     @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : WineBadgeDataSource {
 
-    override fun getWineBadgeList(userId: Long) = flow {
+    override fun getUserWineBadgeList(userId: Long) = flow {
         emit(wineBadgeService.getUserWineBadgeList(userId))
     }.flowOn(ioDispatcher)
 
