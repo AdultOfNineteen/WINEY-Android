@@ -11,6 +11,10 @@ import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.mypage.account.MyPageAccountScreen
+import com.teamwiney.mypage.account.MyPageWithdrawalConfirmScreen
+import com.teamwiney.mypage.account.MyPageWithdrawalReasonSelectScreen
+import com.teamwiney.mypage.badge.MyPageBadgeScreen
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
@@ -33,8 +37,15 @@ fun NavGraphBuilder.myPageGraph(
         }
 
         composable(route = MyPageDestinations.BADGE) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
             MyPageBadgeScreen(
-                appState = appState
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+                bottomSheetState = bottomSheetState
             )
         }
 

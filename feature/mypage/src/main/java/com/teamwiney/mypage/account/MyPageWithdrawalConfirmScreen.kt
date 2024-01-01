@@ -1,4 +1,4 @@
-package com.teamwiney.mypage
+package com.teamwiney.mypage.account
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -21,6 +21,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.mypage.MyPageContract
+import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.components.MyPageWithdrawalCompleteBottomSheet
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar

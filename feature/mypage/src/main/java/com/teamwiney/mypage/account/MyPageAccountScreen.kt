@@ -1,4 +1,4 @@
-package com.teamwiney.mypage
+package com.teamwiney.mypage.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.mypage.MyPageContract
+import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.components.MyPageLogOutBottomSheet
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
