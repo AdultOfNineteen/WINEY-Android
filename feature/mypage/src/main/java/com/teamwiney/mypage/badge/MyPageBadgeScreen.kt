@@ -1,4 +1,4 @@
-package com.teamwiney.mypage
+package com.teamwiney.mypage.badge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
