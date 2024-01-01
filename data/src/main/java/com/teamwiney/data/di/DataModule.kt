@@ -9,10 +9,13 @@ import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSource
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSourceImpl
 import com.teamwiney.data.datasource.wine.WineDataSource
 import com.teamwiney.data.datasource.wine.WineDataSourceImpl
+import com.teamwiney.data.datasource.winebadge.WineBadgeDataSource
+import com.teamwiney.data.datasource.winebadge.WineBadgeDataSourceImpl
 import com.teamwiney.data.datasource.winegrade.WineGradeDataSource
 import com.teamwiney.data.datasource.winegrade.WineGradeDataSourceImpl
 import com.teamwiney.data.network.service.AuthService
 import com.teamwiney.data.network.service.TastingNoteService
+import com.teamwiney.data.network.service.WineBadgeService
 import com.teamwiney.data.network.service.WineGradeService
 import com.teamwiney.data.network.service.WineService
 import com.teamwiney.data.repository.auth.AuthRepository
@@ -23,6 +26,8 @@ import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepositoryImpl
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.data.repository.wine.WineRepositoryImpl
+import com.teamwiney.data.repository.winebadge.WineBadgeRepository
+import com.teamwiney.data.repository.winebadge.WineBadgeRepositoryImpl
 import com.teamwiney.data.repository.winegrade.WineGradeRepository
 import com.teamwiney.data.repository.winegrade.WineGradeRepositoryImpl
 import dagger.Module
@@ -71,6 +76,14 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun providesWineBadgeDataSource(
+        wineBadgeService: WineBadgeService,
+        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): WineBadgeDataSource =
+        WineBadgeDataSourceImpl(wineBadgeService, ioDispatcher)
+
+    @Provides
+    @Singleton
     fun providesAuthRepository(authDataSource: AuthDataSource): AuthRepository =
         AuthRepositoryImpl(authDataSource)
 
@@ -91,11 +104,17 @@ object DataModule {
     fun providesDataStoreRepository(
         pref: DataStore<Preferences>
     ): DataStoreRepository = DataStoreRepositoryImpl(pref)
-    
-    @Singleton
+
     @Provides
+    @Singleton
     fun providesWineGradeRepository(
         wineGradeDataSource: WineGradeDataSource
     ): WineGradeRepository = WineGradeRepositoryImpl(wineGradeDataSource)
+
+    @Provides
+    @Singleton
+    fun providesWineBadgeRepository(
+        wineBadgeDataSource: WineBadgeDataSource
+    ): WineBadgeRepository = WineBadgeRepositoryImpl(wineBadgeDataSource)
 
 }
