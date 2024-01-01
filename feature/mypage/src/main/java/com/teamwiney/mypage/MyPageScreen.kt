@@ -42,6 +42,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
 import com.teamwiney.core.common.navigation.MyPageDestinations
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
+import com.teamwiney.mypage.components.MyPageWineGradeStandardDialog
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
@@ -76,6 +77,12 @@ fun MyPageScreen(
         }
     }
 
+    if (uiState.isWineGradeStandardDialogOpen) {
+        MyPageWineGradeStandardDialog(wineGradeStandardList = uiState.wineGradeStandard) {
+            viewModel.processEvent(MyPageContract.Event.CloseWineGradeStandardDialog)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +113,10 @@ fun MyPageScreen(
                 expectedNextMonthGrade = uiState.expectedMonthGrade,
                 remainingNoteCount = maxOf(0,
                     uiState.wineGradeStandard.find { it.name == uiState.expectedMonthGrade }
-                        ?.minCount?.minus(uiState.noteCount) ?: 0)
+                        ?.minCount?.minus(uiState.noteCount) ?: 0),
+                showWineGradeStandardDialog = {
+                    viewModel.processEvent(MyPageContract.Event.ShowWineGradeStandardDialog)
+                }
             )
 
             HeightSpacer(height = 15.dp)
@@ -249,7 +259,8 @@ fun MyPageProfile(
 fun MyPageGrade(
     currentGrade: WineGrade,
     expectedNextMonthGrade: WineGrade,
-    remainingNoteCount: Int
+    remainingNoteCount: Int,
+    showWineGradeStandardDialog: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -301,7 +312,7 @@ fun MyPageGrade(
             }
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { showWineGradeStandardDialog() },
                 shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = WineyTheme.colors.gray_900

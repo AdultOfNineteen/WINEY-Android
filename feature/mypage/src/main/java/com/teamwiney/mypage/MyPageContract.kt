@@ -17,6 +17,7 @@ class MyPageContract {
         val expectedMonthGrade: WineGrade = WineGrade.GLASS,
         val noteCount: Int = 0,
         val wineGradeStandard: List<WineGradeStandard> = emptyList(),
+        val isWineGradeStandardDialogOpen: Boolean = false,
         val sommelierBadges: List<WineBadge> = emptyList(),
         val activityBadges: List<WineBadge> = emptyList(),
         val withdrawalReason: String = "이유를 선택해주세요.",
@@ -25,6 +26,8 @@ class MyPageContract {
     ) : UiState
 
     sealed class Event : UiEvent {
+        object ShowWineGradeStandardDialog : Event()
+        object CloseWineGradeStandardDialog : Event()
         object SelectReason : Event()
         object LogOut : Event()
     }

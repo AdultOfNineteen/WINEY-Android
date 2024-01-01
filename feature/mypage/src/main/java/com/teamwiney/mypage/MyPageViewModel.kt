@@ -32,6 +32,14 @@ class MyPageViewModel @Inject constructor(
     override fun reduceState(event: MyPageContract.Event) {
         viewModelScope.launch {
             when (event) {
+                is MyPageContract.Event.ShowWineGradeStandardDialog -> {
+                    updateState(currentState.copy(isWineGradeStandardDialogOpen = true))
+                }
+
+                is MyPageContract.Event.CloseWineGradeStandardDialog -> {
+                    updateState(currentState.copy(isWineGradeStandardDialogOpen = false))
+                }
+
                 is MyPageContract.Event.SelectReason -> {
                     postEffect(
                         MyPageContract.Effect.ShowBottomSheet(
