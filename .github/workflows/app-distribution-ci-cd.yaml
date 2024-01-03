@@ -21,29 +21,26 @@ jobs:
         with:
           java-version: 17
 
-      - name: grant permission for gradlew
+      - name: Grant Permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Decode Keystore Base64
+      - name: Decode And Save Keystore Base64
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
 
-      - name: Display Keystore Content
-        run: cat keystore.jks
+      - name: Create google-services.json
+        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
 
-#      - name: Create local.properties
-#        run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
-#
-#      - name: Create google-services.json
-#        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
-#
-#      - name: build release
-#        run: ./gradlew assembleDebug
-#
-#      - name: upload artifact to Firebase App Distribution
-#        uses: wzieba/Firebase-Distribution-Github-Action@v1
-#        with:
-#          appId: ${{secrets.FIREBASE_APP_ID}}
-#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-#          groups: winey-team
-#          file: app/build/outputs/apk/debug/app-debug.apk
+      - name: Create local.properties
+        run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+
+      - name: Build debug
+        run: ./gradlew assembleDebug
+
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: winey-team
+          file: app/build/outputs/apk/debug/app-debug.apk
