@@ -36,8 +36,6 @@ import com.google.android.gms.common.api.ApiException
 import com.teamwiney.auth.login.component.SocialLoginButton
 import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.navigation.AuthDestinations
-import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.dashedBorder
@@ -133,22 +131,6 @@ fun LoginScreen(
                 }
                 SocialLoginButton(drawable = R.mipmap.img_google_login) {
                     viewModel.processEvent(LoginContract.Event.GoogleLoginButtonClicked)
-                }
-                // 홈화면 테스트용 아이콘
-                SocialLoginButton(drawable = R.mipmap.img_lock) {
-                    appState.showSnackbar("홈 화면 테스트 입니다.")
-                    viewModel.testLogin {
-                        appState.navigate(HomeDestinations.ROUTE) {
-                            popUpTo(AuthDestinations.Login.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                    }
-                }
-                // 회원가입 테스트용 아이콘
-                SocialLoginButton(drawable = R.mipmap.img_winey_logo_title) {
-                    appState.showSnackbar("회원가입 화면 테스트 입니다.")
-                    appState.navigate("${AuthDestinations.SignUp.ROUTE}?userId=15")
                 }
             }
             Text(
