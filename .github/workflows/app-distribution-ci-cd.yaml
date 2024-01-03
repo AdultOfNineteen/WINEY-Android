@@ -33,15 +33,18 @@ jobs:
         run: cat local.properties
 
 
-#      - name: grant permission for gradlew
-#        run: chmod +x ./gradlew
-#        shell: bash
-#
-#      - name: Create local.properties
-#        run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
-#
-#      - name: Create google-services.json
-#        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+      #      - name: grant permission for gradlew
+      #        run: chmod +x ./gradlew
+      #        shell: bash
+
+      - name: Create local.properties
+        run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+
+      - name: Create google-services.json
+        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+
+      - name: Display google-service
+        run: cat app/google-services.json
 
 #      - name: build release
 #        run: ./gradlew assembleDebug
