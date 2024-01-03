@@ -20,14 +20,12 @@ import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
-import com.teamwiney.feature.auth.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -160,23 +158,6 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun testLogin(callback: () -> Unit) = viewModelScope.launch {
-        val accessToken = BuildConfig.DEBUG_ACCESSTOKEN
-        val refreshToken = BuildConfig.DEBUG_REFRESHTOKEN
-
-        withContext(coroutineContext) {
-            dataStoreRepository.setStringValue(
-                ACCESS_TOKEN,
-                accessToken
-            )
-            dataStoreRepository.setStringValue(
-                REFRESH_TOKEN,
-                refreshToken
-            )
-        }
-        callback()
     }
 
 }
