@@ -33,6 +33,7 @@ jobs:
 
       - name: Create local.properties
         run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+          echo "SIGNED_STORE_FILE=keystore.jks" >> local.properties
 
       - name: Build debug
         run: ./gradlew assembleDebug
