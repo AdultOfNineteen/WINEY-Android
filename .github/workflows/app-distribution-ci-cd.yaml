@@ -26,23 +26,24 @@ jobs:
         shell: bash
 
       - name: Decode And Save Keystore Base64
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
-
-      - name: Create google-services.json
-        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
-
-      - name: Create local.properties
         run: |
-          echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
-          echo "SIGNED_STORE_FILE=app/keystore.jks" >> local.properties
-
-      - name: Build debug
-        run: ./gradlew assembleDebug
-
-      - name: Upload to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{secrets.FIREBASE_APP_ID}}
-          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: winey-team
-          file: app/build/outputs/apk/debug/app-debug.apk
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
+          pwd
+#      - name: Create google-services.json
+#        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+#
+#      - name: Create local.properties
+#        run: |
+#          echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
+#          echo "SIGNED_STORE_FILE=app/keystore.jks" >> local.properties
+#
+#      - name: Build debug
+#        run: ./gradlew assembleDebug
+#
+#      - name: Upload to Firebase App Distribution
+#        uses: wzieba/Firebase-Distribution-Github-Action@v1
+#        with:
+#          appId: ${{secrets.FIREBASE_APP_ID}}
+#          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+#          groups: winey-team
+#          file: app/build/outputs/apk/debug/app-debug.apk
