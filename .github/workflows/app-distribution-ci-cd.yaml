@@ -25,7 +25,7 @@ jobs:
       - name: Set up Environment Variables
         run: |
           echo "kakao.native.app.key=\"$KAKAO_NATIVE_APP_KEY\"" > local.properties
-        #                   echo "kakao.native.app.key.full=\"$KAKAO_NATIVE_APP_KEY_FULL\"" >> local.properties
+          echo "kakao.native.app.key.full=\"$KAKAO_NATIVE_APP_KEY_FULL\"" >> local.properties
 
       - name: Display local.properties
         run: cat local.properties
