@@ -27,15 +27,14 @@ jobs:
 
       - name: Decode And Save Keystore Base64
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
-          pwd
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
       - name: Create google-services.json
         run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
 
       - name: Create local.properties
         run: |
           echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
-          echo "SIGNED_STORE_FILE=/home/runner/work/WINEY-Android/WINEY-Android/keystore.jks" >> local.properties
+          echo "SIGNED_STORE_FILE=keystore.jks" >> local.properties
 
       - name: Build debug
         run: ./gradlew assembleDebug
