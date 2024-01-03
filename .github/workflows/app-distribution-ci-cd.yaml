@@ -21,22 +21,13 @@ jobs:
         with:
           java-version: 17
 
-      - name: Decrypt winey.properties
+      - name: Set up Environment Variables
         run: |
-          ./jasypt-1.9.5/bin/decrypt.sh \
-            input=local.properties \
-            password=$JASYPT_ENCRYPTION_PASSWORD \
-            algorithm=PBEWithMD5AndDES \
-            > decrypted_winey.properties
-          cat decrypted_winey.properties
-        env:
-          JASYPT_ENCRYPTION_PASSWORD: ${{ secrets.JASYPT_ENCRYPTION_PASSWORD }}
+          echo "kakao.native.app.key=\"$KAKAO_NATIVE_APP_KEY\"" > local.properties
+      #          echo "kakao.native.app.key.full=\"$KAKAO_NATIVE_APP_KEY_FULL\"" >> local.properties
 
-      - name: Display decrypted_local.properties
-        run: cat decrypted_local.properties
-
-      - name: Create local.properties
-        run: cp decrypted_winey.properties local.properties
+      - name: Display local.properties
+        run: cat local.properties
 
 
 #      - name: grant permission for gradlew
