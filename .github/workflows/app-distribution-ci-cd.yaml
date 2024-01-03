@@ -13,6 +13,7 @@ jobs:
       LOCAL_PROPERTIES_CONTENTS: ${{ secrets.LOCAL_PROPERTIES_CONTENTS }}
       GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
       KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+      KAKAO_NATIVE_APP_KEY_FULL: ${{ secrets.KAKAO_NATIVE_APP_KEY_FULL }}
 
     steps:
       - uses: actions/checkout@v1
@@ -22,17 +23,31 @@ jobs:
         with:
           java-version: 17
 
-      - name: Set up Environment Variables
-        run: |
-          echo "kakao.native.app.key=\"$KAKAO_NATIVE_APP_KEY\"" > local.properties
-          echo "kakao.native.app.key.full=\"$KAKAO_NATIVE_APP_KEY_FULL\"" >> local.properties
+      #      - name: Set up Environment Variables
+      #        run: |
+      #          echo "kakao.native.app.key=\"$KAKAO_NATIVE_APP_KEY\"" > local.properties
+      #          echo "kakao.native.app.key.full=\"$KAKAO_NATIVE_APP_KEY_FULL\"" >> local.properties
+      #
+      #      - name: Display local.properties
+      #        run: cat local.properties
 
-      - name: Display local.properties
+      - name: Import GPG Secret Key
+        run: echo "${{ secrets.GPG_SECRET }}" | base64 --decode | gpg --import
+
+      - name: Decrypt winey.properties
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            --output winey.properties local/winey.properties.gpg
+
+      - name: Create local.properties
+        run: cp winey.properties local.properties
+
+      - name: Display decrypted properties
         run: cat local.properties
 
-      #      - name: grant permission for gradlew
-      #        run: chmod +x ./gradlew
-      #        shell: bash
+#      - name: grant permission for gradlew
+#        run: chmod +x ./gradlew
+#        shell: bash
 
 #      - name: Create local.properties
 #        run: echo "$LOCAL_PROPERTIES_CONTENTS" > local.properties
