@@ -3,7 +3,7 @@ package com.teamwiney.mypage
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.teamwiney.core.common.base.BaseViewModel
-import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.DEVICE_ID
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
@@ -223,12 +223,14 @@ class MyPageViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     postEffect(MyPageContract.Effect.NavigateTo(
-                        HomeDestinations.ROUTE, navOptions = navOptions {
-                            popUpTo(HomeDestinations.ROUTE) {
+                        AuthDestinations.Login.ROUTE, navOptions = navOptions {
+                            popUpTo(AuthDestinations.Login.ROUTE) {
                                 inclusive = true
                             }
                         }
                     ))
+                    dataStoreRepository.deleteStringValue(ACCESS_TOKEN)
+                    dataStoreRepository.deleteStringValue(REFRESH_TOKEN)
                 }
 
                 is ApiResult.ApiError -> {
