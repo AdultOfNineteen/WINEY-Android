@@ -41,8 +41,6 @@ fun MyPageWithdrawalConfirmScreen(
     val activity = (LocalContext.current as? Activity)
 
     LaunchedEffect(true) {
-        viewModel.updateWithdrawalReason("이유를 선택해주세요.")
-
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is MyPageContract.Effect.NavigateTo -> {

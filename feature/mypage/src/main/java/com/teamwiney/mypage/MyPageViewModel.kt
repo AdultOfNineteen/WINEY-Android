@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.DEVICE_ID
+import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.core.common.util.Constants.USER_ID
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.auth.AuthRepository
@@ -191,6 +193,8 @@ class MyPageViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
+                    dataStoreRepository.deleteStringValue(ACCESS_TOKEN)
+                    dataStoreRepository.deleteStringValue(REFRESH_TOKEN)
                     postEffect(
                         MyPageContract.Effect.ShowBottomSheet(
                             MyPageContract.BottomSheet.WithdrawalComplete
