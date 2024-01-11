@@ -229,6 +229,8 @@ class MyPageViewModel @Inject constructor(
                             }
                         }
                     ))
+                    dataStoreRepository.deleteStringValue(ACCESS_TOKEN)
+                    dataStoreRepository.deleteStringValue(REFRESH_TOKEN)
                 }
 
                 is ApiResult.ApiError -> {
