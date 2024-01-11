@@ -39,7 +39,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int
+        buyAgain: Int?
     ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
         tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain)
 
@@ -47,7 +47,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int
+        buyAgain: Int?
     ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
         tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain)
 

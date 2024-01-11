@@ -22,14 +22,14 @@ interface TastingNoteRepository {
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int
+        buyAgain: Int?
     ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNotesCount(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int
+        buyAgain: Int?
     ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>

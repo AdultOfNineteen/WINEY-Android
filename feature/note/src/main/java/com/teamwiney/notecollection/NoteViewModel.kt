@@ -54,7 +54,7 @@ class NoteViewModel @Inject constructor(
                             order = currentState.selectedSort,
                             countries = currentState.selectedCountryFilter.map { it.country },
                             wineTypes = currentState.selectedTypeFilter.map { convertToWineType(it.type) },
-                            buyAgain = if (currentState.buyAgainSelected) 1 else 0
+                            buyAgain = if (currentState.buyAgainSelected) 1 else null
                         )
                     }
                 ).flow.cachedIn(viewModelScope).onStart {
@@ -71,7 +71,7 @@ class NoteViewModel @Inject constructor(
             order = currentState.selectedSort,
             countries = currentState.selectedCountryFilter.map { it.country },
             wineTypes = currentState.selectedTypeFilter.map { convertToWineType(it.type) },
-            buyAgain = if (currentState.buyAgainSelected) 1 else 0
+            buyAgain = if (currentState.buyAgainSelected) 1 else null
         ).onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
