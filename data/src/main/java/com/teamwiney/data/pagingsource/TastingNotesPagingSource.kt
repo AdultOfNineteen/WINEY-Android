@@ -13,7 +13,7 @@ class TastingNotesPagingSource(
     private val order: Int,
     private val countries: List<String>,
     private val wineTypes: List<String>,
-    private val buyAgain: Int
+    private val buyAgain: Int?
 ) : PagingSource<Int, TastingNote>() {
 
     override fun getRefreshKey(state: PagingState<Int, TastingNote>): Int? {

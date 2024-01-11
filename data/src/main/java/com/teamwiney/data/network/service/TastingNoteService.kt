@@ -33,7 +33,7 @@ interface TastingNoteService {
         @Query("order") order: Int,
         @Query("countries") countries: List<String>,
         @Query("wineTypes") wineTypes: List<String>,
-        @Query("buyAgain") buyAgain: Int
+        @Query("buyAgain") buyAgain: Int?
     ): ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>
 
     /** 테이스팅 노트 필터 목록 조회 API */
