@@ -212,6 +212,8 @@ private fun HomeRecommendWine(
     recommendWines: List<RecommendWine>,
     isLoading: Boolean,
 ) {
+    val configuration = LocalConfiguration.current
+    val itemWidth = configuration.screenWidthDp.dp * 0.75f
 
     val pagerState = rememberPagerState(pageCount = { recommendWines.size })
 
@@ -259,9 +261,8 @@ private fun HomeRecommendWine(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                val configuration = LocalConfiguration.current
-                val pageSize = PageSize.Fixed(pageSize = 282.dp)
-                val horizontalContentPadding = (configuration.screenWidthDp.dp - 282.dp) / 2
+                val pageSize = PageSize.Fixed(pageSize = itemWidth)
+                val horizontalContentPadding = (configuration.screenWidthDp.dp - itemWidth) / 2
 
                 HorizontalPager(
                     modifier = Modifier.fillMaxSize(),
@@ -269,7 +270,7 @@ private fun HomeRecommendWine(
                     beyondBoundsPageCount = 2,
                     pageSize = pageSize,
                     contentPadding = PaddingValues(horizontal = horizontalContentPadding),
-                    pageSpacing = 16.dp
+                    pageSpacing = 20.dp
                 ) { page ->
                     WineCard(
                         modifier = Modifier
