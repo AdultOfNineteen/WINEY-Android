@@ -94,7 +94,7 @@ fun NoteWineInfoStandardSmellScreen(
                     withStyle(style = SpanStyle(WineyTheme.colors.main_2)) {
                         append("대표적인 향을")
                     }
-                    append("느껴보세요")
+                    append(" 느껴보세요")
                 },
                 color = WineyTheme.colors.gray_50,
                 style = WineyTheme.typography.title2
