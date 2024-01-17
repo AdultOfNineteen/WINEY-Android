@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.data.network.model.response.WineGradeStandard
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
 import com.teamwiney.mypage.components.MyPageWineGradeStandardDialog
 import com.teamwiney.ui.components.HeightSpacer
@@ -109,11 +110,10 @@ fun MyPageScreen(
             HeightSpacer(height = 20.dp)
 
             MyPageGrade(
+                gradeData = uiState.wineGradeStandard,
                 currentGrade = uiState.currentGrade,
                 expectedNextMonthGrade = uiState.expectedMonthGrade,
-                remainingNoteCount = maxOf(0,
-                    uiState.wineGradeStandard.find { it.name == uiState.expectedMonthGrade }
-                        ?.minCount?.minus(uiState.noteCount) ?: 0),
+                noteCount = uiState.noteCount,
                 showWineGradeStandardDialog = {
                     viewModel.processEvent(MyPageContract.Event.ShowWineGradeStandardDialog)
                 }
@@ -257,11 +257,15 @@ fun MyPageProfile(
 
 @Composable
 fun MyPageGrade(
+    gradeData: List<WineGradeStandard>,
     currentGrade: WineGrade,
     expectedNextMonthGrade: WineGrade,
-    remainingNoteCount: Int,
+    noteCount: Int,
     showWineGradeStandardDialog: () -> Unit
 ) {
+    val currentGradeIdx = gradeData.indexOfFirst { it.name == currentGrade }
+    val expectedNextMonthGradeIdx = gradeData.indexOfFirst { it.name == expectedNextMonthGrade }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -295,14 +299,31 @@ fun MyPageGrade(
                 )
 
                 Text(
-                    text = buildAnnotatedString {
-                        append("${expectedNextMonthGrade.name}까지 테이스팅 ")
-                        withStyle(
-                            style = SpanStyle(
-                                color = WineyTheme.colors.main_3
-                            )
-                        ) {
-                            append("노트 ${remainingNoteCount}번")
+                    text = if (currentGradeIdx < expectedNextMonthGradeIdx) {
+                        buildAnnotatedString {
+                            append("다음달 예상등급 ")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = WineyTheme.colors.main_3
+                                )
+                            ) {
+                                append("$expectedNextMonthGrade")
+                            }
+                        }
+                    } else {
+                        val nextGrade = gradeData.getOrNull(currentGradeIdx + 1)?.name ?: WineGrade.GLASS
+                        val nextGradeMinCount = gradeData.getOrNull(currentGradeIdx + 1)?.minCount ?: 0
+                        val remainingNoteCount = nextGradeMinCount - noteCount
+
+                        buildAnnotatedString {
+                            append("${nextGrade}까지 테이스팅 ")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = WineyTheme.colors.main_3
+                                )
+                            ) {
+                                append("노트 ${remainingNoteCount}번")
+                            }
                         }
                     },
                     style = WineyTheme.typography.captionM2.copy(

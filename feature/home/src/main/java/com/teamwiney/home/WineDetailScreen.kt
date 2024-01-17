@@ -301,7 +301,7 @@ private fun WineOrigin(
                 )
 
                 Text(
-                    text = "${wine.wineSummary.avgPrice}",
+                    text = if (wine.wineSummary.avgPrice == 0.0) "구매가를 알 수 없어요 :(" else "${wine.wineSummary.avgPrice}",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
