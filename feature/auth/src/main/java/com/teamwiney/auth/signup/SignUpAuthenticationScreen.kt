@@ -29,6 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -73,6 +75,17 @@ fun SignUpAuthenticationScreen(
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
+                        is SignUpContract.BottomSheet.SendMessage -> {
+                            bottomSheetState.showBottomSheet {
+                                SendMessageBottomSheet(
+                                    text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
+                                    sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
+                                ) {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                }
+                            }
+                        }
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             bottomSheetState.showBottomSheet {
