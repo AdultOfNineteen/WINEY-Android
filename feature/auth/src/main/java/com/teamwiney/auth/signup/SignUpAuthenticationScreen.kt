@@ -169,7 +169,7 @@ fun SignUpAuthenticationScreen(
                         style = WineyTheme.typography.captionM1
                     )
                 },
-                enabled = uiState.isTimerRunning,
+                enabled = !uiState.isTimeOut,
                 maxLength = VERIFY_NUMBER_LENGTH,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 keyboardActions = KeyboardActions(onDone = {
@@ -205,7 +205,7 @@ fun SignUpAuthenticationScreen(
                 onClick = {
                     viewModel.processEvent(SignUpContract.Event.VerifyCode)
                 },
-                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH && uiState.isTimerRunning,
+                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH && !uiState.isTimeOut,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }

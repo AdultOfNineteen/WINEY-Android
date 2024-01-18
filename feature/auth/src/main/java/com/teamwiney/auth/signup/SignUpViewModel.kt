@@ -111,6 +111,7 @@ class SignUpViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
+                    resetTimer()
                     postEffect(
                         SignUpContract.Effect.ShowBottomSheet(
                             SignUpContract.BottomSheet.SendMessage
@@ -179,7 +180,8 @@ class SignUpViewModel @Inject constructor(
         updateState(
             currentState.copy(
                 remainingTime = SignUpContract.VERIFY_NUMBER_TIMER,
-                isTimerRunning = true
+                isTimerRunning = true,
+                isLoading = false
             )
         )
     }
