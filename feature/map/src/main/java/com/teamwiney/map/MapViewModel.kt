@@ -1,19 +1,16 @@
 package com.teamwiney.map
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
-import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.MapPosition
 import com.teamwiney.data.repository.map.MapRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-//    private val mapRepository: MapRepository,
+    private val mapRepository: MapRepository,
 ) : BaseViewModel<MapContract.State, MapContract.Event, MapContract.Effect>(
     initialState = MapContract.State()
 ) {
