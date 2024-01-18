@@ -88,6 +88,7 @@ object DataModule {
         WineBadgeDataSourceImpl(wineBadgeService, ioDispatcher)
 
     @Provides
+    @Singleton
     fun providesMapDataSource(
         mapService: MapService,
         @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher

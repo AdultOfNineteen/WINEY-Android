@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val mapRepository: MapRepository,
+//    private val mapRepository: MapRepository,
 ) : BaseViewModel<MapContract.State, MapContract.Event, MapContract.Effect>(
     initialState = MapContract.State()
 ) {

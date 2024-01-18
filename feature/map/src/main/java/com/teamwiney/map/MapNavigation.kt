@@ -2,6 +2,7 @@ package com.teamwiney.map
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -25,10 +26,11 @@ fun NavGraphBuilder.mapGraph(
                 navController = appState.navController,
                 graph = MapDestinations.ROUTE
             )
-            MapScreen(appState = appState)
+            MapScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry),
+            )
         }
-
-        // TODO : 매장 상세 정보?
     }
 }
 

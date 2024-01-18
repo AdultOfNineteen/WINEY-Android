@@ -7,19 +7,8 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-internal fun manageSystemUIColor(filter: String) {
+internal fun manageSystemUIColor() {
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(key1 = filter) {
-        if (filter == "전체") {
-            systemUiController.setSystemBarsColor(
-                color = Color.Transparent
-            )
-        } else {
-            systemUiController.setSystemBarsColor(
-                color = Color(0xB31F2126)
-            )
-        }
-    }
     DisposableEffect(key1 = Unit) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent
