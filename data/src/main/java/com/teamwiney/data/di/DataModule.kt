@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.datasource.auth.AuthDataSourceImpl
+import com.teamwiney.data.datasource.map.MapDataSource
+import com.teamwiney.data.datasource.map.MapDataSourceImpl
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSource
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSourceImpl
 import com.teamwiney.data.datasource.wine.WineDataSource
@@ -14,12 +16,15 @@ import com.teamwiney.data.datasource.winebadge.WineBadgeDataSourceImpl
 import com.teamwiney.data.datasource.winegrade.WineGradeDataSource
 import com.teamwiney.data.datasource.winegrade.WineGradeDataSourceImpl
 import com.teamwiney.data.network.service.AuthService
+import com.teamwiney.data.network.service.MapService
 import com.teamwiney.data.network.service.TastingNoteService
 import com.teamwiney.data.network.service.WineBadgeService
 import com.teamwiney.data.network.service.WineGradeService
 import com.teamwiney.data.network.service.WineService
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.auth.AuthRepositoryImpl
+import com.teamwiney.data.repository.map.MapRepository
+import com.teamwiney.data.repository.map.MapRepositoryImpl
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepositoryImpl
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
@@ -83,6 +88,13 @@ object DataModule {
         WineBadgeDataSourceImpl(wineBadgeService, ioDispatcher)
 
     @Provides
+    fun providesMapDataSource(
+        mapService: MapService,
+        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): MapDataSource =
+        MapDataSourceImpl(mapService, ioDispatcher)
+
+    @Provides
     @Singleton
     fun providesAuthRepository(authDataSource: AuthDataSource): AuthRepository =
         AuthRepositoryImpl(authDataSource)
@@ -117,4 +129,9 @@ object DataModule {
         wineBadgeDataSource: WineBadgeDataSource
     ): WineBadgeRepository = WineBadgeRepositoryImpl(wineBadgeDataSource)
 
+    @Provides
+    @Singleton
+    fun providesMapRepository(
+        mapDataSource: MapDataSource
+    ): MapRepository = MapRepositoryImpl(mapDataSource)
 }
