@@ -100,9 +100,7 @@ fun SignUpAuthenticationScreen(
                             }
                         }
 
-                        else -> {
-
-                        }
+                        else -> { }
                     }
                 }
             }
@@ -124,7 +122,10 @@ fun SignUpAuthenticationScreen(
             delay(1000)
             viewModel.updateRemainingTime(uiState.remainingTime - 1)
         }
-        if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
+        if (uiState.isTimerRunning) {
+            viewModel.updateIsTimerRunning(false)
+            viewModel.updateIsTimeOut(true)
+        }
     }
 
     Column(
@@ -168,12 +169,13 @@ fun SignUpAuthenticationScreen(
                         style = WineyTheme.typography.captionM1
                     )
                 },
+                enabled = uiState.isTimerRunning,
                 maxLength = VERIFY_NUMBER_LENGTH,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
                     if (uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH) {
-                        appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                        viewModel.processEvent(SignUpContract.Event.VerifyCode)
                     }
                 }),
                 onErrorState = uiState.verifyNumberErrorState
@@ -188,7 +190,6 @@ fun SignUpAuthenticationScreen(
                 Text(
                     modifier = Modifier.clickable {
                         keyboardController?.hide()
-                        // TODO: 실제 구현에서는 ViewModel의 타이머 시작 함수를 onSend에 람다로 넘겨받음
                         viewModel.resetTimer()
                         viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                     },
@@ -204,7 +205,7 @@ fun SignUpAuthenticationScreen(
                 onClick = {
                     viewModel.processEvent(SignUpContract.Event.VerifyCode)
                 },
-                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
+                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH && uiState.isTimerRunning,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }

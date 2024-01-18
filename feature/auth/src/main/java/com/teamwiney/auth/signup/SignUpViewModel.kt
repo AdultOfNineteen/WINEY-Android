@@ -171,6 +171,10 @@ class SignUpViewModel @Inject constructor(
         updateState(currentState.copy(isTimerRunning = isTimerRunning))
     }
 
+    fun updateIsTimeOut(isTimeOut: Boolean) = viewModelScope.launch {
+        updateState(currentState.copy(isTimeOut = isTimeOut))
+    }
+
     fun resetTimer() = viewModelScope.launch {
         updateState(
             currentState.copy(
