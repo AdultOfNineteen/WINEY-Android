@@ -52,6 +52,7 @@ dependencies {
     implementation("io.github.fornewid:naver-map-location:16.0.0")
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
+        implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_MATERIAL3)
