@@ -29,6 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -73,6 +75,17 @@ fun SignUpAuthenticationScreen(
 
                 is SignUpContract.Effect.ShowBottomSheet -> {
                     when (effect.bottomSheet) {
+                        is SignUpContract.BottomSheet.SendMessage -> {
+                            bottomSheetState.showBottomSheet {
+                                SendMessageBottomSheet(
+                                    text = "인증번호가 발송되었어요\n3분 안에 인증번호를 입력해주세요",
+                                    sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
+                                ) {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                }
+                            }
+                        }
 
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             bottomSheetState.showBottomSheet {
@@ -100,22 +113,10 @@ fun SignUpAuthenticationScreen(
                             }
                         }
 
-                        else -> {
-
-                        }
+                        else -> { }
                     }
                 }
             }
-        }
-    }
-
-    LaunchedEffect(uiState.verifyNumber) {
-        if ((uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty())) {
-            viewModel.updateVerifyNumberErrorText("인증번호")
-            viewModel.updateVerifyNumberErrorState(false)
-        } else {
-            viewModel.updateVerifyNumberErrorText("인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요")
-            viewModel.updateVerifyNumberErrorState(true)
         }
     }
 
@@ -124,7 +125,10 @@ fun SignUpAuthenticationScreen(
             delay(1000)
             viewModel.updateRemainingTime(uiState.remainingTime - 1)
         }
-        if (uiState.isTimerRunning) viewModel.updateIsTimerRunning(false)
+        if (uiState.isTimerRunning) {
+            viewModel.updateIsTimerRunning(false)
+            viewModel.updateIsTimeOut(true)
+        }
     }
 
     Column(
@@ -173,7 +177,7 @@ fun SignUpAuthenticationScreen(
                 keyboardActions = KeyboardActions(onDone = {
                     keyboardController?.hide()
                     if (uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH) {
-                        appState.navigate(AuthDestinations.SignUp.FAVORITE_TASTE)
+                        viewModel.processEvent(SignUpContract.Event.VerifyCode)
                     }
                 }),
                 onErrorState = uiState.verifyNumberErrorState
@@ -188,7 +192,6 @@ fun SignUpAuthenticationScreen(
                 Text(
                     modifier = Modifier.clickable {
                         keyboardController?.hide()
-                        // TODO: 실제 구현에서는 ViewModel의 타이머 시작 함수를 onSend에 람다로 넘겨받음
                         viewModel.resetTimer()
                         viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                     },
@@ -204,7 +207,7 @@ fun SignUpAuthenticationScreen(
                 onClick = {
                     viewModel.processEvent(SignUpContract.Event.VerifyCode)
                 },
-                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH,
+                enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH && !uiState.isTimeOut,
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }

@@ -40,6 +40,7 @@ fun WTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     placeholderText: String = "",
+    enabled: Boolean = true,
     fontSize: TextUnit = 16.sp,
     focusRequest: FocusRequester? = null,
     keyboardOptions: KeyboardOptions? = null,
@@ -72,6 +73,7 @@ fun WTextField(
             onValueChange = {
                 if (it.length <= maxLength) onValueChanged(it)
             },
+            enabled = enabled,
             singleLine = true,
             cursorBrush = SolidColor(Color.White),
             textStyle = WineyTheme.typography.bodyM1.copy(color = localColors.gray_50),

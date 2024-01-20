@@ -19,6 +19,7 @@ class SignUpContract {
         val verifyNumberErrorState: Boolean = false,
         val verifyNumberErrorText: String = "인증번호",
         val isTimerRunning: Boolean = true,
+        val isTimeOut: Boolean = false,
         val remainingTime: Int = VERIFY_NUMBER_TIMER,
         val userId: String = "",
         val favoriteTastes: List<SignUpFavoriteCategoryUiState> = mutableStateListOf(
