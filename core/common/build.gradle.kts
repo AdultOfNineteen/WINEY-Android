@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(project(":core:design"))
 
+    implementation("io.github.fornewid:naver-map-compose:1.3.3")
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_UI)

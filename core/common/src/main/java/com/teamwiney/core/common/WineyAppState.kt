@@ -15,6 +15,8 @@ import androidx.navigation.Navigator
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.naver.maps.map.compose.CameraPositionState
+import com.naver.maps.map.compose.rememberCameraPositionState
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -24,12 +26,14 @@ fun rememberWineyAppState(
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
+    cameraPositionState: CameraPositionState = rememberCameraPositionState()
 ): WineyAppState {
     return remember(Unit) {
         WineyAppState(
             navController,
             scaffoldState,
             scope,
+            cameraPositionState
         )
     }
 }
@@ -39,6 +43,7 @@ class WineyAppState(
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
+    val cameraPositionState: CameraPositionState
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController

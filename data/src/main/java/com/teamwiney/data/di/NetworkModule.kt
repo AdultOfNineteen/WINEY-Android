@@ -7,6 +7,7 @@ import com.teamwiney.data.network.adapter.ApiResultCallAdapterFactory
 import com.teamwiney.data.network.converter.EnumConverterFactory
 import com.teamwiney.data.network.interceptor.AuthInterceptor
 import com.teamwiney.data.network.service.AuthService
+import com.teamwiney.data.network.service.MapService
 import com.teamwiney.data.network.service.TastingNoteService
 import com.teamwiney.data.network.service.WineBadgeService
 import com.teamwiney.data.network.service.WineGradeService
@@ -81,4 +82,8 @@ object NetworkModule {
     fun providesWineBadgeService(retrofit: Retrofit) =
         retrofit.create(WineBadgeService::class.java)
 
+    @Provides
+    @Singleton
+    fun providesMapService(retrofit: Retrofit): MapService =
+        retrofit.create(MapService::class.java)
 }
