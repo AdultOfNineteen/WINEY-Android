@@ -12,5 +12,6 @@ data class WineShop(
     val phone: String,
     val shopId: Int,
     val shopMoods: List<String>,
-    val shopType: String
+    val shopType: String,
+    val isSelected: Boolean = false
 )

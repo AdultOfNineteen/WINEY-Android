@@ -12,4 +12,6 @@ class MapRepositoryImpl @Inject constructor(
         shopFilter: String,
         mapPosition: MapPosition
     ) = mapDataSource.getWineShops(shopFilter, mapPosition)
+
+    override fun postBookmark(shopId: Int) = mapDataSource.postBookmark(shopId)
 }

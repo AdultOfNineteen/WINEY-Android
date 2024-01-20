@@ -4,7 +4,7 @@
 
 package com.teamwiney.map
 
-import android.util.Log
+import android.location.Location
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -14,6 +14,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -53,16 +54,25 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.MapUiSettings
+import com.naver.maps.map.compose.Marker
+import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
-import com.naver.maps.map.compose.rememberCameraPositionState
+import com.naver.maps.map.overlay.OverlayImage
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.WineShop
+import com.teamwiney.map.MapViewModel.Companion.DEFAULT_LATLNG
 import com.teamwiney.map.components.MapBottomSheetContent
+import com.teamwiney.map.manager.manageLocationPermission
 import com.teamwiney.map.manager.manageSystemUIColor
-import com.teamwiney.map.model.ShopwFilter
+import com.teamwiney.map.model.MovingCameraWrapper
+import com.teamwiney.map.model.ShopCategory
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+val BOTTOM_NAVIGATION_HEIGHT = 60.dp
 
 @Composable
 fun MapScreen(
@@ -72,7 +82,6 @@ fun MapScreen(
     val localDensity = LocalDensity.current
     val configuration = LocalConfiguration.current
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
-    val cameraPositionState = rememberCameraPositionState()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val peekHeight by remember {
         mutableStateOf(50.dp)
@@ -81,14 +90,64 @@ fun MapScreen(
     var topBarHeight by remember {
         mutableStateOf(0.dp)
     }
-    val BOTTOM_NAVIGATION_HEIGHT = 60.dp
-    var filter by remember {
-        mutableStateOf(ShopwFilter.ALL)
-    }
     val paddingValues = WindowInsets.systemBars.asPaddingValues() // 시스템바 패딩 계산
     val screenHeight = configuration.screenHeightDp.dp
 
+    val setSelectedMarker: (WineShop) -> Unit = {
+        viewModel.updateSelectMarker(it, true)
+        viewModel.updateMovingCameraPosition(
+            MovingCameraWrapper.MOVING(
+                Location("SelectedMarker").apply {
+                    latitude = it.latitude
+                    longitude = it.longitude
+                }
+            )
+        )
+    }
+
+    val onMarkerClick: (WineShop) -> Unit = {
+        setSelectedMarker(it)
+        appState.scope.launch {
+            bottomSheetScaffoldState.bottomSheetState.expand()
+        }
+    }
+
+    val onMapClick: () -> Unit = {
+        viewModel.updateSelectMarker(null, false)
+        appState.scope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
+    }
+
+    val onClickGPSIcon: () -> Unit = {
+        appState.scope.launch {
+            appState.cameraPositionState.animate(
+                update = CameraUpdate.scrollAndZoomTo(
+                    uiState.userPosition,
+                    15.0
+                )
+            )
+        }
+    }
+
+    val onClickCategory: (ShopCategory) -> Unit = { category ->
+        viewModel.getWineShops(
+            shopFilter = category.toString(),
+            cameraPositionState = appState.cameraPositionState
+        )
+        viewModel.updateSelectedShopCategory(category)
+        viewModel.updateSelectMarker(null, false)
+        appState.scope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
+    }
+
     manageSystemUIColor()
+    manageLocationPermission(
+        addLocationListener = { viewModel.addLocationListener() },
+        showSnackbar = { appState.showSnackbar(it) },
+        removeLocationListener = { viewModel.removeLocationListener() }
+    )
 
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest {
@@ -104,6 +163,21 @@ fun MapScreen(
         }
     }
 
+    LaunchedEffect(key1 = uiState.movingCameraPosition) {
+        when (val movingCameraPosition = uiState.movingCameraPosition) {
+            MovingCameraWrapper.DEFAULT -> {
+                // Do Nothing
+            }
+
+            is MovingCameraWrapper.MOVING -> {
+                appState.cameraPositionState.animate(
+                    update = CameraUpdate.scrollTo(LatLng(movingCameraPosition.location))
+                )
+                viewModel.updateMovingCameraPositionToDefault()
+            }
+        }
+    }
+
     BottomSheetScaffold(
         modifier = Modifier
             .fillMaxSize(),
@@ -112,10 +186,17 @@ fun MapScreen(
         sheetShape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
         sheetContent = {
             MapBottomSheetContent(
-                isExpanded = bottomSheetScaffoldState.bottomSheetState.isExpanded,
                 contentHeight = screenHeight - (topBarHeight + BOTTOM_NAVIGATION_HEIGHT + paddingValues.calculateTopPadding() + paddingValues.calculateBottomPadding()),
-                filter = filter,
-                wineShops = uiState.wineShops
+                shopCategory = uiState.selectedShopCategory,
+                wineShops = uiState.wineShops,
+                selectedMarker = uiState.selectedMarkar,
+                postBookmark = { wineShop ->
+                    viewModel.postBookmark(wineShop)
+                },
+                userPosition = uiState.userPosition,
+                setSelectedMarker = { wineShop ->
+                    setSelectedMarker(wineShop)
+                }
             )
         }
     ) {
@@ -123,48 +204,110 @@ fun MapScreen(
 
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
+                cameraPositionState = appState.cameraPositionState,
                 onMapClick = { _, _ ->
-                    appState.scope.launch {
-                        bottomSheetScaffoldState.bottomSheetState.collapse()
-                    }
+                    onMapClick()
                 },
                 onMapLoaded = {
                     viewModel.getWineShops(
-                        shopFilter = filter.toString(),
-                        cameraPositionState = cameraPositionState
+                        shopFilter = uiState.selectedShopCategory.toString(),
+                        cameraPositionState = appState.cameraPositionState
+                    )
+                    if (MapViewModel.initialMarkerLoadFlag && uiState.userPosition != DEFAULT_LATLNG) {
+                        MapViewModel.initialMarkerLoadFlag = false
+                        viewModel.updateMovingCameraPosition(
+                            MovingCameraWrapper.MOVING(
+                                Location("UserPosition").apply {
+                                    latitude = uiState.userPosition.latitude
+                                    longitude = uiState.userPosition.longitude
+                                })
+                        )
+                    }
+                },
+                uiSettings = MapUiSettings(
+                    logoMargin = PaddingValues(
+                        start = 12.dp,
+                        bottom = peekHeight + 10.dp
+                    )
+                )
+            ) {
+
+                (if (uiState.selectedShopCategory == ShopCategory.LIKE)
+                    uiState.wineShops.filter { it.like } else uiState.wineShops
+                        ).forEach {
+                        Marker(
+                            state = MarkerState(position = LatLng(it.latitude, it.longitude)),
+                            icon = OverlayImage.fromResource(R.mipmap.img_wine_marker),
+                            captionText = it.name,
+                            height = if (it.isSelected) 75.dp else 49.dp,
+                            width = if (it.isSelected) 52.dp else 34.dp,
+                            onClick = { _ ->
+                                onMarkerClick(it)
+                                true
+                            }
+                        )
+                    }
+
+                if (uiState.userPosition != DEFAULT_LATLNG) {
+                    Marker(
+                        state = MarkerState(position = uiState.userPosition),
+                        icon = OverlayImage.fromResource(R.drawable.ic_close_fill_18),
+                        height = 24.dp,
+                        width = 24.dp,
+                        onClick = {
+                            true
+                        }
                     )
                 }
-            )
+            }
 
             AnimatedVisibility(
-                visible = true,
+                visible = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
+                modifier = Modifier.align(Alignment.BottomCenter),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = peekHeight + 24.dp)
+                        .clip(RoundedCornerShape(42.dp))
+                        .background(WineyTheme.colors.gray_900)
+                        .clickable {
+                            appState.scope.launch {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                        .padding(17.dp, 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(text = "목록열기")
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_hamburg_baseline_13),
+                        contentDescription = "IC_GPS",
+                        modifier = Modifier
+                            .size(13.dp),
+                        tint = WineyTheme.colors.gray_50
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
                 modifier = Modifier.align(Alignment.BottomEnd),
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
                 Box(
                     modifier = Modifier
-                        .offset(
-                            x = (-20).dp,
-                            y = -(peekHeight + 24.dp)
+                        .padding(
+                            end = 20.dp,
+                            bottom = peekHeight + 24.dp
                         )
                         .clip(CircleShape)
                         .background(WineyTheme.colors.gray_900)
                         .clickable {
-                            Log.i(
-                                "dlgocks1 : MapPosition",
-                                cameraPositionState.contentBounds?.northEast?.latitude.toString() +
-                                        cameraPositionState.contentBounds?.northEast?.longitude.toString()
-                            )
-                            appState.scope.launch {
-                                cameraPositionState.animate(
-                                    update = CameraUpdate.scrollAndZoomTo(
-                                        LatLng(37.413294, 127.269311), // User Position ,
-                                        15.0
-                                    ),
-                                )
-                            }
+                            onClickGPSIcon()
                         }
                         .padding(13.dp)
                 ) {
@@ -185,7 +328,6 @@ fun MapScreen(
                     .systemBarsPadding()
                     .fillMaxWidth()
             ) {
-                // TODO 인터렉션 수정 필요할 듯
                 Row(
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
@@ -195,17 +337,16 @@ fun MapScreen(
                         Alignment.CenterHorizontally
                     ),
                 ) {
-                    ShopwFilter.values().forEach {
+                    ShopCategory.values().forEach {
                         Text(
                             text = it.title,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(42.dp))
-                                .background(if (filter == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
+                                .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
                                 .clickable {
-                                    filter = it
-                                    appState.scope.launch {
-                                        bottomSheetScaffoldState.bottomSheetState.expand()
-                                    }
+                                    onClickCategory(
+                                        it,
+                                    )
                                 }
                                 .padding(horizontal = 15.dp, vertical = 10.dp),
                             color = WineyTheme.colors.gray_50,
@@ -221,10 +362,9 @@ fun MapScreen(
                         .clip(RoundedCornerShape(42.dp))
                         .background(WineyTheme.colors.gray_50)
                         .clickable {
-                            appState.showSnackbar("현 위치에서 검색")
                             viewModel.getWineShops(
-                                shopFilter = filter.toString(),
-                                cameraPositionState = cameraPositionState
+                                shopFilter = uiState.selectedShopCategory.toString(),
+                                cameraPositionState = appState.cameraPositionState
                             )
                         }
                         .padding(15.dp, 10.dp)
@@ -256,3 +396,4 @@ fun MapScreen(
         }
     }
 }
+

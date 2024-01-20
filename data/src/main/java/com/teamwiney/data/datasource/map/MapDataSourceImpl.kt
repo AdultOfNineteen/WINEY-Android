@@ -4,6 +4,7 @@ import com.teamwiney.core.common.base.ResponseWrapper
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.MapPosition
+import com.teamwiney.data.network.model.response.BookmarkResult
 import com.teamwiney.data.network.model.response.WineShop
 import com.teamwiney.data.network.service.MapService
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,4 +24,9 @@ class MapDataSourceImpl @Inject constructor(
     ): Flow<ApiResult<ResponseWrapper<List<WineShop>>>> = flow {
         emit(mapService.getWineShops(shopFilter, mapPosition))
     }.flowOn(ioDispatcher)
+
+    override fun postBookmark(shopId: Int): Flow<ApiResult<ResponseWrapper<BookmarkResult>>> = flow {
+        emit(mapService.postBookmark(shopId))
+    }.flowOn(ioDispatcher)
+
 }

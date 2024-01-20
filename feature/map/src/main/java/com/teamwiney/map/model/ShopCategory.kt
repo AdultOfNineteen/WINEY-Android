@@ -1,6 +1,6 @@
 package com.teamwiney.map.model
 
-enum class ShopwFilter(val title: String) {
+enum class ShopCategory(val title: String) {
     ALL("전체"),
     LIKE("내 장소"),
     BOTTLE_SHOP("바틀샵"),

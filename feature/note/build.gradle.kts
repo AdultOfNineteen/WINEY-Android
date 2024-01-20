@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":data"))
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 
+    implementation("io.github.fornewid:naver-map-compose:1.3.3")
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(COMPOSE_GLIDE)

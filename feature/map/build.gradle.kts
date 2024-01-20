@@ -3,6 +3,8 @@ plugins {
         id(ANDROID_LIBRARY)
         id(JETBRAINS_KOTLIN_ANDROID)
         id(KOTLIN_KAPT)
+        id(GOOGLE_SERVICES)
+        id(FIREBASE_CRASHLYTICS)
     }
 }
 
@@ -50,6 +52,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.6.0")
     implementation("io.github.fornewid:naver-map-compose:1.3.3")
     implementation("io.github.fornewid:naver-map-location:16.0.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(COMPOSE_GLIDE)
