@@ -120,16 +120,6 @@ fun SignUpAuthenticationScreen(
         }
     }
 
-    LaunchedEffect(uiState.verifyNumber) {
-        if ((uiState.verifyNumber.length == 6 || uiState.verifyNumber.isEmpty())) {
-            viewModel.updateVerifyNumberErrorText("인증번호")
-            viewModel.updateVerifyNumberErrorState(false)
-        } else {
-            viewModel.updateVerifyNumberErrorText("인증번호 ${VERIFY_NUMBER_LENGTH}자리를 입력해주세요")
-            viewModel.updateVerifyNumberErrorState(true)
-        }
-    }
-
     LaunchedEffect(uiState.isTimerRunning) {
         while (uiState.isTimerRunning && uiState.remainingTime > 0) {
             delay(1000)
@@ -182,7 +172,6 @@ fun SignUpAuthenticationScreen(
                         style = WineyTheme.typography.captionM1
                     )
                 },
-                enabled = !uiState.isTimeOut,
                 maxLength = VERIFY_NUMBER_LENGTH,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 keyboardActions = KeyboardActions(onDone = {

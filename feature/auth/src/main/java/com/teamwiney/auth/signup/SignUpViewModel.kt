@@ -88,7 +88,10 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    postEffect(SignUpContract.Effect.ShowBottomSheet(SignUpContract.BottomSheet.AuthenticationFailed))
+                    updateState(currentState.copy(
+                        verifyNumberErrorText = "인증번호를 확인해주세요!",
+                        verifyNumberErrorState = true
+                    ))
                 }
 
                 else -> {
@@ -133,10 +136,6 @@ class SignUpViewModel @Inject constructor(
         updateState(currentState.copy(userId = userId))
     }
 
-    fun updateVerifyNumberErrorText(text: String) = viewModelScope.launch {
-        updateState(currentState.copy(verifyNumberErrorText = text))
-    }
-
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {
         updateState(currentState.copy(phoneNumber = phoneNumber))
     }
@@ -147,10 +146,17 @@ class SignUpViewModel @Inject constructor(
 
     fun updateVerifyNumber(verifyNumber: String) = viewModelScope.launch {
         updateState(currentState.copy(verifyNumber = verifyNumber))
-    }
-
-    fun updateVerifyNumberErrorState(isError: Boolean) = viewModelScope.launch {
-        updateState(currentState.copy(verifyNumberErrorState = isError))
+        if (currentState.verifyNumber.length == 6 || currentState.verifyNumber.isEmpty()) {
+            updateState(currentState.copy(
+                verifyNumberErrorText = "인증번호",
+                verifyNumberErrorState = false
+            ))
+        } else {
+            updateState(currentState.copy(
+                verifyNumberErrorText = "인증번호 ${SignUpContract.VERIFY_NUMBER_LENGTH}자리를 입력해주세요",
+                verifyNumberErrorState = true
+            ))
+        }
     }
 
     fun updateRemainingTime(remainingTime: Int) = viewModelScope.launch {
@@ -163,6 +169,12 @@ class SignUpViewModel @Inject constructor(
 
     fun updateIsTimeOut(isTimeOut: Boolean) = viewModelScope.launch {
         updateState(currentState.copy(isTimeOut = isTimeOut))
+        if (isTimeOut) {
+            updateState(currentState.copy(
+                verifyNumberErrorText = "인증시간이 초과되었어요. 재전송 버튼을 눌러주세요.",
+                verifyNumberErrorState = true
+            ))
+        }
     }
 
     fun resetTimer() = viewModelScope.launch {
