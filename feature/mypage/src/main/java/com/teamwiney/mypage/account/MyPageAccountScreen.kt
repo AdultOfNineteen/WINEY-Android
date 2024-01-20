@@ -1,5 +1,6 @@
 package com.teamwiney.mypage.account
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +27,7 @@ import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MyPageAccountScreen(
     appState: WineyAppState,
@@ -32,6 +35,14 @@ fun MyPageAccountScreen(
     bottomSheetState: WineyBottomSheetState
 ) {
     val effectFlow = viewModel.effect
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        } else {
+            appState.navController.navigateUp()
+        }
+    }
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -50,6 +61,7 @@ fun MyPageAccountScreen(
                             bottomSheetState.showBottomSheet {
                                 MyPageLogOutBottomSheet(
                                     onConfirm = {
+                                        bottomSheetState.hideBottomSheet()
                                         viewModel.logOut()
                                     },
                                     onCancel = {
