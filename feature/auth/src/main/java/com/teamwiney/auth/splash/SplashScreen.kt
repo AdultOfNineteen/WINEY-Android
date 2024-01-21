@@ -1,5 +1,10 @@
 package com.teamwiney.auth.splash
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
@@ -26,7 +33,19 @@ fun SplashScreen(
     val viewModel: SplashViewModel = hiltViewModel()
     val effectFlow = viewModel.effect
 
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            appState.showSnackbar("추후에 설정창으로 이동해 알람을 허용할 수 있습니다.")
+        }
+    }
+
     LaunchedEffect(true) {
+        viewModel.checkIsFirstLaunch()
+
         viewModel.getConnections()
         viewModel.registerFcmToken()
         delay(1500)
@@ -40,6 +59,19 @@ fun SplashScreen(
 
                 is SplashContract.Effect.NavigateTo -> {
                     appState.navigate(effect.destination, builder = effect.builder)
+                }
+
+                is SplashContract.Effect.CheckPermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        val isGranted = ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+
+                        if (!isGranted) {
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    }
                 }
             }
         }

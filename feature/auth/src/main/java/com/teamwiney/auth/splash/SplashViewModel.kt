@@ -9,6 +9,7 @@ import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.DEVICE_ID
 import com.teamwiney.core.common.util.Constants.FCM_TOKEN
+import com.teamwiney.core.common.util.Constants.IS_NOT_FIRST_LAUNCH
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
@@ -45,6 +46,15 @@ class SplashViewModel @Inject constructor(
                     autoLoginCheck()
                 }
             }
+        }
+    }
+
+    fun checkIsFirstLaunch() = viewModelScope.launch {
+        val isNotFirstLaunch = dataStoreRepository.getBooleanValue(IS_NOT_FIRST_LAUNCH).first()
+
+        if (!isNotFirstLaunch) {
+            postEffect(SplashContract.Effect.CheckPermission)
+            dataStoreRepository.setBooleanValue(IS_NOT_FIRST_LAUNCH, true)
         }
     }
 
