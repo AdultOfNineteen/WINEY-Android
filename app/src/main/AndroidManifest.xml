@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -47,7 +48,7 @@
 
         <activity
             android:name="com.teamwiney.ui.components.imagepicker.ImagePickerActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -64,6 +65,17 @@
                     android:scheme="@string/KAKAO_NATIVE_APP_KEY_FULL" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.teamwiney.winey.WineyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

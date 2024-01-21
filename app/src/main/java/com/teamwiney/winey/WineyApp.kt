@@ -57,6 +57,7 @@ class WineyApp : Application() {
             }
         }
     }
+
     private fun setFcmToken(token: String?) {
         token?.let {
             runBlocking {
