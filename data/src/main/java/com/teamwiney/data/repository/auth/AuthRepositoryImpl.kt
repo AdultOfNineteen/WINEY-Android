@@ -59,6 +59,8 @@ class AuthRepositoryImpl @Inject constructor(
         request: PhoneNumberWithVerificationCodeRequest
     ) = authDataSource.verifyAuthCodeMessage(userId, request)
 
+    override fun getUserInfo() = authDataSource.getUserInfo()
+
     override fun getConnections() = authDataSource.getConnections()
 
     override fun registerFcmToken(

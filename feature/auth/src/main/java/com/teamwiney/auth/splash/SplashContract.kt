@@ -13,7 +13,7 @@ class SplashContract {
     ) : UiState
 
     sealed class Event : UiEvent {
-        object AutoLoginCheck : Event()
+        object CheckUserStatus : Event()
     }
 
     sealed class Effect : UiEffect {

@@ -46,10 +46,8 @@ fun SplashScreen(
     LaunchedEffect(true) {
         viewModel.checkIsFirstLaunch()
 
-        viewModel.getConnections()
-        viewModel.registerFcmToken()
         delay(1500)
-        viewModel.processEvent(SplashContract.Event.AutoLoginCheck)
+        viewModel.processEvent(SplashContract.Event.CheckUserStatus)
 
         effectFlow.collectLatest { effect ->
             when (effect) {
