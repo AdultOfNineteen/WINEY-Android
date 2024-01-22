@@ -10,6 +10,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.model.SocialType
+import com.teamwiney.core.common.model.UserStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
@@ -17,7 +18,6 @@ import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.LOGIN_TYPE
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,24 +111,17 @@ class LoginViewModel @Inject constructor(
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
+                            Log.i(
+                                "[ACCESS_TOKEN]",
+                                "accessToken: ${result.data.result.accessToken}"
+                            )
+                            Log.i(
+                                "[REFRESH_TOKEN]",
+                                "refreshToken: ${result.data.result.refreshToken}"
+                            )
+
                             val userStatus = result.data.result.userStatus
-                            if (userStatus == SocialLogin.USER_STATUS_ACTIVE) {
-                                Log.i(
-                                    "[ACCESS_TOKEN]",
-                                    "accessToken: ${result.data.result.accessToken}"
-                                )
-                                Log.i(
-                                    "[REFRESH_TOKEN]",
-                                    "refreshToken: ${result.data.result.refreshToken}"
-                                )
-                                dataStoreRepository.setStringValue(
-                                    ACCESS_TOKEN,
-                                    result.data.result.accessToken
-                                )
-                                dataStoreRepository.setStringValue(
-                                    REFRESH_TOKEN,
-                                    result.data.result.refreshToken
-                                )
+                            if (userStatus == UserStatus.ACTIVE) {
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
 
                                 postEffect(LoginContract.Effect.NavigateTo(
@@ -144,6 +137,8 @@ class LoginViewModel @Inject constructor(
                             }
 
                             runBlocking {
+                                dataStoreRepository.setStringValue(ACCESS_TOKEN, result.data.result.accessToken)
+                                dataStoreRepository.setStringValue(REFRESH_TOKEN, result.data.result.refreshToken)
                                 dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
                             }
                         }

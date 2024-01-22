@@ -1,5 +1,7 @@
 package com.teamwiney.data.network.model.response
 
+import com.teamwiney.core.common.model.UserStatus
+
 /**
  * - userStatus
 1. 취향설정 까지 모두 마쳐 회원 가입이 완료된 경우 → `ACTIVE`
@@ -21,12 +23,7 @@ data class SocialLogin(
     val accessToken: String,
     val userId: Int,
     val refreshToken: String,
-    val userStatus: String,
+    val userStatus: UserStatus,
     val messageStatus: String,
     val preferenceStatus: String
-) {
-    companion object {
-        const val USER_STATUS_ACTIVE = "ACTIVE"
-        const val USER_STATUS_INACTIVE = "INACTIVE"
-    }
-}
+)
