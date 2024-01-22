@@ -62,6 +62,10 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.refreshToken(refreshToken))
     }.flowOn(ioDispatcher)
 
+    override fun getUserInfo() = flow {
+        emit(authService.getUserInfo())
+    }.flowOn(ioDispatcher)
+
     override fun getConnections() = flow {
         emit(authService.getConnections())
     }.flowOn(ioDispatcher)

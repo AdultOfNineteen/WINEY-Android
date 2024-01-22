@@ -16,6 +16,7 @@ import com.teamwiney.data.network.model.response.DeleteUser
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
+import com.teamwiney.data.network.model.response.UserInfo
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.Response
 import retrofit2.http.Body
@@ -69,6 +70,9 @@ interface AuthService {
         @Body preferences: SetPreferencesRequest
     ): ApiResult<ResponseWrapper<SetPreferences>>
 
+    /** 유저 상태 정보 조회 API */
+    @GET("/info")
+    suspend fun getUserInfo(): ApiResult<ResponseWrapper<UserInfo>>
 
     /** 토큰 리프레쉬 API */
     @POST("/refresh")

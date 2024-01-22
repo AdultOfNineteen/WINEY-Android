@@ -16,6 +16,7 @@ import com.teamwiney.data.network.model.response.DeleteUser
 import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
+import com.teamwiney.data.network.model.response.UserInfo
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import kotlinx.coroutines.flow.Flow
 
@@ -46,6 +47,8 @@ interface AuthDataSource {
     ): Flow<ApiResult<ResponseWrapper<SetPreferences>>>
 
     fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>>
+
+    fun getUserInfo(): Flow<ApiResult<ResponseWrapper<UserInfo>>>
 
     fun getConnections(): Flow<ApiResult<BaseResponse>>
 
