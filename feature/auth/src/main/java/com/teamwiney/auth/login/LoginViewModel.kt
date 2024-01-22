@@ -111,6 +111,12 @@ class LoginViewModel @Inject constructor(
                     updateState(currentState.copy(isLoading = false))
                     when (result) {
                         is ApiResult.Success -> {
+                            runBlocking {
+                                dataStoreRepository.setStringValue(ACCESS_TOKEN, result.data.result.accessToken)
+                                dataStoreRepository.setStringValue(REFRESH_TOKEN, result.data.result.refreshToken)
+                                dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
+                            }
+
                             Log.i(
                                 "[ACCESS_TOKEN]",
                                 "accessToken: ${result.data.result.accessToken}"
@@ -124,6 +130,8 @@ class LoginViewModel @Inject constructor(
                             if (userStatus == UserStatus.ACTIVE) {
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
 
+                                registerFcmToken()
+
                                 postEffect(LoginContract.Effect.NavigateTo(
                                     destination = HomeDestinations.ROUTE,
                                     navOptions = navOptions {
@@ -134,12 +142,6 @@ class LoginViewModel @Inject constructor(
                                 ))
                             } else {
                                 postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
-                            }
-
-                            runBlocking {
-                                dataStoreRepository.setStringValue(ACCESS_TOKEN, result.data.result.accessToken)
-                                dataStoreRepository.setStringValue(REFRESH_TOKEN, result.data.result.refreshToken)
-                                dataStoreRepository.setIntValue(Constants.USER_ID, result.data.result.userId)
                             }
                         }
 
@@ -152,6 +154,25 @@ class LoginViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    private fun registerFcmToken() = viewModelScope.launch {
+        val fcmToken = dataStoreRepository.getStringValue(Constants.FCM_TOKEN).first()
+        val deviceId = dataStoreRepository.getStringValue(Constants.DEVICE_ID).first()
+
+        authRepository.registerFcmToken(fcmToken, deviceId).collectLatest {
+            when (it) {
+                is ApiResult.ApiError -> {
+                    postEffect(LoginContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(LoginContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+
+                else -> { }
+            }
         }
     }
 

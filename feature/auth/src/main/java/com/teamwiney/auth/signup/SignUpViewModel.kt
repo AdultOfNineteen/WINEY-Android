@@ -4,20 +4,24 @@ import androidx.lifecycle.viewModelScope
 import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest
 import com.teamwiney.data.network.model.request.SetPreferencesRequest
 import com.teamwiney.data.repository.auth.AuthRepository
+import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<SignUpContract.State, SignUpContract.Event, SignUpContract.Effect>(
     initialState = SignUpContract.State()
 ) {
@@ -57,6 +61,7 @@ class SignUpViewModel @Inject constructor(
         ).collectLatest {
             when (it) {
                 is ApiResult.Success -> {
+                    registerFcmToken()  // 회원가입 완료 후 FCM 토큰 등록
                     postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
                 }
 
@@ -128,6 +133,25 @@ class SignUpViewModel @Inject constructor(
                 else -> {
                     postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
+            }
+        }
+    }
+
+    private fun registerFcmToken() = viewModelScope.launch {
+        val fcmToken = dataStoreRepository.getStringValue(Constants.FCM_TOKEN).first()
+        val deviceId = dataStoreRepository.getStringValue(Constants.DEVICE_ID).first()
+
+        authRepository.registerFcmToken(fcmToken, deviceId).collectLatest {
+            when (it) {
+                is ApiResult.ApiError -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(SignUpContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+
+                else -> { }
             }
         }
     }
