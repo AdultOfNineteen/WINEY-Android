@@ -1,4 +1,4 @@
-package com.teamwiney.home
+package com.teamwiney.auth.login
 
 import android.view.ViewGroup
 import android.webkit.WebView
@@ -10,18 +10,15 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.viewinterop.AndroidView
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.util.Constants.TERMS_OF_USE_URL
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun WebViewScreen(
-    appState: WineyAppState,
-    url: String = ""
+fun LoginTermsScreen(
+    appState: WineyAppState
 ) {
     Column(
         modifier = Modifier
@@ -31,17 +28,12 @@ fun WebViewScreen(
             .background(WineyTheme.colors.background_1)
     ) {
         TopBar(
-            annotatedContent = buildAnnotatedString {
-                append("와인 초보를 위한 ")
-                withStyle(style = SpanStyle(WineyTheme.colors.main_2)) {
-                    append("TIP")
-                }
-            },
+            content = "서비스 이용약관",
             leadingIconOnClick = {
                 appState.navController.navigateUp()
             }
         )
-        WebViewContent(url = url)
+        WebViewContent(url = TERMS_OF_USE_URL)
     }
 }
 
@@ -59,7 +51,8 @@ fun WebViewContent(
                 webViewClient = WebViewClient()
                 loadUrl(url)
             }
-        }, update = {
+        },
+        update = {
             it.loadUrl(url)
         }
     )

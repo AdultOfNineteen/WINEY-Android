@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +37,7 @@ import com.google.android.gms.common.api.ApiException
 import com.teamwiney.auth.login.component.SocialLoginButton
 import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.dashedBorder
@@ -133,21 +135,43 @@ fun LoginScreen(
                     viewModel.processEvent(LoginContract.Event.GoogleLoginButtonClicked)
                 }
             }
-            Text(
-                text = buildAnnotatedString {
-                    append("첫 로그인 시, ")
-                    withStyle(
-                        style = SpanStyle(
-                            color = WineyTheme.colors.point_2,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    ) {
-                        append("서비스 이용약관")
+
+            val annotatedString = buildAnnotatedString {
+                append("첫 로그인 시, ")
+                pushStringAnnotation(
+                    tag = "clickable",
+                    annotation = "서비스 이용약관"
+                )
+                withStyle(
+                    style = SpanStyle(
+                        color = WineyTheme.colors.point_2,
+                        textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    append("서비스 이용약관")
+                }
+                pop()
+                append("에 동의한 것으로 간주합니다.")
+            }
+
+            ClickableText(
+                text = annotatedString,
+                style = WineyTheme.typography.captionM1.copy(
+                    color = WineyTheme.colors.gray_700
+                ),
+                onClick = { offset ->
+                    val annotations = annotatedString.getStringAnnotations(
+                        tag = "clickable",
+                        start = offset,
+                        end = offset
+                    )
+                    if (annotations.isNotEmpty()) {
+                        val clickedText = annotations[0].item
+                        if (clickedText == "서비스 이용약관") {
+                            appState.navigate(AuthDestinations.Login.TERMS_OF_USE)
+                        }
                     }
-                    append("에 동의한 것으로 간주합니다.")
-                },
-                color = WineyTheme.colors.gray_700,
-                style = WineyTheme.typography.captionM1
+                }
             )
         }
     }
