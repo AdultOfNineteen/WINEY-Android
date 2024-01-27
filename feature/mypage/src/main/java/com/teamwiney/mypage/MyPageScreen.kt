@@ -121,11 +121,11 @@ fun MyPageScreen(
 
             HeightSpacer(height = 15.dp)
             MyProfileMenuItem(menu = "서비스 이용약관") {
-
+                appState.navigate(MyPageDestinations.TERMS_OF_USE)
             }
             HeightSpacer(height = 5.dp)
             MyProfileMenuItem(menu = "개인정보 처리방침") {
-
+                appState.navigate(MyPageDestinations.PRIVACY_POLICY)
             }
 
             HeightSpacer(height = 21.dp)
