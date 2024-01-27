@@ -18,6 +18,7 @@ object Constants {
     val IS_FIRST_SCROLL = booleanPreferencesKey("is_first_scroll")
     val USER_ID = intPreferencesKey("user_id")
 
+    const val FAQ_URL = "https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4"
     const val PRIVACY_POLICY_URL = "${BuildConfig.BASE_URL}docs/privacy-policy.html"
     const val TERMS_OF_USE_URL = "${BuildConfig.BASE_URL}docs/service-policy.html"
 }

@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.core.common.util.Constants.FAQ_URL
 import com.teamwiney.data.network.model.response.WineGradeStandard
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
 import com.teamwiney.mypage.components.MyPageWineGradeStandardDialog
@@ -145,7 +146,7 @@ fun MyPageScreen(
                 val customBuilder = builder.build()
                 customBuilder.launchUrl(
                     context,
-                    Uri.parse("https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4")
+                    Uri.parse(FAQ_URL)
                 )
             }
             MyProfileAppVersionItem()
