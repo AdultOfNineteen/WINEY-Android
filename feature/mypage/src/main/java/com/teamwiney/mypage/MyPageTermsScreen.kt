@@ -1,4 +1,4 @@
-package com.teamwiney.home
+package com.teamwiney.mypage
 
 import android.view.ViewGroup
 import android.webkit.WebView
@@ -10,17 +10,15 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.viewinterop.AndroidView
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun WebViewScreen(
+fun MyPageTermsScreen(
     appState: WineyAppState,
+    title: String = "",
     url: String = ""
 ) {
     Column(
@@ -31,12 +29,7 @@ fun WebViewScreen(
             .background(WineyTheme.colors.background_1)
     ) {
         TopBar(
-            annotatedContent = buildAnnotatedString {
-                append("와인 초보를 위한 ")
-                withStyle(style = SpanStyle(WineyTheme.colors.main_2)) {
-                    append("TIP")
-                }
-            },
+            content = title,
             leadingIconOnClick = {
                 appState.navController.navigateUp()
             }
@@ -59,7 +52,8 @@ fun WebViewContent(
                 webViewClient = WebViewClient()
                 loadUrl(url)
             }
-        }, update = {
+        },
+        update = {
             it.loadUrl(url)
         }
     )

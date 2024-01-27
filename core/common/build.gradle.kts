@@ -1,8 +1,14 @@
+import java.util.Properties
+
 plugins {
     with(Plugins) {
         id(ANDROID_LIBRARY)
         id(JETBRAINS_KOTLIN_ANDROID)
     }
+}
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -11,6 +17,12 @@ android {
 
     defaultConfig {
         minSdk = 24
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            properties["base.url"] as String
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

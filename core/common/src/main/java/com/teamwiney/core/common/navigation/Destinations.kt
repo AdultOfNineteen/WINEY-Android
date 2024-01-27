@@ -9,6 +9,7 @@ object AuthDestinations {
         const val ROUTE = "loginRoute"
 
         const val LOGIN = "login"
+        const val TERMS_OF_USE = "loginTermsOfUse"
     }
 
     object SignUp {
@@ -27,7 +28,7 @@ object HomeDestinations {
     const val HOME = "home"
     const val WINE_DETAIL = "detail"
     const val WINE_TIP = "wineTip"
-    const val WINE_TIP_DETAIL = "wineTIpDetail"
+    const val WINE_TIP_DETAIL = "wineTipDetail"
 
     object Analysis {
         const val ROUTE = "analysis"
@@ -74,4 +75,7 @@ object MyPageDestinations {
     const val ACCOUNT = "account"
     const val WITHDRAWAL_REASON_SELECT = "withdrawal_reason_select"
     const val WITHDRAWAL_CONFIRM = "withdrawal_confirm"
+
+    const val TERMS_OF_USE = "termsOfUse"
+    const val PRIVACY_POLICY = "privacyPolicy"
 }
