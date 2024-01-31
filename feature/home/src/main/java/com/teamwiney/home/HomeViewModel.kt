@@ -73,6 +73,15 @@ class HomeViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     updateState(
                         currentState.copy(
+                            /* 와인카드 종류 테스트
+                            recommendWines = listOf(
+                                RecommendWine(0L, "와인", "나라", "ROSE", listOf("품종"), 10000),
+                                RecommendWine(1L, "와인", "나라", "RED", listOf("품종"), 10000),
+                                RecommendWine(2L, "와인", "나라", "WHITE", listOf("품종"), 10000),
+                                RecommendWine(3L, "와인", "나라", "SPARKL", listOf("품종"), 10000),
+                                RecommendWine(4L, "와인", "나라", "PORT", listOf("품종"), 10000),
+                                RecommendWine(5L, "와인", "나라", "ETC", listOf("품종"), 10000)
+                            ) */
                             recommendWines = it.data.result.map { wine ->
                                 wine.toDomain()
                             }

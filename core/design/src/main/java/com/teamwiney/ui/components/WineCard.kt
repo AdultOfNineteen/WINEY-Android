@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -95,7 +94,7 @@ fun WineCard(
             Color(0xFFC9A4A1),
             listOf(Color(0xFFAA678F), Color(0xFFD29263)),
             Color(0xFFBA7A71),
-            Color(0xFF8F6C64)
+            Color(0xFF3F3F3F).copy(alpha = 0.4f)
         )
         "SPARKL" -> CardProperties(
             color,
@@ -124,9 +123,7 @@ fun WineCard(
     }
 
     Box(
-        modifier = Modifier
-            .height(IntrinsicSize.Max)
-            .aspectRatio(0.72f),
+        modifier = Modifier.height(IntrinsicSize.Max),
         contentAlignment = Alignment.TopCenter
     ) {
         CardSurface(
@@ -168,13 +165,13 @@ private fun WineCardCircle(
             .height(271.dp)
     ) {
         drawCircle(
-            brush = Brush.verticalGradient(gradientCircleColor),
+            brush = Brush.verticalGradient(gradientCircleColor.map { it.copy(alpha = 0.7f )}),
             radius = 79.dp.toPx(),
             center = Offset(x = 79.dp.toPx(), y = 79.dp.toPx())
         )
 
         drawCircle(
-            color = circleColor,
+            color = circleColor.copy(0.7f),
             radius = 89.dp.toPx(),
             center = Offset(x = 139.dp.toPx(), y = 182.dp.toPx())
         )
@@ -192,8 +189,9 @@ private fun CardSurface(
         modifier = modifier
             .fillMaxSize()
             .blur(30.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 10.dp)
             .background(
-                color = cardColor,
+                color = cardColor.copy(alpha = 0.8f),
                 shape = RoundedCornerShape(5.dp)
             ),
         contentAlignment = Alignment.Center
@@ -219,7 +217,6 @@ private fun WineCardContent(
 ) {
     Column(
         modifier = modifier
-            .aspectRatio(0.72f)
             .padding(start = 26.dp, end = 26.dp, top = 27.dp, bottom = 50.dp)
     ) {
         Row(
