@@ -27,7 +27,7 @@ fun RecommendWine.toDomain() = RecommendWine(
 )
 
 private fun convertTypeToColor(type: String): String {
-    return when(type) {
+    return when (type) {
         "SPARKLING" -> "SPARKL"
         "FORTIFIED" -> "PORT"
         "OTHER" -> "ETC"

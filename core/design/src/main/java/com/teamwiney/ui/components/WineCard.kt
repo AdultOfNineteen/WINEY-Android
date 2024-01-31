@@ -94,7 +94,7 @@ fun WineCard(
             Color(0xFFC9A4A1),
             listOf(Color(0xFFAA678F), Color(0xFFD29263)),
             Color(0xFFBA7A71),
-            Color(0xFF8F6C64)
+            Color(0xFF3F3F3F).copy(alpha = 0.4f)
         )
         "SPARKL" -> CardProperties(
             color,
@@ -122,9 +122,8 @@ fun WineCard(
         )
     }
 
-
     Box(
-        modifier = Modifier.size(width = 282.dp, height = 392.dp),
+        modifier = Modifier.height(IntrinsicSize.Max),
         contentAlignment = Alignment.TopCenter
     ) {
         CardSurface(
@@ -136,11 +135,7 @@ fun WineCard(
 
         Surface(
             modifier = modifier,
-            shape = TicketShape(
-                circleRadius = 38.dp,
-                circleOffsetY = 10.dp,
-                cornerSize = CornerSize(5.dp)
-            ),
+            shape = RoundedCornerShape(5.dp),
             color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
             border = BorderStroke(1.dp, borderColor)
         ) {
@@ -170,13 +165,13 @@ private fun WineCardCircle(
             .height(271.dp)
     ) {
         drawCircle(
-            brush = Brush.verticalGradient(gradientCircleColor),
+            brush = Brush.verticalGradient(gradientCircleColor.map { it.copy(alpha = 0.7f )}),
             radius = 79.dp.toPx(),
             center = Offset(x = 79.dp.toPx(), y = 79.dp.toPx())
         )
 
         drawCircle(
-            color = circleColor,
+            color = circleColor.copy(0.7f),
             radius = 89.dp.toPx(),
             center = Offset(x = 139.dp.toPx(), y = 182.dp.toPx())
         )
@@ -190,41 +185,21 @@ private fun CardSurface(
     gradientCircleColor: List<Color>,
     circleColor: Color
 ) {
-    Box(modifier = modifier) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-                    .blur(30.dp)
-                    .offset(y = 10.dp)
-                    .padding(horizontal = 10.dp)
-                    .background(
-                        color = cardColor,
-                        shape = RoundedCornerShape(5.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                WineCardCircle(
-                    gradientCircleColor = gradientCircleColor,
-                    circleColor = circleColor
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
-                    .padding(horizontal = 18.dp)
-                    .background(
-                        color = cardColor,
-                        shape = RoundedCornerShape(
-                            topStart = 0.dp, topEnd = 0.dp,
-                            bottomStart = 10.dp, bottomEnd = 10.dp
-                        )
-                    )
-            )
-        }
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .blur(30.dp)
+            .padding(start = 10.dp, end = 10.dp, top = 10.dp)
+            .background(
+                color = cardColor.copy(alpha = 0.8f),
+                shape = RoundedCornerShape(5.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        WineCardCircle(
+            gradientCircleColor = gradientCircleColor,
+            circleColor = circleColor
+        )
     }
 }
 
@@ -242,7 +217,6 @@ private fun WineCardContent(
 ) {
     Column(
         modifier = modifier
-            .size(width = 282.dp, height = 382.dp)
             .padding(start = 26.dp, end = 26.dp, top = 27.dp, bottom = 50.dp)
     ) {
         Row(
