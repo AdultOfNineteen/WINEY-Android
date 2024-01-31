@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -122,9 +123,10 @@ fun WineCard(
         )
     }
 
-
     Box(
-        modifier = Modifier.size(width = 282.dp, height = 392.dp),
+        modifier = Modifier
+            .height(IntrinsicSize.Max)
+            .aspectRatio(0.72f),
         contentAlignment = Alignment.TopCenter
     ) {
         CardSurface(
@@ -136,11 +138,7 @@ fun WineCard(
 
         Surface(
             modifier = modifier,
-            shape = TicketShape(
-                circleRadius = 38.dp,
-                circleOffsetY = 10.dp,
-                cornerSize = CornerSize(5.dp)
-            ),
+            shape = RoundedCornerShape(5.dp),
             color = WineyTheme.colors.gray_50.copy(alpha = 0.1f),
             border = BorderStroke(1.dp, borderColor)
         ) {
@@ -190,41 +188,20 @@ private fun CardSurface(
     gradientCircleColor: List<Color>,
     circleColor: Color
 ) {
-    Box(modifier = modifier) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
-                    .blur(30.dp)
-                    .offset(y = 10.dp)
-                    .padding(horizontal = 10.dp)
-                    .background(
-                        color = cardColor,
-                        shape = RoundedCornerShape(5.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                WineCardCircle(
-                    gradientCircleColor = gradientCircleColor,
-                    circleColor = circleColor
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
-                    .padding(horizontal = 18.dp)
-                    .background(
-                        color = cardColor,
-                        shape = RoundedCornerShape(
-                            topStart = 0.dp, topEnd = 0.dp,
-                            bottomStart = 10.dp, bottomEnd = 10.dp
-                        )
-                    )
-            )
-        }
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .blur(30.dp)
+            .background(
+                color = cardColor,
+                shape = RoundedCornerShape(5.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        WineCardCircle(
+            gradientCircleColor = gradientCircleColor,
+            circleColor = circleColor
+        )
     }
 }
 
@@ -242,7 +219,7 @@ private fun WineCardContent(
 ) {
     Column(
         modifier = modifier
-            .size(width = 282.dp, height = 382.dp)
+            .aspectRatio(0.72f)
             .padding(start = 26.dp, end = 26.dp, top = 27.dp, bottom = 50.dp)
     ) {
         Row(
