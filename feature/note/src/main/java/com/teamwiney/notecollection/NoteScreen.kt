@@ -180,7 +180,6 @@ fun NoteScreen(
             }
         }
 
-
         FloatingActionButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
