@@ -33,7 +33,7 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WineMemo(noteDetail: TastingNoteDetail) {
 
-    Column() {
+    Column {
         Text(
             text = "Feature",
             style = WineyTheme.typography.display2,
@@ -83,7 +83,7 @@ fun WineMemo(noteDetail: TastingNoteDetail) {
                 )
         ) {
             Text(
-                text = noteDetail.memo,
+                text = noteDetail.memo.ifEmpty { "입력한 내용이 없어요!" },
                 modifier = Modifier.padding(14.dp),
                 style = WineyTheme.typography.captionM1,
                 color = WineyTheme.colors.gray_50
