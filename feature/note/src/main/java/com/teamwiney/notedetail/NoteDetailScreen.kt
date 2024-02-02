@@ -37,7 +37,7 @@ import com.teamwiney.notedetail.component.WineSmellFeature
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TopBar
-import com.teamwiney.ui.components.detail.TitleAndDescription
+import com.teamwiney.ui.components.detail.NoteTitleAndDescription
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -134,7 +134,9 @@ fun NoteDetailScreen(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
 
-                TitleAndDescription(
+                NoteTitleAndDescription(
+                    id = uiState.noteDetail.noteId,
+                    date = uiState.noteDetail.noteDate,
                     type = uiState.noteDetail.wineType,
                     name = uiState.noteDetail.wineName
                 )
@@ -146,10 +148,15 @@ fun NoteDetailScreen(
 
                 WineOrigin(uiState.noteDetail)
 
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
+
                 WineSmellFeature(uiState.noteDetail)
 
                 HeightSpacerWithLine(
-                    modifier = Modifier.padding(vertical = 20.dp),
+                    modifier = Modifier.padding(top = 38.dp, bottom = 30.dp),
                     color = WineyTheme.colors.gray_900
                 )
 
