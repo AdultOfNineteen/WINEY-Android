@@ -111,10 +111,11 @@ fun ScoreHorizontalBar(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
         var barWidth by remember { mutableStateOf(0.dp) }
+
         val density = LocalDensity.current
 
         Row(
-            modifier = Modifier.width(maxOf(barWidth + 8.dp, (12.5 * label.length).dp)),
+            modifier = Modifier.width(maxOf(barWidth + 8.dp, (15 * label.length).dp)),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
