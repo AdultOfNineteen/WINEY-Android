@@ -124,9 +124,7 @@ fun NoteWineInfoVintageAndPriceScreen(
             }
         }
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
+            modifier = Modifier.weight(1f).fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -202,7 +200,7 @@ fun NoteWineInfoVintageAndPriceScreen(
         }
 
         Row(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp, bottom = 40.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Box(
@@ -236,9 +234,7 @@ fun NoteWineInfoVintageAndPriceScreen(
 
             WButton(
                 text = "다음",
-                modifier = Modifier
-                    .weight(3f)
-                    .padding(bottom = 40.dp),
+                modifier = Modifier.weight(3f),
                 enableBackgroundColor = WineyTheme.colors.main_2,
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,
