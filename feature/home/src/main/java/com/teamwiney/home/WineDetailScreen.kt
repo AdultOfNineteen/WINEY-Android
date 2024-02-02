@@ -43,8 +43,8 @@ import com.teamwiney.ui.components.TasteScoreHorizontalBar
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WineBadge
 import com.teamwiney.ui.components.detail.DetailPageIndicator
-import com.teamwiney.ui.components.detail.TitleAndDescription
 import com.teamwiney.ui.components.detail.WineInfoBarGraph
+import com.teamwiney.ui.components.detail.WineTitleAndDescription
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -92,7 +92,7 @@ fun WineDetailScreen(
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            TitleAndDescription(
+            WineTitleAndDescription(
                 type = uiState.wineDetail.type,
                 name = uiState.wineDetail.name
             )
