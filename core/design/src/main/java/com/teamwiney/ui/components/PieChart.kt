@@ -67,8 +67,8 @@ fun PieChart(
             val height = size.height / 2
 
             val radius = width / 2.5f
-            val strokeWidth = radius * .4f
-            val gapAngle = 3f // Arc 사이의 간격 각도
+            val strokeWidth = radius * .5f
+            val gapAngle = 4f // Arc 사이의 간격 각도
 
             var startAngle = -90f
 
@@ -78,6 +78,8 @@ fun PieChart(
                 val sweepAngle = chartData.value.asAngle
 
                 val textMeasureResult = textMeasureResults[index]
+
+                val arcSize = width - strokeWidth
 
                 if (index == 0) {
                     // 첫 번째 Arc일 때 바깥쪽만 두꺼워지도록 Stroke의 두께를 조절
@@ -89,9 +91,9 @@ fun PieChart(
                             max((animatedAngle - startAngle), 0f)
                         ),
                         useCenter = false,
-                        topLeft = Offset(width / 1.75f, height / 1.75f),
-                        size = Size(width - strokeWidth, width - strokeWidth),
-                        style = Stroke(strokeWidth * 1.2f)
+                        topLeft = Offset(width - arcSize / 2f, height - arcSize / 2f),
+                        size = Size(arcSize, arcSize),
+                        style = Stroke(strokeWidth * 1.3f)
                     )
                 } else {
                     drawArc(
@@ -99,8 +101,8 @@ fun PieChart(
                         startAngle = startAngle,
                         sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle - startAngle), 0f)),
                         useCenter = false,
-                        topLeft = Offset(width / 1.75f, height / 1.75f),
-                        size = Size(width - strokeWidth, width - strokeWidth),
+                        topLeft = Offset(width - arcSize / 2f, height - arcSize / 2f),
+                        size = Size(arcSize, arcSize),
                         style = Stroke(strokeWidth)
                     )
                 }
@@ -118,7 +120,7 @@ fun PieChart(
                     textMeasureResult = textMeasureResult,
                     startAngle = startAngle,
                     sweepAngle = sweepAngle,
-                    chartRadius = width,
+                    chartRadius = width.toFloat(),
                     color = chartData.color
                 )
 
