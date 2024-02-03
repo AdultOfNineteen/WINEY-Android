@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.wine
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
@@ -33,7 +33,7 @@ class WineDataSourceImpl @Inject constructor(
         page: Int,
         size: Int,
         content: String
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>> = flow {
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<SearchWine>>>>> = flow {
         emit(wineService.searchWines(page, size, content))
     }.flowOn(ioDispatcher)
 

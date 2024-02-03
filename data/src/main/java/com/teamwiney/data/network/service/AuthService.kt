@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.service
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
@@ -43,42 +43,42 @@ interface AuthService {
     suspend fun socialLogin(
         @Path("social") social: SocialType,
         @Body socialLoginRequest: SocialLoginRequest
-    ): ApiResult<ResponseWrapper<SocialLogin>>
+    ): ApiResult<CommonResponse<SocialLogin>>
 
     /** 액세스토큰 재발급 API **/
     @POST("/refresh")
-    suspend fun updateToken(): Response<ResponseWrapper<AccessToken>>
+    suspend fun updateToken(): Response<CommonResponse<AccessToken>>
 
     /** 인증번호 전송 API */
     @POST("/users/{userId}/phone/code/send")
     suspend fun sendAuthCodeMessage(
         @Path("userId") userId: String,
         @Body phoneNumberRequest: PhoneNumberRequest
-    ): ApiResult<ResponseWrapper<AuthenticationMessageCode>>
+    ): ApiResult<CommonResponse<AuthenticationMessageCode>>
 
     /** 인증번호 검사 API */
     @POST("/users/{userId}/phone/code/verify")
     suspend fun verifyAuthCodeMessage(
         @Path("userId") userId: String,
         @Body phoneNumberWithVerificationCodeRequest: PhoneNumberWithVerificationCodeRequest
-    ): ApiResult<ResponseWrapper<VerifyAuthenticationMessage>>
+    ): ApiResult<CommonResponse<VerifyAuthenticationMessage>>
 
     /** 취향 설정 API */
     @PATCH("/users/{userId}/preferences")
     suspend fun setPreferences(
         @Path("userId") userId: String,
         @Body preferences: SetPreferencesRequest
-    ): ApiResult<ResponseWrapper<SetPreferences>>
+    ): ApiResult<CommonResponse<SetPreferences>>
 
     /** 유저 상태 정보 조회 API */
     @GET("/info")
-    suspend fun getUserInfo(): ApiResult<ResponseWrapper<UserInfo>>
+    suspend fun getUserInfo(): ApiResult<CommonResponse<UserInfo>>
 
     /** 토큰 리프레쉬 API */
     @POST("/refresh")
     suspend fun refreshToken(
         @Header("X-REFRESH-TOKEN") refreshToken: String
-    ): ApiResult<ResponseWrapper<AccessToken>>
+    ): ApiResult<CommonResponse<AccessToken>>
 
     /** 접속 API */
     @GET("/connections")
@@ -95,7 +95,7 @@ interface AuthService {
     suspend fun deleteUser(
         @Path("userId") userId: String,
         @Query("reason") reason: String
-    ): ApiResult<ResponseWrapper<DeleteUser>>
+    ): ApiResult<CommonResponse<DeleteUser>>
 
     /** 로그아웃 API */
     @GET("/users/logout")

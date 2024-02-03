@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.service
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.UserWineGrade
 import com.teamwiney.data.network.model.response.WineGradeStandard
@@ -13,10 +13,10 @@ interface WineGradeService {
     @GET("/users/{userId}/wine-grade")
     suspend fun getUserWineGrade(
         @Path("userId") userId: String
-    ): ApiResult<ResponseWrapper<UserWineGrade>>
+    ): ApiResult<CommonResponse<UserWineGrade>>
 
     /** 와인 등급 기준 조회 API */
     @GET("/users/wine-grades")
-    suspend fun getWineGradeStandard(): ApiResult<ResponseWrapper<List<WineGradeStandard>>>
+    suspend fun getWineGradeStandard(): ApiResult<CommonResponse<List<WineGradeStandard>>>
 
 }

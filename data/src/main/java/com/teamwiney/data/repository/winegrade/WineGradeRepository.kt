@@ -1,6 +1,6 @@
 package com.teamwiney.data.repository.winegrade
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.UserWineGrade
 import com.teamwiney.data.network.model.response.WineGradeStandard
@@ -10,8 +10,8 @@ interface WineGradeRepository {
 
     fun getUserWineGrade(
         userId: String
-    ): Flow<ApiResult<ResponseWrapper<UserWineGrade>>>
+    ): Flow<ApiResult<CommonResponse<UserWineGrade>>>
 
-    fun getWineGradeStandard(): Flow<ApiResult<ResponseWrapper<List<WineGradeStandard>>>>
+    fun getWineGradeStandard(): Flow<ApiResult<CommonResponse<List<WineGradeStandard>>>>
 
 }

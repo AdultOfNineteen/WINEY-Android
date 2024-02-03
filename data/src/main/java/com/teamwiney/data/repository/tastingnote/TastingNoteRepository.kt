@@ -1,7 +1,7 @@
 package com.teamwiney.data.repository.tastingnote
 
 import android.net.Uri
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TastingNoteRepository {
 
-    fun getTasteAnalysis(): Flow<ApiResult<ResponseWrapper<TasteAnalysis>>>
+    fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>>
 
     fun getTastingNotes(
         page: Int,
@@ -23,18 +23,18 @@ interface TastingNoteRepository {
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int?
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNotesCount(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int?
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
-    fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
+    fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>>
 
-    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
+    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
 
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 
@@ -55,5 +55,5 @@ interface TastingNoteRepository {
         buyAgain: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
-    ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 }

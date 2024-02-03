@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.tastingnote
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
@@ -14,7 +14,7 @@ import okhttp3.RequestBody
 
 interface TastingNoteDataSource {
 
-    fun getTasteAnalysis(): Flow<ApiResult<ResponseWrapper<TasteAnalysis>>>
+    fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>>
 
     fun getTastingNotes(
         page: Int,
@@ -23,15 +23,15 @@ interface TastingNoteDataSource {
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int?
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>>
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
-    fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>>
+    fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>>
 
-    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>>
-    fun deleteTastingNote(noteId: Int): Flow<ApiResult<ResponseWrapper<String>>>
+    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
+    fun deleteTastingNote(noteId: Int): Flow<ApiResult<CommonResponse<String>>>
 
     fun postTastingNote(
         request: RequestBody,
         multipartFiles: List<MultipartBody.Part>,
-    ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>>
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 }

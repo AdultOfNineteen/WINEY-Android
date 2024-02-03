@@ -1,12 +1,13 @@
 package com.teamwiney.data.network.service
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteExists
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import okhttp3.MultipartBody
@@ -21,9 +22,13 @@ import retrofit2.http.Query
 
 interface TastingNoteService {
 
+    /** 재구매 의사 유무 확인 API */
+    @GET("/tasting-notes/check")
+    suspend fun checkTastingNotes(): ApiResult<CommonResponse<TastingNoteExists>>
+
     /** 내 취향 분석 API */
     @GET("/tasting-notes/taste-analysis")
-    suspend fun getTasteAnalysis(): ApiResult<ResponseWrapper<TasteAnalysis>>
+    suspend fun getTasteAnalysis(): ApiResult<CommonResponse<TasteAnalysis>>
 
     /** 테이스팅 노트 조회 API */
     @GET("/tasting-notes")
@@ -34,17 +39,17 @@ interface TastingNoteService {
         @Query("countries") countries: List<String>,
         @Query("wineTypes") wineTypes: List<String>,
         @Query("buyAgain") buyAgain: Int?
-    ): ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>
+    ): ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>
 
     /** 테이스팅 노트 필터 목록 조회 API */
     @GET("/tasting-notes/filter")
-    suspend fun getTastingNoteFilters(): ApiResult<ResponseWrapper<TastingNoteFilters>>
+    suspend fun getTastingNoteFilters(): ApiResult<CommonResponse<TastingNoteFilters>>
 
     /** 테이스팅 노트 상세 조회 API */
     @GET("/tasting-notes/{noteId}")
     suspend fun getTastingNoteDetail(
         @Path("noteId") noteId: Int
-    ): ApiResult<ResponseWrapper<TastingNoteDetail>>
+    ): ApiResult<CommonResponse<TastingNoteDetail>>
 
     /** 테이스팅 노트 삭제 API */
     @DELETE("/tasting-notes/{noteId}")
@@ -58,5 +63,5 @@ interface TastingNoteService {
     suspend fun postTastingNote(
         @Part("request") request: RequestBody,
         @Part multipartFiles: List<MultipartBody.Part>,
-    ): ApiResult<ResponseWrapper<TastingNoteIdRes>>
+    ): ApiResult<CommonResponse<TastingNoteIdRes>>
 }
