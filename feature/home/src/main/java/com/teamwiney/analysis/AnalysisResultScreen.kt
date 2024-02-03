@@ -6,13 +6,16 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Icon
@@ -39,7 +42,6 @@ import com.teamwiney.analysis.component.pagercontent.WineTypeContent
 import com.teamwiney.analysis.component.pagercontent.WineVarietyContent
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
-import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -87,29 +89,36 @@ fun AnalysisResultScreen(
                 appState.navController.navigateUp()
             }
         )
-        HeightSpacer(height = 20.dp)
-        Text(
-            text = "이런 와인은 어때요?",
-            style = WineyTheme.typography.title2,
-            color = WineyTheme.colors.gray_50,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-        HeightSpacer(height = 39.dp)
-        Text(
-            text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendWineType}\"",
-            style = WineyTheme.typography.title2,
-            color = WineyTheme.colors.main_3,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        )
+
+        Spacer(modifier = Modifier.weight(4f))
+
+        Column(
+            modifier = Modifier.weight(20f),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "이런 와인은 어때요?",
+                style = WineyTheme.typography.title2,
+                color = WineyTheme.colors.gray_50,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+
+            Text(
+                text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendWineType}\"",
+                style = WineyTheme.typography.title2,
+                color = WineyTheme.colors.main_3,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            )
+        }
 
         VerticalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(76f),
             userScrollEnabled = true,
         ) { page ->
             val animatedProgress = remember { Animatable(0f) }
@@ -178,8 +187,9 @@ fun AnalysisResultScreen(
             },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(bottom = 30.dp)
-                .size(60.dp)
+                .padding(bottom = 40.dp)
+                .width(73.dp)
+                .height(17.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_vertical_pager_arrow),
