@@ -25,7 +25,7 @@
         android:name=".WineyApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustPan"
+        android:windowSoftInputMode="adjustResize"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Winey"
         tools:targetApi="31">
@@ -38,6 +38,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Winey">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

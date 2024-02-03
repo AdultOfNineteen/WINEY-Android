@@ -187,7 +187,8 @@ class NoteViewModel @Inject constructor(
         updateState(
             currentState.copy(
                 selectedTypeFilter = emptyList(),
-                selectedCountryFilter = emptyList()
+                selectedCountryFilter = emptyList(),
+                buyAgainSelected = false
             )
         )
         getTastingNotes()

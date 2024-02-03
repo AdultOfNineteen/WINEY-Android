@@ -14,6 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,6 +33,8 @@ fun NoteSortBottomSheet(
     onSelectSort: (String) -> Unit,
     applyFilter: () -> Unit
 ) {
+    var selectedSortType by remember { mutableStateOf(selectedSort) }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -58,6 +64,7 @@ fun NoteSortBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
+                        selectedSortType = sort
                         onSelectSort(sort)
                         applyFilter()
                     },
@@ -76,7 +83,7 @@ fun NoteSortBottomSheet(
                     )
                 )
 
-                if (selectedSort == sort) {
+                if (selectedSortType == sort) {
                     Icon(
                         modifier = Modifier.padding(end = 24.dp),
                         painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_arrow_down),

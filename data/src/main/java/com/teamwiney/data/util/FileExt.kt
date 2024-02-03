@@ -3,6 +3,8 @@ package com.teamwiney.data.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.webkit.MimeTypeMap
 import java.io.*
@@ -72,14 +74,25 @@ private fun resizeImage(image: Bitmap): Bitmap {
 fun resizeAndSaveImage(context: Context, originalFile: File): File {
     try {
         val bitmap = BitmapFactory.decodeFile(originalFile.absolutePath)
-        val resizedBitmap = resizeImage(bitmap)
+
+        val exif = ExifInterface(originalFile.absolutePath)
+        val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+
+        val matrix = Matrix()
+        when (rotation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+        }
+
+        val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         val outputFile = createFile(context)
         outputFile.createNewFile()
 
         val outputStream = FileOutputStream(outputFile)
 
-        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+        rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
         outputStream.flush()
         outputStream.close()
 
