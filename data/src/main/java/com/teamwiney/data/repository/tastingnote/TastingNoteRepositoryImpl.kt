@@ -2,7 +2,7 @@ package com.teamwiney.data.repository.tastingnote
 
 import android.content.Context
 import android.net.Uri
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSource
 import com.teamwiney.data.network.adapter.ApiResult
@@ -10,6 +10,7 @@ import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteExists
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import com.teamwiney.data.util.fileFromContentUri
@@ -30,8 +31,11 @@ class TastingNoteRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TastingNoteRepository {
 
-    override fun getTasteAnalysis(): Flow<ApiResult<ResponseWrapper<TasteAnalysis>>> =
+    override fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>> =
         tastingNoteDataSource.getTasteAnalysis()
+
+    override fun getCheckTastingNotes(): Flow<ApiResult<CommonResponse<TastingNoteExists>>> =
+        tastingNoteDataSource.getCheckTastingNotes()
 
     override fun getTastingNotes(
         page: Int,
@@ -40,7 +44,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int?
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
         tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain)
 
     override fun getTastingNotesCount(
@@ -48,13 +52,13 @@ class TastingNoteRepositoryImpl @Inject constructor(
         countries: List<String>,
         wineTypes: List<String>,
         buyAgain: Int?
-    ): Flow<ApiResult<ResponseWrapper<PagingResponse<List<TastingNote>>>>> =
+    ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
         tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain)
 
-    override fun getTastingNoteFilters(): Flow<ApiResult<ResponseWrapper<TastingNoteFilters>>> =
+    override fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>> =
         tastingNoteDataSource.getTastingNoteFilters()
 
-    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<ResponseWrapper<TastingNoteDetail>>> =
+    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
         tastingNoteDataSource.getTastingNoteDetail(noteId)
 
     override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =
@@ -77,7 +81,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         buyAgain: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
-    ): Flow<ApiResult<ResponseWrapper<TastingNoteIdRes>>> {
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
         val jsonObjectBuilder = JSONObject().apply {
             put("wineId", wineId)
             put("officialAlcohol", officialAlcohol)

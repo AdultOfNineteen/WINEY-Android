@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
  * @property message
  * @property result
  */
-open class ResponseWrapper<out T>(
+open class CommonResponse<out T>(
     @SerializedName("isSuccess")
     val isSuccess: Boolean = false,
     @SerializedName("code")

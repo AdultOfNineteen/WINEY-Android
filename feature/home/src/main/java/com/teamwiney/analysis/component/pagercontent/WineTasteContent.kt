@@ -1,9 +1,11 @@
 package com.teamwiney.analysis.component.pagercontent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -47,20 +49,24 @@ fun WineTasteContent(
                 textAlign = TextAlign.Center,
             )
         }
-        HeightSpacer(height = 40.dp)
 
-        RadarChart(
-            modifier = Modifier.fillMaxWidth(0.8f),
-            progress = progress,
-            data = listOf(
-                RadarData("당도", tastes.sweetness.toFloat()),
-                RadarData("여운", tastes.finish.toFloat()),
-                RadarData("알코올", tastes.alcohol.toFloat()),
-                RadarData("탄닌", tastes.tannin.toFloat()),
-                RadarData("바디", tastes.body.toFloat()),
-                RadarData("산도", tastes.acidity.toFloat())
+        Column(
+            modifier = Modifier.fillMaxHeight().weight(1f),
+            verticalArrangement = Arrangement.Center
+        ) {
+            RadarChart(
+                modifier = Modifier.fillMaxWidth(0.8f),
+                progress = progress,
+                data = listOf(
+                    RadarData("당도", tastes.sweetness.toFloat()),
+                    RadarData("여운", tastes.finish.toFloat()),
+                    RadarData("알코올", tastes.alcohol.toFloat()),
+                    RadarData("탄닌", tastes.tannin.toFloat()),
+                    RadarData("바디", tastes.body.toFloat()),
+                    RadarData("산도", tastes.acidity.toFloat())
+                )
             )
-        )
+        }
     }
 }
 

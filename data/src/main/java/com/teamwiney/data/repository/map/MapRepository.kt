@@ -1,6 +1,6 @@
 package com.teamwiney.data.repository.map
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.MapPosition
 import com.teamwiney.data.network.model.response.BookmarkResult
@@ -12,9 +12,9 @@ interface MapRepository {
     fun getWineShops(
         shopFilter: String,
         mapPosition: MapPosition
-    ): Flow<ApiResult<ResponseWrapper<List<WineShop>>>>
+    ): Flow<ApiResult<CommonResponse<List<WineShop>>>>
 
     fun postBookmark(
         shopId: Int
-    ): Flow<ApiResult<ResponseWrapper<BookmarkResult>>>
+    ): Flow<ApiResult<CommonResponse<BookmarkResult>>>
 }

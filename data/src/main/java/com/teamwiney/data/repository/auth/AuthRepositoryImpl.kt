@@ -1,6 +1,6 @@
 package com.teamwiney.data.repository.auth
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.network.adapter.ApiResult
@@ -48,10 +48,10 @@ class AuthRepositoryImpl @Inject constructor(
     override fun setPreferences(
         userId: String,
         request: SetPreferencesRequest
-    ): Flow<ApiResult<ResponseWrapper<SetPreferences>>> =
+    ): Flow<ApiResult<CommonResponse<SetPreferences>>> =
         authDataSource.setPreferences(userId, request)
 
-    override fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>> =
+    override fun refreshToken(refreshToken: String): Flow<ApiResult<CommonResponse<AccessToken>>> =
         authDataSource.refreshToken(refreshToken)
 
     override fun verifyAuthCodeMessage(

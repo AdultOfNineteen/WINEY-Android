@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.service
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.MapPosition
 import com.teamwiney.data.network.model.response.BookmarkResult
@@ -18,12 +18,12 @@ interface MapService {
     suspend fun getWineShops(
         @Query("shopFilter") shopFilter: String,
         @Body mapPosition: MapPosition
-    ): ApiResult<ResponseWrapper<List<WineShop>>>
+    ): ApiResult<CommonResponse<List<WineShop>>>
 
     /** 05-02 와인 상점 북마크 취소, 북마크 기능 */
     @POST("/shops/bookmark/{shopId}")
     suspend fun postBookmark(
         @Path("shopId") shopId: Int
-    ): ApiResult<ResponseWrapper<BookmarkResult>>
+    ): ApiResult<CommonResponse<BookmarkResult>>
 
 }

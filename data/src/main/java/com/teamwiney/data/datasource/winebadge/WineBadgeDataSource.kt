@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.winebadge
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.UserWineBadge
 import com.teamwiney.data.network.model.response.WineBadge
@@ -10,11 +10,11 @@ interface WineBadgeDataSource {
 
     fun getUserWineBadgeList(
         userId: Long
-    ): Flow<ApiResult<ResponseWrapper<UserWineBadge>>>
+    ): Flow<ApiResult<CommonResponse<UserWineBadge>>>
 
     fun getWineBadgeDetail(
         userId: Long,
         wineBadgeId: Long
-    ): Flow<ApiResult<ResponseWrapper<WineBadge>>>
+    ): Flow<ApiResult<CommonResponse<WineBadge>>>
 
 }

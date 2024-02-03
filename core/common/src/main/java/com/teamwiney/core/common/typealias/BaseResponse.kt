@@ -1,5 +1,5 @@
 package com.teamwiney.core.common.`typealias`
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 
-typealias BaseResponse = ResponseWrapper<String>
+typealias BaseResponse = CommonResponse<String>

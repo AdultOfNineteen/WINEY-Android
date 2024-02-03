@@ -1,6 +1,6 @@
 package com.teamwiney.data.network.service
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.RecommendWine
@@ -15,20 +15,20 @@ interface WineService {
 
     /** 추천 와인 API */
     @GET("/wines/recommend")
-    suspend fun getRecommendWines(): ApiResult<ResponseWrapper<List<RecommendWine>>>
+    suspend fun getRecommendWines(): ApiResult<CommonResponse<List<RecommendWine>>>
 
     /** 와인 상세정보 조회 API */
     @GET("/wines/{wineId}")
     suspend fun getWineDetail(
         @Path("wineId") wineId: Long
-    ): ApiResult<ResponseWrapper<Wine>>
+    ): ApiResult<CommonResponse<Wine>>
 
     /** 와인 팁 조회 API */
     @GET("/wine-tip")
     suspend fun getWineTips(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): ApiResult<ResponseWrapper<PagingResponse<List<WineTip>>>>
+    ): ApiResult<CommonResponse<PagingResponse<List<WineTip>>>>
 
 
     /** 와인 검색 API */
@@ -37,5 +37,5 @@ interface WineService {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("content") content: String
-    ): ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>
+    ): ApiResult<CommonResponse<PagingResponse<List<SearchWine>>>>
 }

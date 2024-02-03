@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,14 +38,13 @@ fun WineCountryContent(
     progress: Float,
     countries: List<Top3Country>
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         HeightSpacer(height = 33.dp)
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
+        Row {
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
@@ -61,54 +58,56 @@ fun WineCountryContent(
                 textAlign = TextAlign.Center,
             )
         }
-        HeightSpacer(height = 40.dp)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(horizontal = 54.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+
+        Column(
+            modifier = Modifier.fillMaxHeight().weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val total = countries.sumOf { it.count }
+            Row(
+                modifier = Modifier.height(IntrinsicSize.Min),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                val total = countries.sumOf { it.count }
 
-            countries.forEachIndexed { index, country ->
-                val labelColor = when (index) {
-                    0 -> WineyTheme.colors.gray_50
-                    1 -> WineyTheme.colors.gray_700
-                    2 -> WineyTheme.colors.gray_900
-                    else -> WineyTheme.colors.gray_50
+                countries.forEachIndexed { index, country ->
+                    val labelColor = when (index) {
+                        0 -> WineyTheme.colors.gray_50
+                        1 -> WineyTheme.colors.gray_700
+                        2 -> WineyTheme.colors.gray_900
+                        else -> WineyTheme.colors.gray_50
+                    }
+
+                    WineAnalysisBottle(
+                        progress = progress,
+                        percentage = country.count / total.toFloat(),
+                        label = country.country,
+                        textColor = labelColor,
+                    )
+
+                    //if (index != 2) Spacer(modifier = Modifier.weight(0.2f))
                 }
-
-                WineAnalysisBottle(
-                    progress = progress,
-                    percentage = country.count / total.toFloat(),
-                    label = country.country,
-                    textColor = labelColor,
-                )
-
-                if (index != 2) Spacer(modifier = Modifier.weight(0.2f))
             }
         }
     }
 }
 
 @Composable
-private fun RowScope.WineAnalysisBottle(
+private fun WineAnalysisBottle(
     progress: Float = 1f,
-    percentage: Float = 0.6f, // 0.6f 가 100% 라고 가정
+    percentage: Float = 0.7f, // 0.7f 가 100% 라고 가정
     textColor: Color = WineyTheme.colors.gray_50,
     label: String
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
-            .weight(0.5f)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .fillMaxHeight()
+                .weight(0.45f)
                 .aspectRatio(0.25f),
         ) {
             Image(
@@ -123,7 +122,7 @@ private fun RowScope.WineAnalysisBottle(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .fillMaxHeight(percentage * progress)
+                    .fillMaxHeight(percentage * progress * 0.7f)
                     .clip(RoundedCornerShape(3.dp))
                     .padding(6.dp)
                     .background(

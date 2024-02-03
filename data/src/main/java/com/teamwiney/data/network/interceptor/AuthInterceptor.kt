@@ -2,7 +2,7 @@ package com.teamwiney.data.network.interceptor
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
 import com.teamwiney.data.BuildConfig
@@ -66,7 +66,7 @@ class AuthInterceptor @Inject constructor(
 private suspend fun updateToken(
     refreshToken: String,
     context: Context
-): retrofit2.Response<ResponseWrapper<AccessToken>> {
+): retrofit2.Response<CommonResponse<AccessToken>> {
     val retrofit = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

@@ -19,5 +19,5 @@ enum class WineSmell(val type: String, val value: String, val korName: String) {
     BREAD("OTHER", "BREAD", "빵"),
     RUBBER("OTHER", "RUBBER", "고무"),
     EARTASH("OTHER", "EARTHASH", "흙/재"),
-    MEDICINE("OTHER", "MEDICNE", "약품")
+    MEDICINE("OTHER", "MEDICINE", "약품")
 }

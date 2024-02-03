@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.wine
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.RecommendWine
@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface WineDataSource {
 
-    fun getRecommendWines(): Flow<ApiResult<ResponseWrapper<List<RecommendWine>>>>
+    fun getRecommendWines(): Flow<ApiResult<CommonResponse<List<RecommendWine>>>>
 
-    fun getWineDetail(wineId: Long): Flow<ApiResult<ResponseWrapper<Wine>>>
+    fun getWineDetail(wineId: Long): Flow<ApiResult<CommonResponse<Wine>>>
 
-    fun getWineTips(page: Int, size: Int): Flow<ApiResult<ResponseWrapper<PagingResponse<List<WineTip>>>>>
+    fun getWineTips(page: Int, size: Int): Flow<ApiResult<CommonResponse<PagingResponse<List<WineTip>>>>>
 
-    fun searchWines(page: Int, size: Int, content: String): Flow<ApiResult<ResponseWrapper<PagingResponse<List<SearchWine>>>>>
+    fun searchWines(page: Int, size: Int, content: String): Flow<ApiResult<CommonResponse<PagingResponse<List<SearchWine>>>>>
 }

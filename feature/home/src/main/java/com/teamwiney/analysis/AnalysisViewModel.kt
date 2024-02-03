@@ -20,8 +20,38 @@ class AnalysisViewModel @Inject constructor(
     override fun reduceState(event: AnalysisContract.Event) {
         viewModelScope.launch {
             when (event) {
-                AnalysisContract.Event.GetTastAnalysis -> {
+                AnalysisContract.Event.GetTasteAnalysis -> {
                     getTasteAnalysis()
+                }
+            }
+        }
+    }
+
+    fun checkTastingNotes() = viewModelScope.launch {
+        tastingNoteRepository.getCheckTastingNotes().onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.result
+                    if (result.tastingNoteExists) {
+                        postEffect(AnalysisContract.Effect.ScrollToPage(1))
+                    } else {
+                        postEffect(
+                            AnalysisContract.Effect.ShowBottomSheet(
+                                AnalysisContract.BottomSheet.NoTastingNotes
+                            )
+                        )
+                    }
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(AnalysisContract.Effect.ShowSnackBar(it.message))
+                }
+
+                is ApiResult.NetworkError -> {
+                    postEffect(AnalysisContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }
         }

@@ -66,7 +66,7 @@ fun PieChart(
             val width = size.width / 2
             val height = size.height / 2
 
-            val radius = width / 3f
+            val radius = width / 2.5f
             val strokeWidth = radius * .4f
             val gapAngle = 3f // Arc 사이의 간격 각도
 
@@ -84,7 +84,10 @@ fun PieChart(
                     drawArc(
                         color = chartData.color,
                         startAngle = startAngle,
-                        sweepAngle = min((sweepAngle - gapAngle), max((animatedAngle - startAngle), 0f)),
+                        sweepAngle = min(
+                            if (data.lastIndex == 0) sweepAngle else (sweepAngle - gapAngle),
+                            max((animatedAngle - startAngle), 0f)
+                        ),
                         useCenter = false,
                         topLeft = Offset(width / 1.75f, height / 1.75f),
                         size = Size(width - strokeWidth, width - strokeWidth),
@@ -105,8 +108,8 @@ fun PieChart(
                 drawCircle(
                     color = backgroundColor,
                     center = Offset(
-                        x = size.width / 2,
-                        y = size.height / 2
+                        x = size.width / 2f,
+                        y = size.height / 2f
                     ),
                     radius = (width - strokeWidth) / 2.35f
                 )
@@ -175,17 +178,9 @@ fun PreviewPieChart() {
                     ChartData(
                         label = "화이트",
                         color = WineyTheme.colors.main_1,
-                        value = 60f,
+                        value = 100f,
                         textStyle = WineyTheme.typography.title2.copy(
                             color = WineyTheme.colors.gray_50
-                        )
-                    ),
-                    ChartData(
-                        label = "레드",
-                        color = WineyTheme.colors.gray_800,
-                        value = 40f,
-                        textStyle = WineyTheme.typography.bodyB2.copy(
-                            color = WineyTheme.colors.gray_800
                         )
                     )
                 )

@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.auth
 
-import com.teamwiney.core.common.base.ResponseWrapper
+import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.network.adapter.ApiResult
@@ -29,26 +29,26 @@ interface AuthDataSource {
     fun socialLogin(
         socialType: SocialType,
         socialLoginRequest: SocialLoginRequest
-    ): Flow<ApiResult<ResponseWrapper<SocialLogin>>>
+    ): Flow<ApiResult<CommonResponse<SocialLogin>>>
 
     fun sendAuthCodeMessage(
         userId: String,
         request: PhoneNumberRequest
-    ): Flow<ApiResult<ResponseWrapper<AuthenticationMessageCode>>>
+    ): Flow<ApiResult<CommonResponse<AuthenticationMessageCode>>>
 
     fun verifyAuthCodeMessage(
         userId: String,
         request: PhoneNumberWithVerificationCodeRequest
-    ): Flow<ApiResult<ResponseWrapper<VerifyAuthenticationMessage>>>
+    ): Flow<ApiResult<CommonResponse<VerifyAuthenticationMessage>>>
 
     fun setPreferences(
         userId: String,
         preferences: SetPreferencesRequest
-    ): Flow<ApiResult<ResponseWrapper<SetPreferences>>>
+    ): Flow<ApiResult<CommonResponse<SetPreferences>>>
 
-    fun refreshToken(refreshToken: String): Flow<ApiResult<ResponseWrapper<AccessToken>>>
+    fun refreshToken(refreshToken: String): Flow<ApiResult<CommonResponse<AccessToken>>>
 
-    fun getUserInfo(): Flow<ApiResult<ResponseWrapper<UserInfo>>>
+    fun getUserInfo(): Flow<ApiResult<CommonResponse<UserInfo>>>
 
     fun getConnections(): Flow<ApiResult<BaseResponse>>
 
@@ -57,7 +57,7 @@ interface AuthDataSource {
     fun deleteUser(
         userId: String,
         reason: String
-    ): Flow<ApiResult<ResponseWrapper<DeleteUser>>>
+    ): Flow<ApiResult<CommonResponse<DeleteUser>>>
 
     fun logOut(deviceId: String): Flow<ApiResult<BaseResponse>>
 
