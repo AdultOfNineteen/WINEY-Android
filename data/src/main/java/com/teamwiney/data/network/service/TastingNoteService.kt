@@ -24,7 +24,7 @@ interface TastingNoteService {
 
     /** 재구매 의사 유무 확인 API */
     @GET("/tasting-notes/check")
-    suspend fun checkTastingNotes(): ApiResult<CommonResponse<TastingNoteExists>>
+    suspend fun getCheckTastingNotes(): ApiResult<CommonResponse<TastingNoteExists>>
 
     /** 내 취향 분석 API */
     @GET("/tasting-notes/taste-analysis")

@@ -57,7 +57,7 @@ fun AnalysisResultScreen(
     val pagerState = rememberPagerState(pageCount = { 6 })
 
     LaunchedEffect(true) {
-        viewModel.processEvent(AnalysisContract.Event.GetTastAnalysis)
+        viewModel.processEvent(AnalysisContract.Event.GetTasteAnalysis)
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is AnalysisContract.Effect.NavigateTo -> {
@@ -67,6 +67,8 @@ fun AnalysisResultScreen(
                 is AnalysisContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
                 }
+
+                else -> { }
             }
         }
     }

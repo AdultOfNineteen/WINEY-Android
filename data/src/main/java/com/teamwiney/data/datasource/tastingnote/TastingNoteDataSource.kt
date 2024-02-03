@@ -6,6 +6,7 @@ import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteExists
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,8 @@ import okhttp3.RequestBody
 interface TastingNoteDataSource {
 
     fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>>
+
+    fun getCheckTastingNotes(): Flow<ApiResult<CommonResponse<TastingNoteExists>>>
 
     fun getTastingNotes(
         page: Int,

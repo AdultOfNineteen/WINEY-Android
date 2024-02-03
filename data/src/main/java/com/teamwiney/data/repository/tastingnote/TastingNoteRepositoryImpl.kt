@@ -10,6 +10,7 @@ import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteExists
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import com.teamwiney.data.util.fileFromContentUri
@@ -32,6 +33,9 @@ class TastingNoteRepositoryImpl @Inject constructor(
 
     override fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>> =
         tastingNoteDataSource.getTasteAnalysis()
+
+    override fun getCheckTastingNotes(): Flow<ApiResult<CommonResponse<TastingNoteExists>>> =
+        tastingNoteDataSource.getCheckTastingNotes()
 
     override fun getTastingNotes(
         page: Int,

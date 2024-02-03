@@ -1,5 +1,6 @@
 package com.teamwiney.analysis
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -18,9 +19,12 @@ fun NavGraphBuilder.analysisGraph(
         composable(
             route = HomeDestinations.Analysis.START,
         ) {
+            val viewModel: AnalysisViewModel = hiltViewModel()
+
             AnalysisScreen(
                 appState = appState,
-                bottomSheetState = bottomSheetState
+                bottomSheetState = bottomSheetState,
+                viewModel = viewModel
             )
         }
 

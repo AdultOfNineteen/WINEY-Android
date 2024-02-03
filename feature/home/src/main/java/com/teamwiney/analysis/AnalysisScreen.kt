@@ -34,20 +34,53 @@ import com.teamwiney.analysis.component.AnalysisStartButton
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
-import com.teamwiney.core.common.`typealias`.SheetContent
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun AnalysisScreen(
     appState: WineyAppState,
-    bottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState,
+    viewModel: AnalysisViewModel
 ) {
+    val effectFlow = viewModel.effect
+
+    val pagerState = rememberPagerState(pageCount = { 2 })
+
+    LaunchedEffect(true) {
+        effectFlow.collectLatest { effect ->
+            when (effect) {
+                is AnalysisContract.Effect.NavigateTo -> {
+                    appState.navigate(effect.destination, effect.navOptions)
+                }
+
+                is AnalysisContract.Effect.ShowSnackBar -> {
+                    appState.showSnackbar(effect.message)
+                }
+
+                is AnalysisContract.Effect.ShowBottomSheet -> {
+                    bottomSheetState.showBottomSheet {
+                        if (effect.bottomSheet is AnalysisContract.BottomSheet.NoTastingNotes) {
+                            AnalysisBottomContent {
+                                bottomSheetState.hideBottomSheet()
+                                appState.navController.navigateUp()
+                            }
+                        }
+                    }
+                }
+
+                is AnalysisContract.Effect.ScrollToPage -> {
+                    pagerState.animateScrollToPage(effect.page)
+                }
+            }
+        }
+    }
+
     BackHandler {
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
@@ -55,8 +88,6 @@ fun AnalysisScreen(
             appState.navController.navigateUp()
         }
     }
-
-    val pagerState = rememberPagerState(pageCount = { 2 })
 
     Column(
         modifier = Modifier
@@ -78,13 +109,7 @@ fun AnalysisScreen(
         ) {
             when (it) {
                 0 -> AnalysisStartContent(
-                    bottomSheetState::showBottomSheet,
-                    hideBottomSheet = {
-                        bottomSheetState.hideBottomSheet()
-                        appState.scope.launch {
-                            pagerState.animateScrollToPage(1)
-                        }
-                    }
+                    viewModel::checkTastingNotes
                 )
 
                 1 -> AnalysisProgressContent {
@@ -148,8 +173,7 @@ private fun AnalysisProgressContent(
 
 @Composable
 private fun AnalysisStartContent(
-    showBottomSheet: (SheetContent) -> Unit = {},
-    hideBottomSheet: () -> Unit
+    checkTastingNotes: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeightSpacer(height = 20.dp)
@@ -202,11 +226,7 @@ private fun AnalysisStartContent(
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 92.dp)
             ) {
-                showBottomSheet {
-                    AnalysisBottomContent {
-                        hideBottomSheet()
-                    }
-                }
+                checkTastingNotes()
             }
         }
     }

@@ -8,6 +8,7 @@ import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
+import com.teamwiney.data.network.model.response.TastingNoteExists
 import com.teamwiney.data.network.model.response.TastingNoteFilters
 import com.teamwiney.data.network.model.response.TastingNoteIdRes
 import com.teamwiney.data.network.service.TastingNoteService
@@ -27,6 +28,11 @@ class TastingNoteDataSourceImpl @Inject constructor(
     override fun getTasteAnalysis(): Flow<ApiResult<CommonResponse<TasteAnalysis>>> =
         flow {
             emit(tastingNoteService.getTasteAnalysis())
+        }.flowOn(ioDispatcher)
+
+    override fun getCheckTastingNotes(): Flow<ApiResult<CommonResponse<TastingNoteExists>>> =
+        flow {
+            emit(tastingNoteService.getCheckTastingNotes())
         }.flowOn(ioDispatcher)
 
     override fun getTastingNotes(
