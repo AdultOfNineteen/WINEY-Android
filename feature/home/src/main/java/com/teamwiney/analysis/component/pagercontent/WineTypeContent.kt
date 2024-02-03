@@ -1,11 +1,13 @@
 package com.teamwiney.analysis.component.pagercontent
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,7 +27,10 @@ fun WineTypeContent(
     totalWineCount: Int,
     buyAgainCount: Int,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         HeightSpacer(height = 22.dp)
         Text(
@@ -45,38 +50,43 @@ fun WineTypeContent(
                 .padding(horizontal = 56.dp),
             textAlign = TextAlign.Center
         )
-        HeightSpacer(height = 70.dp)
 
-        val chartData = types.mapIndexed { index, type ->
-            val labelColor = when (index) {
-                0 -> WineyTheme.colors.main_1
-                1 -> WineyTheme.colors.gray_800
-                else -> WineyTheme.colors.gray_900
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Center
+        ) {
+            val chartData = types.mapIndexed { index, type ->
+                val labelColor = when (index) {
+                    0 -> WineyTheme.colors.main_1
+                    1 -> WineyTheme.colors.gray_800
+                    else -> WineyTheme.colors.gray_900
+                }
+
+                val labelStyle = when (index) {
+                    0 -> WineyTheme.typography.title2.copy(
+                        color = WineyTheme.colors.gray_50
+                    )
+                    1 -> WineyTheme.typography.bodyB2.copy(
+                        color = WineyTheme.colors.gray_800
+                    )
+                    else -> WineyTheme.typography.captionB1.copy(
+                        color = WineyTheme.colors.gray_900
+                    )
+                }
+
+                ChartData(
+                    label = type.type,
+                    color = labelColor,
+                    value = type.percent.toFloat(),
+                    textStyle = labelStyle
+                )
             }
 
-            val labelStyle = when (index) {
-                0 -> WineyTheme.typography.title2.copy(
-                    color = WineyTheme.colors.gray_50
-                )
-                1 -> WineyTheme.typography.bodyB2.copy(
-                    color = WineyTheme.colors.gray_800
-                )
-                else -> WineyTheme.typography.captionB1.copy(
-                    color = WineyTheme.colors.gray_900
-                )
-            }
-
-            ChartData(
-                label = type.type,
-                color = labelColor,
-                value = type.percent.toFloat(),
-                textStyle = labelStyle
+            PieChart(
+                modifier = Modifier.fillMaxSize(0.9f),
+                progress = progress,
+                data = chartData
             )
         }
-
-        PieChart(
-            progress = progress,
-            data = chartData
-        )
     }
 }

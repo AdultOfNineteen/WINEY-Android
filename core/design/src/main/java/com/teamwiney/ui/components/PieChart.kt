@@ -66,7 +66,7 @@ fun PieChart(
             val width = size.width / 2
             val height = size.height / 2
 
-            val radius = width / 3f
+            val radius = width / 2.5f
             val strokeWidth = radius * .4f
             val gapAngle = 3f // Arc 사이의 간격 각도
 
@@ -108,8 +108,8 @@ fun PieChart(
                 drawCircle(
                     color = backgroundColor,
                     center = Offset(
-                        x = size.width / 2,
-                        y = size.height / 2
+                        x = size.width / 2f,
+                        y = size.height / 2f
                     ),
                     radius = (width - strokeWidth) / 2.35f
                 )
