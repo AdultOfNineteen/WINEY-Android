@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,7 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
-import com.teamwiney.data.network.model.response.WineCountry
+import com.teamwiney.data.network.model.response.WineCountryResponse
 import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.notecollection.components.NoteSelectedFilterChip
 import com.teamwiney.ui.components.HeightSpacerWithLine
@@ -267,7 +269,15 @@ private fun TypeFilterItems(
                                 color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
                             )
                         ) {
-                            append(if (it.count.toInt() > 100) "100+" else it.count)
+                            append(
+                                if (it.count > 100) {
+                                    "100+"
+                                } else if (it.count != 0) {
+                                    "${it.count}"
+                                } else {
+                                    ""
+                                }
+                            )
                         }
                     },
                     color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
@@ -293,9 +303,9 @@ private fun TypeFilterItems(
 
 @Composable
 private fun CountryFilterItems(
-    filterGroup: List<WineCountry>,
-    selectedFilter: List<WineCountry>,
-    onSelectFilter: (WineCountry) -> Unit,
+    filterGroup: List<WineCountryResponse>,
+    selectedFilter: List<WineCountryResponse>,
+    onSelectFilter: (WineCountryResponse) -> Unit,
 ) {
     Column {
         Text(
@@ -321,7 +331,15 @@ private fun CountryFilterItems(
                                 color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_500
                             )
                         ) {
-                            append(if (it.count.toInt() > 100) "100+" else it.count)
+                            append(
+                                if (it.count > 100) {
+                                    "100+"
+                                } else if (it.count != 0) {
+                                    "${it.count}"
+                                } else {
+                                    ""
+                                }
+                            )
                         }
                     },
                     color = if (isEnable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700,
@@ -342,5 +360,7 @@ private fun CountryFilterItems(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(28.dp))
     }
 }

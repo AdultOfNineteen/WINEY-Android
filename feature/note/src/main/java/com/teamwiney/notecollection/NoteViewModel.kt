@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.data.network.adapter.ApiResult
-import com.teamwiney.data.network.model.response.WineCountry
+import com.teamwiney.data.network.model.response.WineCountryResponse
 import com.teamwiney.data.network.model.response.WineTypeResponse
 import com.teamwiney.data.pagingsource.TastingNotesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
@@ -103,10 +103,20 @@ class NoteViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
+                    val result = it.data.result
+
+                    val currentTypeFilter = currentState.typeFilter
+                    val typeFilter = result.wineTypes
+                    typeFilter.forEach { type -> currentTypeFilter.find { it.type == type.type }?.count = type.count }
+
+                    val currentCountryFilter = currentState.countryFilter
+                    val countryFilter = result.countries
+                   countryFilter.forEach { country -> currentCountryFilter.find { it.country == country.country }?.count = country.count }
+
                     updateState(
                         currentState.copy(
-                            typeFilter = it.data.result.wineTypes,
-                            countryFilter = it.data.result.countries
+                            typeFilter = currentTypeFilter,
+                            countryFilter = currentCountryFilter
                         )
                     )
                     postEffect(NoteContract.Effect.NavigateTo(NoteDestinations.FILTER))
@@ -159,7 +169,7 @@ class NoteViewModel @Inject constructor(
         )
     }
 
-    fun updateSelectedCountryFilter(filterItem: WineCountry) = viewModelScope.launch {
+    fun updateSelectedCountryFilter(filterItem: WineCountryResponse) = viewModelScope.launch {
         val updatedSelectedFilter = currentState.selectedCountryFilter.toMutableSet()
 
         if (filterItem in updatedSelectedFilter) {

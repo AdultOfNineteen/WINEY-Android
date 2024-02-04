@@ -6,19 +6,19 @@ data class TastingNoteFilters(
     @SerializedName("wineTypes")
     val wineTypes: List<WineTypeResponse>,
     @SerializedName("countries")
-    val countries: List<WineCountry>
+    val countries: List<WineCountryResponse>
 )
 
 data class WineTypeResponse(
     @SerializedName("type")
     val type: String,
     @SerializedName("count")
-    val count: String
+    var count: Int
 )
 
-data class WineCountry(
+data class WineCountryResponse(
     @SerializedName("country")
     val country: String,
     @SerializedName("count")
-    val count: String
+    var count: Int
 )
