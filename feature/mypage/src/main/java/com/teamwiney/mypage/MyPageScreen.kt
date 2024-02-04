@@ -1,5 +1,7 @@
 package com.teamwiney.mypage
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.BorderStroke
@@ -134,7 +136,15 @@ fun MyPageScreen(
             HeightSpacer(height = 7.dp)
 
             MyProfileMenuItem(menu = "1:1 문의") {
+                val recipientEmail = "winey.official.kr@gmail.com"
 
+                val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$recipientEmail"))
+
+                try {
+                    context.startActivity(Intent.createChooser(emailIntent, "이메일 앱 선택"))
+                } catch (ex: android.content.ActivityNotFoundException) {
+                    appState.showSnackbar("이메일을 보낼 수 있는 앱이 설치되어 있지 않습니다.")
+                }
             }
             HeightSpacer(height = 5.dp)
             MyProfileMenuItem(menu = "FAQ") {
@@ -418,5 +428,19 @@ fun MyProfileAppVersionItem() {
                 color = WineyTheme.colors.gray_800
             )
         )
+    }
+}
+
+private fun sendEmail(
+    context: Context
+) {
+    val recipientEmail = "winey.official.kr@gmail.com"
+
+    val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$recipientEmail"))
+
+    try {
+        context.startActivity(Intent.createChooser(emailIntent, "이메일 앱 선택"))
+    } catch (ex: android.content.ActivityNotFoundException) {
+        // 이메일 앱이 설치되어 있지 않을 경우에 대한 예외 처리
     }
 }
