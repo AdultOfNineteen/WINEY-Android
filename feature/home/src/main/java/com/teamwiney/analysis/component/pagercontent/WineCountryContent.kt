@@ -81,11 +81,9 @@ fun WineCountryContent(
                     WineAnalysisBottle(
                         progress = progress,
                         percentage = country.count / total.toFloat(),
-                        label = country.country,
+                        label = "${country.country}(${country.count}회)",
                         textColor = labelColor,
                     )
-
-                    //if (index != 2) Spacer(modifier = Modifier.weight(0.2f))
                 }
             }
         }
