@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.CardProperties
 import com.teamwiney.ui.components.HeightSpacer
@@ -89,7 +90,7 @@ fun NoteWineCard(
             Color(0xFF4F5144)
         )
 
-        "PORT" -> CardProperties(
+        "FORTIFIED" -> CardProperties(
             color,
             R.drawable.ic_port_wine,
             Color(0xFFB09A86),
@@ -150,7 +151,7 @@ fun NoteWineCard(
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Text(
-                        text = wineName,
+                        text = convertToNoteType(wineName),
                         style = TextStyle(
                             fontFamily = Chaviera,
                             fontWeight = FontWeight.Normal,
