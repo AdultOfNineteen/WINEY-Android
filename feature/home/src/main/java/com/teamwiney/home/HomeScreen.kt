@@ -181,8 +181,7 @@ fun HomeWineTips(
         }
 
         LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(
                 count = wineTips.itemCount,
