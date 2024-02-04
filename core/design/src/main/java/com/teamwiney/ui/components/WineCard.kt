@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +23,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -64,7 +64,7 @@ data class CardProperties(
 @Composable
 fun WineCard(
     modifier: Modifier = Modifier,
-    onShowDetail: (Long) -> Unit,
+    onShowDetail: () -> Unit,
     color: String,
     name: String,
     origin: String,
@@ -94,12 +94,12 @@ fun WineCard(
             Color(0xFFC9A4A1),
             listOf(Color(0xFFAA678F), Color(0xFFD29263)),
             Color(0xFFBA7A71),
-            Color(0xFF3F3F3F).copy(alpha = 0.4f)
+            Color(0xFF8F6C64)
         )
         "SPARKL" -> CardProperties(
             color,
             R.drawable.ic_sparkl_wine,
-            Color(0xFFA78093),
+            Color(0xFFC1BA9E),
             listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
             Color(0xFF777151),
             Color(0xFF4F5144)
@@ -123,7 +123,11 @@ fun WineCard(
     }
 
     Box(
-        modifier = Modifier.height(IntrinsicSize.Max),
+        modifier = Modifier
+            .height(IntrinsicSize.Max)
+            .clickable {
+                onShowDetail()
+            },
         contentAlignment = Alignment.TopCenter
     ) {
         CardSurface(
@@ -141,7 +145,6 @@ fun WineCard(
         ) {
             WineCardContent(
                 modifier = modifier,
-                onShowDetail = onShowDetail,
                 wineColor = wineName,
                 borderColor = borderColor,
                 image = image,
@@ -188,10 +191,10 @@ private fun CardSurface(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .blur(30.dp)
+            .blur(60.dp)
             .padding(start = 10.dp, end = 10.dp, top = 10.dp)
             .background(
-                color = cardColor.copy(alpha = 0.8f),
+                color = cardColor.copy(alpha = 0.5f),
                 shape = RoundedCornerShape(5.dp)
             ),
         contentAlignment = Alignment.Center
@@ -206,7 +209,6 @@ private fun CardSurface(
 @Composable
 private fun WineCardContent(
     modifier: Modifier = Modifier,
-    onShowDetail: (Long) -> Unit,
     wineColor: String,
     borderColor: Color,
     @DrawableRes image: Int,
@@ -224,38 +226,22 @@ private fun WineCardContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    modifier = Modifier.height(68.dp),
-                    text = wineColor,
-                    style = WineyTheme.typography.display1,
-                    color = WineyTheme.colors.gray_50
-                )
+            Text(
+                modifier = Modifier.height(68.dp),
+                text = wineColor,
+                style = WineyTheme.typography.display1,
+                color = WineyTheme.colors.gray_50
+            )
 
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_thismooth),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-            }
-
-            IconButton(
-                onClick = { onShowDetail(0L) },
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_right),
+                contentDescription = "IC_ARROW_RIGHT",
+                tint = Color.White,
                 modifier = Modifier
                     .size(24.dp)
                     .offset(x = 5.dp)
-                    .align(Alignment.CenterVertically),
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_right),
-                    contentDescription = "IC_ARROW_RIGHT",
-                    tint = Color.White
-                )
-            }
+                    .align(Alignment.CenterVertically)
+            )
         }
 
         Text(
