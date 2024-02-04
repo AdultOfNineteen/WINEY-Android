@@ -57,6 +57,7 @@ fun WebViewContent(
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
                 webViewClient = WebViewClient()
+                settings.javaScriptEnabled = true
                 loadUrl(url)
             }
         }, update = {
