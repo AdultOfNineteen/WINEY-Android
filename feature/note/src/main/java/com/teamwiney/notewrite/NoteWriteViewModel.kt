@@ -127,7 +127,7 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(hintPopupOpen = false))
     }
 
-    fun updateOfficialAlcohol(officialAlcohol: Double) = viewModelScope.launch {
+    fun updateOfficialAlcohol(officialAlcohol: Double?) = viewModelScope.launch {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(officialAlcohol = officialAlcohol)))
     }
 

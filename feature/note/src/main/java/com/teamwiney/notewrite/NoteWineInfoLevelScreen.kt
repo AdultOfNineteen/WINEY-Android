@@ -177,7 +177,7 @@ fun NoteWineInfoLevelScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     NumberPicker(
-                        value = uiState.wineNote.officialAlcohol.toInt(),
+                        value = uiState.wineNote.officialAlcohol?.toInt() ?: 0,
                         onValueChange = {
                             viewModel.updateOfficialAlcohol(it.toDouble())
                         },
@@ -214,6 +214,7 @@ fun NoteWineInfoLevelScreen(
                         text = "건너뛰기",
                         enableBackgroundColor = WineyTheme.colors.gray_950,
                         onClick = {
+                            viewModel.updateOfficialAlcohol(null)
                             appState.navController.navigate(NoteDestinations.Write.INFO_VINTAGE_AND_PRICE)
                         }
                     )

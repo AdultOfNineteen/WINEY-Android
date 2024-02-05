@@ -43,7 +43,7 @@ interface TastingNoteRepository {
 
     fun postTastingNote(
         wineId: Long,
-        officialAlcohol: Double,
+        officialAlcohol: Double?,
         alcohol: Int,
         color: String,
         sweetness: Int,

@@ -7,8 +7,6 @@ import androidx.paging.PagingData
 import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiState
-import com.teamwiney.core.common.model.WineCountry
-import com.teamwiney.core.common.model.WineType
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.WineCountryResponse
 import com.teamwiney.data.network.model.response.WineTypeResponse
@@ -33,9 +31,9 @@ class NoteContract {
         val sortItems: List<String> = listOf("최신순", "평점순"),
         val selectedSort: Int = 0,
         val buyAgainSelected: Boolean = false,
-        val typeFilter: List<WineTypeResponse> = WineType.values().map { WineTypeResponse(it.korType, 0) },
+        val typeFilter: List<WineTypeResponse> = emptyList(),
         val selectedTypeFilter: List<WineTypeResponse> = emptyList(),
-        val countryFilter: List<WineCountryResponse> = WineCountry.values().map { WineCountryResponse(it.name, 0) },
+        val countryFilter: List<WineCountryResponse> = emptyList(),
         val selectedCountryFilter: List<WineCountryResponse> = emptyList(),
     ) : UiState
 
