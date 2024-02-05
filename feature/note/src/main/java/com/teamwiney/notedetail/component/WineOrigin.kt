@@ -101,7 +101,7 @@ fun WineOrigin(
                 )
 
                 Text(
-                    text = "${wine.officialAlcohol}%",
+                    text = wine.officialAlcohol?.let { "$it%" } ?: "입력한 정보가 없어요",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
@@ -115,7 +115,7 @@ fun WineOrigin(
                 )
 
                 Text(
-                    text = "${wine.price}",
+                    text = if (wine.price == 0) "입력한 정보가 없어요" else "${wine.price}",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
@@ -129,7 +129,7 @@ fun WineOrigin(
                 )
 
                 Text(
-                    text = "입력한 정보가 없어요",
+                    text = wine.vintage?.let { "$it" } ?: "입력한 정보가 없어요",
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
