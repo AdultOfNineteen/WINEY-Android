@@ -14,7 +14,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,14 +50,22 @@ fun NoteWineInfoFlavorScreen(
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+        val scrollState = rememberScrollState()
+        var selectedItemCount by remember { mutableIntStateOf(0) }
+
+        LaunchedEffect(selectedItemCount) {
+            scrollState.scrollTo(999999)
+        }
+
         TopBar(content = "와인 정보 입력") {
             appState.navController.navigateUp()
         }
+
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 20.dp)
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
+                .weight(1f),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -75,6 +87,7 @@ fun NoteWineInfoFlavorScreen(
                 )
             }
             HeightSpacer(30.dp)
+
             WineTasteSlider(
                 score = uiState.wineNote.sweetness,
                 onValueChange = { viewModel.updateSweetness(it) },
@@ -82,6 +95,7 @@ fun NoteWineInfoFlavorScreen(
                 subTitle = "단맛의 정도",
             )
             HeightSpacer(30.dp)
+
             if (uiState.wineNote.sweetness > 0) {
                 WineTasteSlider(
                     score = uiState.wineNote.acidity,
@@ -90,7 +104,10 @@ fun NoteWineInfoFlavorScreen(
                     subTitle = "신맛의 정도"
                 )
                 HeightSpacer(30.dp)
+
+                selectedItemCount = 1
             }
+
             if (uiState.wineNote.acidity > 0) {
                 WineTasteSlider(
                     score = uiState.wineNote.body,
@@ -99,7 +116,10 @@ fun NoteWineInfoFlavorScreen(
                     subTitle = "농도와 질감의 정도"
                 )
                 HeightSpacer(30.dp)
+
+                selectedItemCount = 2
             }
+
             if (uiState.wineNote.body > 0) {
                 WineTasteSlider(
                     score = uiState.wineNote.tannin,
@@ -108,7 +128,10 @@ fun NoteWineInfoFlavorScreen(
                     subTitle = "떫고 씁쓸함의 정도"
                 )
                 HeightSpacer(30.dp)
+
+                selectedItemCount = 3
             }
+
             if (uiState.wineNote.tannin > 0) {
                 WineTasteSlider(
                     score = uiState.wineNote.alcohol,
@@ -117,7 +140,10 @@ fun NoteWineInfoFlavorScreen(
                     subTitle = "알코올 세기의 정도"
                 )
                 HeightSpacer(30.dp)
+
+                selectedItemCount = 4
             }
+
             if (uiState.wineNote.alcohol > 0) {
                 WineTasteSlider(
                     score = uiState.wineNote.finish,
@@ -126,6 +152,8 @@ fun NoteWineInfoFlavorScreen(
                     subTitle = "마신 후 맛과 항야 지속되는 정도"
                 )
                 HeightSpacer(30.dp)
+
+                selectedItemCount = 5
             }
         }
 

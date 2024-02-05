@@ -173,7 +173,8 @@ fun NoteWineInfoVintageAndPriceScreen(
             )
 
             WineInfoTextField(
-                value = uiState.wineNote.price, onValueChanged = { viewModel.updatePrice(it) },
+                value = uiState.wineNote.price,
+                onValueChanged = { viewModel.updatePrice(it) },
                 placeholderText = "ex) 30000",
                 trailingIcon = {
                     Text(
