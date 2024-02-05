@@ -82,41 +82,51 @@ fun NoteWineInfoFlavorScreen(
                 subTitle = "단맛의 정도",
             )
             HeightSpacer(30.dp)
-            WineTasteSlider(
-                score = uiState.wineNote.acidity,
-                onValueChange = { viewModel.updateAcidity(it) },
-                title = "산도",
-                subTitle = "신맛의 정도"
-            )
-            HeightSpacer(30.dp)
-            WineTasteSlider(
-                score = uiState.wineNote.body,
-                onValueChange = { viewModel.updateBody(it) },
-                title = "바디",
-                subTitle = "농도와 질감의 정도"
-            )
-            HeightSpacer(30.dp)
-            WineTasteSlider(
-                score = uiState.wineNote.tannin,
-                onValueChange = { viewModel.updateTannin(it) },
-                title = "탄닌",
-                subTitle = "떫고 씁쓸함의 정도"
-            )
-            HeightSpacer(30.dp)
-            WineTasteSlider(
-                score = uiState.wineNote.alcohol,
-                onValueChange = { viewModel.updateAlcohol(it) },
-                title = "알코올",
-                subTitle = "알코올 세기의 정도"
-            )
-            HeightSpacer(30.dp)
-            WineTasteSlider(
-                score = uiState.wineNote.finish,
-                onValueChange = { viewModel.updateFinish(it) },
-                title = "여운",
-                subTitle = "마신 후 맛과 항야 지속되는 정도"
-            )
-            HeightSpacer(30.dp)
+            if (uiState.wineNote.sweetness > 0) {
+                WineTasteSlider(
+                    score = uiState.wineNote.acidity,
+                    onValueChange = { viewModel.updateAcidity(it) },
+                    title = "산도",
+                    subTitle = "신맛의 정도"
+                )
+                HeightSpacer(30.dp)
+            }
+            if (uiState.wineNote.acidity > 0) {
+                WineTasteSlider(
+                    score = uiState.wineNote.body,
+                    onValueChange = { viewModel.updateBody(it) },
+                    title = "바디",
+                    subTitle = "농도와 질감의 정도"
+                )
+                HeightSpacer(30.dp)
+            }
+            if (uiState.wineNote.body > 0) {
+                WineTasteSlider(
+                    score = uiState.wineNote.tannin,
+                    onValueChange = { viewModel.updateTannin(it) },
+                    title = "탄닌",
+                    subTitle = "떫고 씁쓸함의 정도"
+                )
+                HeightSpacer(30.dp)
+            }
+            if (uiState.wineNote.tannin > 0) {
+                WineTasteSlider(
+                    score = uiState.wineNote.alcohol,
+                    onValueChange = { viewModel.updateAlcohol(it) },
+                    title = "알코올",
+                    subTitle = "알코올 세기의 정도"
+                )
+                HeightSpacer(30.dp)
+            }
+            if (uiState.wineNote.alcohol > 0) {
+                WineTasteSlider(
+                    score = uiState.wineNote.finish,
+                    onValueChange = { viewModel.updateFinish(it) },
+                    title = "여운",
+                    subTitle = "마신 후 맛과 항야 지속되는 정도"
+                )
+                HeightSpacer(30.dp)
+            }
         }
 
         Row(

@@ -104,19 +104,10 @@ class NoteViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     val result = it.data.result
-
-                    val currentTypeFilter = currentState.typeFilter
-                    val typeFilter = result.wineTypes
-                    typeFilter.forEach { type -> currentTypeFilter.find { it.type == type.type }?.count = type.count }
-
-                    val currentCountryFilter = currentState.countryFilter
-                    val countryFilter = result.countries
-                   countryFilter.forEach { country -> currentCountryFilter.find { it.country == country.country }?.count = country.count }
-
                     updateState(
                         currentState.copy(
-                            typeFilter = currentTypeFilter,
-                            countryFilter = currentCountryFilter
+                            typeFilter = result.wineTypes,
+                            countryFilter = result.countries
                         )
                     )
                     postEffect(NoteContract.Effect.NavigateTo(NoteDestinations.FILTER))
