@@ -11,6 +11,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,6 +44,7 @@ import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ColumnScope.WineShopDetail(
     wineShop: WineShop,
@@ -117,9 +120,10 @@ fun ColumnScope.WineShopDetail(
                     style = WineyTheme.typography.captionM1,
                     color = WineyTheme.colors.gray_700
                 )
-                Row(
+                FlowRow(
                     modifier = Modifier.padding(top = 14.dp),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     wineShop.shopMoods.forEach {
                         Text(
