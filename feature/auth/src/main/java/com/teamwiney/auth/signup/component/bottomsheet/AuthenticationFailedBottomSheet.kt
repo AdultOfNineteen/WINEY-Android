@@ -66,6 +66,6 @@ fun AuthenticationFailedBottomSheet(
                 onConfirm()
             }
         )
-        HeightSpacer(height = 20.dp)
+        HeightSpacer(height = 10.dp)
     }
 }

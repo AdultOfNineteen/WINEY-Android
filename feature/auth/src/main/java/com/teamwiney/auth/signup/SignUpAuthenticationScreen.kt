@@ -150,11 +150,11 @@ fun SignUpAuthenticationScreen(
                 color = WineyTheme.colors.gray_50,
                 style = WineyTheme.typography.title1
             )
-            HeightSpacer(height = 40.dp)
+            HeightSpacer(height = 54.dp)
             Text(
                 text = uiState.verifyNumberErrorText,
                 color = if (uiState.verifyNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
-                style = WineyTheme.typography.bodyB2
+                style = WineyTheme.typography.bodyM2
             )
             HeightSpacer(10.dp)
             WTextField(
@@ -208,7 +208,7 @@ fun SignUpAuthenticationScreen(
                     viewModel.processEvent(SignUpContract.Event.VerifyCode)
                 },
                 enabled = uiState.verifyNumber.length == VERIFY_NUMBER_LENGTH && !uiState.isTimeOut,
-                modifier = Modifier.padding(bottom = 20.dp)
+                modifier = Modifier.padding(bottom = 30.dp)
             )
         }
     }

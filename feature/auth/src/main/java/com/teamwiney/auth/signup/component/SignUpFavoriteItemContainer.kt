@@ -25,7 +25,10 @@ fun SignUpFavoriteItemContainer(
     nextStep: () -> Unit = {}
 ) {
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+
+    ) {
         Text(
             text = signUpFavoriteCategoryUiState.title,
             color = Color.White,
@@ -38,7 +41,10 @@ fun SignUpFavoriteItemContainer(
         )
         HeightSpacer(31.dp)
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(21.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(21.dp)
         ) {
             signUpFavoriteCategoryUiState.signUpFavoriteItem.forEach {
                 SignUpFavoriteItem(

@@ -52,7 +52,7 @@ fun SignUpCompleteScreen(
             WButton(
                 text = "시작하기",
                 onClick = onSignUpComplete,
-                modifier = Modifier.padding(bottom = 20.dp)
+                modifier = Modifier.padding(bottom = 30.dp)
             )
         }
     }

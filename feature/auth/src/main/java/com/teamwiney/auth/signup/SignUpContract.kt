@@ -28,7 +28,7 @@ class SignUpContract {
                 signUpFavoriteItem = listOf(
                     SignUpFavoriteItemUiState(
                         title = "밀크 초콜릿",
-                        description = "안달면 초콜릿을 왜 먹어?",
+                        description = "단 게 최고야!",
                         isSelected = false,
                         keyword = "MILK"
                     ),
@@ -67,8 +67,8 @@ class SignUpContract {
                         keyword = "PEACH"
                     ),
                     SignUpFavoriteItemUiState(
-                        title = "상큼한 과즙으로 깔끔하게",
-                        description = "파인애플, 수박, 멜론",
+                        title = "파인애플, 수박, 멜론",
+                        description = "상큼한 과즙과 깔끔함",
                         isSelected = false,
                         keyword = "PINEAPPLE"
                     )

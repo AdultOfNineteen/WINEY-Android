@@ -1,7 +1,6 @@
 package com.teamwiney.auth.signup
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -158,15 +157,14 @@ fun SignUpFavoriteTasteScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            AnimatedVisibility(
-                visible = pagerState.currentPage == uiState.favoriteTastes.size - 1 && uiState.favoriteTastes.sumOf { it.signUpFavoriteItem.count { it.isSelected } } == 3,
-                modifier = Modifier.padding(bottom = 20.dp)
-            ) {
+            if (pagerState.currentPage == uiState.favoriteTastes.size - 1) {
                 WButton(
-                    text = "시작하기",
+                    text = "확인",
+                    enabled = uiState.favoriteTastes[2].signUpFavoriteItem.find { it.isSelected } != null,
                     onClick = {
                         viewModel.processEvent(SignUpContract.Event.SetPreferences)
-                    }
+                    },
+                    modifier = Modifier.padding(bottom = 30.dp)
                 )
             }
         }

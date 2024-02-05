@@ -145,7 +145,7 @@ fun SignUpPhoneScreen(
             Text(
                 text = if (uiState.phoneNumberErrorState) "올바른 번호를 입력해주세요" else "전화번호",
                 color = if (uiState.phoneNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
-                style = WineyTheme.typography.bodyB2
+                style = WineyTheme.typography.bodyM2
             )
             HeightSpacer(10.dp)
             WTextField(
@@ -175,7 +175,7 @@ fun SignUpPhoneScreen(
                     viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
-                modifier = Modifier.padding(bottom = 20.dp)
+                modifier = Modifier.padding(bottom = 30.dp)
             )
         }
     }
