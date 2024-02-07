@@ -58,7 +58,10 @@ class SignUpViewModel @Inject constructor(
                 coffee = currentState.favoriteTastes[1].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
                 fruit = currentState.favoriteTastes[2].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
             )
-        ).collectLatest {
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
                     registerFcmToken()  // 회원가입 완료 후 FCM 토큰 등록

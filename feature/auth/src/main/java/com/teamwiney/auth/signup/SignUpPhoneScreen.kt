@@ -169,7 +169,7 @@ fun SignUpPhoneScreen(
                 text = "확인",
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.processEvent(SignUpContract.Event.SendAuthentication)
+                    if (!uiState.isLoading) viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 30.dp)
