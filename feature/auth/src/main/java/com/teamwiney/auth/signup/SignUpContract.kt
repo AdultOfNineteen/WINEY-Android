@@ -15,6 +15,7 @@ class SignUpContract {
         val isLoading: Boolean = false,
         val phoneNumber: String = "",
         val phoneNumberErrorState: Boolean = false,
+        val sendCount: Int = 0,
         val verifyNumber: String = "",
         val verifyNumberErrorState: Boolean = false,
         val verifyNumberErrorText: String = "인증번호",
@@ -97,7 +98,9 @@ class SignUpContract {
 
     sealed class BottomSheet : UiSheet {
         object SendMessage : BottomSheet()
+        object SendTimeExceededLimit : BottomSheet()
         object AuthenticationFailed : BottomSheet()
+        object AuthenticationTimeOut : BottomSheet()
         object ReturnToLogin : BottomSheet()
         class UserAlreadyExists(val message: String) : BottomSheet()
     }

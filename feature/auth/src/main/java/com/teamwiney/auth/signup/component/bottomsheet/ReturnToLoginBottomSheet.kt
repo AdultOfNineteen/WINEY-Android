@@ -71,7 +71,7 @@ fun ReturnToLoginBottomSheet(
             onConfirm = { onConfirm() },
             onCancel = { onCancel() }
         )
-        HeightSpacer(height = 20.dp)
+        HeightSpacer(height = 10.dp)
     }
 }
 

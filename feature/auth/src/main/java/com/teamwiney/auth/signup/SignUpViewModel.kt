@@ -58,7 +58,10 @@ class SignUpViewModel @Inject constructor(
                 coffee = currentState.favoriteTastes[1].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
                 fruit = currentState.favoriteTastes[2].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
             )
-        ).collectLatest {
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collectLatest {
+            updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
                     registerFcmToken()  // 회원가입 완료 후 FCM 토큰 등록
@@ -124,6 +127,16 @@ class SignUpViewModel @Inject constructor(
                             SignUpContract.BottomSheet.SendMessage
                         )
                     )
+
+                    val sendCount = currentState.sendCount + 1
+                    if (sendCount > 3) {
+                        postEffect(
+                            SignUpContract.Effect.ShowBottomSheet(
+                                SignUpContract.BottomSheet.SendTimeExceededLimit
+                            )
+                        )
+                    }
+                    updateState(currentState.copy(sendCount = sendCount))
                 }
 
                 is ApiResult.ApiError -> {
@@ -194,10 +207,11 @@ class SignUpViewModel @Inject constructor(
     fun updateIsTimeOut(isTimeOut: Boolean) = viewModelScope.launch {
         updateState(currentState.copy(isTimeOut = isTimeOut))
         if (isTimeOut) {
-            updateState(currentState.copy(
-                verifyNumberErrorText = "인증시간이 초과되었어요. 재전송 버튼을 눌러주세요.",
-                verifyNumberErrorState = true
-            ))
+            postEffect(
+                SignUpContract.Effect.ShowBottomSheet(
+                    SignUpContract.BottomSheet.AuthenticationTimeOut
+                )
+            )
         }
     }
 
@@ -206,6 +220,7 @@ class SignUpViewModel @Inject constructor(
             currentState.copy(
                 remainingTime = SignUpContract.VERIFY_NUMBER_TIMER,
                 isTimerRunning = true,
+                isTimeOut = false,
                 isLoading = false
             )
         )

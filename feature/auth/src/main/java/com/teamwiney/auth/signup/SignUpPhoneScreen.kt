@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
+import com.teamwiney.auth.signup.component.bottomsheet.SendTimeExceededLimitBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -76,6 +77,19 @@ fun SignUpPhoneScreen(
                                 ) {
                                     bottomSheetState.hideBottomSheet()
                                     appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                }
+                            }
+                        }
+
+                        is SignUpContract.BottomSheet.SendTimeExceededLimit -> {
+                            bottomSheetState.showBottomSheet {
+                                SendTimeExceededLimitBottomSheet {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -145,7 +159,7 @@ fun SignUpPhoneScreen(
             Text(
                 text = if (uiState.phoneNumberErrorState) "올바른 번호를 입력해주세요" else "전화번호",
                 color = if (uiState.phoneNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
-                style = WineyTheme.typography.bodyM2
+                style = if (uiState.phoneNumberErrorState) WineyTheme.typography.bodyM2 else WineyTheme.typography.bodyB2
             )
             HeightSpacer(10.dp)
             WTextField(
@@ -172,7 +186,7 @@ fun SignUpPhoneScreen(
                 text = "확인",
                 onClick = {
                     keyboardController?.hide()
-                    viewModel.processEvent(SignUpContract.Event.SendAuthentication)
+                    if (!uiState.isLoading) viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                 },
                 enabled = uiState.phoneNumber.length == PHONE_NUMBER_LENGTH,
                 modifier = Modifier.padding(bottom = 30.dp)
