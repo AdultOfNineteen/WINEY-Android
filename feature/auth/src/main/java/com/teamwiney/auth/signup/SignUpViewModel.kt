@@ -127,6 +127,16 @@ class SignUpViewModel @Inject constructor(
                             SignUpContract.BottomSheet.SendMessage
                         )
                     )
+
+                    val sendCount = currentState.sendCount + 1
+                    if (sendCount > 3) {
+                        postEffect(
+                            SignUpContract.Effect.ShowBottomSheet(
+                                SignUpContract.BottomSheet.SendTimeExceededLimit
+                            )
+                        )
+                    }
+                    updateState(currentState.copy(sendCount = sendCount))
                 }
 
                 is ApiResult.ApiError -> {
