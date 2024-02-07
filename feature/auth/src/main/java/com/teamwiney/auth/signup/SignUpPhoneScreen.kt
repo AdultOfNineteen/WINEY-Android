@@ -114,12 +114,6 @@ fun SignUpPhoneScreen(
         }
     }
 
-    LaunchedEffect(uiState.phoneNumber) {
-        viewModel.updatePhoneNumberErrorState(
-            !(uiState.phoneNumber.length == PHONE_NUMBER_LENGTH || uiState.phoneNumber.isEmpty())
-        )
-    }
-
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -145,7 +139,7 @@ fun SignUpPhoneScreen(
             Text(
                 text = if (uiState.phoneNumberErrorState) "올바른 번호를 입력해주세요" else "전화번호",
                 color = if (uiState.phoneNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
-                style = WineyTheme.typography.bodyM2
+                style = if (uiState.phoneNumberErrorState) WineyTheme.typography.bodyM2 else WineyTheme.typography.bodyB2
             )
             HeightSpacer(10.dp)
             WTextField(
@@ -154,6 +148,9 @@ fun SignUpPhoneScreen(
                     viewModel.updatePhoneNumber(it.filter { symbol ->
                         symbol.isDigit()
                     })
+                    viewModel.updatePhoneNumberErrorState(
+                        !(uiState.phoneNumber.length == PHONE_NUMBER_LENGTH || uiState.phoneNumber.isEmpty())
+                    )
                 },
                 placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
                 maxLength = PHONE_NUMBER_LENGTH,
