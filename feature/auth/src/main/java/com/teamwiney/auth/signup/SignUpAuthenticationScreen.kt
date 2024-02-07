@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationTimeOutBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
@@ -57,7 +58,21 @@ fun SignUpAuthenticationScreen(
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
         } else {
-            appState.navController.navigateUp()
+            bottomSheetState.showBottomSheet {
+                ReturnToLoginBottomSheet(
+                    onConfirm = {
+                        bottomSheetState.hideBottomSheet()
+                        appState.navigate(AuthDestinations.Login.ROUTE) {
+                            popUpTo(AuthDestinations.Login.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onCancel = {
+                        bottomSheetState.hideBottomSheet()
+                    }
+                )
+            }
         }
     }
 
@@ -93,7 +108,7 @@ fun SignUpAuthenticationScreen(
                                     onConfirm = {
                                         bottomSheetState.hideBottomSheet()
                                         appState.navigate(AuthDestinations.Login.ROUTE) {
-                                            popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            popUpTo(AuthDestinations.Login.ROUTE) {
                                                 inclusive = true
                                             }
                                         }
@@ -108,6 +123,14 @@ fun SignUpAuthenticationScreen(
                         is SignUpContract.BottomSheet.AuthenticationFailed -> {
                             bottomSheetState.showBottomSheet {
                                 AuthenticationFailedBottomSheet {
+                                    bottomSheetState.hideBottomSheet()
+                                }
+                            }
+                        }
+
+                        is SignUpContract.BottomSheet.AuthenticationTimeOut -> {
+                            bottomSheetState.showBottomSheet {
+                                AuthenticationTimeOutBottomSheet {
                                     bottomSheetState.hideBottomSheet()
                                 }
                             }
@@ -154,7 +177,7 @@ fun SignUpAuthenticationScreen(
             Text(
                 text = uiState.verifyNumberErrorText,
                 color = if (uiState.verifyNumberErrorState) WineyTheme.colors.error else WineyTheme.colors.gray_600,
-                style = WineyTheme.typography.bodyM2
+                style = if (uiState.verifyNumberErrorState) WineyTheme.typography.bodyM2 else WineyTheme.typography.bodyB2
             )
             HeightSpacer(10.dp)
             WTextField(
@@ -218,5 +241,5 @@ private fun Int.toMinuteSeconds(): String {
     val minutes = this / 60
     val remainingSeconds = this % 60
 
-    return if (this < 0) "-:--" else String.format("%d:%02d", minutes, remainingSeconds)
+    return if (this < 0) "0:00" else String.format("%d:%02d", minutes, remainingSeconds)
 }

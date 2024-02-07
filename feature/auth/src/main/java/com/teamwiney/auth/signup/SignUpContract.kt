@@ -98,6 +98,7 @@ class SignUpContract {
     sealed class BottomSheet : UiSheet {
         object SendMessage : BottomSheet()
         object AuthenticationFailed : BottomSheet()
+        object AuthenticationTimeOut : BottomSheet()
         object ReturnToLogin : BottomSheet()
         class UserAlreadyExists(val message: String) : BottomSheet()
     }

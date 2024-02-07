@@ -114,6 +114,12 @@ fun SignUpPhoneScreen(
         }
     }
 
+    LaunchedEffect(uiState.phoneNumber) {
+        viewModel.updatePhoneNumberErrorState(
+            !(uiState.phoneNumber.length == PHONE_NUMBER_LENGTH || uiState.phoneNumber.isEmpty())
+        )
+    }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -148,9 +154,6 @@ fun SignUpPhoneScreen(
                     viewModel.updatePhoneNumber(it.filter { symbol ->
                         symbol.isDigit()
                     })
-                    viewModel.updatePhoneNumberErrorState(
-                        !(uiState.phoneNumber.length == PHONE_NUMBER_LENGTH || uiState.phoneNumber.isEmpty())
-                    )
                 },
                 placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
                 maxLength = PHONE_NUMBER_LENGTH,

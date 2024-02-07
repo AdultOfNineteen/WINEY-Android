@@ -197,10 +197,11 @@ class SignUpViewModel @Inject constructor(
     fun updateIsTimeOut(isTimeOut: Boolean) = viewModelScope.launch {
         updateState(currentState.copy(isTimeOut = isTimeOut))
         if (isTimeOut) {
-            updateState(currentState.copy(
-                verifyNumberErrorText = "인증시간이 초과되었어요. 재전송 버튼을 눌러주세요.",
-                verifyNumberErrorState = true
-            ))
+            postEffect(
+                SignUpContract.Effect.ShowBottomSheet(
+                    SignUpContract.BottomSheet.AuthenticationTimeOut
+                )
+            )
         }
     }
 
@@ -209,6 +210,7 @@ class SignUpViewModel @Inject constructor(
             currentState.copy(
                 remainingTime = SignUpContract.VERIFY_NUMBER_TIMER,
                 isTimerRunning = true,
+                isTimeOut = false,
                 isLoading = false
             )
         )
