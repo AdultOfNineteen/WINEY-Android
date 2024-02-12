@@ -48,8 +48,8 @@ dependencies {
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
         implementation(ACCOMPANIST_SYSTEMUI)
-        implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
+        implementation(COMPOSE_COIL)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)

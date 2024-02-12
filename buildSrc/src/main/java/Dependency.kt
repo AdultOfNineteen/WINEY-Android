@@ -61,6 +61,5 @@ object Dependency {
     const val TEST_ESPRESSO_CORE =
         "androidx.test.espresso:espresso-core:${Versions.TEST_ESPRESSO_CORE}"
     const val JUNIT = "junit:junit:4.13.2"
-    const val COMPOSE_GLIDE = "com.github.bumptech.glide:compose:${Versions.COMPOSE_GLIDE}"
     const val COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:$${Versions.COMPOSE}"
 }

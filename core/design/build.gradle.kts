@@ -44,18 +44,16 @@ android {
 
 dependencies {
     with(Dependency) {
-        implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
         implementation(ACTIVITY_COMPOSE)
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL_COMPOSE)
+        implementation(COMPOSE_COIL)
         implementation(COMPOSE_MATERIAL3)
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING)
+        implementation(COMPOSE_UI_TEST_MANIFEST)
         implementation(COMPOSE_UI_PREVIEW)
+        implementation(platform(KOTLIN_BOM))
     }
-
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
