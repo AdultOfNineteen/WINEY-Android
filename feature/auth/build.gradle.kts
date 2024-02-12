@@ -77,8 +77,8 @@ dependencies {
         implementation(HILT_NAVIGATION_COMPOSE)
         implementation(LIFECYCLE_RUNTIME_COMPOSE)
         implementation(DATASTORE)
-        implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
-        implementation("com.google.android.gms:play-services-auth:20.7.0") // 구글 로그인
+        implementation(KAKAO_SDK_USER) // 카카오 로그인
+        implementation(PLAY_SERVICES_AUTH) // 구글 로그인
         androidTestImplementation(TEST_EXT_JUNIT)
         androidTestImplementation(TEST_ESPRESSO_CORE)
         androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)

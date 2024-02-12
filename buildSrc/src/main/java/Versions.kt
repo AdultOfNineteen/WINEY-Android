@@ -28,5 +28,12 @@ object Versions {
     const val JUNIT = "4.13.2"
     const val COMPOSE_GLIDE = "1.0.0-beta01"
     const val GOOGLE_SERVICES = "4.4.0"
+    const val PLAY_SERVICES_AUTH = "20.7.0"
+    const val PLAY_SERVICES_LOCATION = "21.1.0"
+    const val PLAY_SERVICES_MAPS = "18.2.0"
+    const val KAKAO_SDK_USER = "2.16.0"
+    const val NAVER_MAP_COMPOSE = "1.3.3"
+    const val NAVER_MAP_LOCATION = "16.0.0"
+    const val ACCOMPANIST_SYSTEMUI = "0.28.0"
     const val FIREBASE_CRASHLYTICS = "2.9.9"
 }

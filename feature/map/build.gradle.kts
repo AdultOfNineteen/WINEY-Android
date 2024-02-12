@@ -48,15 +48,14 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":data"))
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
-    implementation("io.github.fornewid:naver-map-location:16.0.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-
     with(Dependency) {
         kapt(HILT_ANDROID_COMPILER)
+        implementation(ACCOMPANIST_SYSTEMUI)
+        implementation(PLAY_SERVICES_AUTH)
+        implementation(PLAY_SERVICES_LOCATION)
+        implementation(PLAY_SERVICES_MAPS)
+        implementation(NAVER_MAP_COMPOSE)
+        implementation(NAVER_MAP_LOCATION)
         implementation(COMPOSE_GLIDE)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_MATERIAL)

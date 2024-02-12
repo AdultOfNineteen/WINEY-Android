@@ -20,15 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.notewrite.components.NoteBackgroundSurface
 import com.teamwiney.ui.components.HeightSpacer
@@ -39,11 +35,10 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview
 fun NoteWriteSelectWineScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
-    bottomSheetState: WineyBottomSheetState = rememberWineyBottomSheetState()
+    appState: WineyAppState,
+    viewModel: NoteWriteViewModel,
+    bottomSheetState: WineyBottomSheetState
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect

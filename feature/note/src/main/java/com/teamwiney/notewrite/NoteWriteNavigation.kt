@@ -93,14 +93,8 @@ fun NavGraphBuilder.noteWriteGraph(
         }
 
         composable(route = NoteDestinations.Write.INFO_STANDARD_SMELL) {
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = NoteDestinations.ROUTE
-            )
             NoteWineInfoStandardSmellScreen(
-                appState = appState,
-                viewModel = hiltViewModel(backStackEntry)
+                appState = appState
             )
         }
 

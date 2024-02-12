@@ -50,9 +50,17 @@ object Dependency {
         "com.squareup.okhttp3:logging-interceptor:${Versions.CHUCKER_LIBRARY}"
     const val CHUCKER_LIBRARY = "com.github.chuckerteam.chucker:library:${Versions.CHUCKER_LIBRARY}"
     const val KOTLIN_BOM = "org.jetbrains.kotlin:kotlin-bom:${Versions.KOTLIN_BOM}"
+    const val KAKAO_SDK_USER = "com.kakao.sdk:v2-user:${Versions.KAKAO_SDK_USER}"
+    const val ACCOMPANIST_SYSTEMUI = "com.google.accompanist:accompanist-systemuicontroller:${Versions.ACCOMPANIST_SYSTEMUI}"
+    const val NAVER_MAP_COMPOSE = "io.github.fornewid:naver-map-compose:${Versions.NAVER_MAP_COMPOSE}"
+    const val NAVER_MAP_LOCATION = "io.github.fornewid:naver-map-location:${Versions.NAVER_MAP_LOCATION}"
+    const val PLAY_SERVICES_AUTH = "com.google.android.gms:play-services-auth:${Versions.PLAY_SERVICES_AUTH}"
+    const val PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location:${Versions.PLAY_SERVICES_LOCATION}"
+    const val PLAY_SERVICES_MAPS = "com.google.android.gms:play-services-maps:${Versions.PLAY_SERVICES_MAPS}"
     const val TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.TEST_EXT_JUNIT}"
     const val TEST_ESPRESSO_CORE =
         "androidx.test.espresso:espresso-core:${Versions.TEST_ESPRESSO_CORE}"
     const val JUNIT = "junit:junit:4.13.2"
     const val COMPOSE_GLIDE = "com.github.bumptech.glide:compose:${Versions.COMPOSE_GLIDE}"
+    const val COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:$${Versions.COMPOSE}"
 }

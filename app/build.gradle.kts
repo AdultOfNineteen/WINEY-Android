@@ -102,9 +102,6 @@ dependencies {
     implementation(project(":feature:map"))
     implementation(project(":feature:note"))
     implementation(project(":feature:mypage"))
-    implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
 
     with(Dependency) {
         implementation(ANDROID_CORE_KTX)
@@ -120,6 +117,10 @@ dependencies {
         implementation(COROUTINES_ANDROID)
         implementation(KOTLIN_BOM)
         implementation(COMPOSE_BOM)
+
+        implementation(KAKAO_SDK_USER)
+        implementation(PLAY_SERVICES_AUTH)
+        implementation(NAVER_MAP_COMPOSE)
 
         implementation(platform(FIREBASE_BOM))
         implementation(FIREBASE_ANALYTICS)
