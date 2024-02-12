@@ -11,9 +11,7 @@ object Dependency {
     const val COMPOSE_PAGING_RUNTIME = "androidx.paging:paging-runtime:${Versions.PAGING3}"
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
     const val COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
-    const val COMPOSE_UI_TEST_JUNIT4 = "androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE}"
     const val COMPOSE_UI_PREVIEW = "androidx.compose.ui:ui-tooling-preview:${Versions.COMPOSE}"
-    const val COMPOSE_UI_TEST_MANIFEST = "androidx.compose.ui:ui-test-manifest:${Versions.COMPOSE}"
     const val NAVIGATION_COMPOSE =
         "androidx.navigation:navigation-compose:${Versions.NAVIGATION_COMPOSE}"
     const val COROUTINES_ANDROID =
@@ -57,9 +55,5 @@ object Dependency {
     const val PLAY_SERVICES_AUTH = "com.google.android.gms:play-services-auth:${Versions.PLAY_SERVICES_AUTH}"
     const val PLAY_SERVICES_LOCATION = "com.google.android.gms:play-services-location:${Versions.PLAY_SERVICES_LOCATION}"
     const val PLAY_SERVICES_MAPS = "com.google.android.gms:play-services-maps:${Versions.PLAY_SERVICES_MAPS}"
-    const val TEST_EXT_JUNIT = "androidx.test.ext:junit:${Versions.TEST_EXT_JUNIT}"
-    const val TEST_ESPRESSO_CORE =
-        "androidx.test.espresso:espresso-core:${Versions.TEST_ESPRESSO_CORE}"
-    const val JUNIT = "junit:junit:4.13.2"
     const val COMPOSE_UI_UTIL = "androidx.compose.ui:ui-util:$${Versions.COMPOSE}"
 }

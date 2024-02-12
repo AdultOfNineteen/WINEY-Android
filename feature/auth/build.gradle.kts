@@ -79,9 +79,5 @@ dependencies {
         implementation(DATASTORE)
         implementation(KAKAO_SDK_USER) // 카카오 로그인
         implementation(PLAY_SERVICES_AUTH) // 구글 로그인
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        testImplementation(JUNIT)
     }
 }

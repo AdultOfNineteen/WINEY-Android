@@ -54,8 +54,8 @@ android {
 dependencies {
     implementation(project(":core:design"))
 
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
     with(Dependency) {
+        implementation(NAVER_MAP_COMPOSE)
         implementation(ANDROID_CORE_KTX)
         implementation(COMPOSE_UI)
         implementation(NAVIGATION_COMPOSE)
@@ -64,8 +64,5 @@ dependencies {
         implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
         implementation(CONVERTER_GSON)
         implementation(DATASTORE)
-        testImplementation(JUNIT)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
     }
 }

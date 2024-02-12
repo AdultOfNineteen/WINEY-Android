@@ -133,14 +133,7 @@ dependencies {
         implementation(DATASTORE)
         kapt(DAGGER_COMPILER)
         kapt(HILT_ANDROID_COMPILER)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_BOM)
-
-        testImplementation(JUNIT)
 
         debugImplementation(COMPOSE_UI_TOOLING)
-        debugImplementation(COMPOSE_UI_TEST_MANIFEST)
     }
 }

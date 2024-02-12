@@ -52,7 +52,6 @@ dependencies {
         implementation(COMPOSE_MATERIAL)
         implementation(COMPOSE_UI)
         implementation(COMPOSE_UI_TOOLING)
-        implementation(COMPOSE_UI_TEST_MANIFEST)
         implementation(COMPOSE_UI_PREVIEW)
         implementation(platform(KOTLIN_BOM))
     }

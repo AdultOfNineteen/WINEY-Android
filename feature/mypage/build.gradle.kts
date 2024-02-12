@@ -63,9 +63,5 @@ dependencies {
         implementation(HILT_NAVIGATION_COMPOSE)
         implementation(LIFECYCLE_RUNTIME_COMPOSE)
         implementation(DATASTORE)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        testImplementation(JUNIT)
     }
 }

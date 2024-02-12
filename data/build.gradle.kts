@@ -56,13 +56,10 @@ dependencies {
         implementation(COMPOSE_PAGING)
         implementation(HILT_ANDROID)
         implementation(DATASTORE)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
         implementation(RETROFIT)
         implementation(CONVERTER_GSON)
         implementation(OKHTTP)
         implementation(LOGGING_INTERCEPTOR)
         implementation(CHUCKER_LIBRARY)
-        testImplementation(JUNIT)
     }
 }
