@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -96,7 +97,10 @@ fun LazyItemScope.WineShopItem(
             Text(
                 text = wineShop.address,
                 style = WineyTheme.typography.captionM1,
-                color = WineyTheme.colors.gray_700
+                color = WineyTheme.colors.gray_700,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
