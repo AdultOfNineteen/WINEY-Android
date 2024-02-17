@@ -1,0 +1,98 @@
+[versions]
+hilt_navigation_compose_version= "1.0.0-alpha02"
+agp_version = "8.0.2"
+browser_version = "1.7.0"
+kotlin_version = "1.8.10"
+android_core_ktx_version = "1.10.1"
+activity_compose_version = "1.7.2"
+tools_build_gradle_version = "8.0.2"
+compose_coil_version = "2.2.2"
+compose_bom_version = "2023.06.01"
+firebase_bom_version = "32.7.0"
+lifecycle_version = "2.6.1"
+navigation_compose_version = "2.6.0"
+coroutines_android_version = "1.7.3"
+material_version = "1.3.1"
+material3_version = "1.2.0-alpha04"
+paging3_version = "3.2.1"
+compose_version = "1.4.3"
+appcompat_version = "1.6.1"
+kotlin_bom_version = "1.8.0"
+hilt_version = "2.47"
+datastore_version = "1.0.0"
+retrofit2_version = "2.9.0"
+okhttp3_version = "5.0.0-alpha.11"
+chucker_library_version = "4.0.0"
+play_services_version = "4.4.0"
+play_services_auth_version = "20.7.0"
+play_services_location_version = "21.1.0"
+play_services_maps_version = "18.2.0"
+naver_map_compose_version = "1.3.3"
+naver_map_location_version = "16.0.0"
+accompanist_systemui_version = "0.28.0"
+kakao_sdk_user_version = "2.16.0"
+firebase_crashlytics_version = "2.9.9"
+
+[libraries]
+android_core_ktx = { module = "androidx.core:core-ktx", version.ref = "android_core_ktx_version" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
+activity_compose = { module = "androidx.activity:activity-compose", version.ref = "activity_compose_version" }
+browser = { module = "androidx.browser:browser", version.ref = "browser_version" }
+compose_bom = { module = "androidx.compose:compose-bom", version.ref = "compose_bom_version" }
+compose_coil = { module = "io.coil-kt:coil-compose", version.ref = "compose_coil_version" }
+compose_material = { module = "androidx.compose.material:material", version.ref = "material_version" }
+compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "material3_version" }
+compose_paging = { module = "androidx.paging:paging-compose", version.ref = "paging3_version" }
+compose_paging_runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging3_version" }
+compose_ui = { module = "androidx.compose.ui:ui", version.ref = "compose_version" }
+compose_ui_tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose_version" }
+compose_ui_preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose_version" }
+navigation_compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_compose_version" }
+coroutines_android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_android_version" }
+lifecycle_runtime_viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle_version" }
+lifecycle_runtime_viewmodel_compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle_version" }
+lifecycle_runtime_ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle_version" }
+lifecycle_runtime_compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle_version" }
+hilt_android = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore_version" }
+hilt_compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt_version" }
+dagger = { module = "com.google.dagger:dagger", version.ref = "hilt_version" }
+firebase_bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase_bom_version" }
+firebase_analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase_crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase_messaing = { module = "com.google.firebase:firebase-messaging-ktx" }
+hilt_android_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt_version" }
+hilt_android_gradle_plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt_version" }
+kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin_version" }
+tools_build_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "tools_build_gradle_version" }
+hilt_navigation_compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose_version" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2_version" }
+converter_gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit2_version" }
+okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3_version" }
+logging_interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3_version" }
+chucker_library = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker_library_version" }
+kotlin_bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin_bom_version" }
+kakao_sdk_user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao_sdk_user_version" }
+accompanist_systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist_systemui_version" }
+naver_map_compose = { module = "io.github.fornewid:naver-map-compose", version.ref = "naver_map_compose_version" }
+naver_map_location = { module = "io.github.fornewid:naver-map-location", version.ref = "naver_map_location_version" }
+play_services_auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play_services_auth_version" }
+play_services_location = { module = "com.google.android.gms:play-services-location", version.ref = "play_services_location_version" }
+play_services_maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play_services_maps_version" }
+compose_ui_util = { module = "androidx.compose.ui:ui-util", version.ref = "compose_version" }
+
+[plugins]
+android_application = { id = "com.android.application", version.ref = "agp_version" }
+android_library = { id = "com.android.library", version.ref = "agp_version" }
+jetbrains_kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
+dagger_hilt_android = { id = "com.google.dagger.hilt.android", version.ref = "hilt_version" }
+google_services = { id = "com.google.gms.google-services", version.ref = "play_services_version" }
+firebase_crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase_crashlytics_version" }
+kotlin_kapt = { id = "kotlin-kapt", version = "" }
+
+[bundles]
+network = [ "retrofit", "converter_gson", "okhttp3", "logging_interceptor", "chucker_library" ]
+compose_ui = [ "compose_material", "compose_material3", "compose_ui", "compose_ui_preview", "compose_ui_tooling", "compose_ui_util" ]
+compose_paging = [ "compose_paging", "compose_paging_runtime" ]
+hilt_navigation = [ "navigation_compose", "hilt_android", "hilt_navigation_compose" ]
+map = [ "play_services_location", "play_services_maps", "naver_map_compose", "naver_map_location" ]

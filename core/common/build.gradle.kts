@@ -1,10 +1,9 @@
 import java.util.Properties
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_LIBRARY)
-        id(JETBRAINS_KOTLIN_ANDROID)
-    }
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
 }
 
 val properties = Properties().apply {
@@ -54,15 +53,13 @@ android {
 dependencies {
     implementation(project(":core:design"))
 
-    with(Dependency) {
-        implementation(NAVER_MAP_COMPOSE)
-        implementation(ANDROID_CORE_KTX)
-        implementation(COMPOSE_UI)
-        implementation(NAVIGATION_COMPOSE)
-        implementation(COMPOSE_MATERIAL)
-        implementation(COROUTINES_ANDROID)
-        implementation(LIFECYCLE_RUNTIME_VIEWMODEL)
-        implementation(CONVERTER_GSON)
-        implementation(DATASTORE)
-    }
+    implementation(libs.naver.map.compose)
+    implementation(libs.android.core.ktx)
+    implementation(libs.compose.ui)
+    implementation(libs.navigation.compose)
+    implementation(libs.compose.material)
+    implementation(libs.coroutines.android)
+    implementation(libs.lifecycle.runtime.viewmodel)
+    implementation(libs.converter.gson)
+    implementation(libs.datastore)
 }

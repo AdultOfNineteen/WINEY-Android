@@ -1,8 +1,7 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_LIBRARY)
-        id(JETBRAINS_KOTLIN_ANDROID)
-    }
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
 }
 
 android {
@@ -43,16 +42,10 @@ android {
 }
 
 dependencies {
-    with(Dependency) {
-        implementation(ANDROID_CORE_KTX)
-        implementation(ACTIVITY_COMPOSE)
-        implementation(LIFECYCLE_RUNTIME_VIEWMODEL_COMPOSE)
-        implementation(COMPOSE_COIL)
-        implementation(COMPOSE_MATERIAL3)
-        implementation(COMPOSE_MATERIAL)
-        implementation(COMPOSE_UI)
-        implementation(COMPOSE_UI_TOOLING)
-        implementation(COMPOSE_UI_PREVIEW)
-        implementation(platform(KOTLIN_BOM))
-    }
+    implementation(libs.android.core.ktx)
+    implementation(libs.activity.compose)
+    implementation(libs.lifecycle.runtime.viewmodel.compose)
+    implementation(libs.compose.coil)
+    implementation(libs.bundles.compose.ui)
+    implementation(platform(libs.kotlin.bom))
 }
