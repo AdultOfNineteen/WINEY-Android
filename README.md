@@ -10,7 +10,6 @@
 
 - app: 앱 수준과 전체 코드베이스를 바인딩하는 계층으로, MainActivity, WineyApp 등 포함. feature 모듈의 navigation을 통합하여 관리
 
-- domain: data와 feature의 중간 계층으로 model, mapper, usecase 포함
 - data: 직접 데이터를 받아오는 계층으로 api, model, datasource, repository 포함
 - feature: 각 기능 화면을 직접 표시하는 계층으로 uiState, viewmodel, screen, 그리고 해당 기능에 대한 navigation 포함
 - core: 다른 모듈에서 자주 사용하는 코드가 포함
@@ -35,8 +34,7 @@
 
 ### 개발 환경
 
-* [버전 정보](./buildSrc/src/main/java/Versions.kt)
-* [사용 라이브러리](./buildSrc/src/main/java/Dependency.kt)
+* [사용 라이브러리](./gradle/libs.versions.toml)
 
 ### 빌드 조건
 
