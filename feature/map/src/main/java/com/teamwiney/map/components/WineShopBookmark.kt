@@ -27,7 +27,8 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun ColumnScope.WineShopBookmark(
-    wineShops: List<WineShop>, postBookmark: (WineShop) -> Unit,
+    wineShops: List<WineShop>,
+    postBookmark: (WineShop) -> Unit,
     setSelectedMarker: (WineShop) -> Unit
 ) {
     Row(
@@ -51,7 +52,7 @@ fun ColumnScope.WineShopBookmark(
     }
     HeightSpacer(height = 6.dp)
     Text(
-        text = "저장 N개",
+        text = "저장 ${wineShops.size}개",
         style = WineyTheme.typography.captionM1,
         color = WineyTheme.colors.gray_700,
         modifier = Modifier.align(Alignment.CenterHorizontally)
