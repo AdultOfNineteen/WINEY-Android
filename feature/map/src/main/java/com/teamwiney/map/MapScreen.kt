@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -354,6 +355,10 @@ fun MapScreen(
                     modifier = Modifier
                         .padding(top = 32.dp)
                         .align(Alignment.CenterHorizontally)
+                        .shadow(
+                            elevation = 5.dp,
+                            shape = RoundedCornerShape(42.dp)
+                        )
                         .clip(RoundedCornerShape(42.dp))
                         .background(WineyTheme.colors.gray_50)
                         .clickable {
