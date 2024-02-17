@@ -39,14 +39,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.data.network.model.response.WineBadge
@@ -250,12 +251,13 @@ private fun MyPageActivityBadge(
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun WineBadgeItem(
     modifier: Modifier = Modifier,
     wineBadge: WineBadge
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier.height(IntrinsicSize.Max)
     ) {
@@ -290,8 +292,10 @@ private fun WineBadgeItem(
                     shape = RoundedCornerShape(5.dp)
                 )
         ) {
-            GlideImage(
-                model = wineBadge.badgeImage,
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(wineBadge.badgeImage)
+                    .build(),
                 contentDescription = "BADGE_IMAGE",
                 modifier = Modifier
                     .fillMaxWidth()

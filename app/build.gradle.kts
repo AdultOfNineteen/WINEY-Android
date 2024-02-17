@@ -1,14 +1,13 @@
 import java.util.Properties
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_APPLICATION)
-        id(JETBRAINS_KOTLIN_ANDROID)
-        id(DAGGER_HILT_ANDROID)
-        id(KOTLIN_KAPT)
-        id(GOOGLE_SERVICES)
-        id(FIREBASE_CRASHLYTICS)
-    }
+    id(libs.plugins.android.application.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+    id(libs.plugins.dagger.hilt.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.google.services.get().pluginId)
+    id(libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 val properties = Properties().apply {
@@ -102,44 +101,28 @@ dependencies {
     implementation(project(":feature:map"))
     implementation(project(":feature:note"))
     implementation(project(":feature:mypage"))
-    implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
 
-    with(Dependency) {
-        implementation(ANDROID_CORE_KTX)
-        implementation(APPCOMPAT)
-        implementation(ACTIVITY_COMPOSE)
-        implementation(NAVIGATION_COMPOSE)
-        implementation(COMPOSE_BOM)
-        implementation(COMPOSE_MATERIAL)
-        implementation(COMPOSE_MATERIAL3)
-        implementation(COMPOSE_UI)
-        implementation(LIFECYCLE_RUNTIME_KTX)
-        implementation(LIFECYCLE_RUNTIME_COMPOSE)
-        implementation(COROUTINES_ANDROID)
-        implementation(KOTLIN_BOM)
-        implementation(COMPOSE_BOM)
+    implementation(libs.android.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.activity.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.bundles.compose.ui)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.coroutines.android)
+    implementation(libs.kotlin.bom)
 
-        implementation(platform(FIREBASE_BOM))
-        implementation(FIREBASE_ANALYTICS)
-        implementation(FIREBASE_CRASHLYTICS)
-        implementation(FIREBASE_MESSAGING)
+    implementation(libs.kakao.sdk.user)
+    implementation(libs.play.services.auth)
+    implementation(libs.naver.map.compose)
 
-        implementation(HILT_NAVIGATION_COMPOSE)
-        implementation(HILT_ANDROID)
-        implementation(DAGGER)
-        implementation(DATASTORE)
-        kapt(DAGGER_COMPILER)
-        kapt(HILT_ANDROID_COMPILER)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_BOM)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.messaing)
 
-        testImplementation(JUNIT)
-
-        debugImplementation(COMPOSE_UI_TOOLING)
-        debugImplementation(COMPOSE_UI_TEST_MANIFEST)
-    }
+    implementation(libs.bundles.hilt.navigation)
+    implementation(libs.dagger)
+    implementation(libs.datastore)
+    kapt(libs.hilt.android.compiler)
 }

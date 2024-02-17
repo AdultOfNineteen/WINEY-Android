@@ -1,11 +1,10 @@
 import java.util.Properties
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_LIBRARY)
-        id(JETBRAINS_KOTLIN_ANDROID)
-        id(KOTLIN_KAPT)
-    }
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
 val properties = Properties().apply {
@@ -64,24 +63,12 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":data"))
 
-    with(Dependency) {
-        kapt(HILT_ANDROID_COMPILER)
-        implementation(ANDROID_CORE_KTX)
-        implementation(COMPOSE_MATERIAL3)
-        implementation(COMPOSE_MATERIAL)
-        implementation(COMPOSE_UI)
-        implementation(COMPOSE_UI_TOOLING)
-        implementation(COMPOSE_UI_PREVIEW)
-        implementation(NAVIGATION_COMPOSE)
-        implementation(HILT_ANDROID)
-        implementation(HILT_NAVIGATION_COMPOSE)
-        implementation(LIFECYCLE_RUNTIME_COMPOSE)
-        implementation(DATASTORE)
-        implementation("com.kakao.sdk:v2-user:2.15.0") // 카카오 로그인
-        implementation("com.google.android.gms:play-services-auth:20.7.0") // 구글 로그인
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        testImplementation(JUNIT)
-    }
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.android.core.ktx)
+    implementation(libs.bundles.compose.ui)
+    implementation(libs.bundles.hilt.navigation)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.datastore)
+    implementation(libs.kakao.sdk.user)
+    implementation(libs.play.services.auth)
 }

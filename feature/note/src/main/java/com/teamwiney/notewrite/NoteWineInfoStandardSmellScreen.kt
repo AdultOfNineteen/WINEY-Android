@@ -31,11 +31,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.HeightSpacer
@@ -64,12 +61,9 @@ private val whiteWineSmell = mapOf(
     "비오니에" to listOf("살구", "꽃")
 )
 
-
-@Preview
 @Composable
 fun NoteWineInfoStandardSmellScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
+    appState: WineyAppState
 ) {
 
     Column(

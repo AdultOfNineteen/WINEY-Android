@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalGlideComposeApi::class, ExperimentalFoundationApi::class)
-
 package com.teamwiney.map.components
 
 import androidx.compose.foundation.BorderStroke
@@ -29,23 +27,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineShop
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.theme.WineyTheme
 
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyItemScope.WineShopItem(
     wineShop: WineShop,
     postBookmark: (WineShop) -> Unit,
     setSelectedMarker: (WineShop) -> Unit
 ) {
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .padding(24.dp)
@@ -56,17 +57,18 @@ fun LazyItemScope.WineShopItem(
             }
             .animateItemPlacement()
     ) {
-        GlideImage(
-            model = wineShop.imgUrl,
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .placeholder(R.drawable.img_dummy_wine)
+                .error(R.drawable.img_dummy_wine)
+                .data(wineShop.imgUrl)
+                .build(),
             contentDescription = "IMG_WINE",
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .size(110.dp, 100.dp)
                 .background(WineyTheme.colors.gray_900),
-            contentScale = ContentScale.Crop,
-            requestBuilderTransform = { requestBuilder ->
-                requestBuilder.apply(options)
-            },
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.width(17.dp))
         Column(

@@ -48,12 +48,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations.Write.INFO_STANDARD_SMELL
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.ColorSlider
 import com.teamwiney.ui.components.HeightSpacer
@@ -75,11 +73,10 @@ data class WineSmellOption(
 )
 
 
-@Preview
 @Composable
 fun NoteWineInfoColorAndSmellScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
+    appState: WineyAppState,
+    viewModel: NoteWriteViewModel,
 ) {
 
     val startColor = Color.Red

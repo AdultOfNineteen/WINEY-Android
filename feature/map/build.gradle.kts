@@ -1,11 +1,10 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_LIBRARY)
-        id(JETBRAINS_KOTLIN_ANDROID)
-        id(KOTLIN_KAPT)
-        id(GOOGLE_SERVICES)
-        id(FIREBASE_CRASHLYTICS)
-    }
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
+    id(libs.plugins.google.services.get().pluginId)
+    id(libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 android {
@@ -48,29 +47,13 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":data"))
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
-    implementation("io.github.fornewid:naver-map-compose:1.3.3")
-    implementation("io.github.fornewid:naver-map-location:16.0.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
-
-    with(Dependency) {
-        kapt(HILT_ANDROID_COMPILER)
-        implementation(COMPOSE_GLIDE)
-        implementation(ANDROID_CORE_KTX)
-        implementation(COMPOSE_MATERIAL)
-        implementation(COMPOSE_MATERIAL3)
-        implementation(COMPOSE_UI)
-        implementation(COMPOSE_UI_TOOLING)
-        implementation(COMPOSE_UI_PREVIEW)
-        implementation(NAVIGATION_COMPOSE)
-        implementation(HILT_ANDROID)
-        implementation(HILT_NAVIGATION_COMPOSE)
-        implementation(LIFECYCLE_RUNTIME_COMPOSE)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        androidTestImplementation(COMPOSE_UI_TEST_JUNIT4)
-        testImplementation(JUNIT)
-    }
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.accompanist.systemui)
+    implementation(libs.play.services.auth)
+    implementation(libs.bundles.map)
+    implementation(libs.android.core.ktx)
+    implementation(libs.compose.coil)
+    implementation(libs.bundles.compose.ui)
+    implementation(libs.bundles.hilt.navigation)
+    implementation(libs.lifecycle.runtime.compose)
 }
