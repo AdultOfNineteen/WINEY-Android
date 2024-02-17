@@ -67,6 +67,7 @@ import com.teamwiney.map.MapViewModel.Companion.DEFAULT_LATLNG
 import com.teamwiney.map.components.GpsIcon
 import com.teamwiney.map.components.MapBottomSheetContent
 import com.teamwiney.map.components.WineBottomSheetOpenPopUp
+import com.teamwiney.map.manager.manageBottomBarVisibility
 import com.teamwiney.map.manager.manageLocationPermission
 import com.teamwiney.map.manager.manageSystemUIColor
 import com.teamwiney.map.model.MovingCameraWrapper
@@ -97,7 +98,6 @@ fun MapScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     val setSelectedMarker: (WineShop) -> Unit = {
-        appState.updateBottomBarVisibility(false)
         viewModel.updateSelectMarker(it, true)
         viewModel.updateMovingCameraPosition(
             MovingCameraWrapper.MOVING(
@@ -118,7 +118,6 @@ fun MapScreen(
 
     val onMapClick: () -> Unit = {
         viewModel.updateSelectMarker(null, false)
-        appState.updateBottomBarVisibility(true)
         appState.scope.launch {
             bottomSheetScaffoldState.bottomSheetState.collapse()
         }
@@ -142,7 +141,6 @@ fun MapScreen(
         )
         viewModel.updateSelectedShopCategory(category)
         viewModel.updateSelectMarker(null, false)
-        appState.updateBottomBarVisibility(true)
         appState.scope.launch {
             bottomSheetScaffoldState.bottomSheetState.collapse()
         }
@@ -150,11 +148,15 @@ fun MapScreen(
 
     val onClickTopBarBackIcon: () -> Unit = {
         onClickCategory(ShopCategory.ALL)
-        appState.updateBottomBarVisibility(true)
         appState.scope.launch {
             bottomSheetScaffoldState.bottomSheetState.collapse()
         }
     }
+
+    manageBottomBarVisibility(
+        uiState = uiState,
+        updateBottomBarVisibility = appState::updateBottomBarVisibility
+    )
 
     manageSystemUIColor(
         isVisibleTopBar = uiState.selectedShopCategory == ShopCategory.ALL && uiState.selectedMarkar == null
@@ -298,12 +300,20 @@ fun MapScreen(
                     .systemBarsPadding()
                     .fillMaxWidth()
             ) {
+                // 디테일 화면일 때
                 if (uiState.selectedMarkar != null) {
                     WineCategoryTopbar(
-                        onClickTopBarBackIcon = onClickTopBarBackIcon,
+                        onClickTopBarBackIcon = {
+                            viewModel.updateSelectedShopCategory(uiState.selectedShopCategory)
+                            viewModel.updateSelectMarker(null, false)
+                            appState.scope.launch {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            }
+                        },
                         title = uiState.selectedMarkar!!.name
                     )
                 } else {
+                    // TODO 수정 필요
                     if (uiState.selectedShopCategory == ShopCategory.ALL) {
                         Row(
                             modifier = Modifier
@@ -322,7 +332,6 @@ fun MapScreen(
                                         .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
                                         .clickable {
                                             onClickCategory(it)
-                                            appState.updateBottomBarVisibility(false)
                                         }
                                         .padding(horizontal = 15.dp, vertical = 10.dp),
                                     color = WineyTheme.colors.gray_50,

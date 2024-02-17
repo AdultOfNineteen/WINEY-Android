@@ -19,6 +19,7 @@ class MapContract {
         val movingCameraPosition: MovingCameraWrapper = MovingCameraWrapper.DEFAULT,
         val selectedMarkar: WineShop? = null,
         val selectedShopCategory: ShopCategory = ShopCategory.ALL,
+        val previousCateogy: ShopCategory? = null
     ) : UiState
 
     sealed class Event : UiEvent {
