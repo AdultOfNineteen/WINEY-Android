@@ -203,7 +203,6 @@ fun MapScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = appState.cameraPositionState,
@@ -302,9 +301,8 @@ fun MapScreen(
                                     .clip(RoundedCornerShape(42.dp))
                                     .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
                                     .clickable {
-                                        onClickCategory(
-                                            it,
-                                        )
+                                        onClickCategory(it)
+                                        appState.updateBottomBarVisibility(false)
                                     }
                                     .padding(horizontal = 15.dp, vertical = 10.dp),
                                 color = WineyTheme.colors.gray_50,
@@ -336,6 +334,7 @@ fun MapScreen(
                                     .clip(CircleShape)
                                     .clickable {
                                         onClickCategory(ShopCategory.ALL)
+                                        appState.updateBottomBarVisibility(true)
                                         appState.scope.launch {
                                             bottomSheetScaffoldState.bottomSheetState.collapse()
                                         }

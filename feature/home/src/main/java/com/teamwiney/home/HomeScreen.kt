@@ -83,6 +83,7 @@ fun HomeScreen(
     LaunchedEffect(true) {
         viewModel.getRecommendWines()
         viewModel.getWineTips()
+        appState.updateBottomBarVisibility(true)
 
         effectFlow.collectLatest { effect ->
             when (effect) {

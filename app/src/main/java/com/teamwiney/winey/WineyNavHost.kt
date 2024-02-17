@@ -55,7 +55,7 @@ fun WineyNavHost() {
             },
             bottomBar = {
                 AnimatedVisibility(
-                    appState.shouldShowBottomBar,
+                    appState.bottomBarState.value,
                     enter = slideInVertically { it },
                     exit = slideOutVertically { it },
                 ) {
