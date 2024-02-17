@@ -5,9 +5,6 @@
 package com.teamwiney.map
 
 import android.location.Location
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -20,9 +17,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -43,11 +41,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -63,7 +64,10 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineShop
 import com.teamwiney.map.MapViewModel.Companion.DEFAULT_LATLNG
+import com.teamwiney.map.components.GpsIcon
 import com.teamwiney.map.components.MapBottomSheetContent
+import com.teamwiney.map.components.WineBottomSheetOpenPopUp
+import com.teamwiney.map.manager.manageBottomBarVisibility
 import com.teamwiney.map.manager.manageLocationPermission
 import com.teamwiney.map.manager.manageSystemUIColor
 import com.teamwiney.map.model.MovingCameraWrapper
@@ -142,7 +146,21 @@ fun MapScreen(
         }
     }
 
-    manageSystemUIColor()
+    val onClickTopBarBackIcon: () -> Unit = {
+        onClickCategory(ShopCategory.ALL)
+        appState.scope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
+    }
+
+    manageBottomBarVisibility(
+        uiState = uiState,
+        updateBottomBarVisibility = appState::updateBottomBarVisibility
+    )
+
+    manageSystemUIColor(
+        isVisibleTopBar = uiState.selectedShopCategory == ShopCategory.ALL && uiState.selectedMarkar == null
+    )
     manageLocationPermission(
         addLocationListener = { viewModel.addLocationListener() },
         showSnackbar = { appState.showSnackbar(it) },
@@ -201,7 +219,6 @@ fun MapScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-
             NaverMap(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = appState.cameraPositionState,
@@ -233,20 +250,20 @@ fun MapScreen(
             ) {
 
                 (if (uiState.selectedShopCategory == ShopCategory.LIKE)
-                    uiState.wineShops.filter { it.like } else uiState.wineShops
-                        ).forEach {
-                        Marker(
-                            state = MarkerState(position = LatLng(it.latitude, it.longitude)),
-                            icon = OverlayImage.fromResource(R.mipmap.img_wine_marker),
-                            captionText = it.name,
-                            height = if (it.isSelected) 75.dp else 49.dp,
-                            width = if (it.isSelected) 52.dp else 34.dp,
-                            onClick = { _ ->
-                                onMarkerClick(it)
-                                true
-                            }
-                        )
-                    }
+                    uiState.wineShops.filter { it.like }
+                else uiState.wineShops).forEach {
+                    Marker(
+                        state = MarkerState(position = LatLng(it.latitude, it.longitude)),
+                        icon = OverlayImage.fromResource(R.mipmap.img_wine_marker),
+                        captionText = it.name,
+                        height = if (it.isSelected) 75.dp else 49.dp,
+                        width = if (it.isSelected) 52.dp else 34.dp,
+                        onClick = { _ ->
+                            onMarkerClick(it)
+                            true
+                        }
+                    )
+                }
 
                 if (uiState.userPosition != DEFAULT_LATLNG) {
                     Marker(
@@ -261,66 +278,21 @@ fun MapScreen(
                 }
             }
 
-            AnimatedVisibility(
-                visible = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
-                modifier = Modifier.align(Alignment.BottomCenter),
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(bottom = peekHeight + 24.dp)
-                        .clip(RoundedCornerShape(42.dp))
-                        .background(WineyTheme.colors.gray_900)
-                        .clickable {
-                            appState.scope.launch {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
-                            }
-                        }
-                        .padding(17.dp, 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Text(text = "목록열기")
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_hamburg_baseline_13),
-                        contentDescription = "IC_GPS",
-                        modifier = Modifier
-                            .size(13.dp),
-                        tint = WineyTheme.colors.gray_50
-                    )
-                }
-            }
+            WineBottomSheetOpenPopUp(
+                isCollapsed = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
+                expandBottomSheet = {
+                    appState.scope.launch {
+                        bottomSheetScaffoldState.bottomSheetState.expand()
+                    }
+                },
+                peekHeight = peekHeight,
+            )
 
-            AnimatedVisibility(
-                visible = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
-                modifier = Modifier.align(Alignment.BottomEnd),
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            end = 20.dp,
-                            bottom = peekHeight + 24.dp
-                        )
-                        .clip(CircleShape)
-                        .background(WineyTheme.colors.gray_900)
-                        .clickable {
-                            onClickGPSIcon()
-                        }
-                        .padding(13.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_gps_baseline_22),
-                        contentDescription = "IC_GPS",
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .size(22.dp),
-                        tint = WineyTheme.colors.gray_50
-                    )
-                }
-            }
+            GpsIcon(
+                isCollapsed = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
+                peekHeight = peekHeight,
+                onClickGPSIcon = onClickGPSIcon
+            )
 
             Column(
                 modifier = Modifier
@@ -328,29 +300,49 @@ fun MapScreen(
                     .systemBarsPadding()
                     .fillMaxWidth()
             ) {
-                Row(
-                    modifier = Modifier
-                        .horizontalScroll(rememberScrollState())
-                        .padding(start = 24.dp, end = 24.dp, top = 30.dp),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        10.dp,
-                        Alignment.CenterHorizontally
-                    ),
-                ) {
-                    ShopCategory.values().forEach {
-                        Text(
-                            text = it.title,
+                // 디테일 화면일 때
+                if (uiState.selectedMarkar != null) {
+                    WineCategoryTopbar(
+                        onClickTopBarBackIcon = {
+                            viewModel.updateSelectedShopCategory(uiState.selectedShopCategory)
+                            viewModel.updateSelectMarker(null, false)
+                            appState.scope.launch {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            }
+                        },
+                        title = uiState.selectedMarkar!!.name
+                    )
+                } else {
+                    // TODO 수정 필요
+                    if (uiState.selectedShopCategory == ShopCategory.ALL) {
+                        Row(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(42.dp))
-                                .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
-                                .clickable {
-                                    onClickCategory(
-                                        it,
-                                    )
-                                }
-                                .padding(horizontal = 15.dp, vertical = 10.dp),
-                            color = WineyTheme.colors.gray_50,
-                            style = WineyTheme.typography.captionB1
+                                .horizontalScroll(rememberScrollState())
+                                .padding(start = 24.dp, end = 24.dp, top = 30.dp),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                10.dp,
+                                Alignment.CenterHorizontally
+                            ),
+                        ) {
+                            ShopCategory.values().forEach {
+                                Text(
+                                    text = it.title,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(42.dp))
+                                        .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
+                                        .clickable {
+                                            onClickCategory(it)
+                                        }
+                                        .padding(horizontal = 15.dp, vertical = 10.dp),
+                                    color = WineyTheme.colors.gray_50,
+                                    style = WineyTheme.typography.captionB1
+                                )
+                            }
+                        }
+                    } else {
+                        WineCategoryTopbar(
+                            onClickTopBarBackIcon = onClickTopBarBackIcon,
+                            title = uiState.selectedShopCategory.title
                         )
                     }
                 }
@@ -359,6 +351,10 @@ fun MapScreen(
                     modifier = Modifier
                         .padding(top = 32.dp)
                         .align(Alignment.CenterHorizontally)
+                        .shadow(
+                            elevation = 5.dp,
+                            shape = RoundedCornerShape(42.dp)
+                        )
                         .clip(RoundedCornerShape(42.dp))
                         .background(WineyTheme.colors.gray_50)
                         .clickable {
@@ -396,4 +392,46 @@ fun MapScreen(
         }
     }
 }
+
+@Composable
+private fun WineCategoryTopbar(
+    onClickTopBarBackIcon: () -> Unit,
+    title: String,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(68.dp)
+            .background(Color(0xB31F2126))
+            .statusBarsPadding(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back_arrow_48),
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable {
+                        onClickTopBarBackIcon()
+                    }
+            )
+        }
+        Text(
+            text = title,
+            style = WineyTheme.typography.title2.copy(
+                fontWeight = FontWeight.Bold,
+                color = WineyTheme.colors.gray_50
+            )
+        )
+    }
+}
+
 

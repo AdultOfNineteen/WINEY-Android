@@ -3,7 +3,9 @@ package com.teamwiney.core.common
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
@@ -23,6 +25,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberWineyAppState(
+    bottomBarState: MutableState<Boolean> = mutableStateOf(false),
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -30,6 +33,7 @@ fun rememberWineyAppState(
 ): WineyAppState {
     return remember(Unit) {
         WineyAppState(
+            bottomBarState,
             navController,
             scaffoldState,
             scope,
@@ -40,6 +44,7 @@ fun rememberWineyAppState(
 
 @Stable
 class WineyAppState(
+    val bottomBarState: MutableState<Boolean>,
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
@@ -55,6 +60,9 @@ class WineyAppState(
         @Composable get() = currentDestination?.route ==
                 topLevelDestination.find { it.route == currentDestination?.route }?.route
 
+    fun updateBottomBarVisibility(visibility: Boolean) {
+        bottomBarState.value = visibility
+    }
 
     fun showSnackbar(message: String) = scope.launch {
         scaffoldState.snackbarHostState.showSnackbar(message)

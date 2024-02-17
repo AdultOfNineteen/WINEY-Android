@@ -6,7 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.*
-import com.google.android.gms.location.Priority
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.compose.CameraPositionState
 import com.teamwiney.core.common.base.BaseViewModel
@@ -161,6 +160,10 @@ class MapViewModel @Inject constructor(
                 }
             )
         )
+    }
+
+    fun updatePreviousCategory(shopCategory: ShopCategory?) {
+        updateState(currentState.copy(previousCateogy = shopCategory))
     }
 
     fun updateSelectedShopCategory(shopCategory: ShopCategory) {

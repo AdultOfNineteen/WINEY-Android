@@ -25,8 +25,8 @@ import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
-import com.teamwiney.map.mapGraph
 import com.teamwiney.home.homeGraph
+import com.teamwiney.map.mapGraph
 import com.teamwiney.mypage.myPageGraph
 import com.teamwiney.noteGraph
 import com.teamwiney.ui.components.BottomNavigationBar
@@ -55,7 +55,7 @@ fun WineyNavHost() {
             },
             bottomBar = {
                 AnimatedVisibility(
-                    appState.shouldShowBottomBar,
+                    appState.bottomBarState.value,
                     enter = slideInVertically { it },
                     exit = slideOutVertically { it },
                 ) {
@@ -142,7 +142,11 @@ private fun WineyBottomNavigationBar(
                 unselectedIcon = destination.unselectedIcon,
                 selectedContentColor = selectedContentColor,
                 unselectedContentColor = unselectedContentColor,
-                onClick = { onNavigateToDestination(destination) },
+                onClick = {
+                    if (!selected) {
+                        onNavigateToDestination(destination)
+                    }
+                },
             )
         }
     }
