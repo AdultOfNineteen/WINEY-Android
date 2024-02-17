@@ -97,6 +97,7 @@ fun MapScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     val setSelectedMarker: (WineShop) -> Unit = {
+        appState.updateBottomBarVisibility(false)
         viewModel.updateSelectMarker(it, true)
         viewModel.updateMovingCameraPosition(
             MovingCameraWrapper.MOVING(
@@ -117,6 +118,7 @@ fun MapScreen(
 
     val onMapClick: () -> Unit = {
         viewModel.updateSelectMarker(null, false)
+        appState.updateBottomBarVisibility(true)
         appState.scope.launch {
             bottomSheetScaffoldState.bottomSheetState.collapse()
         }
@@ -140,12 +142,23 @@ fun MapScreen(
         )
         viewModel.updateSelectedShopCategory(category)
         viewModel.updateSelectMarker(null, false)
+        appState.updateBottomBarVisibility(true)
         appState.scope.launch {
             bottomSheetScaffoldState.bottomSheetState.collapse()
         }
     }
 
-    manageSystemUIColor(uiState.selectedShopCategory)
+    val onClickTopBarBackIcon: () -> Unit = {
+        onClickCategory(ShopCategory.ALL)
+        appState.updateBottomBarVisibility(true)
+        appState.scope.launch {
+            bottomSheetScaffoldState.bottomSheetState.collapse()
+        }
+    }
+
+    manageSystemUIColor(
+        isVisibleTopBar = uiState.selectedShopCategory == ShopCategory.ALL && uiState.selectedMarkar == null
+    )
     manageLocationPermission(
         addLocationListener = { viewModel.addLocationListener() },
         showSnackbar = { appState.showSnackbar(it) },
@@ -285,72 +298,46 @@ fun MapScreen(
                     .systemBarsPadding()
                     .fillMaxWidth()
             ) {
-                if (uiState.selectedShopCategory == ShopCategory.ALL) {
-                    Row(
-                        modifier = Modifier
-                            .horizontalScroll(rememberScrollState())
-                            .padding(start = 24.dp, end = 24.dp, top = 30.dp),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                    ) {
-                        ShopCategory.values().forEach {
-                            Text(
-                                text = it.title,
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(42.dp))
-                                    .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
-                                    .clickable {
-                                        onClickCategory(it)
-                                        appState.updateBottomBarVisibility(false)
-                                    }
-                                    .padding(horizontal = 15.dp, vertical = 10.dp),
-                                color = WineyTheme.colors.gray_50,
-                                style = WineyTheme.typography.captionB1
-                            )
-                        }
-                    }
+                if (uiState.selectedMarkar != null) {
+                    WineCategoryTopbar(
+                        onClickTopBarBackIcon = onClickTopBarBackIcon,
+                        title = uiState.selectedMarkar!!.name
+                    )
                 } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(68.dp)
-                            .background(Color(0xB31F2126))
-                            .statusBarsPadding(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    if (uiState.selectedShopCategory == ShopCategory.ALL) {
                         Row(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 5.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .horizontalScroll(rememberScrollState())
+                                .padding(start = 24.dp, end = 24.dp, top = 30.dp),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                10.dp,
+                                Alignment.CenterHorizontally
+                            ),
                         ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_back_arrow_48),
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .clickable {
-                                        onClickCategory(ShopCategory.ALL)
-                                        appState.updateBottomBarVisibility(true)
-                                        appState.scope.launch {
-                                            bottomSheetScaffoldState.bottomSheetState.collapse()
+                            ShopCategory.values().forEach {
+                                Text(
+                                    text = it.title,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(42.dp))
+                                        .background(if (uiState.selectedShopCategory == it) WineyTheme.colors.main_2 else WineyTheme.colors.gray_900)
+                                        .clickable {
+                                            onClickCategory(it)
+                                            appState.updateBottomBarVisibility(false)
                                         }
-                                    }
-                            )
+                                        .padding(horizontal = 15.dp, vertical = 10.dp),
+                                    color = WineyTheme.colors.gray_50,
+                                    style = WineyTheme.typography.captionB1
+                                )
+                            }
                         }
-                        Text(
-                            text = uiState.selectedShopCategory.title,
-                            style = WineyTheme.typography.title2.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = WineyTheme.colors.gray_50
-                            )
+                    } else {
+                        WineCategoryTopbar(
+                            onClickTopBarBackIcon = onClickTopBarBackIcon,
+                            title = uiState.selectedShopCategory.title
                         )
                     }
                 }
+
                 Row(
                     modifier = Modifier
                         .padding(top = 32.dp)
@@ -394,6 +381,47 @@ fun MapScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun WineCategoryTopbar(
+    onClickTopBarBackIcon: () -> Unit,
+    title: String,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(68.dp)
+            .background(Color(0xB31F2126))
+            .statusBarsPadding(),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back_arrow_48),
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable {
+                        onClickTopBarBackIcon()
+                    }
+            )
+        }
+        Text(
+            text = title,
+            style = WineyTheme.typography.title2.copy(
+                fontWeight = FontWeight.Bold,
+                color = WineyTheme.colors.gray_50
+            )
+        )
     }
 }
 

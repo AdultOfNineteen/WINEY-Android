@@ -5,13 +5,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.teamwiney.map.model.ShopCategory
 
 @Composable
-internal fun manageSystemUIColor(selectedShopCategory: ShopCategory) {
+internal fun manageSystemUIColor(isVisibleTopBar: Boolean) {
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(key1 = selectedShopCategory) {
-        if (selectedShopCategory == ShopCategory.ALL) {
+    LaunchedEffect(key1 = isVisibleTopBar) {
+        if (isVisibleTopBar) {
             systemUiController.setSystemBarsColor(
                 color = Color.Transparent
             )
