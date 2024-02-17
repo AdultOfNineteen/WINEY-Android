@@ -53,7 +53,7 @@ fun ColumnScope.WineShopDetail(
 ) {
 
     val context = LocalContext.current
-    val navigateToNaverMap : (WineShop)->Unit = { wineShop->
+    val navigateToNaverMap: (WineShop) -> Unit = { wineShop ->
         val url =
             "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${wineShop.name}&appname=cocktaildakk"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -163,7 +163,7 @@ fun ColumnScope.WineShopDetail(
 
         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Icon(
@@ -173,26 +173,11 @@ fun ColumnScope.WineShopDetail(
                         .size(19.dp),
                     tint = WineyTheme.colors.gray_50
                 )
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    if (isExpanded) {
-                        businessHours.forEachIndexed { index, it ->
-                            Text(
-                                text = it,
-                                style = WineyTheme.typography.captionM1,
-                                color = if (index == 0) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = businessHours.firstOrNull() ?: "정보가 없습니다.",
-                            style = WineyTheme.typography.captionM1,
-                            color = WineyTheme.colors.gray_50,
-                        )
-                    }
-                }
-
+                Text(
+                    text = businessHours.firstOrNull() ?: "정보가 없습니다.",
+                    style = WineyTheme.typography.captionM1,
+                    color = WineyTheme.colors.gray_50,
+                )
                 if (businessHours.size > 1) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
@@ -205,6 +190,21 @@ fun ColumnScope.WineShopDetail(
                             .rotate(if (isExpanded) 270f else 90f),
                         tint = WineyTheme.colors.gray_50
                     )
+                }
+            }
+            if (isExpanded) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.padding(start = 29.dp)
+                ) {
+                    businessHours.subList(1, businessHours.size)
+                        .forEach { it ->
+                            Text(
+                                text = it,
+                                style = WineyTheme.typography.captionM1,
+                                color = WineyTheme.colors.gray_700
+                            )
+                        }
                 }
             }
 
@@ -228,8 +228,15 @@ fun ColumnScope.WineShopDetail(
                     color = WineyTheme.colors.gray_50,
                     textDecoration = TextDecoration.Underline
                 )
+                val distanceMeter =
+                    userPosition.distanceTo(LatLng(wineShop.latitude, wineShop.longitude))
+                        .toInt()
                 Text(
-                    text = userPosition.distanceTo(LatLng(wineShop.latitude, wineShop.longitude)).toInt().toString() + "m",
+                    text = if (distanceMeter >= 1000) {
+                        "${String.format("%.1f", distanceMeter / 1000.0)}km"
+                    } else {
+                        "${distanceMeter}m"
+                    },
                     style = WineyTheme.typography.captionM1,
                     color = WineyTheme.colors.gray_800
                 )
