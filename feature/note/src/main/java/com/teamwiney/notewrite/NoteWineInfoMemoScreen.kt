@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalGlideComposeApi::class, ExperimentalGlideComposeApi::class)
-
 package com.teamwiney.notewrite
 
 import android.Manifest
@@ -52,14 +50,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.navOptions
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.TopBar
@@ -69,11 +65,10 @@ import com.teamwiney.ui.components.imagepicker.ImagePickerContract
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NoteWineInfoMemoScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel(),
+    appState: WineyAppState,
+    viewModel: NoteWriteViewModel,
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -201,8 +196,10 @@ fun NoteWineInfoMemoScreen(
             ) {
                 uiState.wineNote.imgs.map {
                     Box {
-                        GlideImage(
-                            model = it,
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(it)
+                                .build(),
                             contentDescription = "IMG_URL",
                             modifier = Modifier
                                 .size(100.dp)

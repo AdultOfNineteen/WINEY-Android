@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalGlideComposeApi::class)
-
 package com.teamwiney.map.components
 
 import androidx.compose.foundation.background
@@ -18,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.naver.maps.geometry.LatLng
 import com.teamwiney.data.network.model.response.WineShop
 import com.teamwiney.map.model.ShopCategory

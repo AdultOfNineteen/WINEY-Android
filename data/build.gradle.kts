@@ -1,11 +1,10 @@
 import java.util.Properties
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    with(Plugins) {
-        id(ANDROID_LIBRARY)
-        id(JETBRAINS_KOTLIN_ANDROID)
-        id(KOTLIN_KAPT)
-    }
+    id(libs.plugins.android.library.get().pluginId)
+    id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
 val properties = Properties().apply {
@@ -50,19 +49,10 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    with(Dependency) {
-        kapt(HILT_ANDROID_COMPILER)
-        implementation(COROUTINES_ANDROID)
-        implementation(COMPOSE_PAGING)
-        implementation(HILT_ANDROID)
-        implementation(DATASTORE)
-        androidTestImplementation(TEST_EXT_JUNIT)
-        androidTestImplementation(TEST_ESPRESSO_CORE)
-        implementation(RETROFIT)
-        implementation(CONVERTER_GSON)
-        implementation(OKHTTP)
-        implementation(LOGGING_INTERCEPTOR)
-        implementation(CHUCKER_LIBRARY)
-        testImplementation(JUNIT)
-    }
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.coroutines.android)
+    implementation(libs.hilt.android)
+    implementation(libs.datastore)
+    implementation(libs.compose.paging)
+    implementation(libs.bundles.network)
 }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalGlideComposeApi::class)
-
 package com.teamwiney.notedetail.component
 
 import androidx.compose.foundation.BorderStroke
@@ -22,16 +20,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
 
-
 @Composable
 fun WineMemo(noteDetail: TastingNoteDetail) {
+
+    val context = LocalContext.current
 
     Column {
         Text(
@@ -53,8 +53,10 @@ fun WineMemo(noteDetail: TastingNoteDetail) {
                     Spacer(modifier = Modifier.width(14.dp))
                 }
                 items(noteDetail.tastingNoteImage.map { it.imgUrl }) {
-                    GlideImage(
-                        model = it,
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(it)
+                            .build(),
                         contentDescription = "IMG_URL",
                         modifier = Modifier
                             .size(120.dp)

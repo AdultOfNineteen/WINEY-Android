@@ -39,7 +39,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -47,7 +46,6 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.notewrite.components.WineSearchTextField
 import com.teamwiney.ui.components.HeightSpacer
@@ -56,10 +54,9 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-@Preview
 fun NoteWineSearchScreen(
-    appState: WineyAppState = rememberWineyAppState(),
-    viewModel: NoteWriteViewModel = hiltViewModel()
+    appState: WineyAppState,
+    viewModel: NoteWriteViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
