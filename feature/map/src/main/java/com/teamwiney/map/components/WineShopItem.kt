@@ -86,11 +86,16 @@ fun LazyItemScope.WineShopItem(
                     text = wineShop.name,
                     style = WineyTheme.typography.headline,
                     color = WineyTheme.colors.gray_50,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
                 )
                 Text(
                     text = wineShop.shopType,
                     style = WineyTheme.typography.captionM1,
                     color = WineyTheme.colors.gray_500,
+                    maxLines = 1,
+                    overflow = TextOverflow.Visible,
                 )
             }
             HeightSpacer(height = 7.dp)
