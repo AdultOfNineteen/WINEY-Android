@@ -124,6 +124,7 @@ fun NoteScreen(
             HomeLogo(
                 onClick = {
                     appState.navigate(HomeDestinations.Analysis.ROUTE)
+                    appState.updateBottomBarVisibility(false)
                 },
                 hintPopupOpen = false
             )

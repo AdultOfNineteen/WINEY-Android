@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.util.manageBottomBarState
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
@@ -72,6 +73,7 @@ fun WineDetailScreen(
             }
         }
     }
+    manageBottomBarState(appState = appState)
 
     Column(
         modifier = Modifier
