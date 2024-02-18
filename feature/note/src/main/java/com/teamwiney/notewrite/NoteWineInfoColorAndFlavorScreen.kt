@@ -105,8 +105,7 @@ fun NoteWineInfoColorAndSmellScreen(
         ) {
             WineColorPicker(
                 currentColor = uiState.wineNote.color,
-                startColor = startColor,
-                endColor = endColor,
+                barColors = uiState.barColors,
                 thumbX = uiState.thumbX,
                 updateThumbX = { viewModel.updateThumbX(it) },
             ) { viewModel.updateColor(it) }
@@ -241,8 +240,7 @@ private fun WineSmellContainer(
 @Composable
 private fun WineColorPicker(
     currentColor: Color,
-    startColor: Color,
-    endColor: Color,
+    barColors: List<Color>,
     thumbX: Float,
     updateThumbX: (Float) -> Unit,
     updateCurrentColor: (Color) -> Unit,
@@ -296,8 +294,7 @@ private fun WineColorPicker(
 
                     ColorSlider(
                         onValueChange = updateCurrentColor,
-                        startColor = startColor,
-                        endColor = endColor,
+                        barColors = barColors,
                         trackHeight = 10.dp,
                         thumbSize = 22.dp,
                         thumbX = thumbX,
