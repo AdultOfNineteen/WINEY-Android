@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.util.manageBottomBarState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineCountryResponse
 import com.teamwiney.data.network.model.response.WineTypeResponse
@@ -62,6 +63,8 @@ fun NoteFilterScreen(
         addAll(uiState.selectedTypeFilter.map { it.type })
         addAll(uiState.selectedCountryFilter.map { it.country })
     }
+
+    manageBottomBarState(appState = appState)
 
     Column(
         modifier = Modifier
