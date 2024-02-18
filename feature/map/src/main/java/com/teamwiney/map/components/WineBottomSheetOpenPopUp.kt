@@ -38,7 +38,7 @@ internal fun BoxScope.WineBottomSheetOpenPopUp(
     ) {
         Row(
             modifier = Modifier
-                .padding(bottom = peekHeight + 24.dp)
+                .padding(bottom = peekHeight + 44.dp)
                 .clip(RoundedCornerShape(42.dp))
                 .background(WineyTheme.colors.gray_900)
                 .clickable {

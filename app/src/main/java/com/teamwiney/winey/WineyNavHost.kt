@@ -1,8 +1,10 @@
 package com.teamwiney.winey
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,8 @@ import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.MapDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
@@ -67,8 +71,10 @@ fun WineyNavHost() {
                 }
             }
         ) { padding ->
+
             NavHost(
-                modifier = Modifier.padding(padding),
+                modifier = Modifier
+                    .bototmBarPadding(appState.currentDestination, padding),
                 navController = navController,
                 startDestination = AuthDestinations.ROUTE
             ) {
@@ -97,6 +103,24 @@ fun WineyNavHost() {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun Modifier.Companion.bototmBarPadding(
+    currentDestination: NavDestination?,
+    padding: PaddingValues
+): Modifier {
+    Log.i("dlgocks1", currentDestination?.route.toString())
+    return if (currentDestination?.route in listOf(
+            MapDestinations.MAP,
+            HomeDestinations.Analysis.START,
+            HomeDestinations.Analysis.RESULT
+        )
+    ) {
+        Modifier
+    } else {
+        Modifier.padding(padding)
     }
 }
 

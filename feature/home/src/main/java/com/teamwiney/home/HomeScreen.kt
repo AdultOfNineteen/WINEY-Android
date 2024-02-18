@@ -114,6 +114,7 @@ fun HomeScreen(
         HomeLogo(
             onClick = {
                 viewModel.processEvent(HomeContract.Event.ShowAnalysis)
+                appState.updateBottomBarVisibility(false)
             },
             hintPopupOpen = uiState.isFirstScroll
         )

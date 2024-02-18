@@ -83,7 +83,7 @@ fun NoteWineSearchScreen(
                     appState.showSnackbar(effect.message)
                 }
 
-                else -> { }
+                else -> {}
             }
         }
     }
@@ -181,7 +181,10 @@ fun WineSearchTopBar(
             tint = Color.White,
             modifier = Modifier
                 .clip(CircleShape)
-                .clickable { appState.navController.navigateUp() }
+                .clickable {
+                    appState.updateBottomBarVisibility(true)
+                    appState.navController.navigateUp()
+                }
         )
         WineSearchTextField(
             modifier = Modifier
