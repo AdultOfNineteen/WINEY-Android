@@ -39,7 +39,7 @@ fun NoteFeatureText(
             .clickable {
                 onClick()
             }
-            .padding(10.dp)
+            .padding(vertical = 9.dp, horizontal = 12.dp)
 
     )
 }
