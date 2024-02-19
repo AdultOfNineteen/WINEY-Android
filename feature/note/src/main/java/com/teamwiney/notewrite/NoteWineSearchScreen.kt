@@ -72,6 +72,10 @@ fun NoteWineSearchScreen(
         }
     }
 
+    LaunchedEffect(uiState.searchKeyword) {
+        viewModel.getSearchWines()
+    }
+
     LaunchedEffect(true) {
         viewModel.loadTastingNote()
 
