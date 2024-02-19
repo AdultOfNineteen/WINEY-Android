@@ -37,7 +37,7 @@ internal fun BoxScope.GpsIcon(
             modifier = Modifier
                 .padding(
                     end = 20.dp,
-                    bottom = peekHeight + 24.dp
+                    bottom = peekHeight + 44.dp
                 )
                 .clip(CircleShape)
                 .background(WineyTheme.colors.gray_900)

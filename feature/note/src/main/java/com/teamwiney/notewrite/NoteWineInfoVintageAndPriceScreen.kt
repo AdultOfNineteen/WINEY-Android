@@ -81,6 +81,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                                 inclusive = true
                             }
                         }
+                        appState.updateBottomBarVisibility(true)
                     },
                     onCancel = {
                         bottomSheetState.hideBottomSheet()
@@ -116,6 +117,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                                 inclusive = true
                             }
                         }
+                        appState.updateBottomBarVisibility(true)
                     },
                     onCancel = {
                         bottomSheetState.hideBottomSheet()
@@ -124,7 +126,9 @@ fun NoteWineInfoVintageAndPriceScreen(
             }
         }
         Column(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

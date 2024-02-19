@@ -99,6 +99,7 @@ fun AnalysisScreen(
         TopBar(
             leadingIconOnClick = {
                 appState.navController.navigateUp()
+                appState.updateBottomBarVisibility(true)
             }
         )
 
