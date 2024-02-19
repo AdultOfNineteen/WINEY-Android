@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +46,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
-import com.teamwiney.notewrite.components.NoteDeleteBottomSheet
 import com.teamwiney.ui.components.HintPopUp
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -67,30 +65,6 @@ fun NoteWineInfoVintageAndPriceScreen(
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusRequester2 by remember { mutableStateOf(FocusRequester()) }
 
-    BackHandler {
-        if (bottomSheetState.bottomSheetState.isVisible) {
-            bottomSheetState.hideBottomSheet()
-        } else {
-            viewModel.hideHintPopup()
-            bottomSheetState.showBottomSheet {
-                NoteDeleteBottomSheet(
-                    onConfirm = {
-                        bottomSheetState.hideBottomSheet()
-                        appState.navigate(NoteDestinations.ROUTE) {
-                            popUpTo(NoteDestinations.Write.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                        appState.updateBottomBarVisibility(true)
-                    },
-                    onCancel = {
-                        bottomSheetState.hideBottomSheet()
-                    }
-                )
-            }
-        }
-    }
-
     LaunchedEffect(key1 = Unit) {
         focusRequester.requestFocus()
         viewModel.showHintPopup()
@@ -108,22 +82,7 @@ fun NoteWineInfoVintageAndPriceScreen(
             content = "와인 정보 입력",
         ) {
             viewModel.hideHintPopup()
-            bottomSheetState.showBottomSheet {
-                NoteDeleteBottomSheet(
-                    onConfirm = {
-                        bottomSheetState.hideBottomSheet()
-                        appState.navigate(NoteDestinations.ROUTE) {
-                            popUpTo(NoteDestinations.Write.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                        appState.updateBottomBarVisibility(true)
-                    },
-                    onCancel = {
-                        bottomSheetState.hideBottomSheet()
-                    }
-                )
-            }
+            appState.navController.navigateUp()
         }
         Column(
             modifier = Modifier
