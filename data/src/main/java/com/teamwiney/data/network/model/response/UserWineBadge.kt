@@ -27,6 +27,10 @@ data class WineBadge(
     @SerializedName("isRead")
     val isRead: Boolean?,
     @SerializedName("badgeImage")
-    val badgeImage: String
+    val badgeImage: String,
+    @SerializedName("imgUrl")
+    val imgUrl: String,
+    @SerializedName("unActivatedImgUrl")
+    val unActivatedImgUrl: String
 )
 

@@ -1,24 +1,26 @@
 package com.teamwiney.mypage.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.teamwiney.core.design.R
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.data.network.model.response.WineBadge
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
@@ -31,6 +33,9 @@ fun MyPageBadgeDetailBottomSheet(
     containerColor: Color = WineyTheme.colors.gray_950,
     onConfirm: () -> Unit
 ) {
+    val context = LocalContext.current
+    val isAcquired = wineBadge.acquiredAt != null
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -51,9 +56,13 @@ fun MyPageBadgeDetailBottomSheet(
                 )
         )
         HeightSpacer(height = 30.dp)
-        Image(
-            painter = painterResource(id = R.mipmap.img_analysis_note),
-            contentDescription = null
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(if (isAcquired) wineBadge.imgUrl else wineBadge.unActivatedImgUrl)
+                .build(),
+            contentDescription = "BADGE_IMAGE",
+            modifier = Modifier.size(112.dp),
+            contentScale = ContentScale.Crop
         )
         HeightSpacer(height = 10.dp)
         Text(
@@ -85,16 +94,20 @@ fun MyPageBadgeDetailBottomSheet(
         )
         HeightSpacer(height = 30.dp)
         HeightSpacerWithLine(color = WineyTheme.colors.gray_700)
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 23.dp, bottom = 25.dp)
-                .clickable { onConfirm() },
-            text = "확인",
-            textAlign = TextAlign.Center,
-            style = WineyTheme.typography.headline.copy(
-                color = WineyTheme.colors.gray_50
+        Surface(
+            color = Color.Transparent,
+            onClick = { onConfirm() }
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 23.dp, bottom = 25.dp),
+                text = "확인",
+                textAlign = TextAlign.Center,
+                style = WineyTheme.typography.headline.copy(
+                    color = WineyTheme.colors.gray_50
+                )
             )
-        )
+        }
     }
 }
