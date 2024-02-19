@@ -48,7 +48,12 @@ internal fun BoxScope.WineBottomSheetOpenPopUp(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(text = "목록열기")
+            Text(
+                text = "목록열기",
+                style = WineyTheme.typography.captionB1.copy(
+                    color = WineyTheme.colors.gray_50
+                )
+            )
             Icon(
                 painter = painterResource(id = R.drawable.ic_hamburg_baseline_13),
                 contentDescription = "IC_GPS",

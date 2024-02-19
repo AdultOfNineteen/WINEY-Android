@@ -155,7 +155,7 @@ fun MapScreen(
 
     manageBottomBarVisibility(
         uiState = uiState,
-        updateBottomBarVisibility = appState::updateBottomBarVisibility
+        updateIsMapDetail = appState::updateIsMapDetail
     )
 
     manageSystemUIColor(

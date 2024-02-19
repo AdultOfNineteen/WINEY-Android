@@ -5,11 +5,11 @@ import androidx.compose.runtime.DisposableEffect
 import com.teamwiney.core.common.WineyAppState
 
 @Composable
-fun manageBottomBarState(appState: WineyAppState) {
+fun ManageBottomBarState(appState: WineyAppState) {
     DisposableEffect(key1 = Unit) {
-        appState.updateBottomBarVisibility(false)
+        appState.updateIsMapDetail(true)
         onDispose {
-            appState.updateBottomBarVisibility(true)
+            appState.updateIsMapDetail(false)
         }
     }
 }

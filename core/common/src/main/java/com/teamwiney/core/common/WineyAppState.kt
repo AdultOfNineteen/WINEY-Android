@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberWineyAppState(
-    bottomBarState: MutableState<Boolean> = mutableStateOf(false),
+    isMapDetail: MutableState<Boolean> = mutableStateOf(false),
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -33,7 +33,7 @@ fun rememberWineyAppState(
 ): WineyAppState {
     return remember(Unit) {
         WineyAppState(
-            bottomBarState,
+            isMapDetail,
             navController,
             scaffoldState,
             scope,
@@ -44,7 +44,7 @@ fun rememberWineyAppState(
 
 @Stable
 class WineyAppState(
-    val bottomBarState: MutableState<Boolean>,
+    val isMapDetail: MutableState<Boolean>,
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
@@ -57,11 +57,12 @@ class WineyAppState(
     val topLevelDestination = TopLevelDestination.values().toList()
 
     val shouldShowBottomBar: Boolean
-        @Composable get() = currentDestination?.route ==
+        @Composable get() = !isMapDetail.value && currentDestination?.route ==
                 topLevelDestination.find { it.route == currentDestination?.route }?.route
 
-    fun updateBottomBarVisibility(visibility: Boolean) {
-        bottomBarState.value = visibility
+
+    fun updateIsMapDetail(isMapDetail: Boolean) {
+        this.isMapDetail.value = isMapDetail
     }
 
     fun showSnackbar(message: String) = scope.launch {

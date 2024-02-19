@@ -70,7 +70,6 @@ fun LoginScreen(
         }
 
     LaunchedEffect(true) {
-        appState.updateBottomBarVisibility(false)
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is LoginContract.Effect.NavigateTo -> {

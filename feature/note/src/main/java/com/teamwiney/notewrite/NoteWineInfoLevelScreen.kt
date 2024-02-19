@@ -71,7 +71,6 @@ fun NoteWineInfoLevelScreen(
                                 inclusive = true
                             }
                         }
-                        appState.updateBottomBarVisibility(true)
                     },
                     onCancel = {
                         bottomSheetState.hideBottomSheet()
@@ -118,7 +117,6 @@ fun NoteWineInfoLevelScreen(
                                         inclusive = true
                                     }
                                 }
-                                appState.updateBottomBarVisibility(true)
                             },
                             onCancel = {
                                 bottomSheetState.hideBottomSheet()

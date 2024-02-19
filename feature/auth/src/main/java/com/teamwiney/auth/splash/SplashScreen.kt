@@ -45,7 +45,6 @@ fun SplashScreen(
 
     LaunchedEffect(true) {
         viewModel.checkIsFirstLaunch()
-        appState.updateBottomBarVisibility(false)
         delay(1500)
         viewModel.processEvent(SplashContract.Event.CheckUserStatus)
 

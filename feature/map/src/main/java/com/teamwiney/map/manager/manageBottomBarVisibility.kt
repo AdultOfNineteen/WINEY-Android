@@ -8,13 +8,13 @@ import com.teamwiney.map.model.ShopCategory
 @Composable
 fun manageBottomBarVisibility(
     uiState: MapContract.State,
-    updateBottomBarVisibility: (Boolean) -> Unit
+    updateIsMapDetail: (Boolean) -> Unit
 ) {
     LaunchedEffect(uiState.selectedMarkar, uiState.selectedShopCategory) {
         if (uiState.selectedMarkar == null && uiState.selectedShopCategory == ShopCategory.ALL) {
-            updateBottomBarVisibility(true)
+            updateIsMapDetail(false)
         } else {
-            updateBottomBarVisibility(false)
+            updateIsMapDetail(true)
         }
     }
 }

@@ -83,7 +83,6 @@ fun HomeScreen(
     LaunchedEffect(true) {
         viewModel.getRecommendWines()
         viewModel.getWineTips()
-        appState.updateBottomBarVisibility(true)
 
         effectFlow.collectLatest { effect ->
             when (effect) {
@@ -114,7 +113,6 @@ fun HomeScreen(
         HomeLogo(
             onClick = {
                 viewModel.processEvent(HomeContract.Event.ShowAnalysis)
-                appState.updateBottomBarVisibility(false)
             },
             hintPopupOpen = uiState.isFirstScroll
         )

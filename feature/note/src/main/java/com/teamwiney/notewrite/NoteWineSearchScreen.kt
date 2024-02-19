@@ -188,7 +188,6 @@ fun WineSearchTopBar(
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable {
-                    appState.updateBottomBarVisibility(true)
                     appState.navController.navigateUp()
                 }
         )
