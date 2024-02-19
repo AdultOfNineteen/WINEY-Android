@@ -124,7 +124,6 @@ fun NoteScreen(
             HomeLogo(
                 onClick = {
                     appState.navigate(HomeDestinations.Analysis.ROUTE)
-                    appState.updateBottomBarVisibility(false)
                 },
                 hintPopupOpen = false
             )
@@ -190,8 +189,8 @@ fun NoteScreen(
             contentColor = WineyTheme.colors.gray_50,
             onClick = {
                 appState.navigate(NoteDestinations.Write.ROUTE)
-                appState.updateBottomBarVisibility(false)
-            }) {
+            }
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_pencil_29),
                 contentDescription = "IC_PENCIL",

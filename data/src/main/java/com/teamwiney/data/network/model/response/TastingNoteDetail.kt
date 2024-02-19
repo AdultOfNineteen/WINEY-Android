@@ -1,5 +1,7 @@
 package com.teamwiney.data.network.model.response
 
+import android.net.Uri
+
 data class TastingNoteDetail(
     val noteId: Long,
     val noteDate: String,
@@ -49,10 +51,11 @@ data class TastingNoteDetail(
                 body = 0,
             ),
             memo = "-",
-            tastingNoteImage = listOf(TastingNoteImage("1", "1")),
+            tastingNoteImage = listOf(TastingNoteImage("1", "", Uri.EMPTY)),
         )
     }
 }
+
 data class WineTaste(
     val sweetness: Int,
     val acidity: Int,
@@ -71,5 +74,6 @@ data class MyWineTaste(
 
 data class TastingNoteImage(
     val imgId: String,
-    val imgUrl: String
+    val imgUrl: String,
+    val contentUri: Uri
 )

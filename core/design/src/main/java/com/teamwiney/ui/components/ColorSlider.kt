@@ -34,20 +34,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.theme.WineyTheme
+import java.lang.Integer.min
 
 @Composable
 fun ColorSlider(
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     thumbColor: Color = Color.White,
-    startColor: Color = Color.Red,
-    endColor: Color = Color.White,
+    barColors: List<Color> = listOf(
+        Color(0xFF59002B),
+        Color(0xFF6B3036),
+        Color(0xFF852223),
+        Color(0xFF941F25),
+        Color(0xFFCB4546),
+        Color(0xFFEE676B),
+        Color(0xFFF18997),
+        Color(0xFFE9B4A7),
+        Color(0xFFF2C2B6),
+        Color(0xFFEEC693),
+        Color(0xFFF5E1A8),
+        Color(0xFFF1FBCB),
+        Color(0xFFD5DBB5)
+    ),
     trackHeight: Dp,
-    thumbSize: Dp,
-    thumbX: Float = 0f,
-    updateThumbX: (Float) -> Unit = {}
+    thumbSize: Dp
 ) {
-    var thumbX by remember { mutableFloatStateOf(thumbX) }
+    var thumbX by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
 
     Box(
@@ -58,7 +70,7 @@ fun ColorSlider(
                 .clip(RoundedCornerShape(100.dp))
                 .background(
                     brush = Brush.linearGradient(
-                        colors = listOf(startColor, endColor)
+                        colors = barColors
                     )
                 )
                 .height(trackHeight)
@@ -82,11 +94,7 @@ fun ColorSlider(
                     )
                 }
                 .pointerInput(true) {
-                    detectHorizontalDragGestures(
-                        onDragEnd = {
-                            updateThumbX(thumbX)
-                        }
-                    ) { _, dragAmount ->
+                    detectHorizontalDragGestures { _, dragAmount ->
                         if (isDragging) {
                             thumbX += dragAmount
                             thumbX = thumbX.coerceIn(0f, size.width.toFloat())
@@ -94,8 +102,7 @@ fun ColorSlider(
                                 calculateColorForPosition(
                                     thumbX,
                                     size.width.toFloat(),
-                                    startColor,
-                                    endColor
+                                    barColors
                                 )
                             )
                         }
@@ -122,19 +129,34 @@ private fun isInCircle(x: Float, y: Float, centerX: Float, centerY: Float, radiu
 private fun calculateColorForPosition(
     position: Float,
     width: Float,
-    startColor: Color,
-    endColor: Color
+    barColors: List<Color>
 ): Color {
     val fraction = position / width
-    return lerp(startColor, endColor, fraction)
+    val colorPosition = (fraction * (barColors.size - 1)).toInt()
+    val startColor = barColors[colorPosition]
+    val endColor = barColors[min(colorPosition + 1, barColors.size - 1)]
+    return lerp(startColor, endColor, fraction * (barColors.size - 1) - colorPosition)
 }
 
 @Preview
 @Composable
 fun PreviewColorSlider() {
-    val startColor = Color.Red
-    val endColor = Color.White
-    var currentColor by remember { mutableStateOf(startColor) }
+    var barColors = listOf(
+        Color(0xFF59002B),
+        Color(0xFF6B3036),
+        Color(0xFF852223),
+        Color(0xFF941F25),
+        Color(0xFFCB4546),
+        Color(0xFFEE676B),
+        Color(0xFFF18997),
+        Color(0xFFE9B4A7),
+        Color(0xFFF2C2B6),
+        Color(0xFFEEC693),
+        Color(0xFFF5E1A8),
+        Color(0xFFF1FBCB),
+        Color(0xFFD5DBB5)
+    )
+    var currentColor by remember { mutableStateOf(barColors[0]) }
 
     Box(
         modifier = Modifier
@@ -158,8 +180,7 @@ fun PreviewColorSlider() {
 
             ColorSlider(
                 onValueChange = { currentColor = it },
-                startColor = startColor,
-                endColor = endColor,
+                barColors = barColors,
                 trackHeight = 10.dp,
                 thumbSize = 22.dp
             )

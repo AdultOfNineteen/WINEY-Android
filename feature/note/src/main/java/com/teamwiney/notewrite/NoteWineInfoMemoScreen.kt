@@ -57,6 +57,7 @@ import coil.request.ImageRequest
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.TastingNoteImage
 import com.teamwiney.notedetail.component.NoteFeatureText
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
@@ -92,7 +93,15 @@ fun NoteWineInfoMemoScreen(
         contract = ImagePickerContract(),
         onResult = { uris ->
             uris?.let {
-                viewModel.updateUris(it)
+                viewModel.addNoteImages(
+                    it.map { uri ->
+                        TastingNoteImage(
+                            imgId = "",
+                            imgUrl = "",
+                            contentUri = uri
+                        )
+                    }
+                )
             }
         }
     )
@@ -102,7 +111,7 @@ fun NoteWineInfoMemoScreen(
     ) { permissionMap ->
         val areGranted = permissionMap.values.reduce { acc, next -> acc && next }
         if (areGranted) {
-            imagePicker.launch(3 - uiState.wineNote.imgs.size)
+            imagePicker.launch(3 - uiState.wineNote.selectedImages.size)
         } else {
             appState.showSnackbar("미디어 권한과 카메라 권한을 허용해야 갤러리를 사용할 수 있습니다")
 
@@ -194,11 +203,13 @@ fun NoteWineInfoMemoScreen(
                     .padding(vertical = 15.dp)
                     .horizontalScroll(rememberScrollState())
             ) {
-                uiState.wineNote.imgs.map {
+                uiState.wineNote.selectedImages.map { image ->
                     Box {
                         AsyncImage(
                             model = ImageRequest.Builder(context)
-                                .data(it)
+                                .data(
+                                    image.imgUrl.ifEmpty { image.contentUri }
+                                )
                                 .build(),
                             contentDescription = "IMG_URL",
                             modifier = Modifier
@@ -214,7 +225,7 @@ fun NoteWineInfoMemoScreen(
                                 .padding(7.dp)
                                 .align(Alignment.TopEnd)
                                 .clickable {
-                                    viewModel.removeUri(it)
+                                    viewModel.removeNoteImage(image)
                                 }
                                 .size(18.dp),
                             tint = Color.Unspecified
@@ -225,11 +236,11 @@ fun NoteWineInfoMemoScreen(
 
             Button(
                 onClick = {
-                    if (uiState.wineNote.imgs.size < 3) {
+                    if (uiState.wineNote.selectedImages.size < 3) {
                         if (!allPermissionsGranted) {
                             launchMultiplePermissions.launch(permissions)
                         } else {
-                            imagePicker.launch(3 - uiState.wineNote.imgs.size)
+                            imagePicker.launch(3 - uiState.wineNote.selectedImages.size)
                         }
                     } else {
                         appState.showSnackbar("사진은 최대 3장까지 첨부 가능합니다")
@@ -333,8 +344,7 @@ fun NoteWineInfoMemoScreen(
             enableTextColor = WineyTheme.colors.gray_50,
             enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null,
             onClick = {
-                // TODO 작성 완료 화면 이동
-                viewModel.writeTastingNote()
+                if (uiState.mode == EditMode.ADD) viewModel.writeTastingNote() else viewModel.updateTastingNote()
             }
         )
     }

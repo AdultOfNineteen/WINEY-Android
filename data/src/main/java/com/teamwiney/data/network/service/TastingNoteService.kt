@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -62,6 +63,15 @@ interface TastingNoteService {
     @POST("/tasting-notes")
     suspend fun postTastingNote(
         @Part("request") request: RequestBody,
-        @Part multipartFiles: List<MultipartBody.Part>,
+        @Part multipartFiles: List<MultipartBody.Part>
+    ): ApiResult<CommonResponse<TastingNoteIdRes>>
+
+    /** 태이스팅 노트 수정 API */
+    @Multipart
+    @PATCH("/tasting-notes/{noteId}")
+    suspend fun updateTastingNote(
+        @Path("noteId") noteId: Int,
+        @Part("request") request: RequestBody,
+        @Part multipartFiles: List<MultipartBody.Part>
     ): ApiResult<CommonResponse<TastingNoteIdRes>>
 }

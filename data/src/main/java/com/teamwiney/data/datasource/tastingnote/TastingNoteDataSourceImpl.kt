@@ -78,4 +78,12 @@ class TastingNoteDataSourceImpl @Inject constructor(
         emit(tastingNoteService.postTastingNote(request, multipartFiles))
     }.flowOn(ioDispatcher)
 
+    override fun updateTastingNote(
+        noteId: Int,
+        request: RequestBody,
+        multipartFiles: List<MultipartBody.Part>
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> = flow {
+        emit(tastingNoteService.updateTastingNote(noteId, request, multipartFiles))
+    }.flowOn(ioDispatcher)
+
 }

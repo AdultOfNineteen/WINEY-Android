@@ -52,7 +52,7 @@ object NoteDestinations {
     const val DETAIL = "detail"
 
     object Write {
-        const val ROUTE = "noteWrite"
+        const val ROUTE = "noteWriteRoute"
 
         const val SEARCH_WINE = "searchWine"
         const val SELECT_WINE = "selectWine"

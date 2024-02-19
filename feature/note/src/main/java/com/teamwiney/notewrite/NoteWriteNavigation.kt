@@ -2,7 +2,9 @@ package com.teamwiney.notewrite
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
@@ -14,14 +16,22 @@ fun NavGraphBuilder.noteWriteGraph(
     bottomSheetState: WineyBottomSheetState
 ) {
     navigation(
-        route = NoteDestinations.Write.ROUTE,
-        startDestination = NoteDestinations.Write.SEARCH_WINE
+        route = "${NoteDestinations.Write.ROUTE}?noteId={noteId}",
+        startDestination = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
     ) {
-        composable(route = NoteDestinations.Write.SEARCH_WINE) {
+        composable(
+            route = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}",
+            arguments = listOf(
+                navArgument("noteId") {
+                    type = NavType.StringType
+                    defaultValue = "-1"
+                }
+            )
+        ) {
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineSearchScreen(
                 appState = appState,
@@ -33,7 +43,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWriteSelectWineScreen(
                 appState = appState,
@@ -46,7 +56,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoLevelScreen(
                 appState = appState,
@@ -59,7 +69,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoVintageAndPriceScreen(
                 appState = appState,
@@ -72,7 +82,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoColorAndSmellScreen(
                 appState = appState,
@@ -84,7 +94,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoFlavorScreen(
                 appState = appState,
@@ -103,7 +113,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoStandardFlavorScreen(
                 appState = appState,
@@ -116,7 +126,7 @@ fun NavGraphBuilder.noteWriteGraph(
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
                 navController = appState.navController,
-                graph = NoteDestinations.ROUTE
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
             )
             NoteWineInfoMemoScreen(
                 appState = appState,

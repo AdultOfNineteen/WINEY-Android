@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +17,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
@@ -68,8 +69,7 @@ data class WineSmellKeyword(
 
 data class WineSmellOption(
     val name: String,
-    val value: String,
-    var isSelected: Boolean = false
+    val value: String
 )
 
 
@@ -79,8 +79,6 @@ fun NoteWineInfoColorAndSmellScreen(
     viewModel: NoteWriteViewModel,
 ) {
 
-    val startColor = Color.Red
-    val endColor = Color.White
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
@@ -105,17 +103,14 @@ fun NoteWineInfoColorAndSmellScreen(
         ) {
             WineColorPicker(
                 currentColor = uiState.wineNote.color,
-                startColor = startColor,
-                endColor = endColor,
-                thumbX = uiState.thumbX,
-                updateThumbX = { viewModel.updateThumbX(it) },
+                barColors = uiState.barColors
             ) { viewModel.updateColor(it) }
             HeightSpacer(35.dp)
             WineFlavorPicker(
                 wineSmellKeywords = uiState.wineSmellKeywords,
                 isWineSmellKeywordSelected = viewModel::isWineSmellSelected,
                 updateWineSmell = { wineSmellOption ->
-                    viewModel.updateWineSmells(wineSmellOption)
+                    viewModel.updateWineSmell(wineSmellOption)
                 },
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
@@ -221,17 +216,16 @@ private fun WineSmellContainer(
             style = WineyTheme.typography.bodyB2,
             color = WineyTheme.colors.gray_500
         )
-        FlowRow(
+        LazyRow(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            wineSmellKeyword.options.forEach {
+            items(wineSmellKeyword.options) {
                 NoteFeatureText(
                     name = it.name,
                     enable = isWineSmellKeywordSelected(it),
                 ) {
-                    updateWineSmell(it.copy(isSelected = !it.isSelected))
+                    updateWineSmell(it)
                 }
             }
         }
@@ -241,10 +235,7 @@ private fun WineSmellContainer(
 @Composable
 private fun WineColorPicker(
     currentColor: Color,
-    startColor: Color,
-    endColor: Color,
-    thumbX: Float,
-    updateThumbX: (Float) -> Unit,
+    barColors: List<Color>,
     updateCurrentColor: (Color) -> Unit,
 ) {
     Column(
@@ -296,12 +287,9 @@ private fun WineColorPicker(
 
                     ColorSlider(
                         onValueChange = updateCurrentColor,
-                        startColor = startColor,
-                        endColor = endColor,
+                        barColors = barColors,
                         trackHeight = 10.dp,
-                        thumbSize = 22.dp,
-                        thumbX = thumbX,
-                        updateThumbX = updateThumbX,
+                        thumbSize = 22.dp
                     )
                 }
             }

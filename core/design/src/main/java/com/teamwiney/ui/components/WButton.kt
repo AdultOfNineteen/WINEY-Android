@@ -1,8 +1,8 @@
 package com.teamwiney.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -14,7 +14,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.ui.theme.WineyTheme
-import com.teamwiney.ui.theme.WineyTypography
 
 @Preview
 @Composable
@@ -23,6 +22,7 @@ fun WButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     text: String = "Button",
+    contentPadding: PaddingValues = PaddingValues(vertical = 16.dp),
     border: BorderStroke? = null,
     enableTextColor: Color = Color.White,
     disableTextColor: Color = WineyTheme.colors.gray_600,
@@ -40,6 +40,7 @@ fun WButton(
             containerColor = enableBackgroundColor,
             disabledContainerColor = disableBackgroundColor,
         ),
+        contentPadding = contentPadding,
         shape = shape,
         enabled = enabled
     ) {
@@ -47,7 +48,6 @@ fun WButton(
             text = text,
             color = if (enabled) enableTextColor else disableTextColor,
             style = if (enabled) enableTextStyle else disableTextStyle,
-            modifier = Modifier.padding(vertical = 8.5.dp)
         )
     }
 }

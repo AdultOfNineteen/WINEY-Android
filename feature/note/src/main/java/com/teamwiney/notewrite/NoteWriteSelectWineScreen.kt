@@ -108,14 +108,12 @@ fun NoteWriteSelectWineScreen(
                     color = selectedWine.type.type,
                     name = selectedWine.name,
                     origin = selectedWine.country,
-                    onClick = {
-                        // TODO 노트 작성 화면으로
-                    },
+                    onClick = { },
                 )
+                HeightSpacer(height = 20.dp)
 
                 Text(
                     modifier = Modifier
-                        .padding(top = 40.dp)
                         .align(Alignment.CenterHorizontally),
                     textAlign = TextAlign.Center,
                     text = selectedWine.name,

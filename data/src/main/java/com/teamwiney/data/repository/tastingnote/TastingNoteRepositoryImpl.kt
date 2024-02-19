@@ -110,4 +110,54 @@ class TastingNoteRepositoryImpl @Inject constructor(
 
         return tastingNoteDataSource.postTastingNote(request, multipartFiles)
     }
+
+    override fun updateTastingNote(
+        noteId: Int,
+        officialAlcohol: Double?,
+        alcohol: Int,
+        color: String,
+        sweetness: Int,
+        acidity: Int,
+        body: Int,
+        tannin: Int,
+        finish: Int,
+        memo: String,
+        rating: Int,
+        vintage: String,
+        price: String,
+        buyAgain: Boolean?,
+        smellKeywordList: List<String>,
+        deleteSmellKeywordList: List<String>,
+        deleteImgList: List<String>,
+        imgUris: List<Uri>
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
+        val jsonObjectBuilder = JSONObject().apply {
+            put("officialAlcohol", officialAlcohol)
+            put("alcohol", alcohol)
+            put("color", color)
+            put("sweetness", sweetness)
+            put("acidity", acidity)
+            put("body", body)
+            put("tannin", tannin)
+            put("finish", finish)
+            put("memo", memo)
+            put("rating", rating)
+            if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
+            if (price.isNotEmpty()) put("price", price.toInt())
+            buyAgain?.let { put("buyAgain", it) }
+            put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
+            put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
+            put("deleteImgLists", JSONArray().apply { deleteImgList.forEach { put(it) } })
+        }
+
+        val request = jsonObjectBuilder.toString().toRequestBody("application/json".toMediaType())
+        val multipartFiles = imgUris.map {
+            val originalFile = fileFromContentUri(context, it)
+            val compressedFile = resizeAndSaveImage(context, originalFile)
+            val requestBody: RequestBody = compressedFile.asRequestBody("image/*".toMediaType())
+            MultipartBody.Part.createFormData("multipartFiles", compressedFile.name, requestBody)
+        }
+
+        return tastingNoteDataSource.updateTastingNote(noteId, request, multipartFiles)
+    }
 }

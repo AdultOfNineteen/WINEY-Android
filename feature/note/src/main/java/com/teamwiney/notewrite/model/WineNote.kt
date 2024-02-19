@@ -1,7 +1,8 @@
 package com.teamwiney.notewrite.model
 
-import android.net.Uri
 import androidx.compose.ui.graphics.Color
+import com.teamwiney.data.network.model.response.TastingNoteImage
+import com.teamwiney.notewrite.WineSmellOption
 
 data class WineNote(
     val wineId: Long,
@@ -18,8 +19,14 @@ data class WineNote(
     val memo: String,
     val buyAgain: Boolean?,
     val rating: Int,
-    val imgs: List<Uri>,
-    val smellKeywordList: List<String>
+    val selectedImages: List<TastingNoteImage>,
+    val loadImages: List<TastingNoteImage>,
+    val addImages: List<TastingNoteImage>,
+    val deleteImages: List<TastingNoteImage>,
+    val smellKeywordList: List<WineSmellOption>,
+    val loadSmellKeywordList: List<WineSmellOption>,
+    val addSmellKeywordList: List<WineSmellOption>,
+    val deleteSmellKeywordList: List<WineSmellOption>
 ) {
     companion object {
         fun default(): WineNote {
@@ -28,7 +35,7 @@ data class WineNote(
                 vintage = "",
                 officialAlcohol = 12.0,
                 price = "",
-                color = Color.Red,
+                color = Color(0xFF59002B),
                 sweetness = 0,
                 acidity = 0,
                 alcohol = 0,
@@ -38,8 +45,14 @@ data class WineNote(
                 memo = "",
                 buyAgain = null,
                 rating = 0,
-                imgs = emptyList(),
-                smellKeywordList = emptyList()
+                selectedImages = emptyList(),
+                loadImages = emptyList(),
+                addImages = emptyList(),
+                deleteImages = emptyList(),
+                smellKeywordList = emptyList(),
+                loadSmellKeywordList = emptyList(),
+                addSmellKeywordList = emptyList(),
+                deleteSmellKeywordList = emptyList()
             )
         }
     }
