@@ -189,7 +189,8 @@ fun NoteScreen(
             contentColor = WineyTheme.colors.gray_50,
             onClick = {
                 appState.navigate(NoteDestinations.Write.ROUTE)
-            }) {
+            }
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_pencil_29),
                 contentDescription = "IC_PENCIL",

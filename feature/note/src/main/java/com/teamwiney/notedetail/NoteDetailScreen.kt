@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.notedetail.component.NoteDeleteBottomSheet
 import com.teamwiney.notedetail.component.NoteDetailBottomSheet
@@ -76,6 +77,8 @@ fun NoteDetailScreen(
                                         )
                                     },
                                     patchNote = {
+                                        bottomSheetState.hideBottomSheet()
+                                        appState.navigate("${NoteDestinations.Write.ROUTE}?noteId=$noteId")
                                     }
                                 )
                             }
@@ -85,7 +88,9 @@ fun NoteDetailScreen(
                                     onConfirm = {
                                         viewModel.deleteNote(uiState.noteDetail.noteId.toInt())
                                     },
-                                    onCancel = bottomSheetState::hideBottomSheet
+                                    onCancel = {
+                                        bottomSheetState.hideBottomSheet()
+                                    }
                                 )
                             }
                         }

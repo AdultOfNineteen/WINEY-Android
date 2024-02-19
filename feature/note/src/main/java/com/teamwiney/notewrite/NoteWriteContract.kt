@@ -19,6 +19,7 @@ class NoteWriteContract {
 
     data class State(
         val isLoading: Boolean = false,
+        val mode: EditMode = EditMode.ADD,
         val searchKeyword: String = "",
         val searchWines: Flow<PagingData<SearchWine>> = flowOf(
             PagingData.from(
@@ -67,8 +68,7 @@ class NoteWriteContract {
                 title = "기타",
                 options = WineSmell.values().filter { it.type == "OTHER" }.map { WineSmellOption(it.korName, it.value) }
             )
-        ),
-        val thumbX: Float = 0f
+        )
     ) : UiState
 
     sealed class Event : UiEvent {
@@ -86,4 +86,8 @@ class NoteWriteContract {
         object NoteWriteSuccess : Effect()
     }
 
+}
+
+enum class EditMode {
+    ADD, UPDATE
 }

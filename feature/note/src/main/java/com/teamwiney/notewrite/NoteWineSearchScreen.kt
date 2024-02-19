@@ -73,6 +73,8 @@ fun NoteWineSearchScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.loadTastingNote()
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is NoteWriteContract.Effect.NavigateTo -> {

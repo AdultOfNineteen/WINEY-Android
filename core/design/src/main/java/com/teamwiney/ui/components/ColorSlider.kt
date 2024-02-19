@@ -57,11 +57,9 @@ fun ColorSlider(
         Color(0xFFD5DBB5)
     ),
     trackHeight: Dp,
-    thumbSize: Dp,
-    thumbX: Float = 0f,
-    updateThumbX: (Float) -> Unit = {}
+    thumbSize: Dp
 ) {
-    var thumbX by remember { mutableFloatStateOf(thumbX) }
+    var thumbX by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
 
     Box(
@@ -96,11 +94,7 @@ fun ColorSlider(
                     )
                 }
                 .pointerInput(true) {
-                    detectHorizontalDragGestures(
-                        onDragEnd = {
-                            updateThumbX(thumbX)
-                        }
-                    ) { _, dragAmount ->
+                    detectHorizontalDragGestures { _, dragAmount ->
                         if (isDragging) {
                             thumbX += dragAmount
                             thumbX = thumbX.coerceIn(0f, size.width.toFloat())

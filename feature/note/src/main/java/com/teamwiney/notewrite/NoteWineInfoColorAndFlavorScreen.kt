@@ -68,8 +68,7 @@ data class WineSmellKeyword(
 
 data class WineSmellOption(
     val name: String,
-    val value: String,
-    var isSelected: Boolean = false
+    val value: String
 )
 
 
@@ -79,8 +78,6 @@ fun NoteWineInfoColorAndSmellScreen(
     viewModel: NoteWriteViewModel,
 ) {
 
-    val startColor = Color.Red
-    val endColor = Color.White
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
@@ -105,16 +102,14 @@ fun NoteWineInfoColorAndSmellScreen(
         ) {
             WineColorPicker(
                 currentColor = uiState.wineNote.color,
-                barColors = uiState.barColors,
-                thumbX = uiState.thumbX,
-                updateThumbX = { viewModel.updateThumbX(it) },
+                barColors = uiState.barColors
             ) { viewModel.updateColor(it) }
             HeightSpacer(35.dp)
             WineFlavorPicker(
                 wineSmellKeywords = uiState.wineSmellKeywords,
                 isWineSmellKeywordSelected = viewModel::isWineSmellSelected,
                 updateWineSmell = { wineSmellOption ->
-                    viewModel.updateWineSmells(wineSmellOption)
+                    viewModel.updateWineSmell(wineSmellOption)
                 },
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
@@ -230,7 +225,7 @@ private fun WineSmellContainer(
                     name = it.name,
                     enable = isWineSmellKeywordSelected(it),
                 ) {
-                    updateWineSmell(it.copy(isSelected = !it.isSelected))
+                    updateWineSmell(it)
                 }
             }
         }
@@ -241,8 +236,6 @@ private fun WineSmellContainer(
 private fun WineColorPicker(
     currentColor: Color,
     barColors: List<Color>,
-    thumbX: Float,
-    updateThumbX: (Float) -> Unit,
     updateCurrentColor: (Color) -> Unit,
 ) {
     Column(
@@ -296,9 +289,7 @@ private fun WineColorPicker(
                         onValueChange = updateCurrentColor,
                         barColors = barColors,
                         trackHeight = 10.dp,
-                        thumbSize = 22.dp,
-                        thumbX = thumbX,
-                        updateThumbX = updateThumbX,
+                        thumbSize = 22.dp
                     )
                 }
             }

@@ -31,10 +31,17 @@ interface TastingNoteDataSource {
     fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>>
 
     fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
+
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<CommonResponse<String>>>
 
     fun postTastingNote(
         request: RequestBody,
         multipartFiles: List<MultipartBody.Part>,
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
+
+    fun updateTastingNote(
+        noteId: Int,
+        request: RequestBody,
+        multipartFiles: List<MultipartBody.Part>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 }

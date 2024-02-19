@@ -59,4 +59,25 @@ interface TastingNoteRepository {
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
+
+    fun updateTastingNote(
+        noteId: Int,
+        officialAlcohol: Double?,
+        alcohol: Int,
+        color: String,
+        sweetness: Int,
+        acidity: Int,
+        body: Int,
+        tannin: Int,
+        finish: Int,
+        memo: String,
+        rating: Int,
+        vintage: String,
+        price: String,
+        buyAgain: Boolean?,
+        smellKeywordList: List<String>,
+        deleteSmellKeywordList: List<String>,
+        deleteImgList: List<String>,
+        imgUris: List<Uri>
+    ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 }
