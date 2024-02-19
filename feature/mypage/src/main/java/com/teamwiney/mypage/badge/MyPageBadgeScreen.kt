@@ -258,6 +258,8 @@ private fun WineBadgeItem(
 ) {
     val context = LocalContext.current
 
+    val isAcquired = wineBadge.acquiredAt != null
+
     Column(
         modifier = modifier.height(IntrinsicSize.Max)
     ) {
@@ -294,7 +296,7 @@ private fun WineBadgeItem(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(wineBadge.badgeImage)
+                    .data(if (isAcquired) wineBadge.imgUrl else wineBadge.unActivatedImgUrl)
                     .build(),
                 contentDescription = "BADGE_IMAGE",
                 modifier = Modifier
