@@ -60,21 +60,7 @@ fun SignUpAuthenticationScreen(
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
         } else {
-            bottomSheetState.showBottomSheet {
-                ReturnToLoginBottomSheet(
-                    onConfirm = {
-                        bottomSheetState.hideBottomSheet()
-                        appState.navigate(AuthDestinations.Login.ROUTE) {
-                            popUpTo(AuthDestinations.Login.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onCancel = {
-                        bottomSheetState.hideBottomSheet()
-                    }
-                )
-            }
+            viewModel.processEvent(SignUpContract.Event.BackToLogin)
         }
     }
 
