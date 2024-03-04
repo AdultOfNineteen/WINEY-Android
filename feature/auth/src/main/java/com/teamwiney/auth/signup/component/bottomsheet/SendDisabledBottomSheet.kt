@@ -23,7 +23,7 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-fun SendTimeExceededLimitBottomSheet(
+fun SendDisabledBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
     onConfirm: () -> Unit
@@ -54,7 +54,7 @@ fun SendTimeExceededLimitBottomSheet(
         )
         HeightSpacer(height = 16.dp)
         Text(
-            text = "인증 요청 제한 횟수를 초과했어요\n5분 뒤 처음부터 진행해주세요!",
+            text = "아직 5분이 지나지 않았어요\n5분 후 인증을 진행해주세요!",
             style = WineyTheme.typography.bodyB1,
             color = WineyTheme.colors.gray_200,
             textAlign = TextAlign.Center

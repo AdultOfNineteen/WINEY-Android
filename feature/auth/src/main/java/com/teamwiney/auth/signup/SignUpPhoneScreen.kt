@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.SignUpContract.Companion.PHONE_NUMBER_LENGTH
+import com.teamwiney.auth.signup.component.bottomsheet.SendDisabledBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.auth.signup.component.bottomsheet.SendTimeExceededLimitBottomSheet
@@ -84,6 +85,19 @@ fun SignUpPhoneScreen(
                         is SignUpContract.BottomSheet.SendTimeExceededLimit -> {
                             bottomSheetState.showBottomSheet {
                                 SendTimeExceededLimitBottomSheet {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        is SignUpContract.BottomSheet.SendDisabled -> {
+                            bottomSheetState.showBottomSheet {
+                                SendDisabledBottomSheet {
                                     bottomSheetState.hideBottomSheet()
                                     appState.navigate(AuthDestinations.Login.ROUTE) {
                                         popUpTo(AuthDestinations.SignUp.ROUTE) {

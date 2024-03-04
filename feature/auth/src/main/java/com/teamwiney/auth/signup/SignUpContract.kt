@@ -99,6 +99,7 @@ class SignUpContract {
     sealed class BottomSheet : UiSheet {
         object SendMessage : BottomSheet()
         object SendTimeExceededLimit : BottomSheet()
+        object SendDisabled : BottomSheet()
         object AuthenticationFailed : BottomSheet()
         object AuthenticationTimeOut : BottomSheet()
         object ReturnToLogin : BottomSheet()

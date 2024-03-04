@@ -126,6 +126,9 @@ enum class CommonResponseStatus(val code: String, val message: String) {
     ),
     VERIFICATION_DID_NOT_MATCH(
         "M004", "인증 번호가 일치하지 않습니다."
-    );
+    ),
+    MESSAGE_SEND_TOO_MANY_ATTEMPTS(
+        "M005", "인증번호 요청 횟수가 초과되었습니다."
+    )
 
 }

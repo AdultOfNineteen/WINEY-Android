@@ -141,16 +141,26 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    if (it.code == CommonResponseStatus.USER_ALREADY_EXISTS.code) {
-                        postEffect(
-                            SignUpContract.Effect.ShowBottomSheet(
-                                SignUpContract.BottomSheet.UserAlreadyExists(
-                                    it.message
+                    when (it.code) {
+                        CommonResponseStatus.USER_ALREADY_EXISTS.code -> {
+                            postEffect(
+                                SignUpContract.Effect.ShowBottomSheet(
+                                    SignUpContract.BottomSheet.UserAlreadyExists(
+                                        it.message
+                                    )
                                 )
                             )
-                        )
-                    } else {
-                        postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                        }
+                        CommonResponseStatus.MESSAGE_SEND_TOO_MANY_ATTEMPTS.code -> {
+                            postEffect(
+                                SignUpContract.Effect.ShowBottomSheet(
+                                    SignUpContract.BottomSheet.SendDisabled
+                                )
+                            )
+                        }
+                        else -> {
+                            postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                        }
                     }
                 }
 
