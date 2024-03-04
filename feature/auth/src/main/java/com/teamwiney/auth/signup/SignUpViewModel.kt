@@ -97,10 +97,23 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    updateState(currentState.copy(
-                        verifyNumberErrorText = "인증번호를 확인해주세요!",
-                        verifyNumberErrorState = true
-                    ))
+                    val errorCount = currentState.verifyNumberErrorCount + 1
+
+                    updateState(
+                        currentState.copy(
+                            verifyNumberErrorText = "인증번호를 확인해주세요!($errorCount/5)",
+                            verifyNumberErrorState = true,
+                            verifyNumberErrorCount = errorCount
+                        )
+                    )
+
+                    if (errorCount > 4) {
+                        postEffect(
+                            SignUpContract.Effect.ShowBottomSheet(
+                                SignUpContract.BottomSheet.AuthenticationFailed
+                            )
+                        )
+                    }
                 }
 
                 else -> {

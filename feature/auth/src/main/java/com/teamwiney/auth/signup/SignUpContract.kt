@@ -19,6 +19,7 @@ class SignUpContract {
         val verifyNumber: String = "",
         val verifyNumberErrorState: Boolean = false,
         val verifyNumberErrorText: String = "인증번호",
+        val verifyNumberErrorCount: Int = 0,
         val isTimerRunning: Boolean = true,
         val isTimeOut: Boolean = false,
         val remainingTime: Int = VERIFY_NUMBER_TIMER,

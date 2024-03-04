@@ -152,6 +152,11 @@ fun SignUpAuthenticationScreen(
                             bottomSheetState.showBottomSheet {
                                 AuthenticationFailedBottomSheet {
                                     bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
                             }
                         }
