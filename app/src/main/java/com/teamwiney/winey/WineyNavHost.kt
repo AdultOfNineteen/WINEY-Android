@@ -74,7 +74,7 @@ fun WineyNavHost() {
 
             NavHost(
                 modifier = Modifier
-                    .bototmBarPadding(appState.currentDestination, padding),
+                    .bottomBarPadding(appState.currentDestination, padding),
                 navController = navController,
                 startDestination = AuthDestinations.ROUTE
             ) {
@@ -107,7 +107,7 @@ fun WineyNavHost() {
 }
 
 @Composable
-private fun Modifier.Companion.bototmBarPadding(
+private fun Modifier.Companion.bottomBarPadding(
     currentDestination: NavDestination?,
     padding: PaddingValues
 ): Modifier {

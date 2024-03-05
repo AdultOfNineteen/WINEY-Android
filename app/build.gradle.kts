@@ -110,7 +110,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.coroutines.android)
-    implementation(libs.kotlin.bom)
+    implementation(platform(libs.kotlin.bom))
 
     implementation(libs.kakao.sdk.user)
     implementation(libs.play.services.auth)

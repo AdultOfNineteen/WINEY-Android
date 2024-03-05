@@ -71,4 +71,7 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.kakao.sdk.user)
     implementation(libs.play.services.auth)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaing)
 }

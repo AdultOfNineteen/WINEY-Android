@@ -12,9 +12,7 @@ class SplashContract {
         val error: String? = null
     ) : UiState
 
-    sealed class Event : UiEvent {
-        object CheckUserStatus : Event()
-    }
+    sealed class Event : UiEvent
 
     sealed class Effect : UiEffect {
         data class NavigateTo(

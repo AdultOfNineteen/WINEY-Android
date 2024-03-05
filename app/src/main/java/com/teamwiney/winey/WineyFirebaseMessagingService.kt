@@ -11,15 +11,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.teamwiney.core.common.util.Constants.FCM_TOKEN
-import com.teamwiney.data.repository.persistence.DataStoreRepository
-import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
 class WineyFirebaseMessagingService : FirebaseMessagingService() {
 
-    @Inject
-    lateinit var dataStoreRepository: DataStoreRepository
 
     private val TAG = "fcm"
     private val CHANNEL_ID = "notification_remote_channel"
@@ -29,8 +23,6 @@ class WineyFirebaseMessagingService : FirebaseMessagingService() {
     // Token 생성
     override fun onNewToken(token: String) {
         Log.d(TAG, "new Token: $token")
-
-        runBlocking { dataStoreRepository.setStringValue(FCM_TOKEN, token) }
     }
 
     // foreground 메세지 수신시 동작 설정
