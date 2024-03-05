@@ -52,7 +52,11 @@ fun SignUpFavoriteTasteScreen(
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
         } else {
-            appState.navController.navigateUp()
+            if (pagerState.currentPage == 0) {
+                viewModel.processEvent(SignUpContract.Event.CancelTasteSelection)
+            } else {
+                scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+            }
         }
     }
 
@@ -90,8 +94,6 @@ fun SignUpFavoriteTasteScreen(
                         else -> {}
                     }
                 }
-
-                else -> {}
             }
         }
     }

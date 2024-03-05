@@ -3,6 +3,7 @@ package com.teamwiney.auth.signup
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.base.CommonResponseStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.data.network.adapter.ApiResult
@@ -96,10 +97,23 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    updateState(currentState.copy(
-                        verifyNumberErrorText = "인증번호를 확인해주세요!",
-                        verifyNumberErrorState = true
-                    ))
+                    val errorCount = currentState.verifyNumberErrorCount + 1
+
+                    updateState(
+                        currentState.copy(
+                            verifyNumberErrorText = "인증번호를 확인해주세요!($errorCount/5)",
+                            verifyNumberErrorState = true,
+                            verifyNumberErrorCount = errorCount
+                        )
+                    )
+
+                    if (errorCount > 4) {
+                        postEffect(
+                            SignUpContract.Effect.ShowBottomSheet(
+                                SignUpContract.BottomSheet.AuthenticationFailed
+                            )
+                        )
+                    }
                 }
 
                 else -> {
@@ -140,7 +154,27 @@ class SignUpViewModel @Inject constructor(
                 }
 
                 is ApiResult.ApiError -> {
-                    postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                    when (it.code) {
+                        CommonResponseStatus.USER_ALREADY_EXISTS.code -> {
+                            postEffect(
+                                SignUpContract.Effect.ShowBottomSheet(
+                                    SignUpContract.BottomSheet.UserAlreadyExists(
+                                        it.message
+                                    )
+                                )
+                            )
+                        }
+                        CommonResponseStatus.MESSAGE_SEND_TOO_MANY_ATTEMPTS.code -> {
+                            postEffect(
+                                SignUpContract.Effect.ShowBottomSheet(
+                                    SignUpContract.BottomSheet.SendDisabled
+                                )
+                            )
+                        }
+                        else -> {
+                            postEffect(SignUpContract.Effect.ShowSnackBar(it.message))
+                        }
+                    }
                 }
 
                 else -> {

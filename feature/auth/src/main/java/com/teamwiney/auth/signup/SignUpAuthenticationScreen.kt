@@ -30,6 +30,7 @@ import com.teamwiney.auth.signup.SignUpContract.Companion.VERIFY_NUMBER_LENGTH
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationFailedBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.AuthenticationTimeOutBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
+import com.teamwiney.auth.signup.component.bottomsheet.SendDisabledBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.auth.signup.component.bottomsheet.SendTimeExceededLimitBottomSheet
@@ -59,21 +60,7 @@ fun SignUpAuthenticationScreen(
         if (bottomSheetState.bottomSheetState.isVisible) {
             bottomSheetState.hideBottomSheet()
         } else {
-            bottomSheetState.showBottomSheet {
-                ReturnToLoginBottomSheet(
-                    onConfirm = {
-                        bottomSheetState.hideBottomSheet()
-                        appState.navigate(AuthDestinations.Login.ROUTE) {
-                            popUpTo(AuthDestinations.Login.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onCancel = {
-                        bottomSheetState.hideBottomSheet()
-                    }
-                )
-            }
+            viewModel.processEvent(SignUpContract.Event.BackToLogin)
         }
     }
 
@@ -116,6 +103,19 @@ fun SignUpAuthenticationScreen(
                             }
                         }
 
+                        is SignUpContract.BottomSheet.SendDisabled -> {
+                            bottomSheetState.showBottomSheet {
+                                SendDisabledBottomSheet {
+                                    bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         is SignUpContract.BottomSheet.ReturnToLogin -> {
                             bottomSheetState.showBottomSheet {
                                 ReturnToLoginBottomSheet(
@@ -138,6 +138,11 @@ fun SignUpAuthenticationScreen(
                             bottomSheetState.showBottomSheet {
                                 AuthenticationFailedBottomSheet {
                                     bottomSheetState.hideBottomSheet()
+                                    appState.navigate(AuthDestinations.Login.ROUTE) {
+                                        popUpTo(AuthDestinations.SignUp.ROUTE) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
                             }
                         }
