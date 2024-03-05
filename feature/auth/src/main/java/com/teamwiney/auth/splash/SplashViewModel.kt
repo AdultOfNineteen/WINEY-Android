@@ -1,6 +1,9 @@
 package com.teamwiney.auth.splash
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.messaging.FirebaseMessaging
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.model.UserStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -8,24 +11,20 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.IS_NOT_FIRST_LAUNCH
 import com.teamwiney.core.common.util.Constants.USER_ID
-import com.teamwiney.data.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val dataStoreRepository: DataStoreRepository,
-    @DispatcherModule.IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val dataStoreRepository: DataStoreRepository
 ) : BaseViewModel<SplashContract.State, SplashContract.Event, SplashContract.Effect>(
     initialState = SplashContract.State()
 ) {
@@ -38,10 +37,46 @@ class SplashViewModel @Inject constructor(
 
     override fun reduceState(event: SplashContract.Event) {
         viewModelScope.launch {
-            when (event) {
-                SplashContract.Event.CheckUserStatus -> {
-                    checkUserStatus()
-                }
+
+        }
+    }
+
+    fun fetchAndSetDeviceId() {
+        FirebaseInstallations.getInstance().id.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val deviceId = task.result
+                setDeviceId(deviceId)
+                Log.d("FCM", "Fetching instance id succeed : $deviceId")
+            } else {
+                Log.w("FCM", "Fetching instance id failed", task.exception)
+            }
+        }
+    }
+
+    fun fetchAndSetFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                setFcmToken(token)
+                Log.d("FCM", "Fetching FCM registration token succeed : $token")
+            } else {
+                Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+            }
+        }
+    }
+
+    private fun setDeviceId(deviceId: String?) {
+        deviceId?.let {
+            viewModelScope.launch {
+                dataStoreRepository.setStringValue(Constants.DEVICE_ID, it)
+            }
+        }
+    }
+
+    private fun setFcmToken(token: String?) {
+        token?.let {
+            viewModelScope.launch {
+                dataStoreRepository.setStringValue(Constants.FCM_TOKEN, it)
             }
         }
     }
@@ -55,7 +90,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun checkUserStatus() = viewModelScope.launch {
+    fun checkUserStatus() = viewModelScope.launch {
         authRepository.getUserInfo().collectLatest {
             when (it) {
                 is ApiResult.Success -> {
