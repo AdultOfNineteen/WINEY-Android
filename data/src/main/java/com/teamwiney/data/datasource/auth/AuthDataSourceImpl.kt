@@ -66,6 +66,14 @@ class AuthDataSourceImpl @Inject constructor(
         emit(authService.getUserInfo())
     }.flowOn(ioDispatcher)
 
+    override fun getUserNickname() = flow {
+        emit(authService.getUserNickname())
+    }.flowOn(ioDispatcher)
+
+    override fun modifyUserNickname(nickname: String) = flow {
+        emit(authService.modifyUserNickname(nickname))
+    }.flowOn(ioDispatcher)
+
     override fun getConnections() = flow {
         emit(authService.getConnections())
     }.flowOn(ioDispatcher)

@@ -61,6 +61,12 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun getUserInfo() = authDataSource.getUserInfo()
 
+    override fun getUserNickname() = authDataSource.getUserNickname()
+
+    override fun modifyUserNickname(
+        nickname: String
+    ) = authDataSource.modifyUserNickname(nickname)
+
     override fun getConnections() = authDataSource.getConnections()
 
     override fun registerFcmToken(

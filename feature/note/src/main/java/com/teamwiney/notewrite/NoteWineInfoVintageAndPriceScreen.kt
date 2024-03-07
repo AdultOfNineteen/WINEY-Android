@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
@@ -103,7 +104,7 @@ fun NoteWineInfoVintageAndPriceScreen(
 
             WineInfoTextField(
                 value = uiState.wineNote.vintage,
-                onValueChanged = { viewModel.updateVintage(it) },
+                onValueChanged = { if (it.isDigitsOnly()) viewModel.updateVintage(it) },
                 placeholderText = "ex) 1990",
                 trailingIcon = {
                     Text(
@@ -137,7 +138,7 @@ fun NoteWineInfoVintageAndPriceScreen(
 
             WineInfoTextField(
                 value = uiState.wineNote.price,
-                onValueChanged = { viewModel.updatePrice(it) },
+                onValueChanged = { if (it.isDigitsOnly()) viewModel.updatePrice(it) },
                 placeholderText = "ex) 30000",
                 trailingIcon = {
                     Text(

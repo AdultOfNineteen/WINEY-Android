@@ -17,6 +17,7 @@ import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.UserInfo
+import com.teamwiney.data.network.model.response.UserNickname
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import retrofit2.Response
 import retrofit2.http.Body
@@ -73,6 +74,16 @@ interface AuthService {
     /** 유저 상태 정보 조회 API */
     @GET("/info")
     suspend fun getUserInfo(): ApiResult<CommonResponse<UserInfo>>
+
+    /** 유저 닉네임 조회 API */
+    @GET("/nickname")
+    suspend fun getUserNickname(): ApiResult<CommonResponse<UserNickname>>
+
+    /** 유저 닉네임 변경 API */
+    @PATCH("/nickname")
+    suspend fun modifyUserNickname(
+        @Query("nickname") nickname: String
+    ): ApiResult<CommonResponse<String>>
 
     /** 토큰 리프레쉬 API */
     @POST("/refresh")
