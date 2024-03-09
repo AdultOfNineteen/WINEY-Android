@@ -148,9 +148,9 @@ private fun AnalysisProgressContent(
                         color = WineyTheme.colors.main_3
                     )
                 ) {
-                    append("성경님 ")
+                    append("나의 ")
                 }
-                append("의 테이스팅 노트를\n분석중이예요!")
+                append("테이스팅 노트를\n 분석 중이에요!")
             },
             style = WineyTheme.typography.title1.copy(
                 color = WineyTheme.colors.gray_50

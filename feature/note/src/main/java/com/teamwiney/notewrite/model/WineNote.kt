@@ -8,7 +8,7 @@ data class WineNote(
     val wineId: Long,
     val vintage: String,
     val officialAlcohol: Double?,
-    val price: String,
+    val price: String = "",
     val color: Color,
     val sweetness: Int,
     val acidity: Int,

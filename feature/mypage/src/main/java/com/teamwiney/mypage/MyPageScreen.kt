@@ -3,7 +3,6 @@ package com.teamwiney.mypage
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -42,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.MyPageDestinations
 import com.teamwiney.core.common.util.Constants.FAQ_URL
 import com.teamwiney.data.network.model.response.WineGradeStandard
@@ -76,7 +76,7 @@ fun MyPageScreen(
                     appState.showSnackbar(effect.message)
                 }
 
-                else -> { }
+                else -> {}
             }
         }
     }
@@ -148,16 +148,7 @@ fun MyPageScreen(
             }
             HeightSpacer(height = 5.dp)
             MyProfileMenuItem(menu = "FAQ") {
-                val builder = CustomTabsIntent.Builder()
-
-                builder.setShowTitle(true)
-                builder.setInstantAppsEnabled(true)
-
-                val customBuilder = builder.build()
-                customBuilder.launchUrl(
-                    context,
-                    Uri.parse(FAQ_URL)
-                )
+                appState.navigate("${HomeDestinations.WEB_VIEW}?url=${FAQ_URL}&title=${"FAQ"}&subTitle=${""}")
             }
             MyProfileAppVersionItem()
         }
@@ -322,8 +313,10 @@ fun MyPageGrade(
                             }
                         }
                     } else {
-                        val nextGrade = gradeData.getOrNull(currentGradeIdx + 1)?.name ?: WineGrade.GLASS
-                        val nextGradeMinCount = gradeData.getOrNull(currentGradeIdx + 1)?.minCount ?: 0
+                        val nextGrade =
+                            gradeData.getOrNull(currentGradeIdx + 1)?.name ?: WineGrade.GLASS
+                        val nextGradeMinCount =
+                            gradeData.getOrNull(currentGradeIdx + 1)?.minCount ?: 0
                         val remainingNoteCount = nextGradeMinCount - noteCount
 
                         buildAnnotatedString {
@@ -389,7 +382,7 @@ fun MyProfileMenuItem(
                 color = WineyTheme.colors.gray_400
             )
         )
-        
+
         Icon(
             modifier = Modifier
                 .size(24.dp)

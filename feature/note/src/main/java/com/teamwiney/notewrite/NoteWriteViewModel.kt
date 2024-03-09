@@ -36,6 +36,7 @@ class NoteWriteViewModel @Inject constructor(
     initialState = NoteWriteContract.State()
 ) {
     private val noteId: Int
+
     init {
         noteId = savedStateHandle.get<String>("noteId")?.toInt() ?: -1
         updateState(currentState.copy(mode = if (noteId == -1) EditMode.ADD else EditMode.UPDATE))
@@ -65,7 +66,7 @@ class NoteWriteViewModel @Inject constructor(
                             currentState.copy(
                                 wineNote = WineNote(
                                     wineId = -1L,
-                                    vintage = "${result.vintage}",
+                                    vintage = if (result.vintage == null) "" else "${result.vintage}",
                                     officialAlcohol = result.officialAlcohol?.toDouble() ?: 0.0,
                                     price = "${result.price}",
                                     color = Color(result.color.toColorInt()),
@@ -83,13 +84,15 @@ class NoteWriteViewModel @Inject constructor(
                                     addImages = emptyList(),
                                     deleteImages = emptyList(),
                                     smellKeywordList = result.smellKeywordList.mapNotNull { smellKeyword ->
-                                        val wineSmell = WineSmell.values().firstOrNull { it.korName == smellKeyword }
+                                        val wineSmell = WineSmell.values()
+                                            .firstOrNull { it.korName == smellKeyword }
                                         wineSmell?.let {
                                             WineSmellOption(it.korName, it.value)
                                         }
                                     },
                                     loadSmellKeywordList = result.smellKeywordList.mapNotNull { smellKeyword ->
-                                        val wineSmell = WineSmell.values().firstOrNull { it.korName == smellKeyword }
+                                        val wineSmell = WineSmell.values()
+                                            .firstOrNull { it.korName == smellKeyword }
                                         wineSmell?.let {
                                             WineSmellOption(it.korName, it.value)
                                         }
@@ -286,9 +289,12 @@ class NoteWriteViewModel @Inject constructor(
     private fun removeSmellKeyword(smellKeyword: WineSmellOption) {
         val selectedSmellKeywords = currentState.wineNote.smellKeywordList - smellKeyword
         val addSmellKeywords = currentState.wineNote.addSmellKeywordList - smellKeyword
-        val deleteSmellKeywords = currentState.wineNote.deleteSmellKeywordList.toMutableList().apply {
-            if (currentState.wineNote.loadSmellKeywordList.contains(smellKeyword)) add(smellKeyword)
-        }
+        val deleteSmellKeywords =
+            currentState.wineNote.deleteSmellKeywordList.toMutableList().apply {
+                if (currentState.wineNote.loadSmellKeywordList.contains(smellKeyword)) add(
+                    smellKeyword
+                )
+            }
 
         updateState(
             currentState.copy(

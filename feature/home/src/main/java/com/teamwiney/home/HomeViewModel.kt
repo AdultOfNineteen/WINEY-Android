@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeContract.Event.ShowTipDetail -> {
-                    postEffect(HomeContract.Effect.NavigateTo("${HomeDestinations.WINE_TIP_DETAIL}?url=${event.url}"))
+                    postEffect(HomeContract.Effect.NavigateTo("${HomeDestinations.WEB_VIEW}?url=${event.url}&title=${"와인 초보자를 위한 "}&subTitle=${"TIP"}"))
                 }
 
                 is HomeContract.Event.ShowAnalysis -> {
