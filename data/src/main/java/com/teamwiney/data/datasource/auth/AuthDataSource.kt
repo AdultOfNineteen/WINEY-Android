@@ -17,6 +17,7 @@ import com.teamwiney.data.network.model.response.GoogleAccessToken
 import com.teamwiney.data.network.model.response.SetPreferences
 import com.teamwiney.data.network.model.response.SocialLogin
 import com.teamwiney.data.network.model.response.UserInfo
+import com.teamwiney.data.network.model.response.UserNickname
 import com.teamwiney.data.network.model.response.VerifyAuthenticationMessage
 import kotlinx.coroutines.flow.Flow
 
@@ -49,6 +50,12 @@ interface AuthDataSource {
     fun refreshToken(refreshToken: String): Flow<ApiResult<CommonResponse<AccessToken>>>
 
     fun getUserInfo(): Flow<ApiResult<CommonResponse<UserInfo>>>
+
+    fun getUserNickname(): Flow<ApiResult<CommonResponse<UserNickname>>>
+
+    fun modifyUserNickname(
+        nickname: String
+    ): Flow<ApiResult<CommonResponse<String>>>
 
     fun getConnections(): Flow<ApiResult<BaseResponse>>
 

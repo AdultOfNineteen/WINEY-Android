@@ -63,6 +63,7 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(true) {
+        viewModel.getUserNickname()
         viewModel.getUserWineGrade()
         viewModel.getWineGradeStandard()
 
@@ -97,7 +98,7 @@ fun MyPageScreen(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
             MyPageProfile(
-                name = "김희연",
+                name = uiState.nickname,
                 onProfileClick = {
                     appState.navigate(MyPageDestinations.ACCOUNT)
                 },
