@@ -22,7 +22,9 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WebViewScreen(
     appState: WineyAppState,
-    url: String = ""
+    url: String = "",
+    title: String = "",
+    subTitle: String = ""
 ) {
 
     ManageBottomBarState(appState = appState)
@@ -36,9 +38,9 @@ fun WebViewScreen(
     ) {
         TopBar(
             annotatedContent = buildAnnotatedString {
-                append("와인 초보를 위한 ")
+                append(title)
                 withStyle(style = SpanStyle(WineyTheme.colors.main_2)) {
-                    append("TIP")
+                    append(subTitle)
                 }
             },
             leadingIconOnClick = {

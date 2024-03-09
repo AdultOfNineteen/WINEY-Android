@@ -28,7 +28,7 @@ object HomeDestinations {
     const val HOME = "home"
     const val WINE_DETAIL = "detail"
     const val WINE_TIP = "wineTip"
-    const val WINE_TIP_DETAIL = "wineTipDetail"
+    const val WEB_VIEW = "webView"
 
     object Analysis {
         const val ROUTE = "analysis"

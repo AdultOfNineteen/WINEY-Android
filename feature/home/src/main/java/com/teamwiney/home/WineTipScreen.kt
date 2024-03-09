@@ -79,6 +79,8 @@ fun TipContent(
     wineTips: LazyPagingItems<WineTip>
 ) {
 
+    val title = "와인 초보자를 위한 "
+    val subTitle = "TIP"
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
@@ -95,7 +97,7 @@ fun TipContent(
                     title = it.title,
                     thumbnail = it.thumbnail,
                     onClick = {
-                        appState.navigate("${HomeDestinations.WINE_TIP_DETAIL}?url=${it.url}")
+                        appState.navigate("${HomeDestinations.WEB_VIEW}?url=${it.url}&title=${title}&subTitle=${subTitle}")
                     }
                 )
             }
