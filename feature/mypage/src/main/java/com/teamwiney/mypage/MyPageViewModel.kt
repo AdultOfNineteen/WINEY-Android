@@ -62,6 +62,29 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun getUserNickname() = viewModelScope.launch {
+        authRepository.getUserNickname().onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.result
+
+                    updateState(currentState.copy(nickname = result.nickname))
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
     fun getUserWineGrade() = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
 

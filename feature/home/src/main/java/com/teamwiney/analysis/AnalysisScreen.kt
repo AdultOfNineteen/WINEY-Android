@@ -19,6 +19,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.navOptions
 import com.teamwiney.analysis.component.AnalysisBottomContent
 import com.teamwiney.analysis.component.AnalysisStartButton
@@ -48,11 +50,14 @@ fun AnalysisScreen(
     bottomSheetState: WineyBottomSheetState,
     viewModel: AnalysisViewModel
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     val pagerState = rememberPagerState(pageCount = { 2 })
 
     LaunchedEffect(true) {
+        viewModel.getUserNickname()
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is AnalysisContract.Effect.NavigateTo -> {
@@ -112,7 +117,9 @@ fun AnalysisScreen(
                     viewModel::checkTastingNotes
                 )
 
-                1 -> AnalysisProgressContent {
+                1 -> AnalysisProgressContent(
+                    nickname = uiState.nickname
+                ) {
                     appState.navigate(
                         HomeDestinations.Analysis.RESULT,
                         navOptions {
@@ -129,6 +136,7 @@ fun AnalysisScreen(
 
 @Composable
 private fun AnalysisProgressContent(
+    nickname: String = "",
     getAnalytics: () -> Unit = {}
 ) {
     LaunchedEffect(true) {
@@ -148,7 +156,7 @@ private fun AnalysisProgressContent(
                         color = WineyTheme.colors.main_3
                     )
                 ) {
-                    append("성경님 ")
+                    append("${nickname}님 ")
                 }
                 append("의 테이스팅 노트를\n분석중이예요!")
             },

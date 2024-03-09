@@ -11,6 +11,7 @@ class AnalysisContract {
 
     data class State(
         val isLoading: Boolean = false,
+        val nickname: String = "",
         val tasteAnalysis: TasteAnalysis = TasteAnalysis()
     ) : UiState
 

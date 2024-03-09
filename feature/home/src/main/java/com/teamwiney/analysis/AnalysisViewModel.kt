@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.toDomain
+import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -13,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnalysisViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
     private val tastingNoteRepository: TastingNoteRepository
 ) : BaseViewModel<AnalysisContract.State, AnalysisContract.Event, AnalysisContract.Effect>(
     initialState = AnalysisContract.State()
@@ -51,6 +53,29 @@ class AnalysisViewModel @Inject constructor(
                 }
 
                 is ApiResult.NetworkError -> {
+                    postEffect(AnalysisContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
+    fun getUserNickname() = viewModelScope.launch {
+        authRepository.getUserNickname().onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+            when (it) {
+                is ApiResult.Success -> {
+                    val result = it.data.result
+
+                    updateState(currentState.copy(nickname = result.nickname))
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(AnalysisContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
                     postEffect(AnalysisContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
                 }
             }

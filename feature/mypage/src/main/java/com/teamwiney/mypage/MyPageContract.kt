@@ -13,6 +13,7 @@ class MyPageContract {
 
     data class State(
         val isLoading: Boolean = false,
+        val nickname: String = "",
         val currentGrade: WineGrade = WineGrade.GLASS,
         val expectedMonthGrade: WineGrade = WineGrade.GLASS,
         val noteCount: Int = 0,
