@@ -203,7 +203,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
-                enabled = uiState.wineNote.price.isNotEmpty() && uiState.wineNote.vintage.isNotEmpty(),
+                enabled = uiState.wineNote.price.isNotEmpty() || uiState.wineNote.vintage.isNotEmpty(),
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                 }
