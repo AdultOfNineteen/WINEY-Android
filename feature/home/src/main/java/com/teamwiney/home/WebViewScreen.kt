@@ -28,7 +28,7 @@ fun WebViewScreen(
 ) {
 
     ManageBottomBarState(appState = appState)
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,6 +64,10 @@ fun WebViewContent(
                 )
                 webViewClient = WebViewClient()
                 settings.javaScriptEnabled = true
+                settings.setSupportMultipleWindows(false)
+                settings.domStorageEnabled = true
+                settings.useWideViewPort = true
+                settings.loadWithOverviewMode = true
                 loadUrl(url)
             }
         }, update = {
