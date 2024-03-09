@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -61,7 +62,7 @@ fun MyPageWithdrawalConfirmScreen(
                             }
                         }
 
-                        else -> { }
+                        else -> {}
                     }
                 }
             }
@@ -71,6 +72,7 @@ fun MyPageWithdrawalConfirmScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .background(WineyTheme.colors.background_1)
     ) {
         TopBar(
