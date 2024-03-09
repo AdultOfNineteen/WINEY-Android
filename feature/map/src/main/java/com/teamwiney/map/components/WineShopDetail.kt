@@ -2,8 +2,9 @@ package com.teamwiney.map.components
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -42,6 +43,7 @@ import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineShop
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
+import java.net.URLEncoder
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -55,22 +57,27 @@ fun ColumnScope.WineShopDetail(
     val context = LocalContext.current
     val navigateToNaverMap: (WineShop) -> Unit = { wineShop ->
         val url =
-            "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${wineShop.name}&appname=cocktaildakk"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${encodeUrlString(wineShop.name)}&appname=com.teamwiney.winey"
+        Log.d("debugging", url)
+
+        val intent =  Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
-        val list: List<ResolveInfo> =
+        val installCheck = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             context.packageManager.queryIntentActivities(
-                intent,
-                PackageManager.MATCH_DEFAULT_ONLY,
+                Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
             )
-        if (list.isEmpty()) {
-            context.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=com.nhn.android.nmap"),
-                ),
+        } else {
+            context.packageManager.queryIntentActivities(
+                Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+                PackageManager.GET_META_DATA
             )
+        }
+
+        // 네이버맵이 설치되어 있다면 앱으로 연결, 설치되어 있지 않다면 스토어로 이동
+        if (installCheck.isEmpty()) {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")))
         } else {
             context.startActivity(intent)
         }
@@ -198,7 +205,7 @@ fun ColumnScope.WineShopDetail(
                     modifier = Modifier.padding(start = 29.dp)
                 ) {
                     businessHours.subList(1, businessHours.size)
-                        .forEach { it ->
+                        .forEach {
                             Text(
                                 text = it,
                                 style = WineyTheme.typography.captionM1,
@@ -265,4 +272,8 @@ fun ColumnScope.WineShopDetail(
             }
         }
     }
+}
+
+private fun encodeUrlString(input: String): String {
+    return URLEncoder.encode(input, "UTF-8")
 }
