@@ -28,7 +28,7 @@ object HomeDestinations {
     const val HOME = "home"
     const val WINE_DETAIL = "detail"
     const val WINE_TIP = "wineTip"
-    const val WINE_TIP_DETAIL = "wineTipDetail"
+    const val WEB_VIEW = "webView"
 
     object Analysis {
         const val ROUTE = "analysis"
@@ -63,6 +63,7 @@ object NoteDestinations {
         const val INFO_FLAVOR = "infoFlavor"
         const val INFO_VINTAGE_AND_PRICE = "infoVintageAndPrice"
         const val INFO_STANDARD_FLAVOR = "infoStandardFlavor"
+        const val COMPLETE = "noteWriteComplete"
     }
 
 }

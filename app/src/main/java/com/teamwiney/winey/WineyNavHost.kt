@@ -19,7 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.WineyAppState
@@ -29,6 +32,7 @@ import com.teamwiney.core.common.navigation.MapDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
+import com.teamwiney.home.WebViewScreen
 import com.teamwiney.home.homeGraph
 import com.teamwiney.map.mapGraph
 import com.teamwiney.mypage.myPageGraph
@@ -101,6 +105,31 @@ fun WineyNavHost() {
                     appState = appState,
                     bottomSheetState = bottomSheetState
                 )
+
+                composable(
+                    route = "${HomeDestinations.WEB_VIEW}?url={url}&title={title}&subTitle={subTitle}",
+                    arguments = listOf(
+                        navArgument("url") {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument("title") {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        },
+                        navArgument("subTitle") {
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ) { entry ->
+                    WebViewScreen(
+                        appState = appState,
+                        url = entry.arguments?.getString("url") ?: "",
+                        title = entry.arguments?.getString("title") ?: "",
+                        subTitle = entry.arguments?.getString("subTitle") ?: ""
+                    )
+                }
             }
         }
     }

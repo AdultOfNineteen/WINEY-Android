@@ -45,20 +45,7 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
-        composable(
-            route = "${HomeDestinations.WINE_TIP_DETAIL}?url={url}",
-            arguments = listOf(
-                navArgument("url") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
-            )
-        ) { entry ->
-            WebViewScreen(
-                appState = appState,
-                url = entry.arguments?.getString("url") ?: ""
-            )
-        }
+ 
 
         composable(
             route = "${HomeDestinations.WINE_DETAIL}?id={wineId}",

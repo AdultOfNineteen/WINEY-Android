@@ -50,7 +50,6 @@ fun MyPageWithdrawalReasonSelectScreen(
     val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
-        viewModel.updateWithdrawalReason("이유를 선택해주세요.")
 
         effectFlow.collectLatest { effect ->
             when (effect) {
@@ -75,7 +74,7 @@ fun MyPageWithdrawalReasonSelectScreen(
                             }
                         }
 
-                        else -> { }
+                        else -> {}
                     }
                 }
             }
@@ -115,7 +114,7 @@ fun MyPageWithdrawalReasonSelectScreen(
             )
             HeightSpacer(height = 30.dp)
             Text(
-                text ="계정을 삭제하려는\n이유를 알려주세요.",
+                text = "계정을 삭제하려는\n이유를 알려주세요.",
                 style = WineyTheme.typography.title2.copy(
                     color = WineyTheme.colors.gray_50
                 )
@@ -153,9 +152,9 @@ fun MyPageWithdrawalReasonSelectScreen(
                 text = "다음",
                 onClick = { appState.navigate(MyPageDestinations.WITHDRAWAL_CONFIRM) },
                 enabled = (
-                    (uiState.isWithdrawalReasonDirectInput && uiState.withdrawalReasonDirectInput.isNotEmpty()) ||
-                            (!uiState.isWithdrawalReasonDirectInput && uiState.withdrawalReason != "이유를 선택해주세요.")
-                ),
+                        (uiState.isWithdrawalReasonDirectInput && uiState.withdrawalReasonDirectInput.isNotEmpty()) ||
+                                (!uiState.isWithdrawalReasonDirectInput && uiState.withdrawalReason != "이유를 선택해주세요.")
+                        ),
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
