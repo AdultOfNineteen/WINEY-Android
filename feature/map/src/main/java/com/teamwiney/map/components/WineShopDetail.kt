@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -58,7 +57,6 @@ fun ColumnScope.WineShopDetail(
     val navigateToNaverMap: (WineShop) -> Unit = { wineShop ->
         val url =
             "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${encodeUrlString(wineShop.name)}&appname=com.teamwiney.winey"
-        Log.d("debugging", url)
 
         val intent =  Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
