@@ -63,6 +63,7 @@ object NoteDestinations {
         const val INFO_FLAVOR = "infoFlavor"
         const val INFO_VINTAGE_AND_PRICE = "infoVintageAndPrice"
         const val INFO_STANDARD_FLAVOR = "infoStandardFlavor"
+        const val COMPLETE = "noteWriteComplete"
     }
 
 }
