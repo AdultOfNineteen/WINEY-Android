@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.navOptions
 import com.teamwiney.analysis.component.AnalysisBottomContent
 import com.teamwiney.analysis.component.AnalysisStartButton
 import com.teamwiney.core.common.WineyAppState
@@ -57,6 +56,7 @@ fun AnalysisScreen(
 
     LaunchedEffect(true) {
         viewModel.getUserNickname()
+        pagerState.animateScrollToPage(0)
 
         effectFlow.collectLatest { effect ->
             when (effect) {
@@ -120,14 +120,7 @@ fun AnalysisScreen(
                 1 -> AnalysisProgressContent(
                     nickname = uiState.nickname
                 ) {
-                    appState.navigate(
-                        HomeDestinations.Analysis.RESULT,
-                        navOptions {
-                            popUpTo(HomeDestinations.Analysis.START) {
-                                inclusive = true
-                            }
-                        }
-                    )
+                    appState.navigate(HomeDestinations.Analysis.RESULT)
                 }
             }
         }
