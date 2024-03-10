@@ -6,11 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -146,30 +142,16 @@ fun NoteWineCard(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                Row(
+                Text(
                     modifier = Modifier.padding(start = 20.dp, top = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    Text(
-                        text = convertToNoteType(wineName),
-                        style = TextStyle(
-                            fontFamily = Chaviera,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 25.sp,
-                        ),
-                        color = WineyTheme.colors.gray_50,
-                    )
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_thismooth),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .padding(bottom = 5.dp)
-                            .size(13.dp)
-                    )
-                }
+                    text = convertToNoteType(wineName),
+                    style = TextStyle(
+                        fontFamily = Chaviera,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 25.sp,
+                    ),
+                    color = WineyTheme.colors.gray_50,
+                )
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = "IMG_SPARKL_WINE",
