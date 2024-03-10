@@ -76,7 +76,7 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-val BOTTOM_NAVIGATION_HEIGHT = 60.dp
+internal val BOTTOM_NAVIGATION_HEIGHT = 60.dp
 
 @Composable
 fun MapScreen(
@@ -268,7 +268,7 @@ fun MapScreen(
                 if (uiState.userPosition != DEFAULT_LATLNG) {
                     Marker(
                         state = MarkerState(position = uiState.userPosition),
-                        icon = OverlayImage.fromResource(R.drawable.ic_close_fill_18),
+                        icon = OverlayImage.fromResource(R.drawable.ic_map_user_24),
                         height = 24.dp,
                         width = 24.dp,
                         onClick = {
