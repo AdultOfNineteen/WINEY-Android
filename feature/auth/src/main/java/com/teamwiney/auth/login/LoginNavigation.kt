@@ -22,9 +22,5 @@ fun NavGraphBuilder.loginGraph(
                 viewModel = viewModel
             )
         }
-        
-        composable(route = AuthDestinations.Login.TERMS_OF_USE) {
-            LoginTermsScreen(appState = appState)
-        }
     }
 }
