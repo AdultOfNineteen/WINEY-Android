@@ -282,7 +282,7 @@ fun MyPageGrade(
             )
             .background(
                 shape = RoundedCornerShape(12.dp),
-                color = WineyTheme.colors.background_1,
+                color = WineyTheme.colors.gray_950
             ),
         contentAlignment = Alignment.Center
     ) {
