@@ -66,9 +66,9 @@ class NoteWriteViewModel @Inject constructor(
                             currentState.copy(
                                 wineNote = WineNote(
                                     wineId = -1L,
-                                    vintage = if (result.vintage == null) "" else "${result.vintage}",
-                                    officialAlcohol = result.officialAlcohol?.toDouble() ?: 0.0,
-                                    price = "${result.price}",
+                                    vintage = result.vintage?.toString() ?: "",
+                                    officialAlcohol = result.officialAlcohol?.toDouble() ?: 12.0,
+                                    price = result.price?.toString() ?: "",
                                     color = Color(result.color.toColorInt()),
                                     sweetness = result.myWineTaste.sweetness,
                                     acidity = result.myWineTaste.acidity,
