@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
@@ -70,7 +70,6 @@ import com.teamwiney.map.components.MapBottomSheetContent
 import com.teamwiney.map.components.WineBottomSheetOpenPopUp
 import com.teamwiney.map.manager.manageBottomBarVisibility
 import com.teamwiney.map.manager.manageLocationPermission
-import com.teamwiney.map.manager.manageSystemUIColor
 import com.teamwiney.map.model.MovingCameraWrapper
 import com.teamwiney.map.model.ShopCategory
 import com.teamwiney.ui.theme.WineyTheme
@@ -158,10 +157,9 @@ fun MapScreen(
         uiState = uiState,
         updateIsMapDetail = appState::updateIsMapDetail
     )
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(color = Color.Transparent)
 
-    manageSystemUIColor(
-        isVisibleTopBar = uiState.selectedShopCategory == ShopCategory.ALL && uiState.selectedMarkar == null
-    )
     manageLocationPermission(
         addLocationListener = { viewModel.addLocationListener() },
         showSnackbar = { appState.showSnackbar(it) },
@@ -287,7 +285,7 @@ fun MapScreen(
                     .background(
                         Brush.verticalGradient(
                             listOf(
-                                Color(0xCC7D7D7D),
+                                Color(0x737D7D7D),
                                 Color.Transparent
                             )
                         )
@@ -313,7 +311,6 @@ fun MapScreen(
             Column(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .systemBarsPadding()
                     .fillMaxWidth()
             ) {
                 // 디테일 화면일 때
@@ -334,7 +331,7 @@ fun MapScreen(
                         Row(
                             modifier = Modifier
                                 .horizontalScroll(rememberScrollState())
-                                .padding(start = 24.dp, end = 24.dp, top = 30.dp),
+                                .padding(start = 24.dp, end = 24.dp, top = 50.dp),
                             horizontalArrangement = Arrangement.spacedBy(
                                 10.dp,
                                 Alignment.CenterHorizontally
@@ -417,7 +414,7 @@ private fun WineCategoryTopbar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(68.dp)
+            .height(88.dp)
             .background(Color(0xB31F2126))
             .statusBarsPadding(),
         contentAlignment = Alignment.Center
