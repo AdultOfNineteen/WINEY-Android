@@ -377,7 +377,7 @@ fun MapScreen(
                     Text(
                         text = "현 위치에서 검색",
                         style = WineyTheme.typography.captionB1,
-                        color = WineyTheme.colors.main_1
+                        color = WineyTheme.colors.main_2
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_refresh_20),
