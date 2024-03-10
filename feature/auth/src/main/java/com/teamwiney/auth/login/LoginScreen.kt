@@ -37,7 +37,8 @@ import com.google.android.gms.common.api.ApiException
 import com.teamwiney.auth.login.component.SocialLoginButton
 import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.ReusableDestinations
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.dashedBorder
@@ -168,7 +169,7 @@ fun LoginScreen(
                     if (annotations.isNotEmpty()) {
                         val clickedText = annotations[0].item
                         if (clickedText == "서비스 이용약관") {
-                            appState.navigate(AuthDestinations.Login.TERMS_OF_USE)
+                            appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${Constants.TERMS_OF_USE_URL}&title=${"서비스 이용약관"}&subTitle=${""}")
                         }
                     }
                 }

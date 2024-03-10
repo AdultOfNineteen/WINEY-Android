@@ -26,7 +26,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
-import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.ReusableDestinations
 import com.teamwiney.data.network.model.response.WineTip
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -97,7 +97,7 @@ fun TipContent(
                     title = it.title,
                     thumbnail = it.thumbnail,
                     onClick = {
-                        appState.navigate("${HomeDestinations.WEB_VIEW}?url=${it.url}&title=${title}&subTitle=${subTitle}")
+                        appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${it.url}&title=${title}&subTitle=${subTitle}")
                     }
                 )
             }
