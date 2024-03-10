@@ -44,12 +44,12 @@ internal fun BoxScope.WineBottomSheetOpenPopUp(
                 .clickable {
                     expandBottomSheet()
                 }
-                .padding(17.dp, 8.dp),
+                .padding(21.dp, 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
-                text = "목록열기",
+                text = "목록 열기",
                 style = WineyTheme.typography.captionB1.copy(
                     color = WineyTheme.colors.gray_50
                 )

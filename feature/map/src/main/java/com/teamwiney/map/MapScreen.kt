@@ -397,7 +397,7 @@ fun MapScreen(
                         painter = painterResource(id = R.drawable.ic_refresh_20),
                         contentDescription = "IC_REFERSH",
                         modifier = Modifier
-                            .size(12.dp)
+                            .size(14.dp)
                             .rotate(120f),
                         tint = WineyTheme.colors.main_1
                     )
