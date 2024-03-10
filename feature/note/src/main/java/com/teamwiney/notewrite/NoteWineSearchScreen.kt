@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +60,7 @@ fun NoteWineSearchScreen(
     viewModel: NoteWriteViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     val effectFlow = viewModel.effect
 
     val searchWines = uiState.searchWines.collectAsLazyPagingItems()
@@ -72,9 +74,6 @@ fun NoteWineSearchScreen(
         }
     }
 
-    LaunchedEffect(uiState.searchKeyword) {
-        viewModel.getSearchWines()
-    }
 
     LaunchedEffect(true) {
         viewModel.loadTastingNote()

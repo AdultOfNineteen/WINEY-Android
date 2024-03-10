@@ -20,6 +20,7 @@ import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
 import com.teamwiney.notewrite.model.WineNote
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
@@ -354,7 +355,6 @@ class NoteWriteViewModel @Inject constructor(
 
     fun getSearchWines() = viewModelScope.launch {
         getSearchWinesCount()
-
         updateState(
             currentState.copy(
                 searchWines = Pager(
@@ -402,8 +402,15 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
+    var searchJob: Job? = null
+
     fun updateSearchKeyword(searchKeyword: String) {
         updateState(currentState.copy(searchKeyword = searchKeyword))
+        searchJob?.cancel() // 이전 작업이 완료될 때까지 대기하고 취소
+        searchJob = viewModelScope.launch {
+            delay(300) // 디바운싱 0.2초 적용
+            getSearchWines()
+        }
     }
 
     fun updateSelectedWine(wine: SearchWine) {

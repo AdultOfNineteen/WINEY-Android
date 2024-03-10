@@ -29,7 +29,8 @@ fun MapBottomSheetContent(
     selectedMarker: WineShop?,
     postBookmark: (WineShop) -> Unit,
     userPosition: LatLng,
-    setSelectedMarker: (WineShop) -> Unit
+    setSelectedMarker: (WineShop) -> Unit,
+    bottomBarVisibility: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -74,7 +75,8 @@ fun MapBottomSheetContent(
                         WineShopList(
                             wineShops = wineShops,
                             postBookmark = postBookmark,
-                            setSelectedMarker = setSelectedMarker
+                            setSelectedMarker = setSelectedMarker,
+                            bottomBarVisibility = bottomBarVisibility
                         )
                     }
                 }
