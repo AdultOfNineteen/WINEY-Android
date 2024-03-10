@@ -62,7 +62,7 @@ fun MyPageReasonSelectBottomSheet(
                 Text(
                     text = reason,
                     color = WineyTheme.colors.gray_50,
-                    style = WineyTheme.typography.bodyB1,
+                    style = WineyTheme.typography.bodyM1,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onSelect(reason) }
