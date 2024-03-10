@@ -1,5 +1,5 @@
 @file:OptIn(
-    ExperimentalNaverMapApi::class, ExperimentalMaterialApi::class
+    ExperimentalNaverMapApi::class, ExperimentalMaterialApi::class, ExperimentalNaverMapApi::class
 )
 
 package com.teamwiney.map
@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -277,6 +278,21 @@ fun MapScreen(
                     )
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .align(Alignment.TopCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color(0xCC7D7D7D),
+                                Color.Transparent
+                            )
+                        )
+                    )
+            )
 
             WineBottomSheetOpenPopUp(
                 isCollapsed = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
