@@ -3,26 +3,33 @@ package com.teamwiney.mypage.account
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.core.design.R
 import com.teamwiney.mypage.MyPageContract
 import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.components.MyPageLogOutBottomSheet
-import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -86,12 +93,37 @@ fun MyPageAccountScreen(
             .background(WineyTheme.colors.background_1)
     ) {
         TopBar(
-            content = "WINEY 계정"
+            content = "계정 설정"
         ) {
            appState.navController.navigateUp()
         }
-        HeightSpacer(height = 19.dp)
+        Box(
+            modifier = Modifier
+                .clickable { appState.navigate(MyPageDestinations.MODIFY_NICKNAME) }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "닉네임 수정",
+                    style = WineyTheme.typography.bodyM1.copy(
+                        color = WineyTheme.colors.gray_400
+                    )
+                )
 
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = "IC_ARROW_RIGHT",
+                    tint = Color.Unspecified
+                )
+            }
+        }
+        HeightSpacerWithLine(color = WineyTheme.colors.gray_900)
         Box(
             modifier = Modifier
                 .clickable { viewModel.processEvent(MyPageContract.Event.LogOut) }
@@ -101,8 +133,8 @@ fun MyPageAccountScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 19.dp),
                 text = "로그아웃",
-                style = WineyTheme.typography.bodyB1.copy(
-                    color = WineyTheme.colors.gray_50
+                style = WineyTheme.typography.bodyM1.copy(
+                    color = WineyTheme.colors.gray_400
                 )
             )
         }

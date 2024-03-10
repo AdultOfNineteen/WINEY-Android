@@ -56,9 +56,13 @@ fun ColumnScope.WineShopDetail(
     val context = LocalContext.current
     val navigateToNaverMap: (WineShop) -> Unit = { wineShop ->
         val url =
-            "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${encodeUrlString(wineShop.name)}&appname=com.teamwiney.winey"
+            "nmap://route/public?dlat=${wineShop.latitude}&dlng=${wineShop.longitude}&dname=${
+                encodeUrlString(
+                    wineShop.name
+                )
+            }&appname=com.teamwiney.winey"
 
-        val intent =  Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
         val installCheck = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -75,7 +79,12 @@ fun ColumnScope.WineShopDetail(
 
         // 네이버맵이 설치되어 있다면 앱으로 연결, 설치되어 있지 않다면 스토어로 이동
         if (installCheck.isEmpty()) {
-            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")))
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.nhn.android.nmap")
+                )
+            )
         } else {
             context.startActivity(intent)
         }
@@ -138,9 +147,7 @@ fun ColumnScope.WineShopDetail(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(40.dp))
                                 .border(
-                                    BorderStroke(
-                                        1.dp, WineyTheme.colors.gray_800
-                                    ),
+                                    BorderStroke(1.dp, WineyTheme.colors.gray_800),
                                     RoundedCornerShape(40.dp)
                                 )
                                 .padding(horizontal = 10.dp, vertical = 5.dp)

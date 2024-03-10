@@ -6,20 +6,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,6 +45,7 @@ import com.teamwiney.ui.theme.WineyTheme
 fun NoteWineCard(
     modifier: Modifier = Modifier,
     color: String,
+    cardBackgroundAlpha: Float = 0.1f,
     name: String,
     origin: String,
     starRating: Int? = null,
@@ -58,7 +56,7 @@ fun NoteWineCard(
             color,
             R.drawable.ic_red_wine,
             Color(0xFFA87575),
-            listOf(Color(0xFFC06868), Color(0xFF7C2B2B)),
+            listOf(Color(0xFF640D0D), Color(0xFFA87575)),
             Color(0xFF640D0D),
             Color(0xFF441010)
         )
@@ -121,61 +119,46 @@ fun NoteWineCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(RoundedCornerShape(7.dp))
+                .clip(RoundedCornerShape(10.dp))
                 .border(
                     BorderStroke(
-                        1.dp, brush = Brush.linearGradient(
+                        0.2.dp, brush = Brush.linearGradient(
                             colors = listOf(
-                                Color(0xFF9671FF),
-                                Color(0x109671FF),
+                                Color(0x99FFFFFF),
+                                Color(0x4DFFFFFF)
                             )
                         )
                     ),
-                    RoundedCornerShape(7.dp)
+                    RoundedCornerShape(10.dp)
                 )
                 .background(WineyTheme.colors.background_1)
         ) {
             NoteCardSurface(
                 modifier = Modifier.fillMaxSize(),
                 gradientCircleColor = gradientCircleColor,
+                cardBackgroundAlpha = cardBackgroundAlpha,
                 circleColor = circleColor
             )
             Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
-                Row(
+                Text(
                     modifier = Modifier.padding(start = 20.dp, top = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    Text(
-                        text = convertToNoteType(wineName),
-                        style = TextStyle(
-                            fontFamily = Chaviera,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 25.sp,
-                        ),
-                        color = WineyTheme.colors.gray_50,
-                    )
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_thismooth),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .padding(bottom = 5.dp)
-                            .size(13.dp)
-                    )
-                }
+                    text = convertToNoteType(wineName),
+                    style = TextStyle(
+                        fontFamily = Chaviera,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 25.sp,
+                    ),
+                    color = WineyTheme.colors.gray_50,
+                )
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = "IMG_SPARKL_WINE",
                     modifier = Modifier
+                        .fillMaxSize()
                         .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 10.dp)
-                        .offset(y = (-10).dp)
+                        .offset(y = -10.dp)
                 )
             }
 
@@ -205,19 +188,22 @@ fun NoteWineCard(
 private fun NoteCardSurface(
     modifier: Modifier = Modifier,
     gradientCircleColor: List<Color>,
+    cardBackgroundAlpha: Float,
     circleColor: Color
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .blur(30.dp)
-            .alpha(0.4f)
-            .background(
-                color = Color(0x993F3F3F),
-                shape = RoundedCornerShape(5.dp)
-            ),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(cardBackgroundAlpha)
+                .blur(20.dp)
+                .background(
+                    color = Color(0xFFFFFFFF)
+                )
+        )
         NoteWineCardCircle(
             gradientCircleColor = gradientCircleColor,
             circleColor = circleColor
@@ -233,16 +219,18 @@ private fun NoteWineCardCircle(
     Canvas(
         modifier = Modifier
             .fillMaxSize()
+            .blur(50.dp)
+            .alpha(0.6f)
     ) {
         drawCircle(
             brush = Brush.verticalGradient(gradientCircleColor),
-            radius = 35.dp.toPx(),
-            center = Offset(x = 40.dp.toPx(), y = 20.dp.toPx())
+            radius = 28.dp.toPx(),
+            center = Offset(x = 35.dp.toPx(), y = 37.dp.toPx())
         )
 
         drawCircle(
             color = circleColor,
-            radius = 65.dp.toPx(),
+            radius = 50.dp.toPx(),
             center = Offset(x = (size.width / 1.5f), y = (size.height / 1.5f))
         )
     }

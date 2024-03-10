@@ -251,7 +251,7 @@ fun NoteFilterSection(
 ) {
     Column {
         HeightSpacerWithLine(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier.padding(bottom = 10.dp),
             color = WineyTheme.colors.gray_900
         )
 
@@ -390,7 +390,7 @@ fun NoteFilterSection(
         }
 
         HeightSpacerWithLine(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = 10.dp),
             color = WineyTheme.colors.gray_900
         )
     }
