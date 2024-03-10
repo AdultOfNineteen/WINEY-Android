@@ -213,7 +213,8 @@ fun MapScreen(
                 userPosition = uiState.userPosition,
                 setSelectedMarker = { wineShop ->
                     setSelectedMarker(wineShop)
-                }
+                },
+                bottomBarVisibility = appState.isMapDetail.value
             )
         }
     ) {
