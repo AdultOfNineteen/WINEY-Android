@@ -12,6 +12,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
 import com.teamwiney.mypage.account.MyPageAccountScreen
+import com.teamwiney.mypage.account.MyPageModifyNicknameScreen
 import com.teamwiney.mypage.account.MyPageWithdrawalConfirmScreen
 import com.teamwiney.mypage.account.MyPageWithdrawalReasonSelectScreen
 import com.teamwiney.mypage.badge.MyPageBadgeScreen
@@ -59,6 +60,18 @@ fun NavGraphBuilder.myPageGraph(
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState
+            )
+        }
+
+        composable(route = MyPageDestinations.MODIFY_NICKNAME) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
+            MyPageModifyNicknameScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry)
             )
         }
 

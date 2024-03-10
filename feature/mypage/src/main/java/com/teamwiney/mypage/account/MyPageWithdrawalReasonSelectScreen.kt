@@ -50,7 +50,6 @@ fun MyPageWithdrawalReasonSelectScreen(
     val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
-
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is MyPageContract.Effect.NavigateTo -> {

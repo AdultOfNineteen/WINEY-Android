@@ -381,7 +381,7 @@ fun MyProfileMenuItem(
     ) {
         Text(
             text = menu,
-            style = WineyTheme.typography.bodyB1.copy(
+            style = WineyTheme.typography.bodyM1.copy(
                 color = WineyTheme.colors.gray_400
             )
         )

@@ -72,6 +72,7 @@ object MyPageDestinations {
     const val MY_PAGE = "myPage"
     const val BADGE = "badge"
     const val ACCOUNT = "account"
+    const val MODIFY_NICKNAME = "modify_nickname"
     const val WITHDRAWAL_REASON_SELECT = "withdrawal_reason_select"
     const val WITHDRAWAL_CONFIRM = "withdrawal_confirm"
 }
