@@ -139,7 +139,7 @@ fun ColumnScope.WineShopDetail(
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    wineShop.shopMoods.take(3).forEach {
+                    wineShop.shopMoods.forEach {
                         Text(
                             text = it,
                             color = WineyTheme.colors.gray_500,

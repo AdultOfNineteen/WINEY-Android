@@ -110,9 +110,10 @@ fun LazyItemScope.WineShopItem(
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
-                modifier = Modifier.horizontalScroll(rememberScrollState())
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
             ) {
-                wineShop.shopMoods.forEach {
+                wineShop.shopMoods.take(3).forEach {
                     Text(
                         text = it,
                         color = WineyTheme.colors.gray_500,
