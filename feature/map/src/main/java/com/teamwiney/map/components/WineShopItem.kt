@@ -77,43 +77,69 @@ fun LazyItemScope.WineShopItem(
                 .weight(1f)
                 .wrapContentHeight()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = wineShop.name,
-                    style = WineyTheme.typography.headline,
-                    color = WineyTheme.colors.gray_50,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .wrapContentHeight()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = wineShop.name,
+                            style = WineyTheme.typography.headline,
+                            color = WineyTheme.colors.gray_50,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                        )
+                        Text(
+                            text = wineShop.shopType,
+                            style = WineyTheme.typography.captionM1,
+                            color = WineyTheme.colors.gray_500,
+                            maxLines = 1,
+                            overflow = TextOverflow.Visible,
+                        )
+                    }
+                    HeightSpacer(height = 7.dp)
+                    Text(
+                        text = wineShop.address,
+                        style = WineyTheme.typography.captionM1,
+                        color = WineyTheme.colors.gray_700,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Icon(
+                    painter = painterResource(
+                        id =
+                        if (wineShop.like) R.drawable.ic_bookmark_fill_24 else R.drawable.ic_bookmark_baseline_24
+                    ),
+                    contentDescription = "IC_BOOKMARK",
                     modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            postBookmark(wineShop)
+                        },
+                    tint = WineyTheme.colors.main_2
                 )
-                Text(
-                    text = wineShop.shopType,
-                    style = WineyTheme.typography.captionM1,
-                    color = WineyTheme.colors.gray_500,
-                    maxLines = 1,
-                    overflow = TextOverflow.Visible,
-                )
+
             }
-            HeightSpacer(height = 7.dp)
-            Text(
-                text = wineShop.address,
-                style = WineyTheme.typography.captionM1,
-                color = WineyTheme.colors.gray_700,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.fillMaxWidth()
-            )
+
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
             ) {
-                wineShop.shopMoods.take(3).forEach {
+                wineShop.shopMoods.forEach {
                     Text(
                         text = it,
                         color = WineyTheme.colors.gray_500,
@@ -131,20 +157,7 @@ fun LazyItemScope.WineShopItem(
                 }
             }
         }
-        Spacer(modifier = Modifier.width(4.dp))
-        Icon(
-            painter = painterResource(
-                id =
-                if (wineShop.like) R.drawable.ic_bookmark_fill_24 else R.drawable.ic_bookmark_baseline_24
-            ),
-            contentDescription = "IC_BOOKMARK",
-            modifier = Modifier
-                .size(24.dp)
-                .clickable {
-                    postBookmark(wineShop)
-                },
-            tint = WineyTheme.colors.main_2
-        )
+
     }
     HeightSpacerWithLine(color = WineyTheme.colors.gray_900)
 }
