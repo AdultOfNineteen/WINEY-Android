@@ -211,7 +211,7 @@ class NoteWriteViewModel @Inject constructor(
             buyAgain = wineNote.buyAgain,
             smellKeywordList = wineNote.addSmellKeywordList.map { it.value },
             deleteSmellKeywordList = wineNote.deleteSmellKeywordList.map { it.value },
-            deleteImgList = wineNote.deleteImages.map { it.imgUrl },
+            deleteImgList = wineNote.deleteImages.map { it.imgId },
             imgUris = wineNote.addImages.map { it.contentUri }
         ).onStart {
             updateState(currentState.copy(isLoading = true))

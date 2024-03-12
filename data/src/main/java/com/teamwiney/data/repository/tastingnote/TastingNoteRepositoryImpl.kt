@@ -147,7 +147,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             buyAgain?.let { put("buyAgain", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
             put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
-            put("deleteImgLists", JSONArray().apply { deleteImgList.forEach { put(it) } })
+            put("deleteImgList", JSONArray().apply { deleteImgList.forEach { put(it) } })
         }
 
         val request = jsonObjectBuilder.toString().toRequestBody("application/json".toMediaType())
