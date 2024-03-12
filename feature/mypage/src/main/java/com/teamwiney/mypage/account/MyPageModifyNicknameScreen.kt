@@ -25,7 +25,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.mypage.MyPageContract
-import com.teamwiney.mypage.MyPageContract.Companion.NEW_NICKNAME_MAX_LENGTH
 import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
@@ -106,8 +105,7 @@ fun MyPageModifyNicknameScreen(
                         tint = Color.Unspecified
                     )
                 },
-                placeholderText = "${NEW_NICKNAME_MAX_LENGTH}자리 입력",
-                maxLength = NEW_NICKNAME_MAX_LENGTH,
+                placeholderText = "",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 keyboardActions = KeyboardActions(
                     onDone = {

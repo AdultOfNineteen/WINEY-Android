@@ -22,6 +22,7 @@ class MyPageContract {
         val sommelierBadges: List<WineBadge> = emptyList(),
         val newNickname: String = "",
         val newNicknameErrorState: Boolean = false,
+        val newNicknameErrorText: String = "닉네임",
         val activityBadges: List<WineBadge> = emptyList(),
         val withdrawalReason: String = "이유를 선택해주세요.",
         val isWithdrawalReasonDirectInput: Boolean = false,
@@ -51,10 +52,6 @@ class MyPageContract {
 
         object WithdrawalComplete : BottomSheet()
 
-    }
-
-    companion object {
-        const val NEW_NICKNAME_MAX_LENGTH = 9
     }
 
 }
