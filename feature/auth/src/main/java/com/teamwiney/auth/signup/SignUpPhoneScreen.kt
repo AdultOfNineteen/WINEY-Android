@@ -189,14 +189,18 @@ fun SignUpPhoneScreen(
                     })
                 },
                 trailingIcon = {
-                    Icon(
-                        modifier = Modifier.size(24.dp).clickable {
-                            viewModel.updatePhoneNumber("")
-                        },
-                        painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_textfield_delete),
-                        contentDescription = "IC_TEXT_DELETE",
-                        tint = Color.Unspecified
-                    )
+                    if (uiState.phoneNumber.isNotBlank()) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    viewModel.updatePhoneNumber("")
+                                },
+                            painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_textfield_delete),
+                            contentDescription = "IC_TEXT_DELETE",
+                            tint = Color.Unspecified
+                        )
+                    }
                 },
                 placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
                 maxLength = PHONE_NUMBER_LENGTH,

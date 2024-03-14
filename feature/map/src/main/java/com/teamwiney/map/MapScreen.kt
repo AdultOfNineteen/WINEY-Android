@@ -254,10 +254,10 @@ fun MapScreen(
                 else uiState.wineShops).forEach {
                     Marker(
                         state = MarkerState(position = LatLng(it.latitude, it.longitude)),
-                        icon = OverlayImage.fromResource(R.mipmap.img_wine_marker),
+                        icon = getMarker(it),
                         captionText = it.name,
-                        height = if (it.isSelected) 75.dp else 49.dp,
-                        width = if (it.isSelected) 52.dp else 34.dp,
+                        height = if (it.isSelected) 38.dp else 29.dp,
+                        width = if (it.isSelected) 38.dp else 29.dp,
                         onClick = { _ ->
                             onMarkerClick(it)
                             true
@@ -445,6 +445,18 @@ private fun WineCategoryTopbar(
                 color = WineyTheme.colors.gray_50
             )
         )
+    }
+}
+
+fun getMarker(wineShop: WineShop): OverlayImage {
+    if (wineShop.like) return OverlayImage.fromResource(R.drawable.ic_like_marker_29)
+    return when (wineShop.shopType) {
+        "바" -> OverlayImage.fromResource(R.drawable.ic_winebar_marker_29)
+        "바틀샵" -> OverlayImage.fromResource(R.drawable.ic_bottleshop_marker_29)
+        "음식점" -> OverlayImage.fromResource(R.drawable.ic_restaurant_marker_29)
+        "펍" -> OverlayImage.fromResource(R.drawable.ic_pub_marker_29)
+        "카페" -> OverlayImage.fromResource(R.drawable.ic_cafe_marker_29)
+        else -> OverlayImage.fromResource(R.mipmap.img_wine_marker)
     }
 }
 

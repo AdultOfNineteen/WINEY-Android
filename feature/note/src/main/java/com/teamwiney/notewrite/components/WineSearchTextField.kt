@@ -85,7 +85,7 @@ fun WineSearchTextField(
                             },
                         painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_search),
                         contentDescription = "IC_SEARCH",
-                        tint = Color.White
+                        tint = WineyTheme.colors.gray_800
                     )
                 }
             }
