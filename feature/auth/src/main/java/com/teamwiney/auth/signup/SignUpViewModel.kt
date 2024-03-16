@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,8 +53,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun setPreferences() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(Constants.USER_ID).first() }
+
         authRepository.setPreferences(
-            userId = currentState.userId,
+            userId = "$userId",
             request = SetPreferencesRequest(
                 chocolate = currentState.favoriteTastes[0].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
                 coffee = currentState.favoriteTastes[1].signUpFavoriteItem.find { it.isSelected }?.keyword!!,
@@ -81,8 +84,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun verifyAuthenticationNumber() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(Constants.USER_ID).first() }
+
         authRepository.verifyAuthCodeMessage(
-            currentState.userId,
+            "$userId",
             PhoneNumberWithVerificationCodeRequest(
                 phoneNumber = currentState.phoneNumber,
                 verificationCode = currentState.verifyNumber
@@ -124,8 +129,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun sendAuthenticationNumber() = viewModelScope.launch {
+        val userId = runBlocking { dataStoreRepository.getIntValue(Constants.USER_ID).first() }
+
         authRepository.sendAuthCodeMessage(
-            currentState.userId,
+            "$userId",
             PhoneNumberRequest(
                 currentState.phoneNumber
             )
@@ -201,10 +208,6 @@ class SignUpViewModel @Inject constructor(
                 else -> { }
             }
         }
-    }
-
-    fun updateUserId(userId: String) = viewModelScope.launch {
-        updateState(currentState.copy(userId = userId))
     }
 
     fun updatePhoneNumber(phoneNumber: String) = viewModelScope.launch {

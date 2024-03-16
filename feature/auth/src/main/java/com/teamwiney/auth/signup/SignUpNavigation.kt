@@ -1,10 +1,6 @@
 package com.teamwiney.auth.signup
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -19,55 +15,39 @@ fun NavGraphBuilder.signUpGraph(
     bottomSheetState: WineyBottomSheetState,
 ) {
     navigation(
-        route = "${AuthDestinations.SignUp.ROUTE}?userId={userId}",
-        startDestination = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
+        route = AuthDestinations.SignUp.ROUTE,
+        startDestination = AuthDestinations.SignUp.PHONE
     ) {
-        composable(
-            route = "${AuthDestinations.SignUp.PHONE}?userId={userId}",
-            arguments = listOf(
-                navArgument("userId") {
-                    type = NavType.StringType
-                    defaultValue = "-1"
-                }
-            )
-        ) { entry ->
-            val userId = entry.arguments?.getString("userId") ?: ""
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = entry,
-                navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
-            )
+        composable(route = AuthDestinations.SignUp.PHONE) {
             SignUpPhoneScreen(
                 bottomSheetState = bottomSheetState,
                 appState = appState,
-                userId = userId,
-                viewModel = hiltViewModel(backStackEntry)
+                viewModel = hiltViewModel()
             )
         }
 
-        composable(route = AuthDestinations.SignUp.AUTHENTICATION) {
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
+        composable(route = "${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber={phoneNumber}",
+            arguments = listOf(
+                navArgument("phoneNumber") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
             )
+        ) { entry ->
+            val phoneNumber = entry.arguments?.getString("phoneNumber") ?: ""
             SignUpAuthenticationScreen(
                 bottomSheetState = bottomSheetState,
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry)
+                viewModel = hiltViewModel(),
+                phoneNumber = phoneNumber
             )
         }
 
         composable(route = AuthDestinations.SignUp.FAVORITE_TASTE) {
-            val backStackEntry = rememberNavControllerBackStackEntry(
-                entry = it,
-                navController = appState.navController,
-                graph = "${AuthDestinations.SignUp.PHONE}?userId={userId}"
-            )
             SignUpFavoriteTasteScreen(
                 bottomSheetState = bottomSheetState,
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry)
+                viewModel = hiltViewModel()
             )
         }
 
@@ -75,13 +55,4 @@ fun NavGraphBuilder.signUpGraph(
             SignUpCompleteScreen(appState = appState)
         }
     }
-}
-
-@Composable
-fun rememberNavControllerBackStackEntry(
-    entry: NavBackStackEntry,
-    navController: NavController,
-    graph: String,
-) = remember(entry) {
-    navController.getBackStackEntry(graph)
 }

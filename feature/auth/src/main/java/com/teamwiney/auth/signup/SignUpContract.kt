@@ -23,7 +23,6 @@ class SignUpContract {
         val isTimerRunning: Boolean = true,
         val isTimeOut: Boolean = false,
         val remainingTime: Int = VERIFY_NUMBER_TIMER,
-        val userId: String = "",
         val favoriteTastes: List<SignUpFavoriteCategoryUiState> = mutableStateListOf(
             SignUpFavoriteCategoryUiState(
                 title = "평소 초콜릿을 먹을 때 나는?",

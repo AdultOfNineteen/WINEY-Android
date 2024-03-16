@@ -50,7 +50,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpAuthenticationScreen(
     bottomSheetState: WineyBottomSheetState,
     appState: WineyAppState,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    phoneNumber: String
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -65,6 +66,8 @@ fun SignUpAuthenticationScreen(
     }
 
     LaunchedEffect(true) {
+        viewModel.updatePhoneNumber(phoneNumber)
+
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is SignUpContract.Effect.NavigateTo -> {
@@ -85,7 +88,7 @@ fun SignUpAuthenticationScreen(
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
                                 ) {
                                     bottomSheetState.hideBottomSheet()
-                                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                    appState.navigate("${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber=${uiState.phoneNumber}")
                                 }
                             }
                         }

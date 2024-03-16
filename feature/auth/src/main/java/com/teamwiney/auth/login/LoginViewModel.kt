@@ -9,6 +9,8 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
+import com.teamwiney.core.common.model.MessageStatus
+import com.teamwiney.core.common.model.PreferenceStatus
 import com.teamwiney.core.common.model.SocialType
 import com.teamwiney.core.common.model.UserStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -127,6 +129,9 @@ class LoginViewModel @Inject constructor(
                             )
 
                             val userStatus = result.data.result.userStatus
+                            val messageStatus = result.data.result.messageStatus
+                            val preferenceStatus = result.data.result.preferenceStatus
+
                             if (userStatus == UserStatus.ACTIVE) {
                                 dataStoreRepository.setStringValue(LOGIN_TYPE, socialType.name)
 
@@ -141,7 +146,13 @@ class LoginViewModel @Inject constructor(
                                     }
                                 ))
                             } else {
-                                postEffect(LoginContract.Effect.NavigateTo("${AuthDestinations.SignUp.ROUTE}?userId=${result.data.result.userId}"))
+                                if (messageStatus != MessageStatus.VERIFIED) {
+                                    postEffect(LoginContract.Effect.NavigateTo(AuthDestinations.SignUp.ROUTE))
+                                } else if (preferenceStatus != PreferenceStatus.DONE) {
+                                    postEffect(LoginContract.Effect.NavigateTo(AuthDestinations.SignUp.FAVORITE_TASTE))
+                                } else {
+                                    postEffect(LoginContract.Effect.NavigateTo(AuthDestinations.SignUp.ROUTE))
+                                }
                             }
                         }
 
