@@ -49,17 +49,15 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpPhoneScreen(
     appState: WineyAppState,
     bottomSheetState: WineyBottomSheetState,
-    viewModel: SignUpViewModel = hiltViewModel(),
-    userId: String = "",
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     DisposableEffect(true) {
-        viewModel.updateUserId(userId)
         bottomSheetState.setOnHideBottomSheet {
             bottomSheetState.hideBottomSheet()
-            appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+            appState.navigate("${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber=${uiState.phoneNumber}")
         }
         onDispose {
             bottomSheetState.setOnHideBottomSheet { }
@@ -82,7 +80,7 @@ fun SignUpPhoneScreen(
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
                                 ) {
                                     bottomSheetState.hideBottomSheet()
-                                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                    appState.navigate("${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber=${uiState.phoneNumber}")
                                 }
                             }
                         }

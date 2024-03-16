@@ -1,5 +1,7 @@
 package com.teamwiney.data.network.model.response
 
+import com.teamwiney.core.common.model.MessageStatus
+import com.teamwiney.core.common.model.PreferenceStatus
 import com.teamwiney.core.common.model.UserStatus
 
 /**
@@ -24,6 +26,6 @@ data class SocialLogin(
     val userId: Int,
     val refreshToken: String,
     val userStatus: UserStatus,
-    val messageStatus: String,
-    val preferenceStatus: String
+    val messageStatus: MessageStatus,
+    val preferenceStatus: PreferenceStatus
 )
