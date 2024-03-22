@@ -281,6 +281,7 @@ private fun WineBadgeItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
+                .background(WineyTheme.colors.gray_900)
                 .border(
                     border = BorderStroke(
                         width = 1.dp,
@@ -292,7 +293,8 @@ private fun WineBadgeItem(
                         )
                     ),
                     shape = RoundedCornerShape(5.dp)
-                )
+                ),
+            contentAlignment = Alignment.Center
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -300,10 +302,9 @@ private fun WineBadgeItem(
                     .build(),
                 contentDescription = "BADGE_IMAGE",
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(0.75f)
                     .aspectRatio(1f)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(WineyTheme.colors.gray_900),
+                    .clip(RoundedCornerShape(5.dp)),
                 contentScale = ContentScale.Crop
             )
         }

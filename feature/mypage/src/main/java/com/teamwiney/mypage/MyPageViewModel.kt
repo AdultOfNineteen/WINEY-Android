@@ -5,6 +5,7 @@ import androidx.navigation.navOptions
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.MyPageDestinations
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
 import com.teamwiney.core.common.util.Constants.DEVICE_ID
 import com.teamwiney.core.common.util.Constants.REFRESH_TOKEN
@@ -71,7 +72,12 @@ class MyPageViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val result = it.data.result
 
-                    updateState(currentState.copy(nickname = result.nickname))
+                    updateState(
+                        currentState.copy(
+                            nickname = result.nickname,
+                            newNickname = result.nickname
+                        )
+                    )
                 }
 
                 is ApiResult.ApiError -> {
@@ -237,6 +243,39 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    fun modifyNickname() = viewModelScope.launch {
+        authRepository.modifyUserNickname(
+            currentState.newNickname
+        ).onStart {
+            updateState(currentState.copy(isLoading = true))
+        }.collect {
+            updateState(currentState.copy(isLoading = false))
+
+            when (it) {
+                is ApiResult.Success -> {
+                    postEffect(
+                        MyPageContract.Effect.NavigateTo(
+                            destination = MyPageDestinations.MY_PAGE,
+                            navOptions = navOptions {
+                                popUpTo(MyPageDestinations.MY_PAGE) {
+                                    inclusive = true
+                                }
+                            }
+                        )
+                    )
+                }
+
+                is ApiResult.ApiError -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar(it.message))
+                }
+
+                else -> {
+                    postEffect(MyPageContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                }
+            }
+        }
+    }
+
     fun logOut() = viewModelScope.launch {
         val deviceId = runBlocking { dataStoreRepository.getStringValue(DEVICE_ID).first() }
 
@@ -281,6 +320,14 @@ class MyPageViewModel @Inject constructor(
         updateState(
             currentState.copy(
                 withdrawalReasonDirectInput = reason
+            )
+        )
+    }
+
+    fun updateNewNickname(nickname: String) = viewModelScope.launch {
+        updateState(
+            currentState.copy(
+                newNickname = nickname
             )
         )
     }

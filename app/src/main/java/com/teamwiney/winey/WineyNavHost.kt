@@ -29,6 +29,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.MapDestinations
+import com.teamwiney.core.common.navigation.ReusableDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
@@ -107,7 +108,7 @@ fun WineyNavHost() {
                 )
 
                 composable(
-                    route = "${HomeDestinations.WEB_VIEW}?url={url}&title={title}&subTitle={subTitle}",
+                    route = "${ReusableDestinations.WEB_VIEW}?url={url}&title={title}&subTitle={subTitle}",
                     arguments = listOf(
                         navArgument("url") {
                             type = NavType.StringType

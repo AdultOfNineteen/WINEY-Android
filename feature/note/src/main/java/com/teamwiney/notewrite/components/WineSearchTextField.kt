@@ -51,7 +51,7 @@ fun WineSearchTextField(
         cursorBrush = SolidColor(Color.White),
         textStyle = WineyTheme.typography.bodyM1.copy(color = WineyTheme.colors.gray_50),
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions ?: KeyboardActions(),
+        keyboardActions = keyboardActions,
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier.background(
@@ -75,6 +75,7 @@ fun WineSearchTextField(
                         }
                         innerTextField()
                     }
+
                     Icon(
                         modifier = Modifier
                             .size(24.dp)
@@ -84,7 +85,7 @@ fun WineSearchTextField(
                             },
                         painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_search),
                         contentDescription = "IC_SEARCH",
-                        tint = Color.White
+                        tint = WineyTheme.colors.gray_800
                     )
                 }
             }

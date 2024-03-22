@@ -79,7 +79,7 @@ fun WineMemo(noteDetail: TastingNoteDetail) {
                 .clip(RoundedCornerShape(10.dp))
                 .border(
                     BorderStroke(
-                        1.dp, WineyTheme.colors.main_3
+                        1.dp, WineyTheme.colors.gray_800
                     ),
                     RoundedCornerShape(10.dp)
                 )

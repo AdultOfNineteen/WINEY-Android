@@ -11,9 +11,8 @@ import androidx.navigation.navigation
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.MyPageDestinations
-import com.teamwiney.core.common.util.Constants.PRIVACY_POLICY_URL
-import com.teamwiney.core.common.util.Constants.TERMS_OF_USE_URL
 import com.teamwiney.mypage.account.MyPageAccountScreen
+import com.teamwiney.mypage.account.MyPageModifyNicknameScreen
 import com.teamwiney.mypage.account.MyPageWithdrawalConfirmScreen
 import com.teamwiney.mypage.account.MyPageWithdrawalReasonSelectScreen
 import com.teamwiney.mypage.badge.MyPageBadgeScreen
@@ -64,6 +63,18 @@ fun NavGraphBuilder.myPageGraph(
             )
         }
 
+        composable(route = MyPageDestinations.MODIFY_NICKNAME) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = MyPageDestinations.ROUTE
+            )
+            MyPageModifyNicknameScreen(
+                appState = appState,
+                viewModel = hiltViewModel(backStackEntry)
+            )
+        }
+
         composable(route = MyPageDestinations.WITHDRAWAL_REASON_SELECT) {
             val backStackEntry = rememberNavControllerBackStackEntry(
                 entry = it,
@@ -87,22 +98,6 @@ fun NavGraphBuilder.myPageGraph(
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState
-            )
-        }
-
-        composable(route = MyPageDestinations.TERMS_OF_USE) {
-            MyPageTermsScreen(
-                appState = appState,
-                title = "서비스 이용약관",
-                url = TERMS_OF_USE_URL
-            )
-        }
-
-        composable(route = MyPageDestinations.PRIVACY_POLICY) {
-            MyPageTermsScreen(
-                appState = appState,
-                title = "개인정보 처리방침",
-                url = PRIVACY_POLICY_URL
             )
         }
     }

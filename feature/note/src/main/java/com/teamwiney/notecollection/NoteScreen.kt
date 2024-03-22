@@ -143,6 +143,7 @@ fun NoteScreen(
             NoteFilterSection(
                 uiState = uiState,
                 viewModel = viewModel,
+                hideBottomSheet = bottomSheetState::hideBottomSheet,
                 showBottomSheet = bottomSheetState::showBottomSheet
             )
 
@@ -245,11 +246,12 @@ private fun SkeletonNote() {
 fun NoteFilterSection(
     uiState: NoteContract.State,
     viewModel: NoteViewModel,
+    hideBottomSheet: () -> Unit,
     showBottomSheet: (SheetContent) -> Unit
 ) {
     Column {
         HeightSpacerWithLine(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier.padding(bottom = 10.dp),
             color = WineyTheme.colors.gray_900
         )
 
@@ -284,7 +286,10 @@ fun NoteFilterSection(
                                 NoteSortBottomSheet(
                                     sortItems = uiState.sortItems,
                                     selectedSort = uiState.sortItems[uiState.selectedSort],
-                                    onSelectSort = viewModel::updateSelectedSort,
+                                    onSelectSort = { selectedSort ->
+                                        hideBottomSheet()
+                                        viewModel.updateSelectedSort(selectedSort)
+                                    },
                                     applyFilter = {
                                         viewModel.processEvent(NoteContract.Event.ApplyFilter)
                                     }
@@ -385,7 +390,7 @@ fun NoteFilterSection(
         }
 
         HeightSpacerWithLine(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.padding(top = 10.dp),
             color = WineyTheme.colors.gray_900
         )
     }

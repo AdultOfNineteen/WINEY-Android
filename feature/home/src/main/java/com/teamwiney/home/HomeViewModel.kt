@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.HomeDestinations
+import com.teamwiney.core.common.navigation.ReusableDestinations
 import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.toDomain
@@ -47,7 +48,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is HomeContract.Event.ShowTipDetail -> {
-                    postEffect(HomeContract.Effect.NavigateTo("${HomeDestinations.WEB_VIEW}?url=${event.url}&title=${"와인 초보자를 위한 "}&subTitle=${"TIP"}"))
+                    postEffect(HomeContract.Effect.NavigateTo("${ReusableDestinations.WEB_VIEW}?url=${event.url}&title=${"와인 초보자를 위한 "}&subTitle=${"TIP"}"))
                 }
 
                 is HomeContract.Event.ShowAnalysis -> {

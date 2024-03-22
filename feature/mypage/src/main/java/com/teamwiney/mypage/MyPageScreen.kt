@@ -41,8 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
-import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.MyPageDestinations
+import com.teamwiney.core.common.navigation.ReusableDestinations
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.FAQ_URL
 import com.teamwiney.data.network.model.response.WineGradeStandard
 import com.teamwiney.mypage.components.MyPageGradeProgressBar
@@ -91,6 +92,7 @@ fun MyPageScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .background(WineyTheme.colors.background_1)
     ) {
         MyProfileAppBar()
@@ -125,11 +127,11 @@ fun MyPageScreen(
 
             HeightSpacer(height = 15.dp)
             MyProfileMenuItem(menu = "서비스 이용약관") {
-                appState.navigate(MyPageDestinations.TERMS_OF_USE)
+                appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${Constants.TERMS_OF_USE_URL}&title=${"서비스 이용약관"}&subTitle=${""}")
             }
             HeightSpacer(height = 5.dp)
             MyProfileMenuItem(menu = "개인정보 처리방침") {
-                appState.navigate(MyPageDestinations.PRIVACY_POLICY)
+                appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${Constants.PRIVACY_POLICY_URL}&title=${"개인정보 처리 방침"}&subTitle=${""}")
             }
 
             HeightSpacer(height = 21.dp)
@@ -149,7 +151,7 @@ fun MyPageScreen(
             }
             HeightSpacer(height = 5.dp)
             MyProfileMenuItem(menu = "FAQ") {
-                appState.navigate("${HomeDestinations.WEB_VIEW}?url=${FAQ_URL}&title=${"FAQ"}&subTitle=${""}")
+                appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${FAQ_URL}&title=${"FAQ"}&subTitle=${""}")
             }
             MyProfileAppVersionItem()
         }
@@ -280,7 +282,7 @@ fun MyPageGrade(
             )
             .background(
                 shape = RoundedCornerShape(12.dp),
-                color = WineyTheme.colors.background_1,
+                color = WineyTheme.colors.gray_950
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -379,7 +381,7 @@ fun MyProfileMenuItem(
     ) {
         Text(
             text = menu,
-            style = WineyTheme.typography.bodyB1.copy(
+            style = WineyTheme.typography.bodyM1.copy(
                 color = WineyTheme.colors.gray_400
             )
         )

@@ -1,5 +1,5 @@
 @file:OptIn(
-    ExperimentalNaverMapApi::class, ExperimentalMaterialApi::class
+    ExperimentalNaverMapApi::class, ExperimentalMaterialApi::class, ExperimentalNaverMapApi::class
 )
 
 package com.teamwiney.map
@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
@@ -69,14 +70,13 @@ import com.teamwiney.map.components.MapBottomSheetContent
 import com.teamwiney.map.components.WineBottomSheetOpenPopUp
 import com.teamwiney.map.manager.manageBottomBarVisibility
 import com.teamwiney.map.manager.manageLocationPermission
-import com.teamwiney.map.manager.manageSystemUIColor
 import com.teamwiney.map.model.MovingCameraWrapper
 import com.teamwiney.map.model.ShopCategory
 import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-val BOTTOM_NAVIGATION_HEIGHT = 60.dp
+internal val BOTTOM_NAVIGATION_HEIGHT = 60.dp
 
 @Composable
 fun MapScreen(
@@ -157,10 +157,9 @@ fun MapScreen(
         uiState = uiState,
         updateIsMapDetail = appState::updateIsMapDetail
     )
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(color = Color.Transparent)
 
-    manageSystemUIColor(
-        isVisibleTopBar = uiState.selectedShopCategory == ShopCategory.ALL && uiState.selectedMarkar == null
-    )
     manageLocationPermission(
         addLocationListener = { viewModel.addLocationListener() },
         showSnackbar = { appState.showSnackbar(it) },
@@ -214,7 +213,8 @@ fun MapScreen(
                 userPosition = uiState.userPosition,
                 setSelectedMarker = { wineShop ->
                     setSelectedMarker(wineShop)
-                }
+                },
+                bottomBarVisibility = appState.isMapDetail.value
             )
         }
     ) {
@@ -254,10 +254,10 @@ fun MapScreen(
                 else uiState.wineShops).forEach {
                     Marker(
                         state = MarkerState(position = LatLng(it.latitude, it.longitude)),
-                        icon = OverlayImage.fromResource(R.mipmap.img_wine_marker),
+                        icon = getMarker(it),
                         captionText = it.name,
-                        height = if (it.isSelected) 75.dp else 49.dp,
-                        width = if (it.isSelected) 52.dp else 34.dp,
+                        height = if (it.isSelected) 38.dp else 29.dp,
+                        width = if (it.isSelected) 38.dp else 29.dp,
                         onClick = { _ ->
                             onMarkerClick(it)
                             true
@@ -268,7 +268,7 @@ fun MapScreen(
                 if (uiState.userPosition != DEFAULT_LATLNG) {
                     Marker(
                         state = MarkerState(position = uiState.userPosition),
-                        icon = OverlayImage.fromResource(R.drawable.ic_close_fill_18),
+                        icon = OverlayImage.fromResource(R.drawable.ic_map_user_24),
                         height = 24.dp,
                         width = 24.dp,
                         onClick = {
@@ -277,6 +277,21 @@ fun MapScreen(
                     )
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .align(Alignment.TopCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color(0x737D7D7D),
+                                Color.Transparent
+                            )
+                        )
+                    )
+            )
 
             WineBottomSheetOpenPopUp(
                 isCollapsed = bottomSheetScaffoldState.bottomSheetState.isCollapsed,
@@ -297,7 +312,6 @@ fun MapScreen(
             Column(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .systemBarsPadding()
                     .fillMaxWidth()
             ) {
                 // 디테일 화면일 때
@@ -318,7 +332,7 @@ fun MapScreen(
                         Row(
                             modifier = Modifier
                                 .horizontalScroll(rememberScrollState())
-                                .padding(start = 24.dp, end = 24.dp, top = 30.dp),
+                                .padding(start = 24.dp, end = 24.dp, top = 50.dp),
                             horizontalArrangement = Arrangement.spacedBy(
                                 10.dp,
                                 Alignment.CenterHorizontally
@@ -377,13 +391,13 @@ fun MapScreen(
                     Text(
                         text = "현 위치에서 검색",
                         style = WineyTheme.typography.captionB1,
-                        color = WineyTheme.colors.main_1
+                        color = WineyTheme.colors.main_2
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_refresh_20),
                         contentDescription = "IC_REFERSH",
                         modifier = Modifier
-                            .size(12.dp)
+                            .size(14.dp)
                             .rotate(120f),
                         tint = WineyTheme.colors.main_1
                     )
@@ -401,7 +415,7 @@ private fun WineCategoryTopbar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(68.dp)
+            .height(88.dp)
             .background(Color(0xB31F2126))
             .statusBarsPadding(),
         contentAlignment = Alignment.Center
@@ -431,6 +445,18 @@ private fun WineCategoryTopbar(
                 color = WineyTheme.colors.gray_50
             )
         )
+    }
+}
+
+fun getMarker(wineShop: WineShop): OverlayImage {
+    if (wineShop.like) return OverlayImage.fromResource(R.drawable.ic_like_marker_29)
+    return when (wineShop.shopType) {
+        "바" -> OverlayImage.fromResource(R.drawable.ic_winebar_marker_29)
+        "바틀샵" -> OverlayImage.fromResource(R.drawable.ic_bottleshop_marker_29)
+        "음식점" -> OverlayImage.fromResource(R.drawable.ic_restaurant_marker_29)
+        "펍" -> OverlayImage.fromResource(R.drawable.ic_pub_marker_29)
+        "카페" -> OverlayImage.fromResource(R.drawable.ic_cafe_marker_29)
+        else -> OverlayImage.fromResource(R.mipmap.img_wine_marker)
     }
 }
 

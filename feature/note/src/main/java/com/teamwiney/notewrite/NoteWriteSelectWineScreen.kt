@@ -106,6 +106,7 @@ fun NoteWriteSelectWineScreen(
                         .fillMaxWidth(0.4f)
                         .aspectRatio(1f),
                     color = selectedWine.type.type,
+                    cardBackgroundAlpha = 0.2f,
                     name = selectedWine.name,
                     origin = selectedWine.country,
                     onClick = { },

@@ -1,22 +1,27 @@
 package com.teamwiney.auth.signup
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,17 +49,15 @@ import kotlinx.coroutines.flow.collectLatest
 fun SignUpPhoneScreen(
     appState: WineyAppState,
     bottomSheetState: WineyBottomSheetState,
-    viewModel: SignUpViewModel = hiltViewModel(),
-    userId: String = "",
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     DisposableEffect(true) {
-        viewModel.updateUserId(userId)
         bottomSheetState.setOnHideBottomSheet {
             bottomSheetState.hideBottomSheet()
-            appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+            appState.navigate("${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber=${uiState.phoneNumber}")
         }
         onDispose {
             bottomSheetState.setOnHideBottomSheet { }
@@ -77,7 +80,7 @@ fun SignUpPhoneScreen(
                                     sendMessageBottomSheetType = SendMessageBottomSheetType.SEND_MESSAGE
                                 ) {
                                     bottomSheetState.hideBottomSheet()
-                                    appState.navigate(AuthDestinations.SignUp.AUTHENTICATION)
+                                    appState.navigate("${AuthDestinations.SignUp.AUTHENTICATION}?phoneNumber=${uiState.phoneNumber}")
                                 }
                             }
                         }
@@ -182,6 +185,20 @@ fun SignUpPhoneScreen(
                     viewModel.updatePhoneNumber(it.filter { symbol ->
                         symbol.isDigit()
                     })
+                },
+                trailingIcon = {
+                    if (uiState.phoneNumber.isNotBlank()) {
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    viewModel.updatePhoneNumber("")
+                                },
+                            painter = painterResource(id = com.teamwiney.core.design.R.drawable.ic_textfield_delete),
+                            contentDescription = "IC_TEXT_DELETE",
+                            tint = Color.Unspecified
+                        )
+                    }
                 },
                 placeholderText = "${PHONE_NUMBER_LENGTH}자리 입력",
                 maxLength = PHONE_NUMBER_LENGTH,
