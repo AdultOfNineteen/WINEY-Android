@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +36,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.naver.maps.geometry.LatLng
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineShop
@@ -81,8 +82,12 @@ fun ColumnScope.WineShopDetail(
         context.startActivity(intent)
     }
 
-    Image(
-        painter = painterResource(id = R.drawable.img_dummy_wine),
+    AsyncImage(
+        model = ImageRequest.Builder(context)
+            .data(wineShop.imgUrl.ifEmpty { R.drawable.img_dummy_wine })
+            .placeholder(R.drawable.img_dummy_wine)
+            .error(R.drawable.img_dummy_wine)
+            .build(),
         contentDescription = "IMG_WINE",
         modifier = Modifier
             .fillMaxWidth()

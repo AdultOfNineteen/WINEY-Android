@@ -57,6 +57,7 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
             }
         }
     }
+
     protected fun updateState(currentState: State) {
         _uiState.value = currentState
     }
