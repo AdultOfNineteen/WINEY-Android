@@ -1,7 +1,11 @@
 package com.teamwiney.mypage
 
+import android.app.Activity
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
@@ -209,7 +213,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun withdrawal() = viewModelScope.launch {
+    fun withdrawal(activity: Activity) = viewModelScope.launch {
         val userId = runBlocking { dataStoreRepository.getIntValue(USER_ID).first() }
         val reason = if (currentState.isWithdrawalReasonDirectInput) {
             currentState.withdrawalReasonDirectInput
@@ -223,6 +227,20 @@ class MyPageViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
+                    val googleSignInClient = GoogleSignIn.getClient(
+                        activity,
+                        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                    )
+                    googleSignInClient.signOut()
+
+                    UserApiClient.instance.logout { error ->
+                        if (error != null) {
+                            postEffect(
+                                MyPageContract.Effect.ShowSnackBar("${error.message}")
+                            )
+                        }
+                    }
+
                     dataStoreRepository.deleteStringValue(ACCESS_TOKEN)
                     dataStoreRepository.deleteStringValue(REFRESH_TOKEN)
                     postEffect(
@@ -276,7 +294,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun logOut() = viewModelScope.launch {
+    fun logOut(activity: Activity) = viewModelScope.launch {
         val deviceId = runBlocking { dataStoreRepository.getStringValue(DEVICE_ID).first() }
 
         authRepository.logOut(deviceId).onStart {
@@ -285,6 +303,20 @@ class MyPageViewModel @Inject constructor(
             updateState(currentState.copy(isLoading = false))
             when (it) {
                 is ApiResult.Success -> {
+                    val googleSignInClient = GoogleSignIn.getClient(
+                        activity,
+                        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                    )
+                    googleSignInClient.signOut()
+
+                    UserApiClient.instance.logout { error ->
+                        if (error != null) {
+                            postEffect(
+                                MyPageContract.Effect.ShowSnackBar("${error.message}")
+                            )
+                        }
+                    }
+
                     postEffect(MyPageContract.Effect.NavigateTo(
                         AuthDestinations.Login.ROUTE, navOptions = navOptions {
                             popUpTo(HomeDestinations.ROUTE) {

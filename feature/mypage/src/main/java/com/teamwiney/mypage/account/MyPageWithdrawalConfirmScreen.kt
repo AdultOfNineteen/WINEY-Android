@@ -39,7 +39,7 @@ fun MyPageWithdrawalConfirmScreen(
 ) {
     val effectFlow = viewModel.effect
 
-    val activity = (LocalContext.current as? Activity)
+    val activity = LocalContext.current as Activity
 
     LaunchedEffect(true) {
         effectFlow.collectLatest { effect ->
@@ -57,7 +57,7 @@ fun MyPageWithdrawalConfirmScreen(
                         is MyPageContract.BottomSheet.WithdrawalComplete -> {
                             bottomSheetState.showBottomSheet {
                                 MyPageWithdrawalCompleteBottomSheet {
-                                    activity?.finish()
+                                    activity.finish()
                                 }
                             }
                         }
@@ -149,7 +149,7 @@ fun MyPageWithdrawalConfirmScreen(
 
             WButton(
                 text = "계정 삭제",
-                onClick = { viewModel.withdrawal() },
+                onClick = { viewModel.withdrawal(activity) },
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }

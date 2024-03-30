@@ -1,5 +1,6 @@
 package com.teamwiney.mypage.account
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,7 @@ fun MyPageAccountScreen(
     bottomSheetState: WineyBottomSheetState
 ) {
     val effectFlow = viewModel.effect
+    val activity = LocalContext.current as Activity
 
     BackHandler {
         if (bottomSheetState.bottomSheetState.isVisible) {
@@ -70,7 +73,7 @@ fun MyPageAccountScreen(
                                 MyPageLogOutBottomSheet(
                                     onConfirm = {
                                         bottomSheetState.hideBottomSheet()
-                                        viewModel.logOut()
+                                        viewModel.logOut(activity)
                                     },
                                     onCancel = {
                                         bottomSheetState.hideBottomSheet()
