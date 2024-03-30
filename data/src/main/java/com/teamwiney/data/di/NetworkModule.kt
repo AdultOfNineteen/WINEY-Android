@@ -32,19 +32,23 @@ object NetworkModule {
     fun providesOkHttpClient(
         authInterceptor: AuthInterceptor,
         @ApplicationContext context: Context
-    ): OkHttpClient =
-        OkHttpClient.Builder()
+    ): OkHttpClient {
+        val builder = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addNetworkInterceptor(
-                HttpLoggingInterceptor()
-                    .apply {
-                        if (BuildConfig.DEBUG) {
-                            setLevel(HttpLoggingInterceptor.Level.BODY)
-                        }
+                HttpLoggingInterceptor().apply {
+                    if (BuildConfig.DEBUG) {
+                        level = HttpLoggingInterceptor.Level.BODY
                     }
+                }
             )
-            .addNetworkInterceptor(ChuckerInterceptor(context))
-            .build()
+
+        if (BuildConfig.DEBUG) {
+            builder.addNetworkInterceptor(ChuckerInterceptor(context))
+        }
+
+        return builder.build()
+    }
 
     @Provides
     @Singleton
