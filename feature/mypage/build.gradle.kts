@@ -53,4 +53,7 @@ dependencies {
     implementation(libs.bundles.hilt.navigation)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.datastore)
+
+    implementation(libs.kakao.sdk.user)
+    implementation(libs.play.services.auth)
 }
