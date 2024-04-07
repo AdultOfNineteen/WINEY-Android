@@ -81,7 +81,7 @@ private fun createOkHttpClient(
     refreshToken: String,
     context: Context
 ): OkHttpClient {
-    return OkHttpClient.Builder()
+    val builder = OkHttpClient.Builder()
         .addNetworkInterceptor(
             HttpLoggingInterceptor()
                 .apply {
@@ -90,7 +90,6 @@ private fun createOkHttpClient(
                     }
                 }
         )
-        .addNetworkInterceptor(ChuckerInterceptor(context))
         .addInterceptor { chain ->
             val originalRequest = chain.request()
             val modifiedRequest = originalRequest.newBuilder()
@@ -99,5 +98,10 @@ private fun createOkHttpClient(
 
             chain.proceed(modifiedRequest)
         }
-        .build()
+
+    if (BuildConfig.DEBUG) {
+        builder.addNetworkInterceptor(ChuckerInterceptor(context))
+    }
+
+    return builder.build()
 }
