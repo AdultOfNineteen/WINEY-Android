@@ -1,6 +1,8 @@
 package com.teamwiney.data.network.interceptor
 
 import android.content.Context
+import android.content.Intent
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.util.Constants.ACCESS_TOKEN
@@ -54,6 +56,11 @@ class AuthInterceptor @Inject constructor(
                     runBlocking {
                         dataStoreRepository.deleteStringValue(ACCESS_TOKEN)
                         dataStoreRepository.deleteStringValue(REFRESH_TOKEN)
+                    }
+
+                    // 리프레시 토큰을 통한 갱신 실패 시
+                    Intent("com.teamwiney.winey.TOKEN_EXPIRED").also { intent ->
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
                     }
                 }
             }

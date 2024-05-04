@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import com.teamwiney.core.common.rememberWineyAppState
+import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.ui.theme.WineyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // WindowInset 직접 조절하기 위해서
@@ -22,7 +25,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = WineyTheme.colors.background_1
                 ) {
-                    WineyNavHost()
+                    WineyNavHost(
+                        appState = rememberWineyAppState(),
+                        bottomSheetState = rememberWineyBottomSheetState()
+                    )
                 }
             }
         }
