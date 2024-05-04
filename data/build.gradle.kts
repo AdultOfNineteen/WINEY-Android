@@ -55,4 +55,5 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.compose.paging)
     implementation(libs.bundles.network)
+    implementation(libs.local.broadcast.manager)
 }

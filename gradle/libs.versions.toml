@@ -4,6 +4,7 @@ agp_version = "8.0.2"
 browser_version = "1.7.0"
 kotlin_version = "1.8.10"
 android_core_ktx_version = "1.10.1"
+local_broadcast_manager_version = "1.0.0"
 activity_compose_version = "1.7.2"
 tools_build_gradle_version = "8.0.2"
 compose_coil_version = "2.2.2"
@@ -35,6 +36,7 @@ firebase_crashlytics_version = "2.9.9"
 
 [libraries]
 android_core_ktx = { module = "androidx.core:core-ktx", version.ref = "android_core_ktx_version" }
+local_broadcast_manager = { module = "androidx.localbroadcastmanager:localbroadcastmanager", version.ref = "local_broadcast_manager_version" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
 activity_compose = { module = "androidx.activity:activity-compose", version.ref = "activity_compose_version" }
 browser = { module = "androidx.browser:browser", version.ref = "browser_version" }
