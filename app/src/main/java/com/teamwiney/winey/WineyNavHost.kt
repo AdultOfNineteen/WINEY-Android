@@ -1,5 +1,9 @@
 package com.teamwiney.winey
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -15,24 +19,29 @@ import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navOptions
 import com.teamwiney.analysis.analysisGraph
 import com.teamwiney.auth.authGraph
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.MapDestinations
 import com.teamwiney.core.common.navigation.ReusableDestinations
 import com.teamwiney.core.common.navigation.TopLevelDestination
-import com.teamwiney.core.common.rememberWineyAppState
-import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.home.WebViewScreen
 import com.teamwiney.home.homeGraph
 import com.teamwiney.map.mapGraph
@@ -42,12 +51,53 @@ import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme
 
+@Composable
+fun TokenExpiredBroadcastReceiver(
+    onExpired: (intent: Intent?) -> Unit
+) {
+    val context = LocalContext.current
+
+    val currentOnExpired by rememberUpdatedState(onExpired)
+
+    DisposableEffect(context) {
+        val intentFilter = IntentFilter("com.teamwiney.winey.TOKEN_EXPIRED")
+        val broadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                currentOnExpired(intent)
+            }
+        }
+
+        LocalBroadcastManager.getInstance(context).registerReceiver(broadcast, intentFilter)
+        Log.d("debugging", "리시버 부착")
+
+        onDispose {
+            context.unregisterReceiver(broadcast)
+            Log.d("debugging", "리시버 부착 해제")
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WineyNavHost() {
-    val appState = rememberWineyAppState()
-    val bottomSheetState = rememberWineyBottomSheetState()
+fun WineyNavHost(
+    appState: WineyAppState,
+    bottomSheetState: WineyBottomSheetState
+) {
     val navController = appState.navController
+
+    TokenExpiredBroadcastReceiver { intent ->
+        if (intent?.action == "com.teamwiney.winey.TOKEN_EXPIRED") {
+            appState.showSnackbar("토큰이 만료되었습니다. 다시 로그인해주세요.")
+            appState.navController.navigate(
+                AuthDestinations.Login.LOGIN,
+                navOptions {
+                    popUpTo(AuthDestinations.Login.LOGIN) {
+                        inclusive = true
+                    }
+                }
+            )
+        }
+    }
 
     ModalBottomSheetLayout(
         sheetContent = {

@@ -112,6 +112,7 @@ class SplashViewModel @Inject constructor(
 
                 is ApiResult.NetworkError -> {
                     postEffect(SplashContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
+                    navigateToMain()
                 }
             }
         }
