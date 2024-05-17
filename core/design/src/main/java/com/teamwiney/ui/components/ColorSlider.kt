@@ -130,7 +130,8 @@ private fun isInCircle(x: Float, y: Float, centerX: Float, centerY: Float, radiu
     val dx = x - centerX
     val dy = y - centerY
 
-    return (dx * dx + dy * dy) <= (radius * radius)
+    // 원의 반지름의 1.5배 이내에 있는지 확인 (터치 영역 개선을 위해 1.5배로 설정)
+    return (dx * dx + dy * dy) <= (radius * radius * 1.5f)
 }
 
 private fun calculateColorForPosition(
