@@ -102,9 +102,12 @@ fun NoteWineInfoColorAndSmellScreen(
             verticalArrangement = Arrangement.Center,
         ) {
             WineColorPicker(
+                initialColor = uiState.initialColor,
                 currentColor = uiState.wineNote.color,
                 barColors = uiState.barColors
-            ) { viewModel.updateColor(it) }
+            ) {
+                viewModel.updateColor(it)
+            }
             HeightSpacer(35.dp)
             WineFlavorPicker(
                 wineSmellKeywords = uiState.wineSmellKeywords,
@@ -200,7 +203,6 @@ private fun WineFlavorPicker(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun WineSmellContainer(
     wineSmellKeyword: WineSmellKeyword,
@@ -234,6 +236,7 @@ private fun WineSmellContainer(
 
 @Composable
 private fun WineColorPicker(
+    initialColor: Color,
     currentColor: Color,
     barColors: List<Color>,
     updateCurrentColor: (Color) -> Unit,
@@ -286,6 +289,7 @@ private fun WineColorPicker(
                     )
 
                     ColorSlider(
+                        initialColor = initialColor,
                         onValueChange = updateCurrentColor,
                         barColors = barColors,
                         trackHeight = 10.dp,

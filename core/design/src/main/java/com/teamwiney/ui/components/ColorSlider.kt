@@ -38,6 +38,7 @@ import java.lang.Integer.min
 
 @Composable
 fun ColorSlider(
+    initialColor: Color,
     onValueChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
     thumbColor: Color = Color.White,
@@ -59,7 +60,7 @@ fun ColorSlider(
     trackHeight: Dp,
     thumbSize: Dp
 ) {
-    var thumbX by remember { mutableFloatStateOf(0f) }
+    var thumbX by remember { mutableFloatStateOf(-1f) }
     var isDragging by remember { mutableStateOf(false) }
 
     Box(
@@ -111,6 +112,11 @@ fun ColorSlider(
         ) {
             val height = size.height
 
+            if (thumbX == -1f) {
+                // 최초 1회 initialColor에 해당하는 thumbX 계산
+                thumbX = calculatePositionForColor(initialColor, size.width, barColors)
+            }
+
             drawCircle(
                 color = thumbColor,
                 radius = thumbSize.toPx() / 2,
@@ -123,6 +129,7 @@ fun ColorSlider(
 private fun isInCircle(x: Float, y: Float, centerX: Float, centerY: Float, radius: Float): Boolean {
     val dx = x - centerX
     val dy = y - centerY
+
     return (dx * dx + dy * dy) <= (radius * radius)
 }
 
@@ -138,10 +145,61 @@ private fun calculateColorForPosition(
     return lerp(startColor, endColor, fraction * (barColors.size - 1) - colorPosition)
 }
 
+private fun calculatePositionForColor(
+    color: Color,
+    width: Float,
+    barColors: List<Color>
+): Float {
+    var minDistance = Float.MAX_VALUE
+    var closestFraction = -1f
+
+    for (i in 0 until barColors.size - 1) {
+        val startColor = barColors[i]
+        val endColor = barColors[i + 1]
+        val interpolatedColor = lerp(startColor, endColor, 0.5f) // 중간 색상을 보간하여 사용
+        val distance = calculateColorDistance(color, interpolatedColor)
+
+        if (distance < minDistance) {
+            minDistance = distance
+            val fraction = i.toFloat() / (barColors.size - 1)
+            closestFraction = adjustFraction(fraction, i, barColors)
+        }
+    }
+
+    return closestFraction * width
+}
+
+/***
+ * 두 색상 사이의 거리를 고려하여 보정된 fraction을 반환합니다.
+ */
+private fun adjustFraction(
+    fraction: Float,
+    colorIndex: Int,
+    barColors: List<Color>
+): Float {
+    val previousColor = if (colorIndex > 0) barColors[colorIndex - 1] else barColors[colorIndex]
+    val nextColor = if (colorIndex < barColors.size - 1) barColors[colorIndex + 1] else barColors[colorIndex]
+
+    val distance = calculateColorDistance(previousColor, nextColor)
+    val adjustedFraction = fraction + (1f / (barColors.size - 1)) * distance
+    return adjustedFraction.coerceIn(0f, 1f)
+}
+
+
+/**
+ * 두 색상 사이의 유클리드 거리를 계산합니다.
+ */
+private fun calculateColorDistance(color1: Color, color2: Color): Float {
+    val deltaL = color2.red - color1.red
+    val deltaA = color2.green - color1.green
+    val deltaB = color2.blue - color1.blue
+    return kotlin.math.sqrt(deltaL * deltaL + deltaA * deltaA + deltaB * deltaB)
+}
+
 @Preview
 @Composable
 fun PreviewColorSlider() {
-    var barColors = listOf(
+    val barColors = listOf(
         Color(0xFF59002B),
         Color(0xFF6B3036),
         Color(0xFF852223),
@@ -179,6 +237,7 @@ fun PreviewColorSlider() {
             )
 
             ColorSlider(
+                initialColor = barColors[6],
                 onValueChange = { currentColor = it },
                 barColors = barColors,
                 trackHeight = 10.dp,

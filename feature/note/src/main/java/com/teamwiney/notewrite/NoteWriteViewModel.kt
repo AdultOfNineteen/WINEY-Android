@@ -36,10 +36,9 @@ class NoteWriteViewModel @Inject constructor(
 ) : BaseViewModel<NoteWriteContract.State, NoteWriteContract.Event, NoteWriteContract.Effect>(
     initialState = NoteWriteContract.State()
 ) {
-    private val noteId: Int
+    private val noteId: Int = savedStateHandle.get<String>("noteId")?.toInt() ?: -1
 
     init {
-        noteId = savedStateHandle.get<String>("noteId")?.toInt() ?: -1
         updateState(currentState.copy(mode = if (noteId == -1) EditMode.ADD else EditMode.UPDATE))
     }
 
@@ -65,6 +64,7 @@ class NoteWriteViewModel @Inject constructor(
 
                         updateState(
                             currentState.copy(
+                                initialColor = Color(result.color.toColorInt()),
                                 wineNote = WineNote(
                                     wineId = -1L,
                                     vintage = result.vintage?.toString() ?: "",
