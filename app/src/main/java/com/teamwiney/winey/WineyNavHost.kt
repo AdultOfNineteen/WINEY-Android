@@ -211,7 +211,7 @@ private fun WineySnackBar(appState: WineyAppState) {
         snackbar = { data ->
             Snackbar(
                 modifier = Modifier.padding(
-                    bottom = 50.dp,
+                    bottom = 20.dp,
                     start = 20.dp,
                     end = 20.dp
                 )
