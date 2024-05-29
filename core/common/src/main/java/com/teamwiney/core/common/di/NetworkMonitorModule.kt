@@ -13,13 +13,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkMonitorModule {
+abstract class NetworkMonitorModule {
 
-    @Provides
-    fun providesNetworkMonitor(
-        @ApplicationContext context: Context,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): NetworkMonitor =
-        ConnectivityManagerNetworkMonitor(context, ioDispatcher)
+    @Binds
+    abstract fun bindsNetworkMonitor(
+        networkMonitor: ConnectivityManagerNetworkMonitor
+    ): NetworkMonitor
 
 }
