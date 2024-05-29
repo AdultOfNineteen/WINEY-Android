@@ -4,6 +4,8 @@ import java.util.Properties
 plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.jetbrains.kotlin.android.get().pluginId)
+    id(libs.plugins.dagger.hilt.android.get().pluginId)
+    id(libs.plugins.kotlin.kapt.get().pluginId)
 }
 
 val properties = Properties().apply {
@@ -24,7 +26,6 @@ android {
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
     buildFeatures {
         compose = true
@@ -42,11 +43,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -61,5 +62,9 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.lifecycle.runtime.viewmodel)
     implementation(libs.converter.gson)
+
     implementation(libs.datastore)
+    implementation(libs.dagger)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

@@ -21,10 +21,14 @@ import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.teamwiney.core.common.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @Composable
 fun rememberWineyAppState(
+    networkMonitor: NetworkMonitor,
     isMapDetail: MutableState<Boolean> = mutableStateOf(false),
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -33,6 +37,7 @@ fun rememberWineyAppState(
 ): WineyAppState {
     return remember(Unit) {
         WineyAppState(
+            networkMonitor,
             isMapDetail,
             navController,
             scaffoldState,
@@ -44,6 +49,7 @@ fun rememberWineyAppState(
 
 @Stable
 class WineyAppState(
+    networkMonitor: NetworkMonitor,
     val isMapDetail: MutableState<Boolean>,
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
@@ -55,6 +61,14 @@ class WineyAppState(
             .currentBackStackEntryAsState().value?.destination
 
     val topLevelDestination = TopLevelDestination.values().toList()
+
+    val isOffline = networkMonitor.isOnline
+        .map(Boolean::not)
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false
+        )
 
     val shouldShowBottomBar: Boolean
         @Composable get() = !isMapDetail.value && currentDestination?.route ==

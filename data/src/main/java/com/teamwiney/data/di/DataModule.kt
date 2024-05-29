@@ -3,6 +3,7 @@ package com.teamwiney.data.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.datasource.auth.AuthDataSourceImpl
 import com.teamwiney.data.datasource.map.MapDataSource
@@ -35,6 +36,7 @@ import com.teamwiney.data.repository.winebadge.WineBadgeRepository
 import com.teamwiney.data.repository.winebadge.WineBadgeRepositoryImpl
 import com.teamwiney.data.repository.winegrade.WineGradeRepository
 import com.teamwiney.data.repository.winegrade.WineGradeRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,94 +47,70 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+abstract class DataModule {
 
-    @Provides
-    @Singleton
-    fun providesAuthDataSource(
-        authService: AuthService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): AuthDataSource =
-        AuthDataSourceImpl(authService, ioDispatcher)
+    @Binds
+    abstract fun bindsAuthDataSource(
+        authDataSource: AuthDataSourceImpl
+    ): AuthDataSource
 
-    @Provides
-    @Singleton
-    fun providesWineDataSource(
-        wineService: WineService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): WineDataSource =
-        WineDataSourceImpl(wineService, ioDispatcher)
+    @Binds
+    abstract fun bindsWineDataSource(
+        wineDataSource: WineDataSourceImpl
+    ): WineDataSource
 
-    @Provides
-    @Singleton
-    fun providesTastingNoteDataSource(
-        tastingNoteService: TastingNoteService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): TastingNoteDataSource =
-        TastingNoteDataSourceImpl(tastingNoteService, ioDispatcher)
+    @Binds
+    abstract fun bindsTastingNoteDataSource(
+        tastingNoteDataSource: TastingNoteDataSourceImpl
+    ): TastingNoteDataSource
 
-    @Provides
-    @Singleton
-    fun providesWineGradeDataSource(
-        wineGradeService: WineGradeService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): WineGradeDataSource =
-        WineGradeDataSourceImpl(wineGradeService, ioDispatcher)
+    @Binds
+    abstract fun bindsWineGradeDataSource(
+        wineGradeDataSource: WineGradeDataSourceImpl
+    ): WineGradeDataSource
 
-    @Provides
-    @Singleton
-    fun providesWineBadgeDataSource(
-        wineBadgeService: WineBadgeService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): WineBadgeDataSource =
-        WineBadgeDataSourceImpl(wineBadgeService, ioDispatcher)
+    @Binds
+    abstract fun bindsWineBadgeDataSource(
+        wineBadgeDataSource: WineBadgeDataSourceImpl
+    ): WineBadgeDataSource
 
-    @Provides
-    @Singleton
-    fun providesMapDataSource(
-        mapService: MapService,
-        @DispatcherModule.IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): MapDataSource =
-        MapDataSourceImpl(mapService, ioDispatcher)
+    @Binds
+    abstract fun bindsMapDataSource(
+        mapDataSource: MapDataSourceImpl
+    ): MapDataSource
 
-    @Provides
-    @Singleton
-    fun providesAuthRepository(authDataSource: AuthDataSource): AuthRepository =
-        AuthRepositoryImpl(authDataSource)
+    @Binds
+    abstract fun bindsAuthRepository(
+        authRepository: AuthRepositoryImpl
+    ): AuthRepository
 
-    @Provides
-    @Singleton
-    fun providesWineRepository(wineDataSource: WineDataSource): WineRepository =
-        WineRepositoryImpl(wineDataSource)
+    @Binds
+    abstract fun bindsWineRepository(
+        wineRepository: WineRepositoryImpl
+    ): WineRepository
 
-    @Provides
-    @Singleton
-    fun providesTastingNotRepository(
-        tastingNoteDataSource: TastingNoteDataSource,
-        @ApplicationContext context: Context
-    ): TastingNoteRepository = TastingNoteRepositoryImpl(tastingNoteDataSource, context)
+    @Binds
+    abstract fun bindsTastingNoteRepository(
+        tastingNoteRepository: TastingNoteRepositoryImpl
+    ): TastingNoteRepository
 
-    @Provides
-    @Singleton
-    fun providesDataStoreRepository(
-        pref: DataStore<Preferences>
-    ): DataStoreRepository = DataStoreRepositoryImpl(pref)
+    @Binds
+    abstract fun bindsDataStoreRepository(
+        dataStoreRepository: DataStoreRepositoryImpl
+    ): DataStoreRepository
 
-    @Provides
-    @Singleton
-    fun providesWineGradeRepository(
-        wineGradeDataSource: WineGradeDataSource
-    ): WineGradeRepository = WineGradeRepositoryImpl(wineGradeDataSource)
+    @Binds
+    abstract fun bindsWineGradeRepository(
+        wineGradeRepository: WineGradeRepositoryImpl
+    ): WineGradeRepository
 
-    @Provides
-    @Singleton
-    fun providesWineBadgeRepository(
-        wineBadgeDataSource: WineBadgeDataSource
-    ): WineBadgeRepository = WineBadgeRepositoryImpl(wineBadgeDataSource)
+    @Binds
+    abstract fun bindsWineBadgeRepository(
+        wineBadgeRepository: WineBadgeRepositoryImpl
+    ): WineBadgeRepository
 
-    @Provides
-    @Singleton
-    fun providesMapRepository(
-        mapDataSource: MapDataSource
-    ): MapRepository = MapRepositoryImpl(mapDataSource)
+    @Binds
+    abstract fun bindsMapRepository(
+        mapRepository: MapRepositoryImpl
+    ): MapRepository
 }

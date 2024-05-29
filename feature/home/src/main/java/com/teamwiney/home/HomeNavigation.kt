@@ -45,8 +45,6 @@ fun NavGraphBuilder.homeGraph(
             )
         }
 
- 
-
         composable(
             route = "${HomeDestinations.WINE_DETAIL}?id={wineId}",
             arguments = listOf(

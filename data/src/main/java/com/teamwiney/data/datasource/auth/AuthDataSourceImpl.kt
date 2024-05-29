@@ -1,7 +1,7 @@
 package com.teamwiney.data.datasource.auth
 
 import com.teamwiney.core.common.model.SocialType
-import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.network.model.request.FcmTokenRequest
 import com.teamwiney.data.network.model.request.GoogleAccessTokenRequest
 import com.teamwiney.data.network.model.request.PhoneNumberRequest

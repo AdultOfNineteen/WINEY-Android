@@ -2,7 +2,7 @@ package com.teamwiney.data.datasource.tastingnote
 
 import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
-import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.PagingResponse
 import com.teamwiney.data.network.model.response.TasteAnalysis
