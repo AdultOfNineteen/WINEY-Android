@@ -16,16 +16,20 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDestination
 import androidx.navigation.NavType
@@ -84,6 +88,17 @@ fun WineyNavHost(
     bottomSheetState: WineyBottomSheetState
 ) {
     val navController = appState.navController
+
+    val isOffline by appState.isOffline.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isOffline) {
+        if (isOffline) {
+            appState.scaffoldState.snackbarHostState.showSnackbar(
+                message = "⚠\uFE0F 인터넷에 연결되어 있지 않습니다.",
+                duration = SnackbarDuration.Indefinite
+            )
+        }
+    }
 
     TokenExpiredBroadcastReceiver { intent ->
         if (intent?.action == "com.teamwiney.winey.TOKEN_EXPIRED") {

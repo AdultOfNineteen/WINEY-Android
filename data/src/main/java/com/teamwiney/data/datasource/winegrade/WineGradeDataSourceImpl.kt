@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.winegrade
 
-import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.network.service.WineGradeService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow

@@ -1,4 +1,4 @@
-package com.teamwiney.data.di
+package com.teamwiney.core.common.di
 
 import dagger.Module
 import dagger.Provides

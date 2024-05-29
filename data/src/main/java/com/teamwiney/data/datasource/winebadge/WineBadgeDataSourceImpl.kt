@@ -1,6 +1,6 @@
 package com.teamwiney.data.datasource.winebadge
 
-import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.network.service.WineBadgeService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow

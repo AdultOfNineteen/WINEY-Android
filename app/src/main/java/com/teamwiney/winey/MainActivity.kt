@@ -7,13 +7,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import com.teamwiney.core.common.NetworkMonitor
 import com.teamwiney.core.common.rememberWineyAppState
 import com.teamwiney.core.common.rememberWineyBottomSheetState
 import com.teamwiney.ui.theme.WineyTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +31,9 @@ class MainActivity : ComponentActivity() {
                     color = WineyTheme.colors.background_1
                 ) {
                     WineyNavHost(
-                        appState = rememberWineyAppState(),
+                        appState = rememberWineyAppState(
+                            networkMonitor = networkMonitor
+                        ),
                         bottomSheetState = rememberWineyBottomSheetState()
                     )
                 }

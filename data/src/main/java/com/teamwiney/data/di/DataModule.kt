@@ -3,6 +3,7 @@ package com.teamwiney.data.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.datasource.auth.AuthDataSource
 import com.teamwiney.data.datasource.auth.AuthDataSourceImpl
 import com.teamwiney.data.datasource.map.MapDataSource

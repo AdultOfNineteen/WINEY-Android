@@ -1,7 +1,7 @@
 package com.teamwiney.data.datasource.map
 
 import com.teamwiney.core.common.base.CommonResponse
-import com.teamwiney.data.di.DispatcherModule
+import com.teamwiney.core.common.di.DispatcherModule
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.MapPosition
 import com.teamwiney.data.network.model.response.BookmarkResult
