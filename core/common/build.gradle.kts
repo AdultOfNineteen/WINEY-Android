@@ -19,12 +19,6 @@ android {
     defaultConfig {
         minSdk = 24
 
-        buildConfigField(
-            "String",
-            "BASE_URL",
-            properties["base.url"] as String
-        )
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -34,12 +28,17 @@ android {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", properties["prod.base.url"] as String)
+        }
+
+        getByName("debug") {
+            buildConfigField("String", "BASE_URL", properties["dev.base.url"] as String)
         }
     }
     compileOptions {
