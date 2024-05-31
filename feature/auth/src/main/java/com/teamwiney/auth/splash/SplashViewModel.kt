@@ -102,17 +102,17 @@ class SplashViewModel @Inject constructor(
                         getConnections()
                         navigateToMain()
                     } else {
-                        naviagateToLogin()
+                        navigateToLogin()
                     }
                 }
 
                 is ApiResult.ApiError -> {
-                    naviagateToLogin()
+                    navigateToLogin()
                 }
 
                 is ApiResult.NetworkError -> {
                     postEffect(SplashContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
-                    navigateToMain()
+                    navigateToLogin()
                 }
             }
         }
@@ -140,7 +140,7 @@ class SplashViewModel @Inject constructor(
         })
     }
 
-    private fun naviagateToLogin() {
+    private fun navigateToLogin() {
         postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
             popUpTo(AuthDestinations.SPLASH) { inclusive = true }
         })
