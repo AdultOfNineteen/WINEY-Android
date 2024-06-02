@@ -199,7 +199,7 @@ private fun BoxScope.LoginTitle() {
             )
             Spacer(modifier = Modifier.height(0.dp))
             Image(
-                painter = painterResource(id = R.mipmap.img_winey_logo),
+                painter = painterResource(id = R.drawable.ic_splash_logo),
                 contentDescription = null,
                 modifier = Modifier.size(74.dp, 68.dp)
             )
