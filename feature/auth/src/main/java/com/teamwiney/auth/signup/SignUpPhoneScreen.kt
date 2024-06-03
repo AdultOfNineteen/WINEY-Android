@@ -207,7 +207,7 @@ fun SignUpPhoneScreen(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hide()
-                        viewModel.processEvent(SignUpContract.Event.SendAuthentication)
+                        if (!uiState.phoneNumberErrorState) viewModel.processEvent(SignUpContract.Event.SendAuthentication)
                     }
                 ),
                 onErrorState = uiState.phoneNumberErrorState
