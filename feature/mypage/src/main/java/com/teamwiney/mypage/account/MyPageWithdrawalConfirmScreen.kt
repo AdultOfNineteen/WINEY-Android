@@ -20,8 +20,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.navOptions
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.navigation.AuthDestinations
+import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.mypage.MyPageContract
 import com.teamwiney.mypage.MyPageViewModel
 import com.teamwiney.mypage.components.MyPageWithdrawalCompleteBottomSheet
@@ -57,7 +60,15 @@ fun MyPageWithdrawalConfirmScreen(
                         is MyPageContract.BottomSheet.WithdrawalComplete -> {
                             bottomSheetState.showBottomSheet {
                                 MyPageWithdrawalCompleteBottomSheet {
-                                    activity.finish()
+                                    appState.navigate(
+                                        AuthDestinations.Login.ROUTE,
+                                        navOptions {
+                                            popUpTo(HomeDestinations.ROUTE) {
+                                                inclusive = true
+                                            }
+                                        }
+                                    )
+                                    bottomSheetState.hideBottomSheet()
                                 }
                             }
                         }

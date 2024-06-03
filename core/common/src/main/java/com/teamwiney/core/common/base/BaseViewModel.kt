@@ -61,10 +61,7 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
     protected fun updateState(currentState: State) {
         _uiState.value = currentState
     }
-    // TODO : processEvent 메소드 사용할지 고민해보기
-    // onClick = { processEvent(LoginContract.Event.KaKaoButtonClicked()) } 처럼 사용?
-    // 아니면 ViewModel 단의 kakaoLogin 메소드에서 _event.emit()하고
-    // onClick = { kakaoLogin() } 이런 식으로 사용?
+
     fun processEvent(event: Event) {
         viewModelScope.launch { _event.emit(event) }
     }

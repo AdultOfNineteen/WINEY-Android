@@ -61,9 +61,7 @@ fun SignUpCompleteScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
                 .navigationBarsPadding()
-                .imePadding()
         ) {
-
             HeightSpacer(height = 68.dp)
 
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
