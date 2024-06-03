@@ -1,6 +1,7 @@
 package com.teamwiney.auth.signup
 
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.Auth
 import com.teamwiney.auth.signup.component.state.SignUpFavoriteCategoryUiState
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.base.CommonResponseStatus
@@ -69,7 +70,16 @@ class SignUpViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     registerFcmToken()  // 회원가입 완료 후 FCM 토큰 등록
-                    postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
+
+                    val selectedChocolate = currentState.favoriteTastes[0].signUpFavoriteItem.find { it.isSelected }?.keyword
+                    val tasteResultUrl = when (selectedChocolate) {
+                        "MILK" -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=red"
+                        else -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=white"
+                    }
+
+                    postEffect(SignUpContract.Effect.NavigateTo(tasteResultUrl))
+
+                    // postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
                 }
 
                 is ApiResult.ApiError -> {

@@ -69,7 +69,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NoteWineInfoMemoScreen(
     appState: WineyAppState,
-    viewModel: NoteWriteViewModel,
+    viewModel: NoteWriteViewModel
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -138,14 +138,7 @@ fun NoteWineInfoMemoScreen(
                 }
 
                 is NoteWriteContract.Effect.NoteWriteSuccess -> {
-                    appState.navigate(
-                        destination = NoteDestinations.ROUTE,
-                        navOptions = navOptions {
-                            popUpTo(NoteDestinations.ROUTE) {
-                                inclusive = true
-                            }
-                        }
-                    )
+                    appState.navigate(NoteDestinations.Write.COMPLETE)
                 }
             }
         }
@@ -296,7 +289,7 @@ fun NoteWineInfoMemoScreen(
                 ) {
                     repeat(5) {
                         Icon(
-                            painter = painterResource(id = if (uiState.wineNote.rating > it) R.drawable.ic_wine_fill_30 else R.drawable.ic_wine_unfill_30),
+                            painter = painterResource(id = if (uiState.wineNote.rating > it) R.mipmap.ic_wine_filled else R.mipmap.ic_wine_unfilled),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)

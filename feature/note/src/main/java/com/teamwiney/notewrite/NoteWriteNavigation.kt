@@ -133,5 +133,16 @@ fun NavGraphBuilder.noteWriteGraph(
                 viewModel = hiltViewModel(backStackEntry)
             )
         }
+
+        composable(route = NoteDestinations.Write.COMPLETE) {
+            val backStackEntry = rememberNavControllerBackStackEntry(
+                entry = it,
+                navController = appState.navController,
+                graph = "${NoteDestinations.Write.SEARCH_WINE}?noteId={noteId}"
+            )
+            NoteWriteCompleteScreen(
+                appState = appState
+            )
+        }
     }
 }

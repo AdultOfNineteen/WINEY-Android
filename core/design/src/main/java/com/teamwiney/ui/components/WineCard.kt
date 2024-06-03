@@ -74,7 +74,7 @@ fun WineCard(
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
         "RED" -> CardProperties(
             color,
-            R.drawable.ic_red_wine,
+            R.mipmap.img_red_wine,
             Color(0xFFA87575),
             listOf(Color(0xFFBF3636), Color(0xFF8F034F)),
             Color(0xFF640D0D),
@@ -82,7 +82,7 @@ fun WineCard(
         )
         "WHITE" -> CardProperties(
             color,
-            R.drawable.ic_white_wine,
+            R.mipmap.img_white_wine,
             Color(0xFFC1BA9E),
             listOf(Color(0xFFAEAB99), Color(0xFF754A09)),
             Color(0xFF898472),
@@ -90,7 +90,7 @@ fun WineCard(
         )
         "ROSE" -> CardProperties(
             color,
-            R.drawable.ic_rose_wine,
+            R.mipmap.img_rose_wine,
             Color(0xFFC9A4A1),
             listOf(Color(0xFFAA678F), Color(0xFFD29263)),
             Color(0xFFBA7A71),
@@ -98,7 +98,7 @@ fun WineCard(
         )
         "SPARKL" -> CardProperties(
             color,
-            R.drawable.ic_sparkl_wine,
+            R.mipmap.img_sparkl_wine,
             Color(0xFFC1BA9E),
             listOf(Color(0xFF827D6B), Color(0xFFBAC59C)),
             Color(0xFF777151),
@@ -106,7 +106,7 @@ fun WineCard(
         )
         "PORT" -> CardProperties(
             color,
-            R.drawable.ic_port_wine,
+            R.mipmap.img_port_wine,
             Color(0xFFB09A86),
             listOf(Color(0xFF4A2401), Color(0xFF77503A)),
             Color(0xFF4F3F28),
@@ -114,7 +114,7 @@ fun WineCard(
         )
         else -> CardProperties(
             color,
-            R.drawable.ic_etc_wine,
+            R.mipmap.img_etc_wine,
             Color(0xFF768169),
             listOf(Color(0xFF3C3D12), Color(0xFF465C18)),
             Color(0xFF2D4328),

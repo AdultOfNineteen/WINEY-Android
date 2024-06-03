@@ -88,7 +88,7 @@ fun SplashScreen(
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 Image(
-                    painter = painterResource(id = R.mipmap.img_winey_logo),
+                    painter = painterResource(id = R.drawable.ic_splash_logo),
                     contentDescription = null,
                     modifier = Modifier.size(74.dp, 68.dp)
                 )

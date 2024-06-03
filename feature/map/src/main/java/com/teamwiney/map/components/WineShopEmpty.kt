@@ -29,7 +29,7 @@ fun ColumnScope.WineShopEmpty() {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_note_unselected),
+            painter = painterResource(id = R.drawable.ic_bookmark_no_item),
             contentDescription = "IMG_NOTE",
             modifier = Modifier.size(112.dp)
         )

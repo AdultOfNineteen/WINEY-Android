@@ -1,8 +1,10 @@
 package com.teamwiney.notewrite
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,18 +24,22 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.navOptions
+import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.NoteDestinations
+import com.teamwiney.feature.note.R
 import com.teamwiney.notewrite.components.NoteBackgroundSurface
 import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
-@Preview
 fun NoteWriteCompleteScreen(
+    appState: WineyAppState
 ) {
-
     Box(
         modifier = Modifier
             .background(WineyTheme.colors.background_1)
@@ -72,23 +78,38 @@ fun NoteWriteCompleteScreen(
                             color = Color(0x993F3F3F),
                             shape = RoundedCornerShape(5.dp)
                         ),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()
-                        .background(WineyTheme.colors.gray_900.copy(alpha = 0.3f))
-                        .blur(30.dp)
-                        .alpha(0.4f)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(WineyTheme.colors.gray_900.copy(alpha = 0.3f))
+                            .blur(30.dp)
+                            .alpha(0.4f),
                     ) {
 
                     }
 
-                    Text(
-                        text = "테이스팅 노트 작성이\n완료 되었어요!",
-                        style = WineyTheme.typography.bodyB1.copy(color = WineyTheme.colors.gray_50),
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 48.dp),
-                        textAlign = TextAlign.Center
-                    )
+                    Column(
+                        modifier = Modifier.padding(top = 20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(40.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier.padding(start = 15.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(com.teamwiney.core.design.R.mipmap.img_note_write_complete),
+                                contentDescription = null
+                            )
+                        }
+
+                        Text(
+                            text = "테이스팅 노트 작성이\n완료 되었어요!",
+                            style = WineyTheme.typography.bodyB1.copy(color = WineyTheme.colors.gray_50),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
 
@@ -101,7 +122,14 @@ fun NoteWriteCompleteScreen(
                 enableBackgroundColor = WineyTheme.colors.main_1,
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
-
+                    appState.navigate(
+                        destination = NoteDestinations.ROUTE,
+                        navOptions = navOptions {
+                            popUpTo(NoteDestinations.ROUTE) {
+                                inclusive = true
+                            }
+                        }
+                    )
                 }
             )
         }

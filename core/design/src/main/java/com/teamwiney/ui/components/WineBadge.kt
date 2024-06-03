@@ -22,27 +22,27 @@ fun WineBadge(
     val (badge, image) = when (color) {
         "RED" -> BadgeProperties(
             R.drawable.ic_red_wine_badge,
-            R.drawable.ic_red_wine
+            R.mipmap.img_red_wine
         )
         "WHITE" -> BadgeProperties(
             R.drawable.ic_white_wine_badge,
-            R.drawable.ic_white_wine
+            R.mipmap.img_white_wine
         )
         "ROSE" -> BadgeProperties(
             R.drawable.ic_rose_wine_badge,
-            R.drawable.ic_rose_wine
+            R.mipmap.img_rose_wine
         )
         "SPARKL" -> BadgeProperties(
             R.drawable.ic_sparkl_wine_badge,
-            R.drawable.ic_sparkl_wine
+            R.mipmap.img_sparkl_wine
         )
         "PORT" -> BadgeProperties(
             R.drawable.ic_port_wine_badge,
-            R.drawable.ic_port_wine
+            R.mipmap.img_port_wine
         )
         else -> BadgeProperties(
             R.drawable.ic_etc_wine_badge,
-            R.drawable.ic_etc_wine
+            R.mipmap.img_etc_wine
         )
     }
 
