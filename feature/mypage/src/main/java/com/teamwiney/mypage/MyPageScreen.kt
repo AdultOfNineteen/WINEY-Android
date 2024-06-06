@@ -419,7 +419,7 @@ fun MyProfileAppVersionItem() {
         )
 
         Text(
-            text = "1.0",
+            text = "1.0.1",
             style = WineyTheme.typography.captionB1.copy(
                 color = WineyTheme.colors.gray_800
             )

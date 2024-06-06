@@ -73,8 +73,8 @@ class SignUpViewModel @Inject constructor(
 
                     val selectedChocolate = currentState.favoriteTastes[0].signUpFavoriteItem.find { it.isSelected }?.keyword
                     val tasteResultUrl = when (selectedChocolate) {
-                        "MILK" -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=red"
-                        else -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=white"
+                        "MILK" -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=white"
+                        else -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=red"
                     }
 
                     postEffect(SignUpContract.Effect.NavigateTo(tasteResultUrl))
