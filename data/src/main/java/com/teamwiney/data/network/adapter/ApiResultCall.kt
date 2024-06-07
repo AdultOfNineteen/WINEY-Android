@@ -23,17 +23,25 @@ class ApiResultCall<T>(private val delegate: Call<T>) : Call<ApiResult<T>> {
                             )
                         )
                     } else {
-                        val message = if (response.errorBody() == null) ErrorResponse(
-                            message = "네트워크 오류가 발생했습니다.",
-                            code = "U010",
-                        ) else gson.fromJson(
-                            response.errorBody()!!.string(),
-                            ErrorResponse::class.java
-                        )
+                        val errorRes = if (response.errorBody() == null) {
+                            ErrorResponse(
+                                message = "네트워크 오류가 발생했습니다.",
+                                code = "U010"
+                            )
+                        } else {
+                            try {
+                                gson.fromJson(response.errorBody()!!.string(), ErrorResponse::class.java)
+                            } catch (e: Exception) {
+                                ErrorResponse(
+                                    message = "서버 에러, 관리자에게 문의 바랍니다.",
+                                    code = "COMMON000"
+                                )
+                            }
+                        }
                         callback.onResponse(
                             this@ApiResultCall,
                             Response.success(
-                                ApiResult.ApiError(message.message, message.code)
+                                ApiResult.ApiError(errorRes.message, errorRes.code)
                             )
                         )
                     }
