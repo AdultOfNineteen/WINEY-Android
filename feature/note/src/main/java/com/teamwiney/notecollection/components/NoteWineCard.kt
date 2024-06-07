@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,11 +28,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamwiney.core.common.model.WineType
@@ -41,6 +44,32 @@ import com.teamwiney.ui.components.CardProperties
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.Chaviera
 import com.teamwiney.ui.theme.WineyTheme
+
+@Preview
+@Composable
+fun PreviewNoteWineCardRed() {
+    WineyTheme {
+        NoteWineCard(
+            color = WineType.RED.type,
+            name = "와인 이름",
+            origin = "와인 원산지",
+            onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewNoteWindCardRose() {
+    WineyTheme {
+        NoteWineCard(
+            color = WineType.ROSE.type,
+            name = "와인 이름",
+            origin = "와인 원산지",
+            onClick = {}
+        )
+    }
+}
 
 @Composable
 fun NoteWineCard(
@@ -156,8 +185,9 @@ fun NoteWineCard(
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = "IMG_SPARKL_WINE",
+                    contentScale = ContentScale.FillHeight,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxHeight(if (color == WineType.RED.type) 0.9f else 1f)
                         .align(Alignment.CenterHorizontally)
                         .offset(y = -10.dp)
                 )
