@@ -145,7 +145,7 @@ fun NoteWineInfoFlavorScreen(
                     score = uiState.wineNote.finish,
                     onValueChange = { viewModel.updateFinish(it) },
                     title = "여운",
-                    subTitle = "마신 후 맛과 항야 지속되는 정도"
+                    subTitle = "마신 후 맛과 항이 지속되는 정도"
                 )
                 HeightSpacer(30.dp)
 
