@@ -49,6 +49,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter.State.Empty.painter
+import com.teamwiney.core.common.model.WineType
+import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.theme.WineyTheme
 
@@ -72,7 +75,7 @@ fun WineCard(
     price: String
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
-        "RED" -> CardProperties(
+        WineType.RED.type -> CardProperties(
             color,
             R.mipmap.img_red_wine,
             Color(0xFFA87575),
@@ -80,7 +83,7 @@ fun WineCard(
             Color(0xFF640D0D),
             Color(0xFF441010)
         )
-        "WHITE" -> CardProperties(
+        WineType.WHITE.type -> CardProperties(
             color,
             R.mipmap.img_white_wine,
             Color(0xFFC1BA9E),
@@ -88,7 +91,7 @@ fun WineCard(
             Color(0xFF898472),
             Color(0xFF7A706D)
         )
-        "ROSE" -> CardProperties(
+        WineType.ROSE.type -> CardProperties(
             color,
             R.mipmap.img_rose_wine,
             Color(0xFFC9A4A1),
@@ -96,7 +99,7 @@ fun WineCard(
             Color(0xFFBA7A71),
             Color(0xFF8F6C64)
         )
-        "SPARKL" -> CardProperties(
+        WineType.SPARKLING.type -> CardProperties(
             color,
             R.mipmap.img_sparkl_wine,
             Color(0xFFC1BA9E),
@@ -104,7 +107,7 @@ fun WineCard(
             Color(0xFF777151),
             Color(0xFF4F5144)
         )
-        "PORT" -> CardProperties(
+        WineType.FORTIFIED.type -> CardProperties(
             color,
             R.mipmap.img_port_wine,
             Color(0xFFB09A86),
@@ -228,7 +231,7 @@ private fun WineCardContent(
         ) {
             Text(
                 modifier = Modifier.height(68.dp),
-                text = wineColor,
+                text = convertToNoteType(wineColor),
                 style = WineyTheme.typography.display1,
                 color = WineyTheme.colors.gray_50
             )

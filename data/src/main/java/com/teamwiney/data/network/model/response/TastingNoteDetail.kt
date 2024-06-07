@@ -4,6 +4,7 @@ import android.net.Uri
 
 data class TastingNoteDetail(
     val noteId: Long,
+    val tastingNoteNo: Int,
     val noteDate: String,
     val wineType: String,
     val wineName: String,
@@ -24,6 +25,7 @@ data class TastingNoteDetail(
     companion object {
         fun default() = TastingNoteDetail(
             noteId = 0L,
+            tastingNoteNo = 0,
             wineName = "-",
             noteDate = "0000.00.00",
             wineType = "Loading",

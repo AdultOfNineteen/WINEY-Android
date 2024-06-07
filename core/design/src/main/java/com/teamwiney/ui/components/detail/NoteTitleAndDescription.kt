@@ -15,6 +15,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter.State.Empty.painter
+import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.theme.WineyTheme
@@ -22,7 +24,7 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteTitleAndDescription(
-    id: Long,
+    number: Int,
     date: String,
     type: String,
     name: String,
@@ -37,7 +39,7 @@ fun NoteTitleAndDescription(
             text = buildAnnotatedString {
                 append("No.")
                 withStyle(SpanStyle(color = WineyTheme.colors.main_3)) {
-                    append("$id")
+                    append("$number")
                 }
             },
             style = WineyTheme.typography.bodyB1.copy(
@@ -60,7 +62,7 @@ fun NoteTitleAndDescription(
     ) {
         Text(
             modifier = Modifier.height(68.dp),
-            text = type,
+            text = convertToNoteType(type),
             style = WineyTheme.typography.display1,
             color = WineyTheme.colors.gray_50
         )

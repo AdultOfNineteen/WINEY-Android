@@ -9,6 +9,7 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.navigation.ReusableDestinations
 import com.teamwiney.core.common.util.Constants.IS_FIRST_SCROLL
 import com.teamwiney.data.network.adapter.ApiResult
+import com.teamwiney.data.network.model.response.RecommendWine
 import com.teamwiney.data.network.model.response.toDomain
 import com.teamwiney.data.pagingsource.WineTipsPagingSource
 import com.teamwiney.data.repository.persistence.DataStoreRepository
@@ -79,10 +80,10 @@ class HomeViewModel @Inject constructor(
                                 RecommendWine(0L, "와인", "나라", "ROSE", listOf("품종"), 10000),
                                 RecommendWine(1L, "와인", "나라", "RED", listOf("품종"), 10000),
                                 RecommendWine(2L, "와인", "나라", "WHITE", listOf("품종"), 10000),
-                                RecommendWine(3L, "와인", "나라", "SPARKL", listOf("품종"), 10000),
-                                RecommendWine(4L, "와인", "나라", "PORT", listOf("품종"), 10000),
+                                RecommendWine(3L, "와인", "나라", "SPARKLING", listOf("품종"), 10000),
+                                RecommendWine(4L, "와인", "나라", "FORTIFIED", listOf("품종"), 10000),
                                 RecommendWine(5L, "와인", "나라", "ETC", listOf("품종"), 10000)
-                            ) */
+                            )*/
                             recommendWines = it.data.result.map { wine ->
                                 wine.toDomain()
                             }

@@ -1,7 +1,7 @@
 package com.teamwiney.core.common.navigation
 
 import androidx.annotation.DrawableRes
-import com.teamwiney.core.design.R
+import com.teamwiney.core.common.R
 
 
 enum class TopLevelDestination(

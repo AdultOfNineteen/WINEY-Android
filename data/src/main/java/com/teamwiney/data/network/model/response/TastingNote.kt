@@ -6,6 +6,8 @@ import com.teamwiney.core.common.model.WineType
 data class TastingNote(
     @SerializedName("noteId")
     val id: Long,
+    @SerializedName("tastingNoteNo")
+    val tastingNoteNo: Int,
     @SerializedName("wineName")
     val name: String,
     @SerializedName("country")
@@ -20,10 +22,11 @@ data class TastingNote(
 
 fun TastingNote.toDomain() = TastingNote(
     id = this.id,
+    tastingNoteNo = this.tastingNoteNo,
     name = this.name,
     country = this.country,
     starRating = this.starRating,
     buyAgain = this.buyAgain,
-    wineType = WineType.convertToNoteType(this.wineType),
+    wineType = this.wineType
 )
 

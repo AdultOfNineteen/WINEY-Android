@@ -12,12 +12,14 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import com.teamwiney.core.common.`typealias`.SheetContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun rememberWineyBottomSheetState(
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
@@ -54,7 +56,7 @@ fun rememberWineyBottomSheetState(
 }
 
 @Stable
-class WineyBottomSheetState(
+class WineyBottomSheetState @OptIn(ExperimentalComposeUiApi::class) constructor(
     val bottomSheetContent: MutableState<SheetContent?>,
     val bottomSheetState: ModalBottomSheetState,
     val keyboardController: SoftwareKeyboardController?,

@@ -140,7 +140,7 @@ fun NoteDetailScreen(
             ) {
 
                 NoteTitleAndDescription(
-                    id = uiState.noteDetail.noteId,
+                    number = uiState.noteDetail.tastingNoteNo,
                     date = uiState.noteDetail.noteDate,
                     type = uiState.noteDetail.wineType,
                     name = uiState.noteDetail.wineName

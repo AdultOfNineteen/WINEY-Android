@@ -21,16 +21,7 @@ fun RecommendWine.toDomain() = RecommendWine(
     wineId = this.wineId,
     name = this.name,
     country = this.country,
-    type = convertTypeToColor(this.type),
+    type = this.type,
     varietal = this.varietal,
     price = this.price
 )
-
-private fun convertTypeToColor(type: String): String {
-    return when (type) {
-        "SPARKLING" -> "SPARKL"
-        "FORTIFIED" -> "PORT"
-        "OTHER" -> "ETC"
-        else -> type
-    }
-}

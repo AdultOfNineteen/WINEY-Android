@@ -24,7 +24,6 @@ fun WineOrigin(
     wine: TastingNoteDetail
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         Column(

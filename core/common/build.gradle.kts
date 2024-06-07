@@ -51,11 +51,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:design"))
-
     implementation(libs.naver.map.compose)
     implementation(libs.android.core.ktx)
-    implementation(libs.compose.ui)
+    implementation(libs.bundles.compose.ui)
     implementation(libs.navigation.compose)
     implementation(libs.compose.material)
     implementation(libs.coroutines.android)

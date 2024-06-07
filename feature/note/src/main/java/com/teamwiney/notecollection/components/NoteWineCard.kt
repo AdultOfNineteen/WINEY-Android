@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.CardProperties
@@ -52,7 +53,7 @@ fun NoteWineCard(
     onClick: () -> Unit,
 ) {
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
-        "RED" -> CardProperties(
+        WineType.RED.type -> CardProperties(
             color,
             R.mipmap.img_red_wine,
             Color(0xFFA87575),
@@ -61,7 +62,7 @@ fun NoteWineCard(
             Color(0xFF441010)
         )
 
-        "WHITE" -> CardProperties(
+        WineType.WHITE.type -> CardProperties(
             color,
             R.mipmap.img_white_wine,
             Color(0xFFC1BA9E),
@@ -70,7 +71,7 @@ fun NoteWineCard(
             Color(0xFF7A706D)
         )
 
-        "ROSE" -> CardProperties(
+        WineType.ROSE.type -> CardProperties(
             color,
             R.mipmap.img_rose_wine,
             Color(0xFFC9A4A1),
@@ -79,7 +80,7 @@ fun NoteWineCard(
             Color(0xFF8F6C64)
         )
 
-        "SPARKL" -> CardProperties(
+        WineType.SPARKLING.type -> CardProperties(
             color,
             R.mipmap.img_sparkl_wine,
             Color(0xFFA78093),
@@ -88,7 +89,7 @@ fun NoteWineCard(
             Color(0xFF4F5144)
         )
 
-        "FORTIFIED" -> CardProperties(
+        WineType.FORTIFIED.type -> CardProperties(
             color,
             R.mipmap.img_port_wine,
             Color(0xFFB09A86),

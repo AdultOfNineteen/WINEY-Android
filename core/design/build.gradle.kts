@@ -42,6 +42,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     implementation(libs.android.core.ktx)
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.runtime.viewmodel.compose)
