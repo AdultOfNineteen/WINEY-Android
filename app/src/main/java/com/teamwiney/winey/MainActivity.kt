@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // WindowInset 직접 조절하기 위해서
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {

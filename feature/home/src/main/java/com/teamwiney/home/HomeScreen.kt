@@ -51,6 +51,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.analysis.component.TipCard
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.di.AmplitudeProvider
 import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.RecommendWine
@@ -81,9 +82,6 @@ fun HomeScreen(
     }
 
     LaunchedEffect(true) {
-        viewModel.getRecommendWines()
-        viewModel.getWineTips()
-
         effectFlow.collectLatest { effect ->
             when (effect) {
                 is HomeContract.Effect.NavigateTo -> {
@@ -113,6 +111,7 @@ fun HomeScreen(
         HomeLogo(
             onClick = {
                 viewModel.processEvent(HomeContract.Event.ShowAnalysis)
+                AmplitudeProvider.trackEvent("analysis_button_click")
             },
             hintPopupOpen = uiState.isFirstScroll
         )

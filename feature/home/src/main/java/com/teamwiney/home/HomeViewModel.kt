@@ -35,6 +35,9 @@ class HomeViewModel @Inject constructor(
             dataStoreRepository.getBooleanValue(IS_FIRST_SCROLL).first()
         }
         updateState(currentState.copy(isFirstScroll = isFirstScroll))
+
+        getRecommendWines()
+        getWineTips()
     }
 
     override fun reduceState(event: HomeContract.Event) {

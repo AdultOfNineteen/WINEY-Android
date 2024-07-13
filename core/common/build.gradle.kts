@@ -19,6 +19,12 @@ android {
     defaultConfig {
         minSdk = 24
 
+        buildConfigField(
+            "String",
+            "AMPLITUDE_API_KEY",
+            properties["amplitude.api.key"] as String
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -60,6 +66,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.viewmodel)
     implementation(libs.converter.gson)
 
+    implementation(libs.amplitude)
     implementation(libs.datastore)
     implementation(libs.dagger)
     implementation(libs.hilt.android)
