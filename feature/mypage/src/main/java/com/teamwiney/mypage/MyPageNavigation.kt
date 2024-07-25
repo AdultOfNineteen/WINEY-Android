@@ -19,7 +19,8 @@ import com.teamwiney.mypage.badge.MyPageBadgeScreen
 
 fun NavGraphBuilder.myPageGraph(
     appState: WineyAppState,
-    bottomSheetState: WineyBottomSheetState
+    bottomSheetState: WineyBottomSheetState,
+    versionName: String
 ) {
     navigation(
         route = MyPageDestinations.ROUTE,
@@ -33,7 +34,8 @@ fun NavGraphBuilder.myPageGraph(
             )
             MyPageScreen(
                 appState = appState,
-                viewModel = hiltViewModel(backStackEntry)
+                viewModel = hiltViewModel(backStackEntry),
+                versionName = versionName
             )
         }
 

@@ -56,7 +56,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun MyPageScreen(
     appState: WineyAppState,
-    viewModel: MyPageViewModel
+    viewModel: MyPageViewModel,
+    versionName: String
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
@@ -153,7 +154,7 @@ fun MyPageScreen(
             MyProfileMenuItem(menu = "FAQ") {
                 appState.navigate("${ReusableDestinations.WEB_VIEW}?url=${FAQ_URL}&title=${"FAQ"}&subTitle=${""}")
             }
-            MyProfileAppVersionItem()
+            MyProfileAppVersionItem(versionName = versionName)
         }
     }
 }
@@ -400,7 +401,9 @@ fun MyProfileMenuItem(
 }
 
 @Composable
-fun MyProfileAppVersionItem() {
+fun MyProfileAppVersionItem(
+    versionName: String
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -419,7 +422,7 @@ fun MyProfileAppVersionItem() {
         )
 
         Text(
-            text = "1.0.1",
+            text = versionName,
             style = WineyTheme.typography.captionB1.copy(
                 color = WineyTheme.colors.gray_800
             )

@@ -54,20 +54,5 @@ fun NavGraphBuilder.signUpGraph(
         composable(route = AuthDestinations.SignUp.COMPLETE) {
             SignUpCompleteScreen(appState = appState)
         }
-
-        composable(route = "${AuthDestinations.SignUp.TASTE_RESULT}?taste={taste}",
-            arguments = listOf(
-                navArgument("taste") {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
-            )
-        ) {
-            val taste = it.arguments?.getString("taste") ?: ""
-            SignUpTasteResultScreen(
-                appState = appState,
-                taste = taste
-            )
-        }
     }
 }

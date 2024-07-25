@@ -165,7 +165,8 @@ fun WineyNavHost(
                 )
                 myPageGraph(
                     appState = appState,
-                    bottomSheetState = bottomSheetState
+                    bottomSheetState = bottomSheetState,
+                    versionName = BuildConfig.VERSION_NAME
                 )
                 analysisGraph(
                     appState = appState,
