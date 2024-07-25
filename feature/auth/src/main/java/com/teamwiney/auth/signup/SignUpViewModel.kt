@@ -70,16 +70,7 @@ class SignUpViewModel @Inject constructor(
             when (it) {
                 is ApiResult.Success -> {
                     registerFcmToken()  // 회원가입 완료 후 FCM 토큰 등록
-
-                    val selectedChocolate = currentState.favoriteTastes[0].signUpFavoriteItem.find { it.isSelected }?.keyword
-                    val tasteResultUrl = when (selectedChocolate) {
-                        "MILK" -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=white"
-                        else -> "${AuthDestinations.SignUp.TASTE_RESULT}?taste=red"
-                    }
-
-                    postEffect(SignUpContract.Effect.NavigateTo(tasteResultUrl))
-
-                    // postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
+                    postEffect(SignUpContract.Effect.NavigateTo(AuthDestinations.SignUp.COMPLETE))
                 }
 
                 is ApiResult.ApiError -> {
