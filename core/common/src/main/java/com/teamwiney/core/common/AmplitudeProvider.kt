@@ -1,11 +1,10 @@
-package com.teamwiney.core.common.di
+package com.teamwiney.core.common
 
 import android.content.Context
 import com.amplitude.android.Amplitude
 import com.amplitude.android.Configuration
 import com.amplitude.android.DefaultTrackingOptions
 import com.amplitude.android.utilities.AndroidLoggerProvider
-import com.teamwiney.core.common.BuildConfig
 
 object AmplitudeProvider {
     private var amplitude: Amplitude? = null
@@ -25,7 +24,7 @@ object AmplitudeProvider {
         return amplitude ?: throw IllegalStateException("Amplitude is not initialized")
     }
 
-    fun trackEvent(eventName: String) {
-        getAmplitude().track(eventName)
+    fun trackEvent(event: AmplitudeEvent) {
+        getAmplitude().track(event.eventName)
     }
 }

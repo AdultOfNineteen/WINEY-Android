@@ -2,7 +2,7 @@ package com.teamwiney.winey
 
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
-import com.teamwiney.core.common.di.AmplitudeProvider
+import com.teamwiney.core.common.AmplitudeProvider
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
