@@ -50,6 +50,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.analysis.component.TipCard
+import com.teamwiney.core.common.AmplitudeEvent
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.navigation.HomeDestinations
@@ -73,6 +74,10 @@ fun HomeScreen(
 
     val wineTips = uiState.wineTips.collectAsLazyPagingItems()
     val wineTipsRefreshState = wineTips.loadState.refresh
+
+    LaunchedEffect(true) {
+        AmplitudeProvider.trackEvent(AmplitudeEvent.HOME_ENTER)
+    }
 
     LaunchedEffect(wineTipsRefreshState) {
         if (wineTipsRefreshState is LoadState.Error) {
@@ -111,7 +116,7 @@ fun HomeScreen(
         HomeLogo(
             onClick = {
                 viewModel.processEvent(HomeContract.Event.ShowAnalysis)
-                AmplitudeProvider.trackEvent("analysis_button_click")
+                AmplitudeProvider.trackEvent(AmplitudeEvent.ANALYZE_BUTTON_CLICK)
             },
             hintPopupOpen = uiState.isFirstScroll
         )
@@ -194,6 +199,7 @@ fun HomeWineTips(
                         thumbnail = it.thumbnail,
                         onClick = {
                             viewModel.processEvent(HomeContract.Event.ShowTipDetail(it.url))
+                            AmplitudeProvider.trackEvent(AmplitudeEvent.TIP_POST_CLICK)
                         }
                     )
                 }
@@ -290,6 +296,7 @@ private fun HomeRecommendWine(
                             },
                         onShowDetail = {
                             processEvent(HomeContract.Event.ShowWineCardDetail(recommendWines[page].wineId))
+                            AmplitudeProvider.trackEvent(AmplitudeEvent.WINE_DETAIL_CLICK)
                         },
                         color = recommendWines[page].type,
                         name = recommendWines[page].name,

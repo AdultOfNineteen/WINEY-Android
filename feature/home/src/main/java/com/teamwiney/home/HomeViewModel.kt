@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendWines() = viewModelScope.launch {
+    private fun getRecommendWines() = viewModelScope.launch {
         wineRepository.getRecommendWines().onStart {
             updateState(currentState.copy(isLoading = true))
         }.collectLatest {
@@ -130,7 +130,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getWineTips() = viewModelScope.launch {
+    private fun getWineTips() = viewModelScope.launch {
         updateState(
             currentState.copy(
                 wineTips = Pager(
