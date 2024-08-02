@@ -17,7 +17,6 @@ object AuthDestinations {
         const val PHONE = "signUpPhone"
         const val AUTHENTICATION = "signUpAuthentication"
         const val FAVORITE_TASTE = "signUpFavoriteTaste"
-        const val TASTE_RESULT = "signUpTasteResult"
         const val COMPLETE = "signUpComplete"
     }
 }
