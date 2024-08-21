@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teamwiney.auth.login.component.SplashBackground
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.ConnectivityManagerNetworkMonitor
 import com.teamwiney.core.common.NetworkMonitor
 import com.teamwiney.core.common.WineyAppState
@@ -43,6 +45,7 @@ fun SignUpCompleteScreen(
                 inclusive = true
             }
         }
+        AmplitudeProvider.trackEvent(AmplitudeEvent.SIGNUP_COMPLETE_HOME)
     }
 
     Box(

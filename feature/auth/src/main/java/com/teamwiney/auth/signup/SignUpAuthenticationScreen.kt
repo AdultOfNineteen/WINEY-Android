@@ -34,6 +34,8 @@ import com.teamwiney.auth.signup.component.bottomsheet.SendDisabledBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheet
 import com.teamwiney.auth.signup.component.bottomsheet.SendMessageBottomSheetType
 import com.teamwiney.auth.signup.component.bottomsheet.SendTimeExceededLimitBottomSheet
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -187,6 +189,7 @@ fun SignUpAuthenticationScreen(
         TopBar(
             leadingIconOnClick = {
                 viewModel.processEvent(SignUpContract.Event.BackToLogin)
+                AmplitudeProvider.trackEvent(AmplitudeEvent.SIGNUP_FLOW_BACK_CLICK)
             }
         )
         Column(modifier = Modifier.padding(horizontal = 24.dp)) {

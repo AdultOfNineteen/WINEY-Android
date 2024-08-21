@@ -25,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.auth.signup.component.SignUpFavoriteItemContainer
 import com.teamwiney.auth.signup.component.bottomsheet.ReturnToLoginBottomSheet
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -110,6 +112,7 @@ fun SignUpFavoriteTasteScreen(
                 leadingIconOnClick = {
                     if (pagerState.currentPage == 0) {
                         viewModel.processEvent(SignUpContract.Event.CancelTasteSelection)
+                        AmplitudeProvider.trackEvent(AmplitudeEvent.SIGNUP_FLOW_BACK_CLICK)
                     } else {
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
                     }
