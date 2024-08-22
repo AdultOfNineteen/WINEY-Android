@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.data.network.model.response.WineBadge
@@ -243,6 +245,8 @@ private fun MyPageActivityBadge(
                         .width(itemWidth)
                         .clickable {
                             onBadgeClick(badge.badgeId)
+                            // badgeId == 1 YOUNG 뱃지인 경우
+                            AmplitudeProvider.trackEvent(AmplitudeEvent.YOUNG_BADGE_CLICK)
                         },
                     wineBadge = badge
                 )

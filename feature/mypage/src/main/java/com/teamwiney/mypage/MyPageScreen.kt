@@ -39,6 +39,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.model.WineGrade
 import com.teamwiney.core.common.navigation.MyPageDestinations
@@ -65,6 +67,8 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(true) {
+        AmplitudeProvider.trackEvent(AmplitudeEvent.MYPAGE_ENTER)
+
         viewModel.getUserNickname()
         viewModel.getUserWineGrade()
         viewModel.getWineGradeStandard()
@@ -107,6 +111,7 @@ fun MyPageScreen(
                 },
                 onWineyBadgeClick = {
                     appState.navigate(MyPageDestinations.BADGE)
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.WINEY_BADGE_CLICK)
                 }
             )
 
