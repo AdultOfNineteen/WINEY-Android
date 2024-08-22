@@ -61,6 +61,8 @@ import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.overlay.OverlayImage
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.WineShop
@@ -167,6 +169,8 @@ fun MapScreen(
     )
 
     LaunchedEffect(Unit) {
+        AmplitudeProvider.trackEvent(AmplitudeEvent.MAP_ENTER)
+
         viewModel.effect.collectLatest {
             when (it) {
                 is MapContract.Effect.NavigateTo -> {
