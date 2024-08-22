@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notewrite.components.WineTasteSlider
@@ -55,6 +57,7 @@ fun NoteWineInfoFlavorScreen(
 
         TopBar(content = "와인 정보 입력") {
             appState.navController.navigateUp()
+            AmplitudeProvider.trackEvent(AmplitudeEvent.TASTE_INPUT_BACK_CLICK)
         }
 
         Column(
@@ -79,6 +82,7 @@ fun NoteWineInfoFlavorScreen(
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.clickable {
                         appState.navController.navigate(NoteDestinations.Write.INFO_STANDARD_FLAVOR)
+                        AmplitudeProvider.trackEvent(AmplitudeEvent.TASTE_HELP_CLICK)
                     }
                 )
             }
@@ -170,6 +174,7 @@ fun NoteWineInfoFlavorScreen(
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_MEMO)
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.TASTE_INPUT_NEXT_CLICK)
                 }
             )
         }

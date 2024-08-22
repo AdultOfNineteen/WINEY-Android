@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -141,6 +143,7 @@ fun NoteWriteSelectWineScreen(
                     shape = RoundedCornerShape(46.dp),
                     onClick = {
                         appState.navigate(NoteDestinations.Write.INFO_LEVEL)
+                        AmplitudeProvider.trackEvent(AmplitudeEvent.WINE_SELECT_BUTTON_CLICK)
                     }
                 )
             }

@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -216,6 +218,7 @@ fun NoteWineInfoLevelScreen(
                         onClick = {
                             viewModel.updateOfficialAlcohol(null)
                             appState.navController.navigate(NoteDestinations.Write.INFO_VINTAGE_AND_PRICE)
+                            AmplitudeProvider.trackEvent(AmplitudeEvent.ALCOHOL_INPUT_SKIP_CLICK)
                         }
                     )
                     if (uiState.hintPopupOpen) {
@@ -240,6 +243,7 @@ fun NoteWineInfoLevelScreen(
                     enabled = true,
                     onClick = {
                         appState.navController.navigate(NoteDestinations.Write.INFO_VINTAGE_AND_PRICE)
+                        AmplitudeProvider.trackEvent(AmplitudeEvent.ALCOHOL_INPUT_NEXT_CLICK)
                     }
                 )
             }

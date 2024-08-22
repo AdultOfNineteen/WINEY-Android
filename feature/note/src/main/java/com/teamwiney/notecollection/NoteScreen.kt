@@ -49,6 +49,8 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.HomeDestinations
@@ -190,6 +192,7 @@ fun NoteScreen(
             contentColor = WineyTheme.colors.gray_50,
             onClick = {
                 appState.navigate(NoteDestinations.Write.ROUTE)
+                AmplitudeProvider.trackEvent(AmplitudeEvent.NOTE_CREATE_BUTTON_CLICK)
             }
         ) {
             Icon(

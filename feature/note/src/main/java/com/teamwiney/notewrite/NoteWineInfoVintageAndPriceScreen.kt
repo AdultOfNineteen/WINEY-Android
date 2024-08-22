@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -185,6 +187,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                     enableBackgroundColor = WineyTheme.colors.gray_950,
                     onClick = {
                         appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
+                        AmplitudeProvider.trackEvent(AmplitudeEvent.VINTAGE_PRICE_INPUT_SKIP_CLICK)
                     }
                 )
                 if (uiState.hintPopupOpen) {
@@ -207,6 +210,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                 enabled = uiState.wineNote.price.isNotEmpty() || uiState.wineNote.vintage.isNotEmpty(),
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.VINTAGE_PRICE_INPUT_NEXT_CLICK)
                 }
             )
         }

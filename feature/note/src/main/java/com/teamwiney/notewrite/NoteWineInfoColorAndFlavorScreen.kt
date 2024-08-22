@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,6 +49,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations.Write.INFO_STANDARD_SMELL
@@ -93,6 +94,7 @@ fun NoteWineInfoColorAndSmellScreen(
             content = "와인 정보 입력",
         ) {
             appState.navController.navigateUp()
+            AmplitudeProvider.trackEvent(AmplitudeEvent.COLOR_SCENT_INPUT_BACK_CLICK)
         }
         Column(
             modifier = Modifier
@@ -136,6 +138,7 @@ fun NoteWineInfoColorAndSmellScreen(
                 enableTextColor = WineyTheme.colors.gray_50,
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_FLAVOR)
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.COLOR_SCENT_INPUT_NEXT_CLICK)
                 }
             )
         }
@@ -185,6 +188,7 @@ private fun WineFlavorPicker(
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
                     navigateToStandardSmell()
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.SCENT_HELP_CLICK)
                 }
             )
         }

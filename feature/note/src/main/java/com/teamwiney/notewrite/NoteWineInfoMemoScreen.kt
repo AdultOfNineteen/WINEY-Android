@@ -54,6 +54,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.navOptions
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.teamwiney.core.common.AmplitudeEvent
+import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
@@ -156,6 +158,7 @@ fun NoteWineInfoMemoScreen(
             content = "와인 정보 입력",
         ) {
             appState.navController.navigateUp()
+            AmplitudeProvider.trackEvent(AmplitudeEvent.REVIEW_COMPLETE_BACK_CLICK)
         }
         Column(
             modifier = Modifier
@@ -338,6 +341,7 @@ fun NoteWineInfoMemoScreen(
             enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null,
             onClick = {
                 if (uiState.mode == EditMode.ADD) viewModel.writeTastingNote() else viewModel.updateTastingNote()
+                AmplitudeProvider.trackEvent(AmplitudeEvent.REVIEW_COMPLETE_CLICK)
             }
         )
     }
