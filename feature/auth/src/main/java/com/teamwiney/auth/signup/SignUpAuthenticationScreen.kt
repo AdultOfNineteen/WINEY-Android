@@ -131,6 +131,7 @@ fun SignUpAuthenticationScreen(
                                                 inclusive = true
                                             }
                                         }
+                                        AmplitudeProvider.trackEvent(AmplitudeEvent.SIGNUP_FLOW_BACK_CLICK)
                                     },
                                     onCancel = {
                                         bottomSheetState.hideBottomSheet()

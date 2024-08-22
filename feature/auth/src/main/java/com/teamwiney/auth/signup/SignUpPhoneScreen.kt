@@ -1,5 +1,6 @@
 package com.teamwiney.auth.signup
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -55,6 +56,11 @@ fun SignUpPhoneScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
+
+    BackHandler {
+        appState.navController.navigateUp()
+        AmplitudeProvider.trackEvent(AmplitudeEvent.SIGNUP_FLOW_BACK_CLICK)
+    }
 
     DisposableEffect(true) {
         bottomSheetState.setOnHideBottomSheet {

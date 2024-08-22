@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -82,6 +83,11 @@ fun NoteWineInfoColorAndSmellScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    BackHandler {
+        appState.navController.navigateUp()
+        AmplitudeProvider.trackEvent(AmplitudeEvent.COLOR_SCENT_INPUT_BACK_CLICK)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -119,6 +125,7 @@ fun NoteWineInfoColorAndSmellScreen(
                 },
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
+                    AmplitudeProvider.trackEvent(AmplitudeEvent.SCENT_HELP_CLICK)
                 }
             )
         }
@@ -149,7 +156,8 @@ fun NoteWineInfoColorAndSmellScreen(
 private fun WineFlavorPicker(
     wineSmellKeywords: List<WineSmellKeyword>,
     isWineSmellKeywordSelected: (WineSmellOption) -> Boolean,
-    updateWineSmell: (WineSmellOption) -> Unit = {}, navigateToStandardSmell: () -> Unit
+    updateWineSmell: (WineSmellOption) -> Unit = {},
+    navigateToStandardSmell: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -188,7 +196,6 @@ private fun WineFlavorPicker(
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
                     navigateToStandardSmell()
-                    AmplitudeProvider.trackEvent(AmplitudeEvent.SCENT_HELP_CLICK)
                 }
             )
         }
@@ -223,7 +230,9 @@ private fun WineSmellContainer(
             color = WineyTheme.colors.gray_500
         )
         LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             items(wineSmellKeyword.options) {

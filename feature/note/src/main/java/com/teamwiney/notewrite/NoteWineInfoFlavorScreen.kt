@@ -1,5 +1,6 @@
 package com.teamwiney.notewrite
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,6 +54,11 @@ fun NoteWineInfoFlavorScreen(
 
         LaunchedEffect(selectedItemCount) {
             scrollState.scrollTo(999999)
+        }
+
+        BackHandler {
+            appState.navController.navigateUp()
+            AmplitudeProvider.trackEvent(AmplitudeEvent.TASTE_INPUT_BACK_CLICK)
         }
 
         TopBar(content = "와인 정보 입력") {

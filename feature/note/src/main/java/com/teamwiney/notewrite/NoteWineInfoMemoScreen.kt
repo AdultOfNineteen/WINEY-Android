@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -144,6 +145,11 @@ fun NoteWineInfoMemoScreen(
                 }
             }
         }
+    }
+
+    BackHandler {
+        appState.navController.navigateUp()
+        AmplitudeProvider.trackEvent(AmplitudeEvent.REVIEW_COMPLETE_BACK_CLICK)
     }
 
     Column(
