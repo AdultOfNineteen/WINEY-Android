@@ -50,6 +50,7 @@ import com.teamwiney.home.HomeContract
 import com.teamwiney.home.HomeViewModel
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.LoadingDialog
 import com.teamwiney.ui.components.NoteReviewItem
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
 import com.teamwiney.ui.components.TopBar
@@ -92,42 +93,46 @@ fun WineDetailScreen(
             content = "와인 상세정보"
         )
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            WineTitleAndDescription(
-                type = uiState.wineDetail.type,
-                name = uiState.wineDetail.name
-            )
+        if (uiState.isLoading) {
+            LoadingDialog()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                WineTitleAndDescription(
+                    type = uiState.wineDetail.type,
+                    name = uiState.wineDetail.name
+                )
 
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-            WineOrigin(uiState.wineDetail)
+                WineOrigin(uiState.wineDetail)
 
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-            WineInfo(uiState.wineDetail)
+                WineInfo(uiState.wineDetail)
 
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-            OtherNotesContent(
-                totalCount = uiState.otherNotesTotalCount,
-                notes = uiState.otherNotes,
-                navigateToNoteDetail = { noteId ->
-                    appState.navController.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
-                }
-            )
+                OtherNotesContent(
+                    totalCount = uiState.otherNotesTotalCount,
+                    notes = uiState.otherNotes,
+                    navigateToNoteDetail = { noteId ->
+                        appState.navController.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                    }
+                )
+            }
         }
     }
 }

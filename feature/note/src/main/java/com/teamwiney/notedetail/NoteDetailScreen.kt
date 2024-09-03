@@ -49,6 +49,7 @@ import com.teamwiney.notedetail.component.WineOrigin
 import com.teamwiney.notedetail.component.WineSmellFeature
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.LoadingDialog
 import com.teamwiney.ui.components.NoteReviewItem
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.detail.NoteTitleAndDescription
@@ -121,14 +122,16 @@ fun NoteDetailScreen(
         }
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(WineyTheme.colors.background_1)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
-    ) {
-        item {
+    if (uiState.isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WineyTheme.colors.background_1)
+                .statusBarsPadding()
+                .navigationBarsPadding(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             TopBar(
                 leadingIconOnClick = {
                     appState.navController.navigateUp()
@@ -147,66 +150,96 @@ fun NoteDetailScreen(
                     )
                 }
             )
+            LoadingDialog()
         }
-
-        item(key = "header") {
-            Column {
-                NoteTitleAndDescription(
-                    number = uiState.noteDetail.tastingNoteNo,
-                    date = uiState.noteDetail.noteDate,
-                    type = uiState.noteDetail.wineType,
-                    name = uiState.noteDetail.wineName
-                )
-
-                HeightSpacerWithLine(
-                    modifier = Modifier.padding(vertical = 20.dp),
-                    color = WineyTheme.colors.gray_900
-                )
-
-                WineOrigin(uiState.noteDetail)
-
-                HeightSpacerWithLine(
-                    modifier = Modifier.padding(top = 20.dp),
-                    color = WineyTheme.colors.gray_900
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WineyTheme.colors.background_1)
+                .statusBarsPadding()
+                .navigationBarsPadding(),
+        ) {
+            item {
+                TopBar(
+                    leadingIconOnClick = {
+                        appState.navController.navigateUp()
+                    },
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_kebab_28),
+                            contentDescription = null,
+                            tint = WineyTheme.colors.gray_50,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(28.dp)
+                                .clickable {
+                                    viewModel.processEvent(NoteDetailContract.Event.ShowNoteOptionBottomSheet)
+                                }
+                        )
+                    }
                 )
             }
-        }
 
-        item(key = "tab") {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 30.dp),
-                indicator = { },
-                containerColor = WineyTheme.colors.background_1,
-                contentColor = WineyTheme.colors.gray_50,
-                divider = { HorizontalDivider(color = WineyTheme.colors.gray_900) }
-            ) {
-                uiState.tabs.forEachIndexed { index, _ ->
-                    Tab(
-                        selected = pagerState.currentPage == index,
-                        onClick = {
-                            appState.scope.launch { pagerState.scrollToPage(index) }
-                        },
-                        text = {
-                            Text(
-                                text = uiState.tabs[index],
-                                style = WineyTheme.typography.bodyM2.copy(
-                                    color = if (pagerState.currentPage == index) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700
-                                )
-                            )
-                        }
+            item(key = "header") {
+                Column {
+                    NoteTitleAndDescription(
+                        number = uiState.noteDetail.tastingNoteNo,
+                        date = uiState.noteDetail.noteDate,
+                        type = uiState.noteDetail.wineType,
+                        name = uiState.noteDetail.wineName
+                    )
+
+                    HeightSpacerWithLine(
+                        modifier = Modifier.padding(vertical = 20.dp),
+                        color = WineyTheme.colors.gray_900
+                    )
+
+                    WineOrigin(uiState.noteDetail)
+
+                    HeightSpacerWithLine(
+                        modifier = Modifier.padding(top = 20.dp),
+                        color = WineyTheme.colors.gray_900
                     )
                 }
             }
 
-            HorizontalPager(
-                state = pagerState
-            ) { page ->
-                when (page) {
-                    0 -> MyNoteContent(uiState)
-                    1 -> OtherNotesContent(uiState)
+            item(key = "tab") {
+                TabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 30.dp),
+                    indicator = { },
+                    containerColor = WineyTheme.colors.background_1,
+                    contentColor = WineyTheme.colors.gray_50,
+                    divider = { HorizontalDivider(color = WineyTheme.colors.gray_900) }
+                ) {
+                    uiState.tabs.forEachIndexed { index, _ ->
+                        Tab(
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                appState.scope.launch { pagerState.scrollToPage(index) }
+                            },
+                            text = {
+                                Text(
+                                    text = uiState.tabs[index],
+                                    style = WineyTheme.typography.bodyM2.copy(
+                                        color = if (pagerState.currentPage == index) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700
+                                    )
+                                )
+                            }
+                        )
+                    }
+                }
+
+                HorizontalPager(
+                    state = pagerState
+                ) { page ->
+                    when (page) {
+                        0 -> MyNoteContent(uiState)
+                        1 -> OtherNotesContent(uiState)
+                    }
                 }
             }
         }
