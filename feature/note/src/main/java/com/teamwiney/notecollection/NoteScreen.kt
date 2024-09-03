@@ -149,7 +149,7 @@ fun NoteScreen(
                 showBottomSheet = bottomSheetState::showBottomSheet
             )
 
-            if (uiState.tastingNotesCount == 0L) {
+            if (uiState.tastingNotesCount == 0) {
                 if (uiState.isLoading) {
                     SkeletonNote()
                 } else {

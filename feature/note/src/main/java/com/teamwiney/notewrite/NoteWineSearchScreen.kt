@@ -129,7 +129,7 @@ fun NoteWineSearchScreen(
             color = WineyTheme.colors.gray_900
         )
 
-        if (uiState.searchWinesCount == 0L) EmptySearch()
+        if (uiState.searchWinesCount == 0) EmptySearch()
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),

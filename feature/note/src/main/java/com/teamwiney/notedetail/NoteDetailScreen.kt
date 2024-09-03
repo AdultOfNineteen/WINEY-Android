@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
@@ -29,19 +26,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,6 +49,7 @@ import com.teamwiney.notedetail.component.WineOrigin
 import com.teamwiney.notedetail.component.WineSmellFeature
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.NoteReviewItem
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.detail.NoteTitleAndDescription
 import com.teamwiney.ui.theme.WineyTheme
@@ -213,8 +205,8 @@ fun NoteDetailScreen(
                 state = pagerState
             ) { page ->
                 when (page) {
-                    0 -> FeatureContent(uiState)
-                    1 -> NotesContent(uiState)
+                    0 -> MyNoteContent(uiState)
+                    1 -> OtherNotesContent(uiState)
                 }
             }
         }
@@ -222,7 +214,7 @@ fun NoteDetailScreen(
 }
 
 @Composable
-fun FeatureContent(uiState: NoteDetailContract.State) {
+fun MyNoteContent(uiState: NoteDetailContract.State) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -252,7 +244,7 @@ fun FeatureContent(uiState: NoteDetailContract.State) {
 }
 
 @Composable
-fun NotesContent(uiState: NoteDetailContract.State) {
+fun OtherNotesContent(uiState: NoteDetailContract.State) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -285,7 +277,13 @@ fun NotesContent(uiState: NoteDetailContract.State) {
         HeightSpacer(height = 20.dp)
 
         repeat(5) {
-            NoteReviewItem()
+            NoteReviewItem(
+                nickName = "닉네임",
+                date = "2021.08.12",
+                rating = 4,
+                buyAgain = true,
+                navigateToNoteDetail = {}
+            )
         }
 
         HeightSpacer(height = 20.dp)
@@ -310,52 +308,5 @@ fun NotesContent(uiState: NoteDetailContract.State) {
         }
 
         HeightSpacer(height = 33.dp)
-    }
-}
-
-@Composable
-private fun NoteReviewItem() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Text(
-                "라니카",
-                style = WineyTheme.typography.bodyB1.copy(
-                    color = WineyTheme.colors.gray_50
-                )
-            )
-
-            Text(
-                "2024. 08. 08",
-                style = WineyTheme.typography.captionM2.copy(
-                    color = WineyTheme.colors.gray_700
-                )
-            )
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "4 / 재구매",
-                style = WineyTheme.typography.bodyM1.copy(
-                    color = WineyTheme.colors.gray_400
-                )
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Icon(
-                modifier = Modifier.size(24.dp),
-                painter = painterResource(id = R.drawable.ic_arrow_right),
-                contentDescription = "IC_ARROW_RIGHT",
-                tint = Color.Unspecified
-            )
-        }
     }
 }
