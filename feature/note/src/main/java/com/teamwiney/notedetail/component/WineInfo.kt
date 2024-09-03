@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 24.dp)
     ) {
         val pageCount = 2
         val pagerState = rememberPagerState(pageCount = { pageCount })

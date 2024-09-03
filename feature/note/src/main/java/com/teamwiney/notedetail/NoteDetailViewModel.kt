@@ -15,6 +15,7 @@ class NoteDetailViewModel @Inject constructor(
 ) : BaseViewModel<NoteDetailContract.State, NoteDetailContract.Event, NoteDetailContract.Effect>(
     initialState = NoteDetailContract.State()
 ) {
+
     override fun reduceState(event: NoteDetailContract.Event) {
         viewModelScope.launch {
             when (event) {
@@ -47,6 +48,23 @@ class NoteDetailViewModel @Inject constructor(
 
                 else -> {
                     postEffect(NoteDetailContract.Effect.ShowSnackBar("노트 디테일 요청에 실패하였습니다."))
+                }
+            }
+            updateState(currentState.copy(isLoading = false))
+        }
+    }
+
+    fun getOtherNotes(wineId: Int) = viewModelScope.launch {
+        updateState(currentState.copy(isLoading = true))
+        tastingNoteRepository.getTastingNotes(0, 5, 0, emptyList(), emptyList(), null, wineId).collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    val otherNotes = it.data.result.contents
+                    updateState(currentState.copy(otherNotes = otherNotes))
+                }
+
+                else -> {
+                    postEffect(NoteDetailContract.Effect.ShowSnackBar("다른 노트 요청에 실패하였습니다."))
                 }
             }
             updateState(currentState.copy(isLoading = false))

@@ -43,17 +43,18 @@ class TastingNoteRepositoryImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int?
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
-        tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain)
+        tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain, wineId)
 
     override fun getTastingNotesCount(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
-        tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain)
+        tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain, null)
 
     override fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>> =
         tastingNoteDataSource.getTastingNoteFilters()

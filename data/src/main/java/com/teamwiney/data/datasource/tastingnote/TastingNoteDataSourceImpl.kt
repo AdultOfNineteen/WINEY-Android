@@ -41,7 +41,8 @@ class TastingNoteDataSourceImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int?
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
         flow {
             emit(
@@ -51,7 +52,8 @@ class TastingNoteDataSourceImpl @Inject constructor(
                     order,
                     countries,
                     wineTypes,
-                    buyAgain
+                    buyAgain,
+                    wineId
                 )
             )
         }.flowOn(ioDispatcher)

@@ -25,7 +25,8 @@ interface TastingNoteRepository {
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int? = null
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNotesCount(

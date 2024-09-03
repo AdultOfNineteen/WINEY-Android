@@ -35,7 +35,7 @@ fun WineMemo(noteDetail: TastingNoteDetail) {
 
     Column {
         Text(
-            text = "Feature",
+            text = "Feelings",
             style = WineyTheme.typography.display2,
             color = WineyTheme.colors.gray_50,
             modifier = Modifier.padding(horizontal = 24.dp)
