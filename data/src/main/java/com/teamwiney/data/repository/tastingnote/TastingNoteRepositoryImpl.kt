@@ -80,6 +80,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        public: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
@@ -98,6 +99,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
+            public?.let { put("public", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
         }
 
@@ -127,6 +129,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        public: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
         deleteImgList: List<String>,
@@ -146,6 +149,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
+            public?.let { put("public", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
             put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
             put("deleteImgList", JSONArray().apply { deleteImgList.forEach { put(it) } })
