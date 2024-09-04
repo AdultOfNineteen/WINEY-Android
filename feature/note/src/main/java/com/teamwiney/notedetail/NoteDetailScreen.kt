@@ -267,6 +267,9 @@ fun NoteDetailScreen(
                             otherNotesTotalCount = uiState.otherNotesTotalCount,
                             navigateToNoteDetail = { noteId ->
                                 appState.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                            },
+                            onShowMore = {
+                                appState.navigate("${NoteDestinations.NOTE_LIST}?wineId=${uiState.noteDetail.wineId}")
                             }
                         )
                     }
@@ -305,7 +308,8 @@ fun MyNoteContent(noteDetail: TastingNoteDetail) {
 fun OtherNotesContent(
     otherNotes: List<TastingNote>,
     otherNotesTotalCount: Int,
-    navigateToNoteDetail: (Int) -> Unit
+    navigateToNoteDetail: (Int) -> Unit,
+    onShowMore: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -313,7 +317,7 @@ fun OtherNotesContent(
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Notes",
+            text = "Other Notes",
             style = WineyTheme.typography.display2,
             color = WineyTheme.colors.gray_50,
         )
@@ -353,7 +357,9 @@ fun OtherNotesContent(
         HeightSpacer(height = 20.dp)
 
         Row(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { onShowMore() },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(

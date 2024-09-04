@@ -1,5 +1,6 @@
 package com.teamwiney
 
+import NoteListScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,6 +71,21 @@ fun NavGraphBuilder.noteGraph(
                 appState = appState,
                 viewModel = hiltViewModel(backStackEntry),
                 bottomSheetState = bottomSheetState,
+            )
+        }
+
+        composable(
+            route = "${NoteDestinations.NOTE_LIST}?wineId={wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                    defaultValue = 0
+                }
+            )
+        ) {
+            NoteListScreen(
+                appState = appState,
+                viewModel = hiltViewModel()
             )
         }
 

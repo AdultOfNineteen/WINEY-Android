@@ -27,6 +27,7 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteReviewItem(
+    modifier: Modifier = Modifier,
     nickName: String,
     date: String,
     rating: Int,
@@ -34,7 +35,7 @@ fun NoteReviewItem(
     navigateToNoteDetail: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.clickable {
+        modifier = modifier.clickable {
             navigateToNoteDetail()
         },
         color = Color.Transparent

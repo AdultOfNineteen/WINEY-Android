@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -130,6 +131,9 @@ fun WineDetailScreen(
                     notes = uiState.otherNotes,
                     navigateToNoteDetail = { noteId ->
                         appState.navController.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                    },
+                    onShowMore = {
+                        appState.navigate("${NoteDestinations.NOTE_LIST}?wineId=${uiState.wineDetail.wineId}")
                     }
                 )
             }
@@ -336,7 +340,8 @@ private fun WineOrigin(
 private fun OtherNotesContent(
     totalCount: Int,
     notes: List<TastingNote>,
-    navigateToNoteDetail: (Int) -> Unit
+    navigateToNoteDetail: (Int) -> Unit,
+    onShowMore: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -373,7 +378,9 @@ private fun OtherNotesContent(
         HeightSpacer(height = 20.dp)
 
         Row(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { onShowMore() },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
