@@ -75,6 +75,7 @@ logging_interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 chucker_library = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker_library_version" }
 kotlin_bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin_bom_version" }
 kakao_sdk_user = { module = "com.kakao.sdk:v2-user", version.ref = "kakao_sdk_user_version" }
+kakao_sdk_share = { module = "com.kakao.sdk:v2-share", version.ref = "kakao_sdk_user_version" }
 accompanist_systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist_systemui_version" }
 naver_map_compose = { module = "io.github.fornewid:naver-map-compose", version.ref = "naver_map_compose_version" }
 naver_map_location = { module = "io.github.fornewid:naver-map-location", version.ref = "naver_map_location_version" }

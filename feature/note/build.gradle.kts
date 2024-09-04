@@ -51,5 +51,6 @@ dependencies {
     implementation(libs.bundles.compose.ui)
     implementation(libs.bundles.compose.paging)
     implementation(libs.bundles.hilt.navigation)
+    implementation(libs.kakao.sdk.share)
     implementation(libs.lifecycle.runtime.compose)
 }

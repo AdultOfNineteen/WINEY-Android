@@ -4,6 +4,7 @@ import android.net.Uri
 
 data class TastingNoteDetail(
     val noteId: Long,
+    val wineId: Long,
     val tastingNoteNo: Int,
     val noteDate: String,
     val wineType: String,
@@ -21,11 +22,13 @@ data class TastingNoteDetail(
     val defaultWineTaste: WineTaste,
     val tastingNoteImage: List<TastingNoteImage>,
     val memo: String,
+    val userNickname: String,
     val public: Boolean
 ) {
     companion object {
         fun default() = TastingNoteDetail(
             noteId = 0L,
+            wineId = 0L,
             tastingNoteNo = 0,
             wineName = "-",
             noteDate = "0000.00.00",
@@ -55,6 +58,7 @@ data class TastingNoteDetail(
                 body = 0,
             ),
             memo = "-",
+            userNickname = "",
             tastingNoteImage = listOf(TastingNoteImage("1", "", Uri.EMPTY)),
         )
     }

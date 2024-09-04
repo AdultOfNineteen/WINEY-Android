@@ -1,5 +1,8 @@
 package com.teamwiney.notedetail
 
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,17 +33,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kakao.sdk.common.util.KakaoCustomTabsClient
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.share.WebSharerClient
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.Link
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.TastingNote
+import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.notedetail.component.NoteDeleteBottomSheet
 import com.teamwiney.notedetail.component.NoteDetailBottomSheet
 import com.teamwiney.notedetail.component.WineInfo
@@ -69,6 +82,8 @@ fun NoteDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(pageCount = { uiState.tabs.size })
 
+    val context = LocalContext.current
+
     LaunchedEffect(true) {
         viewModel.getNoteDetail(noteId)
         viewModel.effect.collectLatest { effect ->
@@ -87,6 +102,15 @@ fun NoteDetailScreen(
                         when (effect.bottomSheet) {
                             is NoteDetailContract.BottomSheet.NoteOption -> {
                                 NoteDetailBottomSheet(
+                                    isShowShareNote = true,
+                                    shareNote = {
+                                        shareNoteWithKakaoLink(
+                                            context,
+                                            "[${uiState.noteDetail.userNickname}] 님의 [${uiState.noteDetail.wineName}] 테이스팅 노트를 확인해보세요!",
+                                            uiState.noteDetail.noteId.toInt(),
+                                            appState::showSnackbar
+                                        )
+                                    },
                                     deleteNote = {
                                         bottomSheetState.hideBottomSheet()
                                         viewModel.processEvent(
@@ -237,8 +261,14 @@ fun NoteDetailScreen(
                     state = pagerState
                 ) { page ->
                     when (page) {
-                        0 -> MyNoteContent(uiState)
-                        1 -> OtherNotesContent(uiState)
+                        0 -> MyNoteContent(uiState.noteDetail)
+                        1 -> OtherNotesContent(
+                            otherNotes = uiState.otherNotes,
+                            otherNotesTotalCount = uiState.otherNotesTotalCount,
+                            navigateToNoteDetail = { noteId ->
+                                appState.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                            }
+                        )
                     }
                 }
             }
@@ -247,37 +277,36 @@ fun NoteDetailScreen(
 }
 
 @Composable
-fun MyNoteContent(uiState: NoteDetailContract.State) {
+fun MyNoteContent(noteDetail: TastingNoteDetail) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-        WineSmellFeature(uiState.noteDetail)
+        WineSmellFeature(noteDetail)
 
         HeightSpacerWithLine(
             modifier = Modifier.padding(top = 38.dp, bottom = 30.dp),
             color = WineyTheme.colors.gray_900
         )
 
-        WineInfo(uiState.noteDetail)
+        WineInfo(noteDetail)
 
         HeightSpacerWithLine(
             modifier = Modifier.padding(top = 25.dp, bottom = 30.dp),
             color = WineyTheme.colors.gray_900
         )
 
-        WineMemo(uiState.noteDetail)
-
-        HeightSpacerWithLine(
-            modifier = Modifier.padding(top = 25.dp, bottom = 30.dp),
-            color = WineyTheme.colors.gray_900
-        )
+        WineMemo(noteDetail)
     }
 }
 
 @Composable
-fun OtherNotesContent(uiState: NoteDetailContract.State) {
+fun OtherNotesContent(
+    otherNotes: List<TastingNote>,
+    otherNotesTotalCount: Int,
+    navigateToNoteDetail: (Int) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -298,7 +327,7 @@ fun OtherNotesContent(uiState: NoteDetailContract.State) {
                         color = WineyTheme.colors.main_3
                     )
                 ) {
-                    append("52개")
+                    append("${otherNotesTotalCount}개")
                 }
                 append("의 테이스팅 노트가 있어요!")
             },
@@ -309,13 +338,15 @@ fun OtherNotesContent(uiState: NoteDetailContract.State) {
 
         HeightSpacer(height = 20.dp)
 
-        repeat(5) {
+        otherNotes.forEach {
             NoteReviewItem(
-                nickName = "닉네임",
-                date = "2021.08.12",
-                rating = 4,
-                buyAgain = true,
-                navigateToNoteDetail = {}
+                nickName = it.userNickname,
+                date = it.noteDate,
+                rating = it.starRating,
+                buyAgain = it.buyAgain,
+                navigateToNoteDetail = {
+                    navigateToNoteDetail(it.id.toInt())
+                }
             )
         }
 
@@ -341,5 +372,49 @@ fun OtherNotesContent(uiState: NoteDetailContract.State) {
         }
 
         HeightSpacer(height = 33.dp)
+    }
+}
+
+private fun shareNoteWithKakaoLink(
+    context: Context,
+    title: String,
+    noteId: Int,
+    showErrorMessage: (String) -> Unit
+) {
+    if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+        ShareClient.instance.shareCustom(
+            context,
+            111850L,
+            templateArgs = mapOf(
+                "title" to title,
+                "noteId" to noteId.toString(),
+            )
+        ) { sharingResult, error ->
+            if (error != null) {
+                showErrorMessage("카카오톡 공유 실패")
+            } else {
+                context.startActivity(sharingResult?.intent)
+            }
+        }
+    } else {
+        val shareUrl = WebSharerClient.instance.makeCustomUrl(
+            111850L,
+            templateArgs = mapOf(
+                "title" to title,
+                "noteId" to noteId.toString(),
+            )
+        )
+
+        try {
+            KakaoCustomTabsClient.openWithDefault(context, shareUrl)
+        } catch (e: Exception) {
+            showErrorMessage("카카오톡 공유 실패")
+        }
+
+        try {
+            KakaoCustomTabsClient.openWithDefault(context, shareUrl)
+        } catch (e: Exception) {
+            showErrorMessage("카카오톡 공유 실패")
+        }
     }
 }

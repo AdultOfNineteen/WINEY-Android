@@ -44,6 +44,8 @@ class NoteDetailViewModel @Inject constructor(
                 is ApiResult.Success -> {
                     val contents = it.data.result
                     updateState(currentState.copy(noteDetail = contents))
+
+                    getOtherNotes(contents.wineId.toInt())
                 }
 
                 else -> {
@@ -54,13 +56,18 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    fun getOtherNotes(wineId: Int) = viewModelScope.launch {
+    private fun getOtherNotes(wineId: Int) = viewModelScope.launch {
         updateState(currentState.copy(isLoading = true))
         tastingNoteRepository.getTastingNotes(0, 5, 0, emptyList(), emptyList(), null, wineId).collectLatest {
             when (it) {
                 is ApiResult.Success -> {
                     val otherNotes = it.data.result.contents
-                    updateState(currentState.copy(otherNotes = otherNotes))
+                    updateState(
+                        currentState.copy(
+                            otherNotes = otherNotes,
+                            otherNotesTotalCount = it.data.result.totalCnt
+                        )
+                    )
                 }
 
                 else -> {

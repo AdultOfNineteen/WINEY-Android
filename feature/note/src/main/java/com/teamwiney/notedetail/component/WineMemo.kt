@@ -91,5 +91,7 @@ fun WineMemo(noteDetail: TastingNoteDetail) {
                 color = WineyTheme.colors.gray_50
             )
         }
+
+        HeightSpacer(height = 30.dp)
     }
 }

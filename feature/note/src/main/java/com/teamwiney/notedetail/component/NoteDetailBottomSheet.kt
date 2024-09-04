@@ -20,6 +20,8 @@ import com.teamwiney.ui.theme.WineyTheme
 
 @Composable
 fun NoteDetailBottomSheet(
+    isShowShareNote: Boolean,
+    shareNote: () -> Unit,
     deleteNote: () -> Unit,
     patchNote: () -> Unit
 ) {
@@ -49,6 +51,21 @@ fun NoteDetailBottomSheet(
                 )
         )
         HeightSpacer(height = 10.dp)
+        if (isShowShareNote) {
+            Text(
+                text = "공유하기",
+                color = WineyTheme.colors.gray_50,
+                style = WineyTheme.typography.bodyB1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { shareNote() }
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 20.dp
+                    )
+            )
+            Spacer(modifier = Modifier.fillMaxWidth().background(WineyTheme.colors.gray_900))
+        }
         Text(
             text = "삭제하기",
             color = WineyTheme.colors.gray_50,
