@@ -282,9 +282,7 @@ fun NoteDetailScreen(
 @Composable
 fun MyNoteContent(noteDetail: TastingNoteDetail) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
         WineSmellFeature(noteDetail)
 
