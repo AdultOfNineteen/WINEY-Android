@@ -113,7 +113,7 @@ fun NoteListScreen(
                         rating = note.starRating,
                         buyAgain = note.buyAgain,
                         navigateToNoteDetail = {
-                            appState.navController.navigate("${NoteDestinations.DETAIL}?noteId=${note.id}")
+                            appState.navController.navigate("${NoteDestinations.DETAIL}?id=${note.id}")
                         }
                     )
                 }

@@ -130,10 +130,10 @@ fun WineDetailScreen(
                     totalCount = uiState.otherNotesTotalCount,
                     notes = uiState.otherNotes,
                     navigateToNoteDetail = { noteId ->
-                        appState.navController.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                        appState.navController.navigate("${NoteDestinations.DETAIL}?id=$noteId")
                     },
                     onShowMore = {
-                        appState.navigate("${NoteDestinations.NOTE_LIST}?wineId=${uiState.wineDetail.wineId}")
+                        appState.navigate("${NoteDestinations.NOTE_LIST}?id=${uiState.wineDetail.wineId}")
                     }
                 )
             }

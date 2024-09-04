@@ -1,5 +1,6 @@
 package com.teamwiney.notedetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
@@ -11,10 +12,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    private val tastingNoteRepository: TastingNoteRepository
+    private val tastingNoteRepository: TastingNoteRepository,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<NoteDetailContract.State, NoteDetailContract.Event, NoteDetailContract.Effect>(
     initialState = NoteDetailContract.State()
 ) {
+    init {
+        val noteId = savedStateHandle.get<Int>("noteId") ?: -1
+
+        getNoteDetail(noteId)
+    }
 
     override fun reduceState(event: NoteDetailContract.Event) {
         viewModelScope.launch {

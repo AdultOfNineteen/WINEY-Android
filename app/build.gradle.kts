@@ -38,6 +38,11 @@ android {
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao.native.app.key"] as String
         )
+        buildConfigField(
+            "String",
+            "KAKAO_LINK_SCHEME",
+            properties["kakao.link.scheme"] as String
+        )
         resValue(
             "string",
             "KAKAO_NATIVE_APP_KEY_FULL",

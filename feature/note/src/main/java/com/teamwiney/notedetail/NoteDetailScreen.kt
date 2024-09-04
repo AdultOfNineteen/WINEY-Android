@@ -74,7 +74,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun NoteDetailScreen(
     appState: WineyAppState,
-    noteId: Int = 0,
     viewModel: NoteDetailViewModel = hiltViewModel(),
     bottomSheetState: WineyBottomSheetState
 ) {
@@ -85,7 +84,6 @@ fun NoteDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        viewModel.getNoteDetail(noteId)
         viewModel.effect.collectLatest { effect ->
             bottomSheetState.hideBottomSheet()
             when (effect) {
@@ -119,7 +117,7 @@ fun NoteDetailScreen(
                                     },
                                     patchNote = {
                                         bottomSheetState.hideBottomSheet()
-                                        appState.navigate("${NoteDestinations.Write.ROUTE}?noteId=$noteId")
+                                        appState.navigate("${NoteDestinations.Write.ROUTE}?noteId=${uiState.noteDetail.noteId}")
                                     }
                                 )
                             }
@@ -266,10 +264,10 @@ fun NoteDetailScreen(
                             otherNotes = uiState.otherNotes,
                             otherNotesTotalCount = uiState.otherNotesTotalCount,
                             navigateToNoteDetail = { noteId ->
-                                appState.navigate("${NoteDestinations.DETAIL}?noteId=$noteId")
+                                appState.navigate("${NoteDestinations.DETAIL}?id=$noteId")
                             },
                             onShowMore = {
-                                appState.navigate("${NoteDestinations.NOTE_LIST}?wineId=${uiState.noteDetail.wineId}")
+                                appState.navigate("${NoteDestinations.NOTE_LIST}?id=${uiState.noteDetail.wineId}")
                             }
                         )
                     }
@@ -391,7 +389,7 @@ private fun shareNoteWithKakaoLink(
             111850L,
             templateArgs = mapOf(
                 "title" to title,
-                "noteId" to noteId.toString(),
+                "id" to noteId.toString(),
             )
         ) { sharingResult, error ->
             if (error != null) {
@@ -405,7 +403,7 @@ private fun shareNoteWithKakaoLink(
             111850L,
             templateArgs = mapOf(
                 "title" to title,
-                "noteId" to noteId.toString(),
+                "id" to noteId.toString(),
             )
         )
 

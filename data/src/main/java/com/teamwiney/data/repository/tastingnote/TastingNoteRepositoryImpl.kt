@@ -2,6 +2,7 @@ package com.teamwiney.data.repository.tastingnote
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSource
@@ -84,6 +85,8 @@ class TastingNoteRepositoryImpl @Inject constructor(
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
+        Log.d("PostTastingNote", "public : $public")
+
         val jsonObjectBuilder = JSONObject().apply {
             put("wineId", wineId)
             put("officialAlcohol", officialAlcohol)
