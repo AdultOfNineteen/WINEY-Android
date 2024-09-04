@@ -361,8 +361,8 @@ private fun OtherNotesContent(
 
         notes.forEach { note ->
             NoteReviewItem(
-                nickName = note.name,
-                date = note.country,
+                nickName = note.userNickname,
+                date = note.noteDate,
                 rating = note.starRating,
                 buyAgain = note.buyAgain
             ) {
