@@ -1,22 +1,18 @@
 package com.teamwiney.notedetail
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -39,15 +35,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
-import com.kakao.sdk.template.model.Content
-import com.kakao.sdk.template.model.FeedTemplate
-import com.kakao.sdk.template.model.Link
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
@@ -100,8 +92,9 @@ fun NoteDetailScreen(
                         when (effect.bottomSheet) {
                             is NoteDetailContract.BottomSheet.NoteOption -> {
                                 NoteDetailBottomSheet(
-                                    isShowShareNote = true,
+                                    isShowShareNote = uiState.noteDetail.public,
                                     shareNote = {
+                                        bottomSheetState.hideBottomSheet()
                                         shareNoteWithKakaoLink(
                                             context,
                                             "[${uiState.noteDetail.userNickname}] 님의 [${uiState.noteDetail.wineName}] 테이스팅 노트를 확인해보세요!",
@@ -264,7 +257,7 @@ fun NoteDetailScreen(
                             otherNotes = uiState.otherNotes,
                             otherNotesTotalCount = uiState.otherNotesTotalCount,
                             navigateToNoteDetail = { noteId ->
-                                appState.navigate("${NoteDestinations.DETAIL}?id=$noteId")
+                                appState.navigate("${NoteDestinations.NOTE_DETAIL}?id=$noteId")
                             },
                             onShowMore = {
                                 appState.navigate("${NoteDestinations.NOTE_LIST}?id=${uiState.noteDetail.wineId}")
@@ -278,7 +271,7 @@ fun NoteDetailScreen(
 }
 
 @Composable
-fun MyNoteContent(noteDetail: TastingNoteDetail) {
+private fun MyNoteContent(noteDetail: TastingNoteDetail) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -289,7 +282,7 @@ fun MyNoteContent(noteDetail: TastingNoteDetail) {
             color = WineyTheme.colors.gray_900
         )
 
-        WineInfo(noteDetail)
+        WineInfo(tastingNoteDetail = noteDetail)
 
         HeightSpacerWithLine(
             modifier = Modifier.padding(top = 25.dp, bottom = 30.dp),

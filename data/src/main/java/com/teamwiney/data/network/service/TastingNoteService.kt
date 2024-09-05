@@ -50,7 +50,8 @@ interface TastingNoteService {
     /** 테이스팅 노트 상세 조회 API */
     @GET("/tasting-notes/{noteId}")
     suspend fun getTastingNoteDetail(
-        @Path("noteId") noteId: Int
+        @Path("noteId") noteId: Int,
+        @Query("isShared") isShared: Boolean
     ): ApiResult<CommonResponse<TastingNoteDetail>>
 
     /** 테이스팅 노트 삭제 API */

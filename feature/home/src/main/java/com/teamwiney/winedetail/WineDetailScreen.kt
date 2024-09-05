@@ -47,8 +47,6 @@ import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.Wine
-import com.teamwiney.home.HomeContract
-import com.teamwiney.home.HomeViewModel
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.LoadingDialog
@@ -130,7 +128,7 @@ fun WineDetailScreen(
                     totalCount = uiState.otherNotesTotalCount,
                     notes = uiState.otherNotes,
                     navigateToNoteDetail = { noteId ->
-                        appState.navController.navigate("${NoteDestinations.DETAIL}?id=$noteId")
+                        appState.navController.navigate("${NoteDestinations.NOTE_DETAIL}?id=$noteId")
                     },
                     onShowMore = {
                         appState.navigate("${NoteDestinations.NOTE_LIST}?id=${uiState.wineDetail.wineId}")

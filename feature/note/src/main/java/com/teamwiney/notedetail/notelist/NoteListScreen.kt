@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -113,7 +111,7 @@ fun NoteListScreen(
                         rating = note.starRating,
                         buyAgain = note.buyAgain,
                         navigateToNoteDetail = {
-                            appState.navController.navigate("${NoteDestinations.DETAIL}?id=${note.id}")
+                            appState.navController.navigate("${NoteDestinations.NOTE_DETAIL}?id=${note.id}")
                         }
                     )
                 }

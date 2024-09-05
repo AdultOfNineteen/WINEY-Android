@@ -2,6 +2,7 @@ package com.teamwiney
 
 import NoteListScreen
 import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,6 +20,7 @@ import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notecollection.NoteFilterScreen
 import com.teamwiney.notecollection.NoteScreen
 import com.teamwiney.notedetail.NoteDetailScreen
+import com.teamwiney.notedetail.OtherNoteDetailScreen
 import com.teamwiney.notewrite.noteWriteGraph
 
 fun NavGraphBuilder.noteGraph(
@@ -56,11 +58,14 @@ fun NavGraphBuilder.noteGraph(
         }
 
         composable(
-            route = "${NoteDestinations.DETAIL}?id={noteId}",
+            route = "${NoteDestinations.NOTE_DETAIL}?id={noteId}&isShared={isShared}",
             arguments = listOf(
                 navArgument("noteId") {
                     type = NavType.IntType
                     defaultValue = -1
+                },
+                navArgument("isShared") {
+                    defaultValue = true
                 }
             ),
             deepLinks = listOf(
@@ -69,12 +74,24 @@ fun NavGraphBuilder.noteGraph(
                     action = Intent.ACTION_VIEW
                 }
             ),
-        ) {
-            NoteDetailScreen(
-                appState = appState,
-                viewModel = hiltViewModel(),
-                bottomSheetState = bottomSheetState,
-            )
+        ) { entry ->
+            val isShared = entry.arguments?.getBoolean("isShared") ?: true
+
+            Log.d("NoteDetailScreen", "isShared : $isShared")
+
+            if (isShared) {
+                OtherNoteDetailScreen(
+                    appState = appState,
+                    viewModel = hiltViewModel(),
+                    bottomSheetState = bottomSheetState
+                )
+            } else {
+                NoteDetailScreen(
+                    appState = appState,
+                    viewModel = hiltViewModel(),
+                    bottomSheetState = bottomSheetState,
+                )
+            }
         }
 
         composable(

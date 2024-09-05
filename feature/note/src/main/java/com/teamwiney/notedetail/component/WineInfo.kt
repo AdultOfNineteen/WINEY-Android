@@ -22,7 +22,10 @@ import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
+fun WineInfo(
+    userNickname: String? = null,
+    tastingNoteDetail: TastingNoteDetail
+) {
 
     Column(
         modifier = Modifier
@@ -44,7 +47,7 @@ fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
                 0 -> {
                     WineInfoTotalBarGraph(
                         progress = animatedProgress.value,
-                        label = "내가 느낀 와인의 맛",
+                        label = userNickname?.let { "${userNickname}가 느낀 와인의 맛" } ?: "내가 느낀 와인의 맛",
                         labelColor = WineyTheme.colors.main_2,
                         data = listOf(
                             Pair("당도", tastingNoteDetail.myWineTaste.sweetness),

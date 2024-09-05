@@ -15,18 +15,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.HeightSpacer
+import com.teamwiney.ui.theme.Chaviera
 import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
 fun NoteTitleAndDescription(
     number: Int,
+    userNickname: String? = null,
     date: String,
     type: String,
     name: String,
@@ -40,7 +44,24 @@ fun NoteTitleAndDescription(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
+            userNickname?.let {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(SpanStyle(
+                            fontFamily = Chaviera,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 11.sp
+                        )) {
+                            append("Tasted by ")
+
+                        }
+                        append("$userNickname")
+                    },
+                    style = WineyTheme.typography.bodyB1.copy(
+                        color = WineyTheme.colors.gray_50
+                    )
+                )
+            } ?: Text(
                 text = buildAnnotatedString {
                     append("No.")
                     withStyle(SpanStyle(color = WineyTheme.colors.main_3)) {

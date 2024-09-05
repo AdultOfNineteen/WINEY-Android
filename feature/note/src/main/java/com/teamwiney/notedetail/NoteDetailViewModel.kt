@@ -19,8 +19,9 @@ class NoteDetailViewModel @Inject constructor(
 ) {
     init {
         val noteId = savedStateHandle.get<Int>("noteId") ?: -1
+        val isShared = savedStateHandle.get<Boolean>("isShared") ?: false
 
-        getNoteDetail(noteId)
+        getNoteDetail(noteId, isShared)
     }
 
     override fun reduceState(event: NoteDetailContract.Event) {
@@ -44,9 +45,12 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    fun getNoteDetail(noteId: Int) = viewModelScope.launch {
+    private fun getNoteDetail(
+        noteId: Int,
+        isShared: Boolean
+    ) = viewModelScope.launch {
         updateState(currentState.copy(isLoading = true))
-        tastingNoteRepository.getTastingNoteDetail(noteId).collectLatest {
+        tastingNoteRepository.getTastingNoteDetail(noteId, isShared).collectLatest {
             when (it) {
                 is ApiResult.Success -> {
                     val contents = it.data.result

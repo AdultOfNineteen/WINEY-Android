@@ -175,7 +175,8 @@ fun NoteScreen(
                             origin = it.country,
                             starRating = it.starRating,
                             onClick = {
-                                appState.navigate("${NoteDestinations.DETAIL}?id=${it.id}")
+                                val isShared = false
+                                appState.navigate("${NoteDestinations.NOTE_DETAIL}?id=${it.id}&isShared=$isShared")
                             }
                         )
                     }

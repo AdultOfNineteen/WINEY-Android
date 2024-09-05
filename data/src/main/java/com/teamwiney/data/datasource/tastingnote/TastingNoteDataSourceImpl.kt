@@ -63,9 +63,12 @@ class TastingNoteDataSourceImpl @Inject constructor(
             emit(tastingNoteService.getTastingNoteFilters())
         }.flowOn(ioDispatcher)
 
-    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
+    override fun getTastingNoteDetail(
+        noteId: Int,
+        isShared: Boolean
+    ): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
         flow {
-            emit(tastingNoteService.getTastingNoteDetail(noteId))
+            emit(tastingNoteService.getTastingNoteDetail(noteId, isShared))
         }.flowOn(ioDispatcher)
 
     override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =

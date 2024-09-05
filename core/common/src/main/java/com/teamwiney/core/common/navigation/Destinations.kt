@@ -48,7 +48,8 @@ object NoteDestinations {
     const val NOTE = "note"
     const val NOTE_LIST = "noteList"
     const val FILTER = "filter"
-    const val DETAIL = "detail"
+    const val NOTE_DETAIL = "noteDetail"
+    const val OTHER_NOTE_DETAIL = "otherNoteDetail"
 
     object Write {
         const val ROUTE = "noteWriteRoute"
