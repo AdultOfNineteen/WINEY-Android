@@ -1,6 +1,7 @@
 package com.teamwiney.notedetail
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
@@ -62,7 +64,7 @@ import com.teamwiney.ui.theme.WineyTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun NoteDetailScreen(
     appState: WineyAppState,
@@ -74,6 +76,14 @@ fun NoteDetailScreen(
     val pagerState = rememberPagerState(pageCount = { uiState.tabs.size })
 
     val context = LocalContext.current
+
+    BackHandler {
+        if (bottomSheetState.bottomSheetState.isVisible) {
+            bottomSheetState.hideBottomSheet()
+        } else {
+            appState.navController.navigateUp()
+        }
+    }
 
     LaunchedEffect(true) {
         viewModel.effect.collectLatest { effect ->
