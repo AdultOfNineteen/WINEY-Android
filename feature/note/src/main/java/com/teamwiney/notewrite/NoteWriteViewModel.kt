@@ -170,7 +170,7 @@ class NoteWriteViewModel @Inject constructor(
             vintage = wineNote.vintage,
             price = wineNote.price,
             buyAgain = wineNote.buyAgain,
-            public = wineNote.public,
+            isPublic = wineNote.public,
             smellKeywordList = wineNote.smellKeywordList.map { it.value },
             imgUris = wineNote.selectedImages.map { it.contentUri }
         ).onStart {
@@ -211,7 +211,7 @@ class NoteWriteViewModel @Inject constructor(
             vintage = wineNote.vintage,
             price = wineNote.price,
             buyAgain = wineNote.buyAgain,
-            public = wineNote.public,
+            isPublic = wineNote.public,
             smellKeywordList = wineNote.addSmellKeywordList.map { it.value },
             deleteSmellKeywordList = wineNote.deleteSmellKeywordList.map { it.value },
             deleteImgList = wineNote.deleteImages.map { it.imgId },

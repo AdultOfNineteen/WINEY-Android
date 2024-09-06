@@ -2,7 +2,6 @@ package com.teamwiney.data.repository.tastingnote
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.teamwiney.core.common.base.CommonResponse
 import com.teamwiney.core.common.`typealias`.BaseResponse
 import com.teamwiney.data.datasource.tastingnote.TastingNoteDataSource
@@ -84,12 +83,10 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
-        public: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
-        Log.d("PostTastingNote", "public : $public")
-
         val jsonObjectBuilder = JSONObject().apply {
             put("wineId", wineId)
             put("officialAlcohol", officialAlcohol)
@@ -105,7 +102,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
-            public?.let { put("public", it) }
+            isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
         }
 
@@ -135,7 +132,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
-        public: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
         deleteImgList: List<String>,
@@ -155,7 +152,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
-            public?.let { put("public", it) }
+            isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
             put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
             put("deleteImgList", JSONArray().apply { deleteImgList.forEach { put(it) } })
