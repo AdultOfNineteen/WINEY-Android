@@ -5,12 +5,16 @@ import com.teamwiney.core.common.base.UiEffect
 import com.teamwiney.core.common.base.UiEvent
 import com.teamwiney.core.common.base.UiSheet
 import com.teamwiney.core.common.base.UiState
+import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 
 class NoteDetailContract {
     data class State(
         val isLoading: Boolean = true,
+        val tabs: List<String> = listOf("My Note", "Other Notes"),
         val noteDetail: TastingNoteDetail = TastingNoteDetail.default(),
+        val otherNotes: List<TastingNote> = emptyList(),
+        val otherNotesTotalCount: Int = 0
     ) : UiState
 
     sealed class Event : UiEvent {

@@ -1,5 +1,6 @@
 package com.teamwiney.notedetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.data.network.adapter.ApiResult
@@ -11,10 +12,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    private val tastingNoteRepository: TastingNoteRepository
+    private val tastingNoteRepository: TastingNoteRepository,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<NoteDetailContract.State, NoteDetailContract.Event, NoteDetailContract.Effect>(
     initialState = NoteDetailContract.State()
 ) {
+    init {
+        val noteId = savedStateHandle.get<Int>("noteId") ?: -1
+        val isShared = savedStateHandle.get<Boolean>("isShared") ?: false
+
+        getNoteDetail(noteId, isShared)
+    }
+
     override fun reduceState(event: NoteDetailContract.Event) {
         viewModelScope.launch {
             when (event) {
@@ -36,17 +45,44 @@ class NoteDetailViewModel @Inject constructor(
         }
     }
 
-    fun getNoteDetail(noteId: Int) = viewModelScope.launch {
+    private fun getNoteDetail(
+        noteId: Int,
+        isShared: Boolean
+    ) = viewModelScope.launch {
         updateState(currentState.copy(isLoading = true))
-        tastingNoteRepository.getTastingNoteDetail(noteId).collectLatest {
+        tastingNoteRepository.getTastingNoteDetail(noteId, isShared).collectLatest {
             when (it) {
                 is ApiResult.Success -> {
                     val contents = it.data.result
                     updateState(currentState.copy(noteDetail = contents))
+
+                    getOtherNotes(contents.wineId.toInt())
                 }
 
                 else -> {
                     postEffect(NoteDetailContract.Effect.ShowSnackBar("노트 디테일 요청에 실패하였습니다."))
+                }
+            }
+            updateState(currentState.copy(isLoading = false))
+        }
+    }
+
+    private fun getOtherNotes(wineId: Int) = viewModelScope.launch {
+        updateState(currentState.copy(isLoading = true))
+        tastingNoteRepository.getTastingNotes(0, 5, 0, emptyList(), emptyList(), null, wineId).collectLatest {
+            when (it) {
+                is ApiResult.Success -> {
+                    val otherNotes = it.data.result.contents
+                    updateState(
+                        currentState.copy(
+                            otherNotes = otherNotes,
+                            otherNotesTotalCount = it.data.result.totalCnt
+                        )
+                    )
+                }
+
+                else -> {
+                    postEffect(NoteDetailContract.Effect.ShowSnackBar("다른 노트 요청에 실패하였습니다."))
                 }
             }
             updateState(currentState.copy(isLoading = false))

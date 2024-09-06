@@ -28,8 +28,8 @@ android {
         applicationId = "com.teamwiney.winey"
         minSdk = 24
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.0.4"
+        versionCode = 8
+        versionName = "1.0.5"
 
         signingConfig = signingConfigs.getByName("debug")
 
@@ -37,6 +37,11 @@ android {
             "String",
             "KAKAO_NATIVE_APP_KEY",
             properties["kakao.native.app.key"] as String
+        )
+        buildConfigField(
+            "String",
+            "KAKAO_LINK_SCHEME",
+            properties["kakao.link.scheme"] as String
         )
         resValue(
             "string",

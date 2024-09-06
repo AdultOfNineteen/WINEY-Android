@@ -157,7 +157,7 @@ internal fun PickerContent(
                     .aspectRatio(1.0f)
                     .clickable {
                         cameraUri = insertImage()
-                        cameraLauncher.launch(cameraUri)
+                        cameraUri?.let { cameraLauncher.launch(it) }
                     },
                 contentAlignment = Alignment.Center
             ) {

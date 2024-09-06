@@ -25,12 +25,16 @@ interface TastingNoteDataSource {
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int?
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>>
 
-    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
+    fun getTastingNoteDetail(
+        noteId: Int,
+        isShared: Boolean = false
+    ): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
 
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<CommonResponse<String>>>
 

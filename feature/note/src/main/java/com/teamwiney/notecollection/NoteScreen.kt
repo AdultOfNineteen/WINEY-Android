@@ -149,7 +149,7 @@ fun NoteScreen(
                 showBottomSheet = bottomSheetState::showBottomSheet
             )
 
-            if (uiState.tastingNotesCount == 0L) {
+            if (uiState.tastingNotesCount == 0) {
                 if (uiState.isLoading) {
                     SkeletonNote()
                 } else {
@@ -175,7 +175,8 @@ fun NoteScreen(
                             origin = it.country,
                             starRating = it.starRating,
                             onClick = {
-                                appState.navigate("${NoteDestinations.DETAIL}?noteId=${it.id}")
+                                val isShared = false
+                                appState.navigate("${NoteDestinations.NOTE_DETAIL}?id=${it.id}&isShared=$isShared")
                             }
                         )
                     }

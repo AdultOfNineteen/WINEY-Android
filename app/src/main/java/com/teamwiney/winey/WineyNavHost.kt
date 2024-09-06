@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -55,12 +56,13 @@ import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme
 
+private var isReceiverRegistered = false
+
 @Composable
 fun TokenExpiredBroadcastReceiver(
     onExpired: (intent: Intent?) -> Unit
 ) {
     val context = LocalContext.current
-
     val currentOnExpired by rememberUpdatedState(onExpired)
 
     DisposableEffect(context) {
@@ -71,12 +73,18 @@ fun TokenExpiredBroadcastReceiver(
             }
         }
 
-        LocalBroadcastManager.getInstance(context).registerReceiver(broadcast, intentFilter)
-        Log.d("debugging", "리시버 부착")
+        if (!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(context).registerReceiver(broadcast, intentFilter)
+            isReceiverRegistered = true
+            Log.d("debugging", "리시버 부착")
+        }
 
         onDispose {
-            context.unregisterReceiver(broadcast)
-            Log.d("debugging", "리시버 부착 해제")
+            if (isReceiverRegistered) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcast)
+                isReceiverRegistered = false
+                Log.d("debugging", "리시버 부착 해제")
+            }
         }
     }
 }
@@ -161,7 +169,8 @@ fun WineyNavHost(
                 )
                 noteGraph(
                     appState = appState,
-                    bottomSheetState = bottomSheetState
+                    bottomSheetState = bottomSheetState,
+                    kakaoLinkScheme = BuildConfig.KAKAO_LINK_SCHEME
                 )
                 myPageGraph(
                     appState = appState,

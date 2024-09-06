@@ -12,12 +12,20 @@ data class TastingNote(
     val name: String,
     @SerializedName("country")
     val country: String,
+    @SerializedName("varietal")
+    val varietal: String,
     @SerializedName("starRating")
     val starRating: Int,
     @SerializedName("buyAgain")
     val buyAgain: Boolean,
     @SerializedName("wineType")
-    val wineType: String
+    val wineType: String,
+    @SerializedName("userNickname")
+    val userNickname: String,
+    @SerializedName("noteDate")
+    val noteDate: String,
+    @SerializedName("public")
+    val public: Boolean
 )
 
 fun TastingNote.toDomain() = TastingNote(
@@ -27,6 +35,10 @@ fun TastingNote.toDomain() = TastingNote(
     country = this.country,
     starRating = this.starRating,
     buyAgain = this.buyAgain,
-    wineType = this.wineType
+    wineType = this.wineType,
+    public = this.public,
+    userNickname = this.userNickname,
+    noteDate = this.noteDate,
+    varietal = this.varietal
 )
 

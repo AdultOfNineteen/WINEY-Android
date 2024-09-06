@@ -25,7 +25,8 @@ interface TastingNoteRepository {
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int? = null
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>>
 
     fun getTastingNotesCount(
@@ -37,7 +38,10 @@ interface TastingNoteRepository {
 
     fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>>
 
-    fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
+    fun getTastingNoteDetail(
+        noteId: Int,
+        isShared: Boolean = false
+    ): Flow<ApiResult<CommonResponse<TastingNoteDetail>>>
 
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 
@@ -56,6 +60,7 @@ interface TastingNoteRepository {
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
@@ -75,6 +80,7 @@ interface TastingNoteRepository {
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
         deleteImgList: List<String>,

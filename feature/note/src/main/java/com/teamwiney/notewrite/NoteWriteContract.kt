@@ -47,7 +47,7 @@ class NoteWriteContract {
             Color(0xFFD5DBB5)
         ),
         val initialColor: Color = barColors[0],
-        val searchWinesCount: Long = 0,
+        val searchWinesCount: Int = 0,
         val selectedWine: SearchWine = SearchWine.default(),
         val selectedWineInfo: Wine = Wine.default(),
         val wineNote: WineNote = WineNote.default(),

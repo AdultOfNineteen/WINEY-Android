@@ -105,31 +105,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getWineDetail(wineId: Long) = viewModelScope.launch {
-        wineRepository.getWineDetail(wineId).onStart {
-            updateState(currentState.copy(isLoading = true))
-        }.collectLatest {
-            updateState(currentState.copy(isLoading = false))
-            when (it) {
-                is ApiResult.Success -> {
-                    updateState(
-                        currentState.copy(
-                            wineDetail = it.data.result.toDomain()
-                        )
-                    )
-                }
-
-                is ApiResult.ApiError -> {
-                    postEffect(HomeContract.Effect.ShowSnackBar(it.message))
-                }
-
-                else -> {
-                    postEffect(HomeContract.Effect.ShowSnackBar("네트워크 오류가 발생했습니다."))
-                }
-            }
-        }
-    }
-
     private fun getWineTips() = viewModelScope.launch {
         updateState(
             currentState.copy(

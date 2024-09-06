@@ -43,22 +43,26 @@ class TastingNoteRepositoryImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int?
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
-        tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain)
+        tastingNoteDataSource.getTastingNotes(page, size, order, countries, wineTypes, buyAgain, wineId)
 
     override fun getTastingNotesCount(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
-        tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain)
+        tastingNoteDataSource.getTastingNotes(1, 1, order, countries, wineTypes, buyAgain, null)
 
     override fun getTastingNoteFilters(): Flow<ApiResult<CommonResponse<TastingNoteFilters>>> =
         tastingNoteDataSource.getTastingNoteFilters()
 
-    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
+    override fun getTastingNoteDetail(
+        noteId: Int,
+        isShared: Boolean
+    ): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
         tastingNoteDataSource.getTastingNoteDetail(noteId)
 
     override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =
@@ -79,6 +83,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
@@ -97,6 +102,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
+            isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
         }
 
@@ -126,6 +132,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         vintage: String,
         price: String,
         buyAgain: Boolean?,
+        isPublic: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
         deleteImgList: List<String>,
@@ -145,6 +152,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             if (vintage.isNotEmpty()) put("vintage", vintage.toInt())
             if (price.isNotEmpty()) put("price", price.toInt())
             buyAgain?.let { put("buyAgain", it) }
+            isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
             put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
             put("deleteImgList", JSONArray().apply { deleteImgList.forEach { put(it) } })

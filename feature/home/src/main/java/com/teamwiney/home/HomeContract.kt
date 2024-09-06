@@ -29,9 +29,7 @@ class HomeContract {
                     refresh = LoadState.NotLoading(endOfPaginationReached = true),
                 )
             )
-        ),
-        val wineDetail: Wine = Wine(-1L, "", "", "", "", 0, 0, 0, 0,
-            WineSummary(0.toDouble(), 0, 0, 0, 0))
+        )
     ) : UiState
 
 

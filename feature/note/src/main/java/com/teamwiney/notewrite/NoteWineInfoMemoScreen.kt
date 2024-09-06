@@ -285,7 +285,7 @@ fun NoteWineInfoMemoScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 30.dp),
+                    .padding(top = 25.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -314,7 +314,7 @@ fun NoteWineInfoMemoScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 30.dp),
+                    .padding(top = 25.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -333,6 +333,29 @@ fun NoteWineInfoMemoScreen(
                     }
                 }
             }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 25.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "노트 공개 여부",
+                    style = WineyTheme.typography.bodyB1,
+                    color = WineyTheme.colors.gray_50,
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    NoteFeatureText(name = "있어요", enable = uiState.wineNote.public == true) {
+                        viewModel.updatePublic(true)
+                    }
+                    NoteFeatureText(name = "없어요", enable = uiState.wineNote.public == false) {
+                        viewModel.updatePublic(false)
+                    }
+                }
+            }
         }
 
         WButton(
@@ -344,7 +367,7 @@ fun NoteWineInfoMemoScreen(
             disableBackgroundColor = WineyTheme.colors.gray_900,
             disableTextColor = WineyTheme.colors.gray_600,
             enableTextColor = WineyTheme.colors.gray_50,
-            enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null,
+            enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null && uiState.wineNote.public != null,
             onClick = {
                 if (uiState.mode == EditMode.ADD) viewModel.writeTastingNote() else viewModel.updateTastingNote()
                 AmplitudeProvider.trackEvent(AmplitudeEvent.REVIEW_COMPLETE_CLICK)

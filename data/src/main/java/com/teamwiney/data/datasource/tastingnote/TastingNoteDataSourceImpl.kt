@@ -41,7 +41,8 @@ class TastingNoteDataSourceImpl @Inject constructor(
         order: Int,
         countries: List<String>,
         wineTypes: List<String>,
-        buyAgain: Int?
+        buyAgain: Int?,
+        wineId: Int?
     ): Flow<ApiResult<CommonResponse<PagingResponse<List<TastingNote>>>>> =
         flow {
             emit(
@@ -51,7 +52,8 @@ class TastingNoteDataSourceImpl @Inject constructor(
                     order,
                     countries,
                     wineTypes,
-                    buyAgain
+                    buyAgain,
+                    wineId
                 )
             )
         }.flowOn(ioDispatcher)
@@ -61,9 +63,12 @@ class TastingNoteDataSourceImpl @Inject constructor(
             emit(tastingNoteService.getTastingNoteFilters())
         }.flowOn(ioDispatcher)
 
-    override fun getTastingNoteDetail(noteId: Int): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
+    override fun getTastingNoteDetail(
+        noteId: Int,
+        isShared: Boolean
+    ): Flow<ApiResult<CommonResponse<TastingNoteDetail>>> =
         flow {
-            emit(tastingNoteService.getTastingNoteDetail(noteId))
+            emit(tastingNoteService.getTastingNoteDetail(noteId, isShared))
         }.flowOn(ioDispatcher)
 
     override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =

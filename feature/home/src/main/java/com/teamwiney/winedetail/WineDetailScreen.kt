@@ -1,11 +1,12 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.teamwiney.home
+package com.teamwiney.winedetail
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,13 +34,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.navigation.NoteDestinations
+import com.teamwiney.core.design.R
+import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
+import com.teamwiney.ui.components.LoadingDialog
+import com.teamwiney.ui.components.NoteReviewItem
 import com.teamwiney.ui.components.TasteScoreHorizontalBar
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WineBadge
@@ -51,22 +63,15 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun WineDetailScreen(
     appState: WineyAppState,
-    wineId: Long = 0L,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: WineDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val effectFlow = viewModel.effect
 
     LaunchedEffect(true) {
-        viewModel.getWineDetail(wineId)
-
         effectFlow.collectLatest { effect ->
             when (effect) {
-                is HomeContract.Effect.NavigateTo -> {
-                    appState.navigate(effect.destination, effect.navOptions)
-                }
-
-                is HomeContract.Effect.ShowSnackBar -> {
+                is WineDetailContract.Effect.ShowSnackBar -> {
                     appState.showSnackbar(effect.message)
                 }
             }
@@ -87,31 +92,49 @@ fun WineDetailScreen(
             content = "와인 상세정보"
         )
 
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            WineTitleAndDescription(
-                type = uiState.wineDetail.type,
-                name = uiState.wineDetail.name
-            )
+        if (uiState.isLoading) {
+            LoadingDialog()
+        } else {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                WineTitleAndDescription(
+                    type = uiState.wineDetail.type,
+                    name = uiState.wineDetail.name
+                )
 
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-            WineOrigin(uiState.wineDetail)
+                WineOrigin(uiState.wineDetail)
 
-            HeightSpacerWithLine(
-                modifier = Modifier.padding(vertical = 20.dp),
-                color = WineyTheme.colors.gray_900
-            )
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
 
-            WineInfo(uiState.wineDetail)
+                WineInfo(uiState.wineDetail)
 
-            HeightSpacer(height = 33.dp)
+                HeightSpacerWithLine(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    color = WineyTheme.colors.gray_900
+                )
+
+                OtherNotesContent(
+                    totalCount = uiState.otherNotesTotalCount,
+                    notes = uiState.otherNotes,
+                    navigateToNoteDetail = { noteId ->
+                        appState.navController.navigate("${NoteDestinations.NOTE_DETAIL}?id=$noteId")
+                    },
+                    onShowMore = {
+                        appState.navigate("${NoteDestinations.NOTE_LIST}?id=${uiState.wineDetail.wineId}")
+                    }
+                )
+            }
         }
     }
 }
@@ -310,3 +333,69 @@ private fun WineOrigin(
     }
 }
 
+
+@Composable
+private fun OtherNotesContent(
+    totalCount: Int,
+    notes: List<TastingNote>,
+    navigateToNoteDetail: (Int) -> Unit,
+    onShowMore: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = WineyTheme.colors.main_3
+                    )
+                ) {
+                    append("${totalCount}개")
+                }
+                append("의 테이스팅 노트가 있어요!")
+            },
+            style = WineyTheme.typography.title2.copy(
+                color = WineyTheme.colors.gray_50
+            ),
+        )
+
+        HeightSpacer(height = 20.dp)
+
+        notes.forEach { note ->
+            NoteReviewItem(
+                nickName = note.userNickname,
+                date = note.noteDate,
+                rating = note.starRating,
+                buyAgain = note.buyAgain
+            ) {
+               navigateToNoteDetail(note.id.toInt())
+            }
+        }
+
+        HeightSpacer(height = 20.dp)
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { onShowMore() },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                "더 보러가기",
+                style = WineyTheme.typography.bodyM2.copy(
+                    color = WineyTheme.colors.gray_400
+                )
+            )
+
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.ic_arrow_right),
+                contentDescription = "IC_ARROW_RIGHT",
+                tint = Color.Unspecified
+            )
+        }
+
+        HeightSpacer(height = 33.dp)
+    }
+}

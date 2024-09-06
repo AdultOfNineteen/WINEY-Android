@@ -28,6 +28,7 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WineSmellFeature(noteDetail: TastingNoteDetail) {
     Column(
+        modifier = Modifier.padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(

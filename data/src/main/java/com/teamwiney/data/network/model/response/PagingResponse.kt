@@ -6,7 +6,7 @@ data class PagingResponse<out T>(
     @SerializedName("isLast")
     val isLast: Boolean,
     @SerializedName("totalCnt")
-    val totalCnt: Long,
+    val totalCnt: Int,
     @SerializedName("contents")
     val contents: T
 )

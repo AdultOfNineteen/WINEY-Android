@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -21,11 +22,15 @@ import com.teamwiney.ui.theme.WineyTheme
 
 
 @Composable
-fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
+fun WineInfo(
+    userNickname: String? = null,
+    tastingNoteDetail: TastingNoteDetail
+) {
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 24.dp)
     ) {
         val pageCount = 2
         val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -42,7 +47,7 @@ fun WineInfo(tastingNoteDetail: TastingNoteDetail) {
                 0 -> {
                     WineInfoTotalBarGraph(
                         progress = animatedProgress.value,
-                        label = "내가 느낀 와인의 맛",
+                        label = userNickname?.let { "${userNickname}가 느낀 와인의 맛" } ?: "내가 느낀 와인의 맛",
                         labelColor = WineyTheme.colors.main_2,
                         data = listOf(
                             Pair("당도", tastingNoteDetail.myWineTaste.sweetness),

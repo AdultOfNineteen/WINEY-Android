@@ -1,6 +1,8 @@
 package com.teamwiney.winey
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +25,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val intent = intent
+        Log.d("DeepLink", "${intent.data}")
+
         // WindowInset 직접 조절하기 위해서
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
@@ -41,4 +46,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
 }

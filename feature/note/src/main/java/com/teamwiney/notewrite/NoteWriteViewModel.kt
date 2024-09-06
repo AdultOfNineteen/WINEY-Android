@@ -79,6 +79,7 @@ class NoteWriteViewModel @Inject constructor(
                                     finish = result.myWineTaste.finish,
                                     memo = result.memo,
                                     buyAgain = result.buyAgain,
+                                    public = result.public,
                                     rating = result.star,
                                     loadImages = result.tastingNoteImage,
                                     selectedImages = result.tastingNoteImage,
@@ -169,6 +170,7 @@ class NoteWriteViewModel @Inject constructor(
             vintage = wineNote.vintage,
             price = wineNote.price,
             buyAgain = wineNote.buyAgain,
+            isPublic = wineNote.public,
             smellKeywordList = wineNote.smellKeywordList.map { it.value },
             imgUris = wineNote.selectedImages.map { it.contentUri }
         ).onStart {
@@ -209,6 +211,7 @@ class NoteWriteViewModel @Inject constructor(
             vintage = wineNote.vintage,
             price = wineNote.price,
             buyAgain = wineNote.buyAgain,
+            isPublic = wineNote.public,
             smellKeywordList = wineNote.addSmellKeywordList.map { it.value },
             deleteSmellKeywordList = wineNote.deleteSmellKeywordList.map { it.value },
             deleteImgList = wineNote.deleteImages.map { it.imgId },
@@ -351,6 +354,10 @@ class NoteWriteViewModel @Inject constructor(
 
     fun updateBuyAgain(buyAgain: Boolean) {
         updateState(currentState.copy(wineNote = currentState.wineNote.copy(buyAgain = buyAgain)))
+    }
+
+    fun updatePublic(public: Boolean) {
+        updateState(currentState.copy(wineNote = currentState.wineNote.copy(public = public)))
     }
 
     fun getSearchWines() = viewModelScope.launch {
