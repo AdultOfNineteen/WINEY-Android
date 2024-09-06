@@ -1,7 +1,9 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -24,6 +27,7 @@ import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notedetail.notelist.NoteListContract
 import com.teamwiney.notedetail.notelist.NoteListViewModel
+import com.teamwiney.ui.components.EmptyOtherNote
 import com.teamwiney.ui.components.LoadingDialog
 import com.teamwiney.ui.components.NoteReviewItem
 import com.teamwiney.ui.components.TopBar
@@ -103,17 +107,30 @@ fun NoteListScreen(
                     .background(WineyTheme.colors.background_1),
                 state = listState
             ) {
-                items(uiState.tastingNotes) { note ->
-                    NoteReviewItem(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        nickName = note.userNickname,
-                        date = note.noteDate,
-                        rating = note.starRating,
-                        buyAgain = note.buyAgain,
-                        navigateToNoteDetail = {
-                            appState.navController.navigate("${NoteDestinations.NOTE_DETAIL}?id=${note.id}")
+                if (uiState.tastingNotes.isNotEmpty()) {
+                    items(uiState.tastingNotes) { note ->
+                        NoteReviewItem(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            nickName = note.userNickname,
+                            date = note.noteDate,
+                            rating = note.starRating,
+                            buyAgain = note.buyAgain,
+                            navigateToNoteDetail = {
+                                appState.navController.navigate("${NoteDestinations.NOTE_DETAIL}?id=${note.id}")
+                            }
+                        )
+                    }
+                } else {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 140.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            EmptyOtherNote()
                         }
-                    )
+                    }
                 }
             }
         }

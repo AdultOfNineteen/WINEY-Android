@@ -47,6 +47,7 @@ import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.design.R
 import com.teamwiney.data.network.model.response.TastingNote
 import com.teamwiney.data.network.model.response.Wine
+import com.teamwiney.ui.components.EmptyOtherNote
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.LoadingDialog
@@ -362,14 +363,25 @@ private fun OtherNotesContent(
 
         HeightSpacer(height = 20.dp)
 
-        notes.forEach { note ->
-            NoteReviewItem(
-                nickName = note.userNickname,
-                date = note.noteDate,
-                rating = note.starRating,
-                buyAgain = note.buyAgain
+        if (notes.isNotEmpty()) {
+            notes.forEach { note ->
+                NoteReviewItem(
+                    nickName = note.userNickname,
+                    date = note.noteDate,
+                    rating = note.starRating,
+                    buyAgain = note.buyAgain
+                ) {
+                    navigateToNoteDetail(note.id.toInt())
+                }
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 40.dp),
+                contentAlignment = Alignment.Center
             ) {
-               navigateToNoteDetail(note.id.toInt())
+                EmptyOtherNote()
             }
         }
 

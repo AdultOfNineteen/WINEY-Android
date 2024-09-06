@@ -6,6 +6,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,6 +55,7 @@ import com.teamwiney.notedetail.component.WineInfo
 import com.teamwiney.notedetail.component.WineMemo
 import com.teamwiney.notedetail.component.WineOrigin
 import com.teamwiney.notedetail.component.WineSmellFeature
+import com.teamwiney.ui.components.EmptyOtherNote
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.HeightSpacerWithLine
 import com.teamwiney.ui.components.LoadingDialog
@@ -341,16 +343,27 @@ fun OtherNotesContent(
 
         HeightSpacer(height = 20.dp)
 
-        otherNotes.forEach {
-            NoteReviewItem(
-                nickName = it.userNickname,
-                date = it.noteDate,
-                rating = it.starRating,
-                buyAgain = it.buyAgain,
-                navigateToNoteDetail = {
-                    navigateToNoteDetail(it.id.toInt())
-                }
-            )
+        if (otherNotes.isNotEmpty()) {
+            otherNotes.forEach {
+                NoteReviewItem(
+                    nickName = it.userNickname,
+                    date = it.noteDate,
+                    rating = it.starRating,
+                    buyAgain = it.buyAgain,
+                    navigateToNoteDetail = {
+                        navigateToNoteDetail(it.id.toInt())
+                    }
+                )
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 40.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                EmptyOtherNote()
+            }
         }
 
         HeightSpacer(height = 20.dp)
