@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -62,6 +63,8 @@ fun ColumnScope.WineShopDetail(
                     wineShop.name
                 )
             }&appname=com.teamwiney.winey"
+
+        Log.d("WineShopDetail", "url: $url");
 
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         intent.addCategory(Intent.CATEGORY_BROWSABLE)

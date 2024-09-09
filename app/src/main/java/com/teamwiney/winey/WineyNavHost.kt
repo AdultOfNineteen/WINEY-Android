@@ -22,14 +22,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.util.Consumer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDestination
@@ -56,39 +55,6 @@ import com.teamwiney.ui.components.BottomNavigationBar
 import com.teamwiney.ui.components.BottomNavigationItem
 import com.teamwiney.ui.theme.WineyTheme
 
-private var isReceiverRegistered = false
-
-@Composable
-fun TokenExpiredBroadcastReceiver(
-    onExpired: (intent: Intent?) -> Unit
-) {
-    val context = LocalContext.current
-    val currentOnExpired by rememberUpdatedState(onExpired)
-
-    DisposableEffect(context) {
-        val intentFilter = IntentFilter("com.teamwiney.winey.TOKEN_EXPIRED")
-        val broadcast = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                currentOnExpired(intent)
-            }
-        }
-
-        if (!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(context).registerReceiver(broadcast, intentFilter)
-            isReceiverRegistered = true
-            Log.d("debugging", "리시버 부착")
-        }
-
-        onDispose {
-            if (isReceiverRegistered) {
-                LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcast)
-                isReceiverRegistered = false
-                Log.d("debugging", "리시버 부착 해제")
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WineyNavHost(
@@ -104,20 +70,6 @@ fun WineyNavHost(
             appState.scaffoldState.snackbarHostState.showSnackbar(
                 message = "⚠\uFE0F 인터넷에 연결되어 있지 않습니다.",
                 duration = SnackbarDuration.Indefinite
-            )
-        }
-    }
-
-    TokenExpiredBroadcastReceiver { intent ->
-        if (intent?.action == "com.teamwiney.winey.TOKEN_EXPIRED") {
-            appState.showSnackbar("토큰이 만료되었습니다. 다시 로그인해주세요.")
-            appState.navController.navigate(
-                AuthDestinations.Login.LOGIN,
-                navOptions {
-                    popUpTo(AuthDestinations.Login.LOGIN) {
-                        inclusive = true
-                    }
-                }
             )
         }
     }

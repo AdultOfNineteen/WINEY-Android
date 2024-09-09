@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 fun rememberWineyAppState(
     networkMonitor: NetworkMonitor,
     isMapDetail: MutableState<Boolean> = mutableStateOf(false),
+    isLoggedIn: MutableState<Boolean> = mutableStateOf(false),
     navController: NavHostController = rememberNavController(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -39,6 +40,7 @@ fun rememberWineyAppState(
         WineyAppState(
             networkMonitor,
             isMapDetail,
+            isLoggedIn,
             navController,
             scaffoldState,
             scope,
@@ -51,6 +53,7 @@ fun rememberWineyAppState(
 class WineyAppState(
     networkMonitor: NetworkMonitor,
     val isMapDetail: MutableState<Boolean>,
+    val isLoggedIn: MutableState<Boolean>,
     val navController: NavHostController,
     val scaffoldState: ScaffoldState,
     val scope: CoroutineScope,
