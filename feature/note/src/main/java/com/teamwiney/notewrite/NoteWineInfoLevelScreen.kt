@@ -178,12 +178,32 @@ fun NoteWineInfoLevelScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    // 정수 부분
                     NumberPicker(
                         value = uiState.wineNote.officialAlcohol?.toInt() ?: 0,
-                        onValueChange = {
-                            viewModel.updateOfficialAlcohol(it.toDouble())
+                        onValueChange = { intValue ->
+                            val currentFraction = (uiState.wineNote.officialAlcohol ?: 0.0) - (uiState.wineNote.officialAlcohol?.toInt() ?: 0)
+                            viewModel.updateOfficialAlcohol(intValue.toDouble() + currentFraction)
                         },
                         range = 0..20,
+                        textStyle = WineyTheme.typography.title1.copy(
+                            color = WineyTheme.colors.gray_50
+                        )
+                    )
+                    Text(
+                        text = ".",
+                        style = WineyTheme.typography.title1.copy(
+                            color = WineyTheme.colors.gray_50
+                        )
+                    )
+                    // 소수점 첫 번째 자리
+                    NumberPicker(
+                        value = (((uiState.wineNote.officialAlcohol ?: 0.0) * 10).toInt() % 10),
+                        onValueChange = { decimalValue ->
+                            val currentInt = uiState.wineNote.officialAlcohol?.toInt() ?: 0
+                            viewModel.updateOfficialAlcohol(currentInt.toDouble() + decimalValue / 10.0)
+                        },
+                        range = 0..9,
                         textStyle = WineyTheme.typography.title1.copy(
                             color = WineyTheme.colors.gray_50
                         )

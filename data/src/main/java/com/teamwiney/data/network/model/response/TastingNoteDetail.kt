@@ -15,7 +15,7 @@ data class TastingNoteDetail(
     val color: String,
     val buyAgain: Boolean,
     val varietal: String,
-    val officialAlcohol: Int?,
+    val officialAlcohol: Double?,
     val price: Int?,
     val smellKeywordList: List<String>,
     val myWineTaste: MyWineTaste,
