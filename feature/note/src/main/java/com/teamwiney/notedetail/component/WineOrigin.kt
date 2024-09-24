@@ -66,10 +66,10 @@ fun WineOrigin(
 
 
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
-                    text = "national an thems",
-                    style = WineyTheme.typography.captionM3,
+                    text = "Countries",
+                    style = WineyTheme.typography.captionM4,
                     color = WineyTheme.colors.gray_50
                 )
 
@@ -80,10 +80,10 @@ fun WineOrigin(
                 )
             }
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = "Varieties",
-                    style = WineyTheme.typography.captionM3,
+                    style = WineyTheme.typography.captionM4,
                     color = WineyTheme.colors.gray_50
                 )
 
@@ -94,10 +94,10 @@ fun WineOrigin(
                 )
             }
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = "ABV",
-                    style = WineyTheme.typography.captionM3,
+                    style = WineyTheme.typography.captionM4,
                     color = WineyTheme.colors.gray_50
                 )
 
@@ -108,10 +108,10 @@ fun WineOrigin(
                 )
             }
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = "Purchase price",
-                    style = WineyTheme.typography.captionM3,
+                    style = WineyTheme.typography.captionM4,
                     color = WineyTheme.colors.gray_50
                 )
 
@@ -122,10 +122,10 @@ fun WineOrigin(
                 )
             }
 
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = "Vintage",
-                    style = WineyTheme.typography.captionM3,
+                    style = WineyTheme.typography.captionM4,
                     color = WineyTheme.colors.gray_50
                 )
 

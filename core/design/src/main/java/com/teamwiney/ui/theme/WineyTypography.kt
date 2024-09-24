@@ -217,7 +217,21 @@ data class WineyTypography(
             alignment = LineHeightStyle.Alignment.Center,
             trim = LineHeightStyle.Trim.None
         )
-    )
+    ),
+    val captionM4: TextStyle = TextStyle(
+        fontFamily = Chaviera,
+        fontWeight = FontWeight.Medium,
+        fontSize = 13.sp,
+        lineHeight = 17.sp,
+        letterSpacing = 0.sp,
+        platformStyle = PlatformTextStyle(
+            includeFontPadding = false
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
+        )
+    ),
 )
 
 val LocalTypography = staticCompositionLocalOf { wineyFonts() }

@@ -289,7 +289,7 @@ private fun WineCardContent(
             Column {
                 Column(modifier = Modifier.padding(10.dp)) {
                     Text(
-                        text = "national anthems",
+                        text = "Countries",
                         style = WineyTheme.typography.captionM3,
                         color = WineyTheme.colors.gray_50
                     )
