@@ -146,7 +146,10 @@ fun NoteWineSearchScreen(
                     NoteSearchItem(
                         wine = it,
                         searchKeyword = uiState.searchKeyword
-                    )
+                    ) {
+                        viewModel.updateSelectedWine(it)
+                        appState.navigate(NoteDestinations.Write.SELECT_WINE)
+                    }
                 }
             }
         }
@@ -226,7 +229,8 @@ fun EmptySearch() {
 @Composable
 private fun NoteSearchItem(
     wine: SearchWine,
-    searchKeyword: String
+    searchKeyword: String,
+    onClick: () -> Unit
 ) {
     val annotatedText = buildAnnotatedString {
         val name = wine.name
@@ -252,7 +256,7 @@ private fun NoteSearchItem(
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
     ) {
         Text(
             modifier = Modifier.padding(20.dp),
