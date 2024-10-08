@@ -68,10 +68,15 @@ class TastingNoteRepositoryImpl @Inject constructor(
     override fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>> =
         tastingNoteDataSource.deleteTastingNote(noteId)
 
+    /**
+     * @param alcohol 스파클링 와인이 아닌 경우 입력
+     * @param sparkling 스파클링 와인인 경우 입력
+     */
     override fun postTastingNote(
         wineId: Long,
         officialAlcohol: Double?,
-        alcohol: Int,
+        alcohol: Int?,
+        sparkling: Int?,
         color: String,
         sweetness: Int,
         acidity: Int,
@@ -90,7 +95,8 @@ class TastingNoteRepositoryImpl @Inject constructor(
         val jsonObjectBuilder = JSONObject().apply {
             put("wineId", wineId)
             put("officialAlcohol", officialAlcohol)
-            put("alcohol", alcohol)
+            alcohol?.let { put("alcohol", it) }
+            sparkling?.let { put("sparkling", it) }
             put("color", color)
             put("sweetness", sweetness)
             put("acidity", acidity)
@@ -117,10 +123,15 @@ class TastingNoteRepositoryImpl @Inject constructor(
         return tastingNoteDataSource.postTastingNote(request, multipartFiles)
     }
 
+    /**
+     * @param alcohol 스파클링 와인이 아닌 경우 입력
+     * @param sparkling 스파클링 와인인 경우 입력
+     */
     override fun updateTastingNote(
         noteId: Int,
         officialAlcohol: Double?,
-        alcohol: Int,
+        alcohol: Int?,
+        sparkling: Int?,
         color: String,
         sweetness: Int,
         acidity: Int,
@@ -140,7 +151,8 @@ class TastingNoteRepositoryImpl @Inject constructor(
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
         val jsonObjectBuilder = JSONObject().apply {
             put("officialAlcohol", officialAlcohol)
-            put("alcohol", alcohol)
+            alcohol?.let { put("alcohol", it) }
+            sparkling?.let { put("sparkling", it) }
             put("color", color)
             put("sweetness", sweetness)
             put("acidity", acidity)

@@ -49,6 +49,7 @@ data class TastingNoteDetail(
                 tannin = 0,
                 body = 0,
                 alcohol = 0,
+                sparkling = 0,
                 finish = 0
             ),
             defaultWineTaste = WineTaste(
@@ -77,6 +78,7 @@ data class MyWineTaste(
     val tannin: Int,
     val body: Int,
     val alcohol: Int,
+    val sparkling: Int,
     val finish: Int
 )
 

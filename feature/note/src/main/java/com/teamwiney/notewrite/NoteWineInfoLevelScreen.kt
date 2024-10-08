@@ -180,9 +180,9 @@ fun NoteWineInfoLevelScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // 정수 부분
                     NumberPicker(
-                        value = uiState.wineNote.officialAlcohol?.toInt() ?: 0,
+                        value = uiState.writeTastingNote.officialAlcohol?.toInt() ?: 0,
                         onValueChange = { intValue ->
-                            val currentFraction = (uiState.wineNote.officialAlcohol ?: 0.0) - (uiState.wineNote.officialAlcohol?.toInt() ?: 0)
+                            val currentFraction = (uiState.writeTastingNote.officialAlcohol ?: 0.0) - (uiState.writeTastingNote.officialAlcohol?.toInt() ?: 0)
                             viewModel.updateOfficialAlcohol(intValue.toDouble() + currentFraction)
                         },
                         range = 0..20,
@@ -198,9 +198,9 @@ fun NoteWineInfoLevelScreen(
                     )
                     // 소수점 첫 번째 자리
                     NumberPicker(
-                        value = (((uiState.wineNote.officialAlcohol ?: 0.0) * 10).toInt() % 10),
+                        value = (((uiState.writeTastingNote.officialAlcohol ?: 0.0) * 10).toInt() % 10),
                         onValueChange = { decimalValue ->
-                            val currentInt = uiState.wineNote.officialAlcohol?.toInt() ?: 0
+                            val currentInt = uiState.writeTastingNote.officialAlcohol?.toInt() ?: 0
                             viewModel.updateOfficialAlcohol(currentInt.toDouble() + decimalValue / 10.0)
                         },
                         range = 0..9,

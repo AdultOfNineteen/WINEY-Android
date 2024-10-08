@@ -19,7 +19,6 @@ import com.teamwiney.core.common.`typealias`.SheetContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun rememberWineyBottomSheetState(
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,

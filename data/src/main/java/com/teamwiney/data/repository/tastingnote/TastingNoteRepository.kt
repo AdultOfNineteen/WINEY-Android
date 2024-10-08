@@ -45,10 +45,15 @@ interface TastingNoteRepository {
 
     fun deleteTastingNote(noteId: Int): Flow<ApiResult<BaseResponse>>
 
+    /**
+     * @param alcohol 스파클링 와인이 아닌 경우 입력
+     * @param sparkling 스파클링 와인인 경우 입력
+     */
     fun postTastingNote(
         wineId: Long,
         officialAlcohol: Double?,
-        alcohol: Int,
+        alcohol: Int?,
+        sparkling: Int?,
         color: String,
         sweetness: Int,
         acidity: Int,
@@ -65,10 +70,15 @@ interface TastingNoteRepository {
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 
+    /**
+     * @param alcohol 스파클링 와인이 아닌 경우 입력
+     * @param sparkling 스파클링 와인인 경우 입력
+     */
     fun updateTastingNote(
         noteId: Int,
         officialAlcohol: Double?,
-        alcohol: Int,
+        alcohol: Int?,
+        sparkling: Int?,
         color: String,
         sweetness: Int,
         acidity: Int,

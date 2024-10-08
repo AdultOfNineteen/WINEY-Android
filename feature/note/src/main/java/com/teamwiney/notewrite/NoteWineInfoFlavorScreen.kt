@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.AmplitudeEvent
 import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.notewrite.components.WineTasteSlider
 import com.teamwiney.ui.components.HeightSpacer
@@ -95,16 +96,16 @@ fun NoteWineInfoFlavorScreen(
             HeightSpacer(30.dp)
 
             WineTasteSlider(
-                score = uiState.wineNote.sweetness,
+                score = uiState.writeTastingNote.sweetness,
                 onValueChange = { viewModel.updateSweetness(it) },
                 title = "당도",
                 subTitle = "단맛의 정도",
             )
             HeightSpacer(30.dp)
 
-            if (uiState.wineNote.sweetness > 0) {
+            if (uiState.writeTastingNote.sweetness > 0) {
                 WineTasteSlider(
-                    score = uiState.wineNote.acidity,
+                    score = uiState.writeTastingNote.acidity,
                     onValueChange = { viewModel.updateAcidity(it) },
                     title = "산도",
                     subTitle = "신맛의 정도"
@@ -114,9 +115,9 @@ fun NoteWineInfoFlavorScreen(
                 selectedItemCount = 1
             }
 
-            if (uiState.wineNote.acidity > 0) {
+            if (uiState.writeTastingNote.acidity > 0) {
                 WineTasteSlider(
-                    score = uiState.wineNote.body,
+                    score = uiState.writeTastingNote.body,
                     onValueChange = { viewModel.updateBody(it) },
                     title = "바디",
                     subTitle = "농도와 질감의 정도"
@@ -126,9 +127,9 @@ fun NoteWineInfoFlavorScreen(
                 selectedItemCount = 2
             }
 
-            if (uiState.wineNote.body > 0) {
+            if (uiState.writeTastingNote.body > 0) {
                 WineTasteSlider(
-                    score = uiState.wineNote.tannin,
+                    score = uiState.writeTastingNote.tannin,
                     onValueChange = { viewModel.updateTannin(it) },
                     title = "탄닌",
                     subTitle = "떫고 씁쓸함의 정도"
@@ -138,21 +139,30 @@ fun NoteWineInfoFlavorScreen(
                 selectedItemCount = 3
             }
 
-            if (uiState.wineNote.tannin > 0) {
-                WineTasteSlider(
-                    score = uiState.wineNote.alcohol,
-                    onValueChange = { viewModel.updateAlcohol(it) },
-                    title = "알코올",
-                    subTitle = "알코올 세기의 정도"
-                )
+            if (uiState.writeTastingNote.tannin > 0) {
+                if (uiState.writeTastingNote.wineType == WineType.SPARKLING) {
+                    WineTasteSlider(
+                        score = uiState.writeTastingNote.sparkling ?: 0,
+                        onValueChange = { viewModel.updateSparkling(it) },
+                        title = "탄산감",
+                        subTitle = "탄산 세기의 정도"
+                    )
+                } else {
+                    WineTasteSlider(
+                        score = uiState.writeTastingNote.alcohol ?: 0,
+                        onValueChange = { viewModel.updateAlcohol(it) },
+                        title = "알코올",
+                        subTitle = "알코올 향과 맛의 정도"
+                    )
+                }
                 HeightSpacer(30.dp)
 
                 selectedItemCount = 4
             }
 
-            if (uiState.wineNote.alcohol > 0) {
+            if (uiState.writeTastingNote.alcohol != null || uiState.writeTastingNote.sparkling != null) {
                 WineTasteSlider(
-                    score = uiState.wineNote.finish,
+                    score = uiState.writeTastingNote.finish,
                     onValueChange = { viewModel.updateFinish(it) },
                     title = "여운",
                     subTitle = "마신 후 맛과 항이 지속되는 정도"
@@ -172,8 +182,12 @@ fun NoteWineInfoFlavorScreen(
                 text = "다음",
                 modifier = Modifier
                     .weight(3f),
-                enabled = uiState.wineNote.sweetness != 0 && uiState.wineNote.acidity != 0 && uiState.wineNote.body != 0 &&
-                        uiState.wineNote.tannin != 0 && uiState.wineNote.alcohol != 0 && uiState.wineNote.finish != 0,
+                enabled = uiState.writeTastingNote.sweetness != 0
+                        && uiState.writeTastingNote.acidity != 0
+                        && uiState.writeTastingNote.body != 0
+                        && uiState.writeTastingNote.tannin != 0
+                        && (uiState.writeTastingNote.alcohol != 0 || uiState.writeTastingNote.sparkling != 0)
+                        && uiState.writeTastingNote.finish != 0,
                 enableBackgroundColor = WineyTheme.colors.main_2,
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,

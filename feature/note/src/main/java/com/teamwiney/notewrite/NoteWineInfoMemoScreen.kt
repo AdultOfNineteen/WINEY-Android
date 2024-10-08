@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.navOptions
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.teamwiney.core.common.AmplitudeEvent
@@ -114,7 +113,7 @@ fun NoteWineInfoMemoScreen(
     ) { permissionMap ->
         val areGranted = permissionMap.values.reduce { acc, next -> acc && next }
         if (areGranted) {
-            imagePicker.launch(3 - uiState.wineNote.selectedImages.size)
+            imagePicker.launch(3 - uiState.writeTastingNote.selectedImages.size)
         } else {
             appState.showSnackbar("미디어 권한과 카메라 권한을 허용해야 갤러리를 사용할 수 있습니다")
 
@@ -205,7 +204,7 @@ fun NoteWineInfoMemoScreen(
                     .padding(vertical = 15.dp)
                     .horizontalScroll(rememberScrollState())
             ) {
-                uiState.wineNote.selectedImages.map { image ->
+                uiState.writeTastingNote.selectedImages.map { image ->
                     Box {
                         AsyncImage(
                             model = ImageRequest.Builder(context)
@@ -238,11 +237,11 @@ fun NoteWineInfoMemoScreen(
 
             Button(
                 onClick = {
-                    if (uiState.wineNote.selectedImages.size < 3) {
+                    if (uiState.writeTastingNote.selectedImages.size < 3) {
                         if (!allPermissionsGranted) {
                             launchMultiplePermissions.launch(permissions)
                         } else {
-                            imagePicker.launch(3 - uiState.wineNote.selectedImages.size)
+                            imagePicker.launch(3 - uiState.writeTastingNote.selectedImages.size)
                         }
                     } else {
                         appState.showSnackbar("사진은 최대 3장까지 첨부 가능합니다")
@@ -277,7 +276,7 @@ fun NoteWineInfoMemoScreen(
             }
 
             WRoundTextField(
-                value = uiState.wineNote.memo,
+                value = uiState.writeTastingNote.memo,
                 onValueChange = viewModel::updateMemo,
                 placeholderText = "와인에 대한 생각을 작성해주세요 :)"
             )
@@ -298,7 +297,7 @@ fun NoteWineInfoMemoScreen(
                 ) {
                     repeat(5) {
                         Icon(
-                            painter = painterResource(id = if (uiState.wineNote.rating > it) R.mipmap.ic_wine_filled else R.mipmap.ic_wine_unfilled),
+                            painter = painterResource(id = if (uiState.writeTastingNote.rating > it) R.mipmap.ic_wine_filled else R.mipmap.ic_wine_unfilled),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
@@ -325,10 +324,10 @@ fun NoteWineInfoMemoScreen(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    NoteFeatureText(name = "있어요", enable = uiState.wineNote.buyAgain == true) {
+                    NoteFeatureText(name = "있어요", enable = uiState.writeTastingNote.buyAgain == true) {
                         viewModel.updateBuyAgain(true)
                     }
-                    NoteFeatureText(name = "없어요", enable = uiState.wineNote.buyAgain == false) {
+                    NoteFeatureText(name = "없어요", enable = uiState.writeTastingNote.buyAgain == false) {
                         viewModel.updateBuyAgain(false)
                     }
                 }
@@ -348,10 +347,10 @@ fun NoteWineInfoMemoScreen(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    NoteFeatureText(name = "있어요", enable = uiState.wineNote.public == true) {
+                    NoteFeatureText(name = "있어요", enable = uiState.writeTastingNote.public == true) {
                         viewModel.updatePublic(true)
                     }
-                    NoteFeatureText(name = "없어요", enable = uiState.wineNote.public == false) {
+                    NoteFeatureText(name = "없어요", enable = uiState.writeTastingNote.public == false) {
                         viewModel.updatePublic(false)
                     }
                 }
@@ -367,7 +366,7 @@ fun NoteWineInfoMemoScreen(
             disableBackgroundColor = WineyTheme.colors.gray_900,
             disableTextColor = WineyTheme.colors.gray_600,
             enableTextColor = WineyTheme.colors.gray_50,
-            enabled = uiState.wineNote.rating != 0 && uiState.wineNote.buyAgain != null && uiState.wineNote.public != null,
+            enabled = uiState.writeTastingNote.rating != 0 && uiState.writeTastingNote.buyAgain != null && uiState.writeTastingNote.public != null,
             onClick = {
                 if (uiState.mode == EditMode.ADD) viewModel.writeTastingNote() else viewModel.updateTastingNote()
                 AmplitudeProvider.trackEvent(AmplitudeEvent.REVIEW_COMPLETE_CLICK)

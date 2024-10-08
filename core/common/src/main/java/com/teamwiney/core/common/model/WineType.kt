@@ -20,5 +20,16 @@ enum class WineType(val type: String, val korType: String) {
                 else -> type
             }
         }
+
+        fun typeOf(type: String): WineType {
+            return when (type) {
+                "RED" -> RED
+                "WHITE" -> WHITE
+                "SPARKLING" -> SPARKLING
+                "ROSE" -> ROSE
+                "FORTIFIED" -> FORTIFIED
+                else -> OTHER
+            }
+        }
     }
 }

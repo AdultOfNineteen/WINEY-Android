@@ -11,7 +11,7 @@ import com.teamwiney.core.common.base.UiState
 import com.teamwiney.core.common.model.WineSmell
 import com.teamwiney.data.network.model.response.SearchWine
 import com.teamwiney.data.network.model.response.Wine
-import com.teamwiney.notewrite.model.WineNote
+import com.teamwiney.notewrite.model.WriteTastingNote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -50,7 +50,7 @@ class NoteWriteContract {
         val searchWinesCount: Int = 0,
         val selectedWine: SearchWine = SearchWine.default(),
         val selectedWineInfo: Wine = Wine.default(),
-        val wineNote: WineNote = WineNote.default(),
+        val writeTastingNote: WriteTastingNote = WriteTastingNote.default(),
         val hintPopupOpen: Boolean = false,
         val wineSmellKeywords: List<WineSmellKeyword> = listOf(
             WineSmellKeyword(
