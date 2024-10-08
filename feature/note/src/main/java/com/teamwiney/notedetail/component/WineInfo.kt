@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.data.network.model.response.TastingNoteDetail
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.detail.DetailPageIndicator
@@ -54,7 +55,11 @@ fun WineInfo(
                             Pair("산도", tastingNoteDetail.myWineTaste.acidity),
                             Pair("바디", tastingNoteDetail.myWineTaste.body),
                             Pair("탄닌", tastingNoteDetail.myWineTaste.tannin),
-                            Pair("알코올", tastingNoteDetail.myWineTaste.alcohol),
+                            if (WineType.typeOf(tastingNoteDetail.wineType) == WineType.SPARKLING) {
+                                Pair("탄산감", tastingNoteDetail.myWineTaste.alcohol)
+                            } else {
+                                Pair("알코올", tastingNoteDetail.myWineTaste.alcohol)
+                            },
                             Pair("여운", tastingNoteDetail.myWineTaste.finish)
                         )
                     )
@@ -69,7 +74,11 @@ fun WineInfo(
                             Pair("산도", tastingNoteDetail.defaultWineTaste.acidity),
                             Pair("바디", tastingNoteDetail.defaultWineTaste.body),
                             Pair("탄닌", tastingNoteDetail.defaultWineTaste.tannin),
-                            Pair("알코올", 0),
+                            if (WineType.typeOf(tastingNoteDetail.wineType) == WineType.SPARKLING) {
+                                Pair("탄산감", tastingNoteDetail.myWineTaste.alcohol)
+                            } else {
+                                Pair("알코올", tastingNoteDetail.myWineTaste.alcohol)
+                            },
                             Pair("여운", 0)
                         )
                     )
