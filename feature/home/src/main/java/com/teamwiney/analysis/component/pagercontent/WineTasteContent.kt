@@ -60,7 +60,11 @@ fun WineTasteContent(
                 data = listOf(
                     RadarData("당도", tastes.sweetness.toFloat()),
                     RadarData("여운", tastes.finish.toFloat()),
-                    RadarData("알코올", tastes.alcohol.toFloat()),
+                    if (tastes.sparkling > 0) {
+                        RadarData("탄산감", tastes.sparkling.toFloat())
+                    } else {
+                        RadarData("알코올", tastes.alcohol.toFloat())
+                    },
                     RadarData("탄닌", tastes.tannin.toFloat()),
                     RadarData("바디", tastes.body.toFloat()),
                     RadarData("산도", tastes.acidity.toFloat())
