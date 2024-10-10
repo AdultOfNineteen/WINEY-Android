@@ -64,7 +64,6 @@ fun WineOrigin(
             }
         }
 
-
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
@@ -74,7 +73,7 @@ fun WineOrigin(
                 )
 
                 Text(
-                    text = wine.region,
+                    text = wine.country,
                     style = WineyTheme.typography.captionB1,
                     color = WineyTheme.colors.gray_50
                 )
