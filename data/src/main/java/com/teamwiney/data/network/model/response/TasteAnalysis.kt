@@ -17,6 +17,7 @@ data class TasteAnalysis(
 data class Taste(
     val acidity: Double = 0.0,
     val alcohol: Double = 0.0,
+    val sparkling: Double = 0.0,
     val body: Double = 0.0,
     val finish: Double = 0.0,
     val sweetness: Double = 0.0,

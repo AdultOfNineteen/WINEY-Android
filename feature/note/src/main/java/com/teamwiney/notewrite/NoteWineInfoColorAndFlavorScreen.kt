@@ -111,7 +111,7 @@ fun NoteWineInfoColorAndSmellScreen(
         ) {
             WineColorPicker(
                 initialColor = uiState.initialColor,
-                currentColor = uiState.wineNote.color,
+                currentColor = uiState.writeTastingNote.color,
                 barColors = uiState.barColors
             ) {
                 viewModel.updateColor(it)

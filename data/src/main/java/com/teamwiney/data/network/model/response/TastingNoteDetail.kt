@@ -10,12 +10,13 @@ data class TastingNoteDetail(
     val wineType: String,
     val wineName: String,
     val region: String,
+    val country: String,
     val star: Int,
     val vintage: Int?,
     val color: String,
     val buyAgain: Boolean,
     val varietal: String,
-    val officialAlcohol: Int?,
+    val officialAlcohol: Double?,
     val price: Int?,
     val smellKeywordList: List<String>,
     val myWineTaste: MyWineTaste,
@@ -34,6 +35,7 @@ data class TastingNoteDetail(
             noteDate = "0000.00.00",
             wineType = "Loading",
             region = "Region",
+            country = "Country",
             star = 4,
             vintage = null,
             color = "#FF0000",
@@ -49,6 +51,7 @@ data class TastingNoteDetail(
                 tannin = 0,
                 body = 0,
                 alcohol = 0,
+                sparkling = 0,
                 finish = 0
             ),
             defaultWineTaste = WineTaste(
@@ -77,6 +80,7 @@ data class MyWineTaste(
     val tannin: Int,
     val body: Int,
     val alcohol: Int,
+    val sparkling: Int,
     val finish: Int
 )
 

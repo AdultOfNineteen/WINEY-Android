@@ -1,18 +1,21 @@
 package com.teamwiney.notewrite.model
 
 import androidx.compose.ui.graphics.Color
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.data.network.model.response.TastingNoteImage
 import com.teamwiney.notewrite.WineSmellOption
 
-data class WineNote(
+data class WriteTastingNote(
     val wineId: Long,
+    val wineType: WineType,
     val vintage: String,
     val officialAlcohol: Double?,
     val price: String = "",
     val color: Color,
     val sweetness: Int,
     val acidity: Int,
-    val alcohol: Int,
+    val alcohol: Int?,
+    val sparkling: Int?,
     val body: Int,
     val tannin: Int,
     val finish: Int,
@@ -30,16 +33,18 @@ data class WineNote(
     val deleteSmellKeywordList: List<WineSmellOption>
 ) {
     companion object {
-        fun default(): WineNote {
-            return WineNote(
+        fun default(): WriteTastingNote {
+            return WriteTastingNote(
                 wineId = 0,
+                wineType = WineType.RED,
                 vintage = "",
                 officialAlcohol = 12.0,
                 price = "",
                 color = Color(0xFF59002B),
                 sweetness = 0,
                 acidity = 0,
-                alcohol = 0,
+                alcohol = null,
+                sparkling = null,
                 body = 0,
                 tannin = 0,
                 finish = 0,

@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -37,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +51,8 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.navigation.NoteDestinations
+import com.teamwiney.data.network.model.response.SearchWine
+import com.teamwiney.data.network.model.response.Wine
 import com.teamwiney.notecollection.components.NoteWineCard
 import com.teamwiney.notewrite.components.WineSearchTextField
 import com.teamwiney.ui.components.HeightSpacer
@@ -60,7 +66,6 @@ fun NoteWineSearchScreen(
     viewModel: NoteWriteViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
     val effectFlow = viewModel.effect
 
     val searchWines = uiState.searchWines.collectAsLazyPagingItems()
@@ -73,7 +78,6 @@ fun NoteWineSearchScreen(
             appState.showSnackbar(errorMessage)
         }
     }
-
 
     LaunchedEffect(true) {
         viewModel.loadTastingNote()
@@ -99,6 +103,7 @@ fun NoteWineSearchScreen(
             .background(WineyTheme.colors.background_1)
             .statusBarsPadding()
             .navigationBarsPadding()
+            .imePadding()
     ) {
         WineSearchTopBar(
             appState = appState,
@@ -131,27 +136,20 @@ fun NoteWineSearchScreen(
 
         if (uiState.searchWinesCount == 0) EmptySearch()
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 26.dp),
-            verticalArrangement = Arrangement.spacedBy(21.dp),
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
+        LazyColumn {
             items(
                 count = searchWines.itemCount,
                 key = searchWines.itemKey(),
                 contentType = searchWines.itemContentType()
             ) { index ->
                 searchWines[index]?.let {
-                    NoteWineCard(
-                        color = it.type.type,
-                        name = it.name,
-                        origin = it.country,
-                        onClick = {
-                            viewModel.updateSelectedWine(it)
-                            appState.navigate(NoteDestinations.Write.SELECT_WINE)
-                        }
-                    )
+                    NoteSearchItem(
+                        wine = it,
+                        searchKeyword = uiState.searchKeyword
+                    ) {
+                        viewModel.updateSelectedWine(it)
+                        appState.navigate(NoteDestinations.Write.SELECT_WINE)
+                    }
                 }
             }
         }
@@ -225,5 +223,58 @@ fun EmptySearch() {
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Composable
+private fun NoteSearchItem(
+    wine: SearchWine,
+    searchKeyword: String,
+    onClick: () -> Unit
+) {
+    val annotatedText = buildAnnotatedString {
+        val name = wine.name
+        val keyword = searchKeyword
+
+        // 키워드가 이름에 포함되어 있을 경우
+        val startIndex = name.indexOf(keyword, ignoreCase = true)
+        if (startIndex >= 0) {
+            // 키워드 앞의 텍스트
+            append(name.substring(0, startIndex))
+
+            // 키워드에 스타일 적용
+            withStyle(style = SpanStyle(color = WineyTheme.colors.main_3)) {
+                append(name.substring(startIndex, startIndex + keyword.length))
+            }
+
+            // 키워드 뒤의 텍스트
+            append(name.substring(startIndex + keyword.length))
+        } else {
+            // 키워드가 없으면 전체 텍스트 그대로
+            append(name)
+        }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+    ) {
+        Text(
+            modifier = Modifier.padding(20.dp),
+            text = annotatedText,
+            style = WineyTheme.typography.bodyM1.copy(
+                color = WineyTheme.colors.gray_50
+            ),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(
+                    WineyTheme.colors.gray_900
+                )
+        )
     }
 }

@@ -105,7 +105,7 @@ fun NoteWineInfoVintageAndPriceScreen(
 
 
             WineInfoTextField(
-                value = uiState.wineNote.vintage,
+                value = uiState.writeTastingNote.vintage,
                 onValueChanged = { if (it.isDigitsOnly()) viewModel.updateVintage(it) },
                 placeholderText = "ex) 1990",
                 trailingIcon = {
@@ -139,7 +139,7 @@ fun NoteWineInfoVintageAndPriceScreen(
             )
 
             WineInfoTextField(
-                value = uiState.wineNote.price,
+                value = uiState.writeTastingNote.price,
                 onValueChanged = { if (it.isDigitsOnly()) viewModel.updatePrice(it) },
                 placeholderText = "ex) 30000",
                 trailingIcon = {
@@ -158,7 +158,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                     keyboardType = KeyboardType.Number
                 ),
                 keyboardActions = KeyboardActions(onDone = {
-                    if (uiState.wineNote.price.isNotEmpty() && uiState.wineNote.vintage.isNotEmpty()) {
+                    if (uiState.writeTastingNote.price.isNotEmpty() && uiState.writeTastingNote.vintage.isNotEmpty()) {
                         appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                     }
                 }),
@@ -207,7 +207,7 @@ fun NoteWineInfoVintageAndPriceScreen(
                 disableBackgroundColor = WineyTheme.colors.gray_900,
                 disableTextColor = WineyTheme.colors.gray_600,
                 enableTextColor = WineyTheme.colors.gray_50,
-                enabled = uiState.wineNote.price.isNotEmpty() || uiState.wineNote.vintage.isNotEmpty(),
+                enabled = uiState.writeTastingNote.price.isNotEmpty() || uiState.writeTastingNote.vintage.isNotEmpty(),
                 onClick = {
                     appState.navController.navigate(NoteDestinations.Write.INFO_COLOR_SMELL)
                     AmplitudeProvider.trackEvent(AmplitudeEvent.VINTAGE_PRICE_INPUT_NEXT_CLICK)

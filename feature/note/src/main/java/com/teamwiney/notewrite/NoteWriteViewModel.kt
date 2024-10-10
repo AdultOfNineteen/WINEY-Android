@@ -11,6 +11,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.model.WineSmell
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.response.SearchWine
@@ -18,7 +19,7 @@ import com.teamwiney.data.network.model.response.TastingNoteImage
 import com.teamwiney.data.pagingsource.SearchWinesPagingSource
 import com.teamwiney.data.repository.tastingnote.TastingNoteRepository
 import com.teamwiney.data.repository.wine.WineRepository
-import com.teamwiney.notewrite.model.WineNote
+import com.teamwiney.notewrite.model.WriteTastingNote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -65,15 +66,17 @@ class NoteWriteViewModel @Inject constructor(
                         updateState(
                             currentState.copy(
                                 initialColor = Color(result.color.toColorInt()),
-                                wineNote = WineNote(
+                                writeTastingNote = WriteTastingNote(
                                     wineId = -1L,
+                                    wineType = WineType.typeOf(result.wineType),
                                     vintage = result.vintage?.toString() ?: "",
-                                    officialAlcohol = result.officialAlcohol?.toDouble() ?: 12.0,
+                                    officialAlcohol = result.officialAlcohol ?: 12.0,
                                     price = result.price?.toString() ?: "",
                                     color = Color(result.color.toColorInt()),
                                     sweetness = result.myWineTaste.sweetness,
                                     acidity = result.myWineTaste.acidity,
                                     alcohol = result.myWineTaste.alcohol,
+                                    sparkling = result.myWineTaste.sparkling,
                                     body = result.myWineTaste.body,
                                     tannin = result.myWineTaste.tannin,
                                     finish = result.myWineTaste.finish,
@@ -153,12 +156,13 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun writeTastingNote() = viewModelScope.launch {
-        val wineNote = currentState.wineNote
+        val wineNote = currentState.writeTastingNote
 
         tastingNoteRepository.postTastingNote(
             wineId = wineNote.wineId,
             officialAlcohol = wineNote.officialAlcohol,
             alcohol = wineNote.alcohol,
+            sparkling = wineNote.sparkling,
             color = colorToHexString(wineNote.color),
             sweetness = wineNote.sweetness,
             acidity = wineNote.acidity,
@@ -194,12 +198,13 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun updateTastingNote() = viewModelScope.launch {
-        val wineNote = currentState.wineNote
+        val wineNote = currentState.writeTastingNote
 
         tastingNoteRepository.updateTastingNote(
             noteId = noteId,
             officialAlcohol = wineNote.officialAlcohol,
             alcohol = wineNote.alcohol,
+            sparkling = wineNote.sparkling,
             color = colorToHexString(wineNote.color),
             sweetness = wineNote.sweetness,
             acidity = wineNote.acidity,
@@ -256,25 +261,29 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun updateOfficialAlcohol(officialAlcohol: Double?) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(officialAlcohol = officialAlcohol)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(officialAlcohol = officialAlcohol)))
     }
 
     fun updateVintage(vintage: String) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(vintage = vintage)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(vintage = vintage)))
     }
 
     fun updateAlcohol(alcohol: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(alcohol = alcohol)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(alcohol = alcohol)))
+    }
+
+    fun updateSparkling(sparkling: Int) {
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(sparkling = sparkling)))
     }
 
     fun updatePrice(price: String) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(price = price)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(price = price)))
     }
 
     fun updateColor(color: Color) = viewModelScope.launch {
         updateState(
             currentState.copy(
-                wineNote = currentState.wineNote.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
                     color = color
                 )
             )
@@ -282,27 +291,27 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     private fun addSmellKeyword(smellKeyword: WineSmellOption) {
-        val wineNote = currentState.wineNote.copy(
-            smellKeywordList = currentState.wineNote.smellKeywordList + smellKeyword,
-            addSmellKeywordList = currentState.wineNote.addSmellKeywordList + smellKeyword,
-            deleteSmellKeywordList = currentState.wineNote.deleteSmellKeywordList - smellKeyword
+        val wineNote = currentState.writeTastingNote.copy(
+            smellKeywordList = currentState.writeTastingNote.smellKeywordList + smellKeyword,
+            addSmellKeywordList = currentState.writeTastingNote.addSmellKeywordList + smellKeyword,
+            deleteSmellKeywordList = currentState.writeTastingNote.deleteSmellKeywordList - smellKeyword
         )
-        updateState(currentState.copy(wineNote = wineNote))
+        updateState(currentState.copy(writeTastingNote = wineNote))
     }
 
     private fun removeSmellKeyword(smellKeyword: WineSmellOption) {
-        val selectedSmellKeywords = currentState.wineNote.smellKeywordList - smellKeyword
-        val addSmellKeywords = currentState.wineNote.addSmellKeywordList - smellKeyword
+        val selectedSmellKeywords = currentState.writeTastingNote.smellKeywordList - smellKeyword
+        val addSmellKeywords = currentState.writeTastingNote.addSmellKeywordList - smellKeyword
         val deleteSmellKeywords =
-            currentState.wineNote.deleteSmellKeywordList.toMutableList().apply {
-                if (currentState.wineNote.loadSmellKeywordList.contains(smellKeyword)) add(
+            currentState.writeTastingNote.deleteSmellKeywordList.toMutableList().apply {
+                if (currentState.writeTastingNote.loadSmellKeywordList.contains(smellKeyword)) add(
                     smellKeyword
                 )
             }
 
         updateState(
             currentState.copy(
-                wineNote = currentState.wineNote.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
                     smellKeywordList = selectedSmellKeywords,
                     addSmellKeywordList = addSmellKeywords,
                     deleteSmellKeywordList = deleteSmellKeywords
@@ -312,12 +321,12 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun addNoteImages(images: List<TastingNoteImage>) {
-        val updatedSelectedImages = currentState.wineNote.selectedImages + images
-        val updatedAddImages = currentState.wineNote.addImages + images
+        val updatedSelectedImages = currentState.writeTastingNote.selectedImages + images
+        val updatedAddImages = currentState.writeTastingNote.addImages + images
 
         updateState(
             currentState.copy(
-                wineNote = currentState.wineNote.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
                     selectedImages = updatedSelectedImages,
                     addImages = updatedAddImages
                 )
@@ -326,15 +335,15 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun removeNoteImage(image: TastingNoteImage) {
-        val updatedSelectedImages = currentState.wineNote.selectedImages - image
+        val updatedSelectedImages = currentState.writeTastingNote.selectedImages - image
 
-        val updatedDeleteImages = if (currentState.wineNote.loadImages.contains(image))
-            currentState.wineNote.deleteImages + image
-        else currentState.wineNote.deleteImages
+        val updatedDeleteImages = if (currentState.writeTastingNote.loadImages.contains(image))
+            currentState.writeTastingNote.deleteImages + image
+        else currentState.writeTastingNote.deleteImages
 
         updateState(
             currentState.copy(
-                wineNote = currentState.wineNote.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
                     selectedImages = updatedSelectedImages,
                     deleteImages = updatedDeleteImages
                 )
@@ -344,20 +353,20 @@ class NoteWriteViewModel @Inject constructor(
 
     fun updateMemo(memo: String) {
         if (memo.length <= 200) {
-            updateState(currentState.copy(wineNote = currentState.wineNote.copy(memo = memo)))
+            updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(memo = memo)))
         }
     }
 
     fun updateRating(rating: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(rating = rating)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(rating = rating)))
     }
 
     fun updateBuyAgain(buyAgain: Boolean) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(buyAgain = buyAgain)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(buyAgain = buyAgain)))
     }
 
     fun updatePublic(public: Boolean) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(public = public)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(public = public)))
     }
 
     fun getSearchWines() = viewModelScope.launch {
@@ -409,7 +418,7 @@ class NoteWriteViewModel @Inject constructor(
         }
     }
 
-    var searchJob: Job? = null
+    private var searchJob: Job? = null
 
     fun updateSearchKeyword(searchKeyword: String) {
         updateState(currentState.copy(searchKeyword = searchKeyword))
@@ -421,32 +430,39 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun updateSelectedWine(wine: SearchWine) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(wineId = wine.wineId)))
+        updateState(
+            currentState.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
+                    wineId = wine.wineId,
+                    wineType = wine.type
+                )
+            )
+        )
         updateState(currentState.copy(selectedWine = wine))
     }
 
     fun updateSweetness(sweetness: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(sweetness = sweetness)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(sweetness = sweetness)))
     }
 
     fun updateAcidity(acidity: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(acidity = acidity)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(acidity = acidity)))
     }
 
     fun updateBody(body: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(body = body)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(body = body)))
     }
 
     fun updateTannin(tannins: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(tannin = tannins)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(tannin = tannins)))
     }
 
     fun updateFinish(finish: Int) {
-        updateState(currentState.copy(wineNote = currentState.wineNote.copy(finish = finish)))
+        updateState(currentState.copy(writeTastingNote = currentState.writeTastingNote.copy(finish = finish)))
     }
 
     fun updateWineSmell(wineSmellOption: WineSmellOption) {
-        val wineNote = currentState.wineNote
+        val wineNote = currentState.writeTastingNote
         Log.d("debugging", "선택 목록 : ${wineNote.smellKeywordList}")
 
         if (wineNote.smellKeywordList.contains(wineSmellOption)) {
@@ -461,7 +477,7 @@ class NoteWriteViewModel @Inject constructor(
     }
 
     fun isWineSmellSelected(wineSmellOption: WineSmellOption): Boolean {
-        val wineNote = currentState.wineNote
+        val wineNote = currentState.writeTastingNote
 
         return wineNote.smellKeywordList.contains(wineSmellOption)
     }
