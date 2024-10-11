@@ -41,6 +41,7 @@ import com.teamwiney.analysis.component.pagercontent.WineTasteContent
 import com.teamwiney.analysis.component.pagercontent.WineTypeContent
 import com.teamwiney.analysis.component.pagercontent.WineVarietyContent
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.core.design.R
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.theme.WineyTheme
@@ -155,6 +156,7 @@ fun AnalysisResultScreen(
                 3 -> {
                     WineTasteContent(
                         progress = animatedProgress.value,
+                        wineType = WineType.typeOf(analysisData.recommendWineType),
                         tastes = analysisData.taste
                     )
                 }

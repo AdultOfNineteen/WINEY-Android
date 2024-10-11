@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.teamwiney.core.common.model.WineType
 import com.teamwiney.data.network.model.response.Taste
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.RadarChart
@@ -27,6 +28,7 @@ import com.teamwiney.ui.theme.WineyTheme
 @Composable
 fun WineTasteContent(
     progress: Float,
+    wineType: WineType,
     tastes: Taste
 ) {
     Column(
@@ -60,7 +62,7 @@ fun WineTasteContent(
                 data = listOf(
                     RadarData("당도", tastes.sweetness.toFloat()),
                     RadarData("여운", tastes.finish.toFloat()),
-                    if (tastes.sparkling > 0) {
+                    if (wineType == WineType.SPARKLING) {
                         RadarData("탄산감", tastes.sparkling.toFloat())
                     } else {
                         RadarData("알코올", tastes.alcohol.toFloat())
