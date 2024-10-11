@@ -75,8 +75,8 @@ class NoteWriteViewModel @Inject constructor(
                                     color = Color(result.color.toColorInt()),
                                     sweetness = result.myWineTaste.sweetness,
                                     acidity = result.myWineTaste.acidity,
-                                    alcohol = result.myWineTaste.alcohol,
-                                    sparkling = result.myWineTaste.sparkling,
+                                    alcohol = if (result.myWineTaste.alcohol == 0) null else result.myWineTaste.alcohol,
+                                    sparkling = if (result.myWineTaste.sparkling == 0) null else result.myWineTaste.sparkling,
                                     body = result.myWineTaste.body,
                                     tannin = result.myWineTaste.tannin,
                                     finish = result.myWineTaste.finish,
@@ -463,16 +463,11 @@ class NoteWriteViewModel @Inject constructor(
 
     fun updateWineSmell(wineSmellOption: WineSmellOption) {
         val wineNote = currentState.writeTastingNote
-        Log.d("debugging", "선택 목록 : ${wineNote.smellKeywordList}")
 
         if (wineNote.smellKeywordList.contains(wineSmellOption)) {
-            Log.d("debugging", "제거 : $wineSmellOption")
             removeSmellKeyword(wineSmellOption)
-            Log.d("debugging", "제거 키워드 목록 : ${wineNote.deleteSmellKeywordList}")
         } else {
-            Log.d("debugging", "추가 : $wineSmellOption")
             addSmellKeyword(wineSmellOption)
-            Log.d("debugging", "추가 키워드 목록 : ${wineNote.addSmellKeywordList}")
         }
     }
 
