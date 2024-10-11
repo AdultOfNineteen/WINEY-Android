@@ -56,7 +56,7 @@ fun WineInfo(
                             Pair("바디", tastingNoteDetail.myWineTaste.body),
                             Pair("탄닌", tastingNoteDetail.myWineTaste.tannin),
                             if (WineType.typeOf(tastingNoteDetail.wineType) == WineType.SPARKLING) {
-                                Pair("탄산감", tastingNoteDetail.myWineTaste.alcohol)
+                                Pair("탄산감", tastingNoteDetail.myWineTaste.sparkling)
                             } else {
                                 Pair("알코올", tastingNoteDetail.myWineTaste.alcohol)
                             },
@@ -75,7 +75,7 @@ fun WineInfo(
                             Pair("바디", tastingNoteDetail.defaultWineTaste.body),
                             Pair("탄닌", tastingNoteDetail.defaultWineTaste.tannin),
                             if (WineType.typeOf(tastingNoteDetail.wineType) == WineType.SPARKLING) {
-                                Pair("탄산감", tastingNoteDetail.myWineTaste.alcohol)
+                                Pair("탄산감", tastingNoteDetail.myWineTaste.sparkling)
                             } else {
                                 Pair("알코올", tastingNoteDetail.myWineTaste.alcohol)
                             },
