@@ -107,7 +107,7 @@ fun AnalysisResultScreen(
             )
 
             Text(
-                text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${analysisData.recommendWineType}\"",
+                text = "\"${analysisData.recommendCountry}의 ${analysisData.recommendVarietal} 품종으로 만든 ${convertTypeToSpecies(analysisData.recommendWineType)}\"",
                 style = WineyTheme.typography.title2,
                 color = WineyTheme.colors.main_3,
                 textAlign = TextAlign.Center,
@@ -201,5 +201,17 @@ fun AnalysisResultScreen(
                     .rotate(if (pagerState.currentPage == pagerState.pageCount - 1) 180f else 0f)
             )
         }
+    }
+}
+
+private fun convertTypeToSpecies(type: String): String {
+    return when (type) {
+        "RED" -> "레드 와인"
+        "ROSE" -> "로제 와인"
+        "WHITE" -> "화이트 와인"
+        "SPARKLING" -> "스파클링 와인"
+        "FORTIFIED" -> "포트 와인"
+        "OTHER" -> "기타 와인"
+        else -> "기타 와인"
     }
 }

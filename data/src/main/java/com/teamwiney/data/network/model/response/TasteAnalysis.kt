@@ -48,7 +48,7 @@ fun TasteAnalysis.toDomain() = TasteAnalysis(
     avgPrice = this.avgPrice,
     recommendCountry = this.recommendCountry,
     recommendVarietal = this.recommendVarietal,
-    recommendWineType = convertTypeToSpecies(this.recommendWineType),
+    recommendWineType = this.recommendWineType,
     taste = this.taste,
     top3Type = this.top3Type.map { top3Type ->
         Top3Type(convertTypeToColor(top3Type.type), top3Type.percent)
@@ -59,18 +59,6 @@ fun TasteAnalysis.toDomain() = TasteAnalysis(
     totalWineCnt = this.totalWineCnt,
     buyAgainCnt = this.buyAgainCnt
 )
-
-private fun convertTypeToSpecies(type: String): String {
-    return when (type) {
-        "RED" -> "레드 와인"
-        "ROSE" -> "로제 와인"
-        "WHITE" -> "화이트 와인"
-        "SPARKLING" -> "스파클링 와인"
-        "FORTIFIED" -> "포트 와인"
-        "OTHER" -> "기타 와인"
-        else -> "기타 와인"
-    }
-}
 
 private fun convertTypeToColor(type: String): String {
     return when (type) {

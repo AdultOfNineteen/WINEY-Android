@@ -1,5 +1,6 @@
 package com.teamwiney.analysis.component.pagercontent
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,8 @@ fun WineTasteContent(
     wineType: WineType,
     tastes: Taste
 ) {
+    Log.d("WineTasteContent", "wineType: $wineType, progress: $progress, tastes: $tastes")
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
