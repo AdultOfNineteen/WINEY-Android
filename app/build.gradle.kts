@@ -28,8 +28,8 @@ android {
         applicationId = "com.teamwiney.winey"
         minSdk = 24
         targetSdk = 34
-        versionCode = 9
-        versionName = "1.0.6"
+        versionCode = 10
+        versionName = "1.0.7"
 
         signingConfig = signingConfigs.getByName("debug")
 
