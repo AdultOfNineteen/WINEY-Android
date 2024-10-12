@@ -75,9 +75,9 @@ fun WineInfo(
                             Pair("바디", tastingNoteDetail.defaultWineTaste.body),
                             Pair("탄닌", tastingNoteDetail.defaultWineTaste.tannin),
                             if (WineType.typeOf(tastingNoteDetail.wineType) == WineType.SPARKLING) {
-                                Pair("탄산감", tastingNoteDetail.myWineTaste.sparkling)
+                                Pair("탄산감", 0)
                             } else {
-                                Pair("알코올", tastingNoteDetail.myWineTaste.alcohol)
+                                Pair("알코올", 0)
                             },
                             Pair("여운", 0)
                         )
