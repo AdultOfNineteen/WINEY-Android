@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 interface UiState
@@ -60,6 +61,8 @@ abstract class BaseViewModel<State: UiState, Event: UiEvent, Effect: UiEffect>(
 
     protected fun updateState(currentState: State) {
         _uiState.value = currentState
+
+        _uiState.update { currentState }
     }
 
     fun processEvent(event: Event) {
