@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
+import com.teamwiney.auth.signup.SignUpContract
 import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.model.UserStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
@@ -11,6 +12,7 @@ import com.teamwiney.core.common.navigation.HomeDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.common.util.Constants.IS_NOT_FIRST_LAUNCH
 import com.teamwiney.core.common.util.Constants.USER_ID
+import com.teamwiney.core.common.util.RemoteConfigUtil
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.repository.auth.AuthRepository
 import com.teamwiney.data.repository.persistence.DataStoreRepository
@@ -144,5 +146,19 @@ class SplashViewModel @Inject constructor(
         postEffect(SplashContract.Effect.NavigateTo(AuthDestinations.Login.ROUTE) {
             popUpTo(AuthDestinations.SPLASH) { inclusive = true }
         })
+    }
+
+    fun checkUpdate() {
+        RemoteConfigUtil.showUpdateDialog(
+            onShowForceUpdate = {
+                postEffect(SplashContract.Effect.ShowForceUpdateScreen)
+            },
+            onShowSoftUpdate = {
+                postEffect(SplashContract.Effect.ShowSoftUpdateBottomSheet)
+            },
+            onShowOnceUpdate = {
+                postEffect(SplashContract.Effect.ShowSoftUpdateOnceBottomSheet)
+            }
+        )
     }
 }

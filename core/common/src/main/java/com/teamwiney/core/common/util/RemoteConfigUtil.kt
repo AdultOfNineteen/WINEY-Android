@@ -66,4 +66,19 @@ object RemoteConfigUtil {
         Log.d("RemoteConfigUtil", "UPDATE_STRATEGY: $updateStrategy")
         Log.d("RemoteConfigUtil", "UPDATE_CONTENT: $updateContent")
     }
+
+
+    fun showUpdateDialog(
+        onShowForceUpdate: () -> Unit,
+        onShowSoftUpdate: () -> Unit,
+        onShowOnceUpdate: () -> Unit
+    ) {
+        if (currentVersionCode >= latestVersionCode) return
+        when (updateStrategy) {
+            UpdateStrategy.NONE -> return
+            UpdateStrategy.FORCE -> onShowForceUpdate()
+            UpdateStrategy.SOFT -> onShowSoftUpdate()
+            UpdateStrategy.ONCE -> onShowOnceUpdate()
+        }
+    }
 }

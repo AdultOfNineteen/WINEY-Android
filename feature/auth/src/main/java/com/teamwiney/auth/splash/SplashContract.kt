@@ -24,5 +24,12 @@ class SplashContract {
         data class ShowSnackBar(val message: String) : Effect()
 
         object CheckPermission : Effect()
+
+        object ShowForceUpdateScreen : Effect()
+
+        object ShowSoftUpdateBottomSheet : Effect()
+
+        object ShowSoftUpdateOnceBottomSheet : Effect()
     }
+
 }

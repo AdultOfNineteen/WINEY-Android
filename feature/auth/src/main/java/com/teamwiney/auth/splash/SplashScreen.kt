@@ -1,7 +1,10 @@
 package com.teamwiney.auth.splash
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,16 +22,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.teamwiney.auth.login.component.SplashBackground
+import com.teamwiney.auth.splash.component.SoftUpdateBottomSheet
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.design.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SplashScreen(
-    appState: WineyAppState
+    appState: WineyAppState,
+    bottomSheetState: WineyBottomSheetState
 ) {
     val viewModel: SplashViewModel = hiltViewModel()
     val effectFlow = viewModel.effect
@@ -48,6 +55,7 @@ fun SplashScreen(
         viewModel.fetchAndSetDeviceId()
         viewModel.fetchAndSetFcmToken()
         delay(1500)
+        viewModel.checkUpdate()
         viewModel.checkUserStatus()
 
         effectFlow.collectLatest { effect ->
@@ -72,6 +80,62 @@ fun SplashScreen(
                         }
                     }
                 }
+
+                is SplashContract.Effect.ShowForceUpdateScreen -> {
+
+                }
+
+                is SplashContract.Effect.ShowSoftUpdateBottomSheet -> {
+                    bottomSheetState.showBottomSheet {
+                        SoftUpdateBottomSheet(
+                            onCancel = { bottomSheetState.hideBottomSheet() },
+                            onConfirm = {
+                                try {
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("market://details?id=com.teamwiney.winey")
+                                        )
+                                    )
+                                } catch (e: ActivityNotFoundException) {
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("https://play.google.com/store/apps/details?id=com.teamwiney.winey")
+                                        )
+                                    )
+                                }
+                            }
+                        )
+                    }
+                }
+
+                is SplashContract.Effect.ShowSoftUpdateOnceBottomSheet -> {
+                    bottomSheetState.showBottomSheet {
+                        SoftUpdateBottomSheet(
+                            onCancel = { bottomSheetState.hideBottomSheet() },
+                            onConfirm = {
+                                try {
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("market://details?id=com.teamwiney.winey")
+                                        )
+                                    )
+                                } catch (e: ActivityNotFoundException) {
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("https://play.google.com/store/apps/details?id=com.teamwiney.winey")
+                                        )
+                                    )
+                                }
+                            }
+                        )
+                    }
+                }
+
+                else -> { }
             }
         }
     }

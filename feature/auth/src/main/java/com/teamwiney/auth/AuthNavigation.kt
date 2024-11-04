@@ -19,7 +19,10 @@ fun NavGraphBuilder.authGraph(
         startDestination = AuthDestinations.SPLASH
     ) {
         composable(route = AuthDestinations.SPLASH) {
-            SplashScreen(appState = appState)
+            SplashScreen(
+                appState = appState,
+                bottomSheetState = bottomSheetState
+            )
         }
 
         loginGraph(appState = appState)

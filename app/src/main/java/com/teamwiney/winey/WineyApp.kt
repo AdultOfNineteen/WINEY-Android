@@ -15,6 +15,6 @@ class WineyApp : Application() {
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         AmplitudeProvider.initialize(this)
 
-        RemoteConfigUtil.init(BuildConfig.VERSION_CODE)
+        RemoteConfigUtil.initialize(BuildConfig.VERSION_CODE)
     }
 }
