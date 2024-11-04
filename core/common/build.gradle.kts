@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.lifecycle.runtime.viewmodel)
     implementation(libs.converter.gson)
 
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config)
+
     implementation(libs.amplitude)
     implementation(libs.datastore)
     implementation(libs.dagger)

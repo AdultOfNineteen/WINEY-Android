@@ -63,6 +63,7 @@ firebase_bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase_analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase_crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 firebase_messaing = { module = "com.google.firebase:firebase-messaging-ktx" }
+firebase_config = { module = "com.google.firebase:firebase-config-ktx" }
 hilt_android_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt_version" }
 hilt_android_gradle_plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt_version" }
 kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin_version" }
