@@ -28,6 +28,7 @@ import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.auth.splash.component.SoftUpdateBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.design.R
 import kotlinx.coroutines.delay
@@ -57,7 +58,6 @@ fun SplashScreen(
         viewModel.fetchAndSetFcmToken()
         delay(1500)
         viewModel.checkUpdate()
-        viewModel.checkUserStatus()
 
         effectFlow.collectLatest { effect ->
             when (effect) {
@@ -83,7 +83,12 @@ fun SplashScreen(
                 }
 
                 is SplashContract.Effect.ShowForceUpdateScreen -> {
-
+                    appState.navigate(
+                        "${AuthDestinations.FORCE_UPDATE}?versionName=${effect.versionName}&updateContent=${effect.updateContent}",
+                        builder = {
+                            popUpTo(AuthDestinations.SPLASH) { inclusive = true }
+                        }
+                    )
                 }
 
                 is SplashContract.Effect.ShowSoftUpdateBottomSheet -> {

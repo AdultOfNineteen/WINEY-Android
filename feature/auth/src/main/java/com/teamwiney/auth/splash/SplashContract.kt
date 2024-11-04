@@ -25,7 +25,10 @@ class SplashContract {
 
         object CheckPermission : Effect()
 
-        data class ShowForceUpdateScreen(val versionName: String) : Effect()
+        data class ShowForceUpdateScreen(
+            val versionName: String,
+            val updateContent: String
+        ) : Effect()
 
         data class ShowSoftUpdateBottomSheet(val versionName: String) : Effect()
 
