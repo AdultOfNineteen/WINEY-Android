@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaults>
+    <entry>
+        <key>aos_latest_version</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>aos_minimum_version</key>
+        <value>100</value>
+    </entry>
+    <entry>
+        <key>aos_update_strategy</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>aos_update_content</key>
+        <value>''</value>
+    </entry>
+</defaults>

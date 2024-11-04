@@ -7,6 +7,7 @@ import com.teamwiney.core.common.base.BaseViewModel
 import com.teamwiney.core.common.base.CommonResponseStatus
 import com.teamwiney.core.common.navigation.AuthDestinations
 import com.teamwiney.core.common.util.Constants
+import com.teamwiney.core.common.util.RemoteConfigUtil
 import com.teamwiney.data.network.adapter.ApiResult
 import com.teamwiney.data.network.model.request.PhoneNumberRequest
 import com.teamwiney.data.network.model.request.PhoneNumberWithVerificationCodeRequest

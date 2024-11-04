@@ -3,6 +3,7 @@ package com.teamwiney.winey
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 import com.teamwiney.core.common.AmplitudeProvider
+import com.teamwiney.core.common.util.RemoteConfigUtil
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -13,5 +14,7 @@ class WineyApp : Application() {
         // Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
         AmplitudeProvider.initialize(this)
+
+        RemoteConfigUtil.initialize(BuildConfig.VERSION_CODE)
     }
 }

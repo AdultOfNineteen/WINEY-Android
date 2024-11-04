@@ -4,6 +4,7 @@ object AuthDestinations {
     const val ROUTE = "authRoute"
 
     const val SPLASH = "splash"
+    const val FORCE_UPDATE = "forceUpdate"
 
     object Login {
 

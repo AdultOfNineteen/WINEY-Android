@@ -12,6 +12,7 @@ object Constants {
     val IS_NOT_FIRST_LAUNCH = booleanPreferencesKey("is_not_first_launch")
     val ACCESS_TOKEN = stringPreferencesKey("access_token")
     val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+    val LATEST_VERSION_ONCE = intPreferencesKey("latest_version_once")
     val FCM_TOKEN = stringPreferencesKey("fcm_token")
     val DEVICE_ID = stringPreferencesKey("device_id")
     val LOGIN_TYPE = stringPreferencesKey("login_type")
@@ -21,4 +22,7 @@ object Constants {
     const val FAQ_URL = "https://www.notion.so/FAQ-1671bf54033440d2aef23189c4754a45?pvs=4"
     const val PRIVACY_POLICY_URL = "${BuildConfig.BASE_URL}/docs/privacy-policy.html"
     const val TERMS_OF_USE_URL = "${BuildConfig.BASE_URL}/docs/service-policy.html"
+
+    const val MARKET_URL = "market://details?id=com.teamwiney.winey"
+    const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.teamwiney.winey"
 }
