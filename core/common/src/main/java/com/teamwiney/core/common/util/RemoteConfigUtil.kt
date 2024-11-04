@@ -13,15 +13,17 @@ enum class UpdateStrategy {
 object RemoteConfigUtil {
 
     private const val AOS_LATEST_VERSION = "aos_latest_version"
+    private const val AOS_LATEST_VERSION_NAME = "aos_latest_version_name"
     private const val AOS_MINIMUM_VERSION = "aos_minimum_version"
     private const val AOS_UPDATE_STRATEGY = "aos_update_strategy"
     private const val AOS_UPDATE_CONTENT = "aos_update_content"
 
-    var currentVersionCode: Int = 0
+    private var currentVersionCode: Int = 0
     var latestVersionCode: Int = 0
-    var minimumVersionCode: Int = 0
-    var updateStrategy: UpdateStrategy = UpdateStrategy.NONE
-    var updateContent: String = ""
+    private var latestVersionName: String = ""
+    private var minimumVersionCode: Int = 0
+    private var updateStrategy: UpdateStrategy = UpdateStrategy.NONE
+    private var updateContent: String = ""
 
     fun initialize(appVersionCode: Int) {
         currentVersionCode = appVersionCode
@@ -29,56 +31,59 @@ object RemoteConfigUtil {
     }
 
     private fun setupRemoteConfig() {
-        val remoteConfig = Firebase.remoteConfig
-        remoteConfig.setConfigSettingsAsync(remoteConfigSettings { minimumFetchIntervalInSeconds = 0 })
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
-
-        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                updateConfigValues(remoteConfig)
-                logConfigValues()
-            } else {
-                Log.e("RemoteConfigUtil", "Failed to fetch remote config.")
+        Firebase.remoteConfig.apply {
+            setConfigSettingsAsync(remoteConfigSettings { minimumFetchIntervalInSeconds = 0 })
+            setDefaultsAsync(R.xml.remote_config_defaults)
+            fetchAndActivate().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    updateConfigValues()
+                    logConfigValues()
+                } else {
+                    Log.e("RemoteConfigUtil", "Failed to fetch remote config.")
+                }
             }
         }
     }
 
-    private fun updateConfigValues(remoteConfig: com.google.firebase.remoteconfig.FirebaseRemoteConfig) {
+    private fun updateConfigValues() {
+        val remoteConfig = Firebase.remoteConfig
         minimumVersionCode = remoteConfig.getString(AOS_MINIMUM_VERSION).toIntOrNull() ?: 0
         latestVersionCode = remoteConfig.getString(AOS_LATEST_VERSION).toIntOrNull() ?: 0
+        latestVersionName = remoteConfig.getString(AOS_LATEST_VERSION_NAME)
         updateStrategy = parseUpdateStrategy(remoteConfig.getString(AOS_UPDATE_STRATEGY).toIntOrNull() ?: 0)
         updateContent = remoteConfig.getString(AOS_UPDATE_CONTENT)
     }
 
-    private fun parseUpdateStrategy(strategyCode: Int): UpdateStrategy {
-        return when (strategyCode) {
-            1 -> UpdateStrategy.FORCE
-            2 -> UpdateStrategy.SOFT
-            3 -> UpdateStrategy.ONCE
-            else -> UpdateStrategy.NONE
-        }
+    private fun parseUpdateStrategy(strategyCode: Int) = when (strategyCode) {
+        1 -> UpdateStrategy.FORCE
+        2 -> UpdateStrategy.SOFT
+        3 -> UpdateStrategy.ONCE
+        else -> UpdateStrategy.NONE
     }
 
     private fun logConfigValues() {
-        Log.d("RemoteConfigUtil", "CURRENT_VERSION_CODE: $currentVersionCode")
-        Log.d("RemoteConfigUtil", "MINIMUM_VERSION_CODE: $minimumVersionCode")
-        Log.d("RemoteConfigUtil", "LATEST_VERSION_CODE: $latestVersionCode")
-        Log.d("RemoteConfigUtil", "UPDATE_STRATEGY: $updateStrategy")
-        Log.d("RemoteConfigUtil", "UPDATE_CONTENT: $updateContent")
+        Log.d("RemoteConfigUtil", """
+            CURRENT_VERSION_CODE: $currentVersionCode
+            MINIMUM_VERSION_CODE: $minimumVersionCode
+            LATEST_VERSION_CODE: $latestVersionCode
+            LATEST_VERSION_NAME: $latestVersionName
+            UPDATE_STRATEGY: $updateStrategy
+            UPDATE_CONTENT: $updateContent
+        """.trimIndent())
     }
 
-
     fun showUpdateDialog(
-        onShowForceUpdate: () -> Unit,
-        onShowSoftUpdate: () -> Unit,
-        onShowOnceUpdate: () -> Unit
+        onForceUpdate: (String) -> Unit,
+        onSoftUpdate: (String) -> Unit,
+        onOnceUpdate: (String) -> Unit
     ) {
         if (currentVersionCode >= latestVersionCode) return
+
         when (updateStrategy) {
-            UpdateStrategy.NONE -> return
-            UpdateStrategy.FORCE -> onShowForceUpdate()
-            UpdateStrategy.SOFT -> onShowSoftUpdate()
-            UpdateStrategy.ONCE -> onShowOnceUpdate()
+            UpdateStrategy.FORCE -> onForceUpdate(latestVersionName)
+            UpdateStrategy.SOFT -> onSoftUpdate(latestVersionName)
+            UpdateStrategy.ONCE -> onOnceUpdate(latestVersionName)
+            else -> return
         }
     }
 }

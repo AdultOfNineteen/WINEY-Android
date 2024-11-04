@@ -150,14 +150,20 @@ class SplashViewModel @Inject constructor(
 
     fun checkUpdate() {
         RemoteConfigUtil.showUpdateDialog(
-            onShowForceUpdate = {
-                postEffect(SplashContract.Effect.ShowForceUpdateScreen)
+            onForceUpdate = { versionName ->
+                postEffect(SplashContract.Effect.ShowForceUpdateScreen(versionName))
             },
-            onShowSoftUpdate = {
-                postEffect(SplashContract.Effect.ShowSoftUpdateBottomSheet)
+            onSoftUpdate = { versionName ->
+                postEffect(SplashContract.Effect.ShowSoftUpdateBottomSheet(versionName))
             },
-            onShowOnceUpdate = {
-                postEffect(SplashContract.Effect.ShowSoftUpdateOnceBottomSheet)
+            onOnceUpdate = { versionName ->
+                val latestVersionOnce = runBlocking { dataStoreRepository.getIntValue(Constants.LATEST_VERSION_ONCE).first() }
+                if (latestVersionOnce != RemoteConfigUtil.latestVersionCode) {
+                    viewModelScope.launch {
+                        dataStoreRepository.setIntValue(Constants.LATEST_VERSION_ONCE, RemoteConfigUtil.latestVersionCode)
+                        postEffect(SplashContract.Effect.ShowSoftUpdateOnceBottomSheet(versionName))
+                    }
+                }
             }
         )
     }

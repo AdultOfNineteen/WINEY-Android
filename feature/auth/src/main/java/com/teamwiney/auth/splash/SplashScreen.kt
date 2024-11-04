@@ -28,6 +28,7 @@ import com.teamwiney.auth.login.component.SplashBackground
 import com.teamwiney.auth.splash.component.SoftUpdateBottomSheet
 import com.teamwiney.core.common.WineyAppState
 import com.teamwiney.core.common.WineyBottomSheetState
+import com.teamwiney.core.common.util.Constants
 import com.teamwiney.core.design.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -88,20 +89,21 @@ fun SplashScreen(
                 is SplashContract.Effect.ShowSoftUpdateBottomSheet -> {
                     bottomSheetState.showBottomSheet {
                         SoftUpdateBottomSheet(
+                            versionName = effect.versionName,
                             onCancel = { bottomSheetState.hideBottomSheet() },
                             onConfirm = {
                                 try {
                                     context.startActivity(
                                         Intent(
                                             Intent.ACTION_VIEW,
-                                            Uri.parse("market://details?id=com.teamwiney.winey")
+                                            Uri.parse(Constants.MARKET_URL)
                                         )
                                     )
                                 } catch (e: ActivityNotFoundException) {
                                     context.startActivity(
                                         Intent(
                                             Intent.ACTION_VIEW,
-                                            Uri.parse("https://play.google.com/store/apps/details?id=com.teamwiney.winey")
+                                            Uri.parse(Constants.PLAY_STORE_URL)
                                         )
                                     )
                                 }
@@ -113,20 +115,21 @@ fun SplashScreen(
                 is SplashContract.Effect.ShowSoftUpdateOnceBottomSheet -> {
                     bottomSheetState.showBottomSheet {
                         SoftUpdateBottomSheet(
+                            versionName = effect.versionName,
                             onCancel = { bottomSheetState.hideBottomSheet() },
                             onConfirm = {
                                 try {
                                     context.startActivity(
                                         Intent(
                                             Intent.ACTION_VIEW,
-                                            Uri.parse("market://details?id=com.teamwiney.winey")
+                                            Uri.parse(Constants.MARKET_URL)
                                         )
                                     )
                                 } catch (e: ActivityNotFoundException) {
                                     context.startActivity(
                                         Intent(
                                             Intent.ACTION_VIEW,
-                                            Uri.parse("https://play.google.com/store/apps/details?id=com.teamwiney.winey")
+                                            Uri.parse(Constants.PLAY_STORE_URL)
                                         )
                                     )
                                 }
@@ -134,8 +137,6 @@ fun SplashScreen(
                         )
                     }
                 }
-
-                else -> { }
             }
         }
     }

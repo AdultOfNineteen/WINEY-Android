@@ -28,6 +28,7 @@ import com.teamwiney.ui.theme.WineyTheme
 fun SoftUpdateBottomSheet(
     modifier: Modifier = Modifier,
     containerColor: Color = WineyTheme.colors.gray_950,
+    versionName: String,
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
@@ -42,7 +43,7 @@ fun SoftUpdateBottomSheet(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "v 0.0.0",
+            versionName,
             style = WineyTheme.typography.captionM2.copy(
                 color = WineyTheme.colors.gray_50
             ),
