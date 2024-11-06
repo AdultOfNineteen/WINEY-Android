@@ -56,7 +56,6 @@ import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteWineInfoVintageAndPriceScreen(
     appState: WineyAppState,
