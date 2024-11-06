@@ -148,6 +148,8 @@ class TastingNoteRepositoryImpl @Inject constructor(
         isPublic: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
+        directSmellKeywordList: List<String>,
+        deleteDirectSmellKeywordList: List<String>,
         deleteImgList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
@@ -169,6 +171,8 @@ class TastingNoteRepositoryImpl @Inject constructor(
             isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
             put("deleteSmellKeywordList", JSONArray().apply { deleteSmellKeywordList.forEach { put(it) }})
+            put("directKeywordList", JSONArray().apply { directSmellKeywordList.forEach { put(it) } })
+            put("deleteDirectKeywordList", JSONArray().apply { deleteDirectSmellKeywordList.forEach { put(it) }})
             put("deleteImgList", JSONArray().apply { deleteImgList.forEach { put(it) } })
         }
 

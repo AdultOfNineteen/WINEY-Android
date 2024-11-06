@@ -103,11 +103,12 @@ class NoteWriteViewModel @Inject constructor(
                                     },
                                     addSmellKeywordList = emptyList(),
                                     deleteSmellKeywordList = emptyList(),
-                                    directInputSmellKeywordList = emptyList(),
-                                    loadDirectInputSmellKeywordList = emptyList(),
+                                    directInputSmellKeywordList = result.directKeywordList,
+                                    loadDirectInputSmellKeywordList = result.directKeywordList,
                                     addDirectInputSmellKeywordList = emptyList(),
                                     deleteDirectInputSmellKeywordList = emptyList()
-                                )
+                                ),
+                                wineDirectInputSmellKeywords = result.directKeywordList
                             )
                         )
                         if (currentState.mode == EditMode.UPDATE) {
@@ -223,6 +224,8 @@ class NoteWriteViewModel @Inject constructor(
             isPublic = wineNote.public,
             smellKeywordList = wineNote.addSmellKeywordList.map { it.value },
             deleteSmellKeywordList = wineNote.deleteSmellKeywordList.map { it.value },
+            directSmellKeywordList = wineNote.addDirectInputSmellKeywordList,
+            deleteDirectSmellKeywordList = wineNote.deleteDirectInputSmellKeywordList,
             deleteImgList = wineNote.deleteImages.map { it.imgId },
             imgUris = wineNote.addImages.map { it.contentUri }
         ).onStart {
