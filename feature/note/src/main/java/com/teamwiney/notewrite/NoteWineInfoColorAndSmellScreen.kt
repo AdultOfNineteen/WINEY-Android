@@ -1,12 +1,15 @@
 package com.teamwiney.notewrite
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +24,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +46,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -53,9 +60,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.teamwiney.core.common.AmplitudeEvent
 import com.teamwiney.core.common.AmplitudeProvider
 import com.teamwiney.core.common.WineyAppState
+import com.teamwiney.core.common.WineyBottomSheetState
 import com.teamwiney.core.common.navigation.NoteDestinations
 import com.teamwiney.core.common.navigation.NoteDestinations.Write.INFO_STANDARD_SMELL
 import com.teamwiney.notedetail.component.NoteFeatureText
+import com.teamwiney.notewrite.components.WineSmellDirectInputBottomSheet
 import com.teamwiney.ui.components.ColorSlider
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
@@ -63,6 +72,7 @@ import com.teamwiney.ui.components.WButton
 import com.teamwiney.ui.components.bottomBorder
 import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
+import com.teamwiney.ui.theme.wineyColors
 
 data class WineSmellKeyword(
     val title: String,
@@ -78,6 +88,7 @@ data class WineSmellOption(
 @Composable
 fun NoteWineInfoColorAndSmellScreen(
     appState: WineyAppState,
+    bottomSheetState: WineyBottomSheetState,
     viewModel: NoteWriteViewModel,
 ) {
 
@@ -118,6 +129,7 @@ fun NoteWineInfoColorAndSmellScreen(
             }
             HeightSpacer(35.dp)
             WineFlavorPicker(
+                bottomSheetState = bottomSheetState,
                 wineSmellKeywords = uiState.wineSmellKeywords,
                 isWineSmellKeywordSelected = viewModel::isWineSmellSelected,
                 updateWineSmell = { wineSmellOption ->
@@ -154,6 +166,7 @@ fun NoteWineInfoColorAndSmellScreen(
 
 @Composable
 private fun WineFlavorPicker(
+    bottomSheetState: WineyBottomSheetState,
     wineSmellKeywords: List<WineSmellKeyword>,
     isWineSmellKeywordSelected: (WineSmellOption) -> Boolean,
     updateWineSmell: (WineSmellOption) -> Unit = {},
@@ -209,6 +222,26 @@ private fun WineFlavorPicker(
                     isWineSmellKeywordSelected = isWineSmellKeywordSelected,
                     updateWineSmell = updateWineSmell
                 )
+            }
+
+            Box(
+                modifier = Modifier.padding(horizontal = 24.dp)
+            ) {
+                SmellDirectInputButton {
+                    bottomSheetState.showBottomSheet {
+                        WineSmellDirectInputBottomSheet(
+                            onConfirm = {
+                                /*updateWineSmell(
+                                    WineSmellOption(
+                                        name = it,
+                                        value = it
+                                    )
+                                )*/
+                                bottomSheetState.hideBottomSheet()
+                            }
+                        )
+                    }
+                }
             }
         }
     }
@@ -314,85 +347,30 @@ private fun WineColorPicker(
     }
 }
 
-@Preview
 @Composable
-private fun WineInfoTextField(
-    value: String = "asdasd",
-    onValueChanged: (String) -> Unit = {},
+private fun SmellDirectInputButton(
     modifier: Modifier = Modifier,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    placeholderText: String = "",
-    fontSize: TextUnit = 16.sp,
-    focusRequest: FocusRequester? = null,
-    keyboardOptions: KeyboardOptions? = null,
-    keyboardActions: KeyboardActions? = null,
-    onFocusedChange: (Boolean) -> Unit = {},
-    onErrorState: Boolean = false,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    maxLength: Int = 25,
-    placeholderTextAlign: TextAlign = TextAlign.Center,
+    onClick: () -> Unit = {},
 ) {
-    val localColors = LocalColors.current
-    val bottomLineColor = remember {
-        mutableStateOf(localColors.gray_800)
-    }
-
-    Column(modifier = modifier) {
-        BasicTextField(
-            modifier = Modifier
-                .onFocusChanged {
-                    onFocusedChange(it.isFocused)
-                    if (it.isFocused) {
-                        bottomLineColor.value = localColors.gray_50
-                    } else {
-                        bottomLineColor.value = localColors.gray_800
-                    }
-                }
-                .bottomBorder(1.dp, if (onErrorState) localColors.error else bottomLineColor.value)
-                .focusRequester(focusRequest ?: FocusRequester()),
-            value = value,
-            onValueChange = {
-                if (it.length <= maxLength) onValueChanged(it)
-            },
-            singleLine = true,
-            cursorBrush = SolidColor(Color.White),
-            textStyle = WineyTheme.typography.bodyM1.copy(
-                color = localColors.gray_50,
-                textAlign = TextAlign.Center
+    Button(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        border = BorderStroke(
+            width = 1.dp,
+            color = WineyTheme.colors.main_2
+        ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+        ),
+        contentPadding = PaddingValues(vertical = 14.dp),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Text(
+            text = "향 추가하기",
+            color = WineyTheme.colors.main_2,
+            style = WineyTheme.typography.bodyM2.copy(
+                color = WineyTheme.colors.main_2
             ),
-            keyboardOptions = keyboardOptions ?: KeyboardOptions(),
-            keyboardActions = keyboardActions ?: KeyboardActions(),
-            decorationBox = { innerTextField ->
-                Box(
-                    Modifier
-                        .padding(0.dp, 9.dp)
-                        .fillMaxWidth()
-                ) {
-                    if (value.isEmpty()) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = placeholderText,
-                            style = LocalTextStyle.current.copy(
-                                color = localColors.gray_800,
-                                fontSize = fontSize,
-                            ),
-                            textAlign = placeholderTextAlign,
-                        )
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        innerTextField()
-                    }
-                    if (trailingIcon != null) Box(modifier = Modifier.align(Alignment.CenterEnd)) {
-                        trailingIcon()
-                    }
-                }
-            },
-            visualTransformation = visualTransformation,
         )
     }
 }
