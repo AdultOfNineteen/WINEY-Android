@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,7 +47,8 @@ fun WineSmellDirectInputBottomSheet(
                 color = containerColor,
                 shape = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp)
             )
-            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 20.dp),
+            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 20.dp)
+            .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(

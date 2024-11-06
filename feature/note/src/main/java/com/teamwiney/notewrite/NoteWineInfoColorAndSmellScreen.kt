@@ -3,7 +3,6 @@ package com.teamwiney.notewrite
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,35 +24,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -69,10 +53,7 @@ import com.teamwiney.ui.components.ColorSlider
 import com.teamwiney.ui.components.HeightSpacer
 import com.teamwiney.ui.components.TopBar
 import com.teamwiney.ui.components.WButton
-import com.teamwiney.ui.components.bottomBorder
-import com.teamwiney.ui.theme.LocalColors
 import com.teamwiney.ui.theme.WineyTheme
-import com.teamwiney.ui.theme.wineyColors
 
 data class WineSmellKeyword(
     val title: String,
@@ -131,10 +112,14 @@ fun NoteWineInfoColorAndSmellScreen(
             WineFlavorPicker(
                 bottomSheetState = bottomSheetState,
                 wineSmellKeywords = uiState.wineSmellKeywords,
+                wineDirectInputSmellKeywords = uiState.wineDirectInputSmellKeywords,
+                addDirectInputSmellKeyword = viewModel::addDirectInputSmellKeyword,
                 isWineSmellKeywordSelected = viewModel::isWineSmellSelected,
                 updateWineSmell = { wineSmellOption ->
                     viewModel.updateWineSmell(wineSmellOption)
                 },
+                isWineDirectInputSmellKeywordSelected = viewModel::isWineDirectInputSmellSelected,
+                updateDirectInputWineSmell = viewModel::updateDirectInputWineSmell,
                 navigateToStandardSmell = {
                     appState.navigate(INFO_STANDARD_SMELL)
                     AmplitudeProvider.trackEvent(AmplitudeEvent.SCENT_HELP_CLICK)
@@ -168,8 +153,12 @@ fun NoteWineInfoColorAndSmellScreen(
 private fun WineFlavorPicker(
     bottomSheetState: WineyBottomSheetState,
     wineSmellKeywords: List<WineSmellKeyword>,
+    addDirectInputSmellKeyword: (String) -> Unit,
     isWineSmellKeywordSelected: (WineSmellOption) -> Boolean,
     updateWineSmell: (WineSmellOption) -> Unit = {},
+    wineDirectInputSmellKeywords: List<String>,
+    isWineDirectInputSmellKeywordSelected: (String) -> Boolean,
+    updateDirectInputWineSmell: (String) -> Unit = {},
     navigateToStandardSmell: () -> Unit
 ) {
     Column(
@@ -224,6 +213,14 @@ private fun WineFlavorPicker(
                 )
             }
 
+            if (wineDirectInputSmellKeywords.isNotEmpty()) {
+                WineDirectInputSmellContainer(
+                    wineSmellKeywords = wineDirectInputSmellKeywords,
+                    isWineSmellKeywordSelected = isWineDirectInputSmellKeywordSelected,
+                    updateWineSmell = updateDirectInputWineSmell
+                )
+            }
+
             Box(
                 modifier = Modifier.padding(horizontal = 24.dp)
             ) {
@@ -231,12 +228,7 @@ private fun WineFlavorPicker(
                     bottomSheetState.showBottomSheet {
                         WineSmellDirectInputBottomSheet(
                             onConfirm = {
-                                /*updateWineSmell(
-                                    WineSmellOption(
-                                        name = it,
-                                        value = it
-                                    )
-                                )*/
+                                addDirectInputSmellKeyword(it)
                                 bottomSheetState.hideBottomSheet()
                             }
                         )
@@ -271,7 +263,40 @@ private fun WineSmellContainer(
             items(wineSmellKeyword.options) {
                 NoteFeatureText(
                     name = it.name,
-                    enable = isWineSmellKeywordSelected(it),
+                    enabled = isWineSmellKeywordSelected(it),
+                ) {
+                    updateWineSmell(it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WineDirectInputSmellContainer(
+    wineSmellKeywords: List<String>,
+    isWineSmellKeywordSelected: (String) -> Boolean,
+    updateWineSmell: (String) -> Unit = {}
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Text(
+            text = "직접 추가",
+            modifier = Modifier.padding(start = 24.dp),
+            style = WineyTheme.typography.bodyB2,
+            color = WineyTheme.colors.gray_500
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            items(wineSmellKeywords) {
+                NoteFeatureText(
+                    name = it,
+                    enabled = isWineSmellKeywordSelected(it),
                 ) {
                     updateWineSmell(it)
                 }

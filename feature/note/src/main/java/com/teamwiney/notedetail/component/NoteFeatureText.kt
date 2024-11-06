@@ -20,22 +20,22 @@ import com.teamwiney.ui.theme.WineyTheme
 @Preview
 fun NoteFeatureText(
     name: String = "테스트",
-    enable: Boolean = false,
+    enabled: Boolean = false,
     onClick: () -> Unit = {}
 ) {
     Text(
         text = name,
-        color = if (enable) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700,
+        color = if (enabled) WineyTheme.colors.gray_50 else WineyTheme.colors.gray_700,
         style = WineyTheme.typography.captionB1,
         modifier = Modifier
             .clip(RoundedCornerShape(40.dp))
             .border(
                 BorderStroke(
-                    1.dp, if (enable) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700
+                    1.dp, if (enabled) WineyTheme.colors.main_2 else WineyTheme.colors.gray_700
                 ),
                 RoundedCornerShape(40.dp)
             )
-            .background(if (enable) WineyTheme.colors.main_2 else Color.Transparent)
+            .background(if (enabled) WineyTheme.colors.main_2 else Color.Transparent)
             .clickable {
                 onClick()
             }

@@ -90,6 +90,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
         buyAgain: Boolean?,
         isPublic: Boolean?,
         smellKeywordList: List<String>,
+        directSmellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>> {
         val jsonObjectBuilder = JSONObject().apply {
@@ -110,6 +111,7 @@ class TastingNoteRepositoryImpl @Inject constructor(
             buyAgain?.let { put("buyAgain", it) }
             isPublic?.let { put("isPublic", it) }
             put("smellKeywordList", JSONArray().apply { smellKeywordList.forEach { put(it) } })
+            put("directKeywordList", JSONArray().apply { directSmellKeywordList.forEach { put(it) } })
         }
 
         val request = jsonObjectBuilder.toString().toRequestBody("application/json".toMediaType())

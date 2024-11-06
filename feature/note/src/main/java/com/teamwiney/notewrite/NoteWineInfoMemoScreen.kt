@@ -324,10 +324,10 @@ fun NoteWineInfoMemoScreen(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    NoteFeatureText(name = "있어요", enable = uiState.writeTastingNote.buyAgain == true) {
+                    NoteFeatureText(name = "있어요", enabled = uiState.writeTastingNote.buyAgain == true) {
                         viewModel.updateBuyAgain(true)
                     }
-                    NoteFeatureText(name = "없어요", enable = uiState.writeTastingNote.buyAgain == false) {
+                    NoteFeatureText(name = "없어요", enabled = uiState.writeTastingNote.buyAgain == false) {
                         viewModel.updateBuyAgain(false)
                     }
                 }
@@ -347,10 +347,10 @@ fun NoteWineInfoMemoScreen(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    NoteFeatureText(name = "있어요", enable = uiState.writeTastingNote.public == true) {
+                    NoteFeatureText(name = "있어요", enabled = uiState.writeTastingNote.public == true) {
                         viewModel.updatePublic(true)
                     }
-                    NoteFeatureText(name = "없어요", enable = uiState.writeTastingNote.public == false) {
+                    NoteFeatureText(name = "없어요", enabled = uiState.writeTastingNote.public == false) {
                         viewModel.updatePublic(false)
                     }
                 }
