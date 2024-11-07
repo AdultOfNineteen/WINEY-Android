@@ -166,6 +166,9 @@ class SplashViewModel @Inject constructor(
                     }
                 }
                 checkUserStatus()
+            },
+            onNormalLaunch = {
+                checkUserStatus()
             }
         )
     }

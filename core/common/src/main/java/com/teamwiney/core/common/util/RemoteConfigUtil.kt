@@ -75,7 +75,8 @@ object RemoteConfigUtil {
     fun showUpdateDialog(
         onForceUpdate: (String, String) -> Unit,
         onSoftUpdate: (String) -> Unit,
-        onOnceUpdate: (String) -> Unit
+        onOnceUpdate: (String) -> Unit,
+        onNormalLaunch: () -> Unit
     ) {
         when {
             currentVersionCode < minimumVersionCode -> {
@@ -87,7 +88,7 @@ object RemoteConfigUtil {
                     UpdateStrategy.FORCE -> onForceUpdate(latestVersionName, updateContent)
                     UpdateStrategy.SOFT -> onSoftUpdate(latestVersionName)
                     UpdateStrategy.ONCE -> onOnceUpdate(latestVersionName)
-                    else -> return
+                    else -> onNormalLaunch()
                 }
             }
         }
