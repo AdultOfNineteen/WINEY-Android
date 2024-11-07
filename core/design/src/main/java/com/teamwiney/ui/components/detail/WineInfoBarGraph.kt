@@ -44,12 +44,12 @@ fun WineInfoBarGraph(
                 VerticalBarGraphData(
                     label = "와인의 맛",
                     score = default,
-                    color = WineyTheme.colors.main_2
+                    color = WineyTheme.colors.point_1
                 ),
                 VerticalBarGraphData(
                     label = "나와 취향이 비슷한\n사람들이 느낀 맛",
                     score = similar,
-                    color = WineyTheme.colors.point_1
+                    color = WineyTheme.colors.main_2
                 )
             )
         )
