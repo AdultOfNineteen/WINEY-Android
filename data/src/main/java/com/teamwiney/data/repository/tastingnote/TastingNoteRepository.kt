@@ -67,6 +67,7 @@ interface TastingNoteRepository {
         buyAgain: Boolean?,
         isPublic: Boolean?,
         smellKeywordList: List<String>,
+        directSmellKeywordList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>
 
@@ -93,6 +94,8 @@ interface TastingNoteRepository {
         isPublic: Boolean?,
         smellKeywordList: List<String>,
         deleteSmellKeywordList: List<String>,
+        directSmellKeywordList: List<String>,
+        deleteDirectSmellKeywordList: List<String>,
         deleteImgList: List<String>,
         imgUris: List<Uri>
     ): Flow<ApiResult<CommonResponse<TastingNoteIdRes>>>

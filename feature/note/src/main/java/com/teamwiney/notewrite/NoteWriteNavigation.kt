@@ -86,6 +86,7 @@ fun NavGraphBuilder.noteWriteGraph(
             )
             NoteWineInfoColorAndSmellScreen(
                 appState = appState,
+                bottomSheetState = bottomSheetState,
                 viewModel = hiltViewModel(backStackEntry),
             )
         }

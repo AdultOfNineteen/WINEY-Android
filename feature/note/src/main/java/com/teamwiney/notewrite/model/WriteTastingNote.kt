@@ -30,7 +30,11 @@ data class WriteTastingNote(
     val smellKeywordList: List<WineSmellOption>,
     val loadSmellKeywordList: List<WineSmellOption>,
     val addSmellKeywordList: List<WineSmellOption>,
-    val deleteSmellKeywordList: List<WineSmellOption>
+    val deleteSmellKeywordList: List<WineSmellOption>,
+    val directInputSmellKeywordList: List<String>,
+    val loadDirectInputSmellKeywordList: List<String>,
+    val addDirectInputSmellKeywordList: List<String>,
+    val deleteDirectInputSmellKeywordList: List<String>
 ) {
     companion object {
         fun default(): WriteTastingNote {
@@ -59,7 +63,11 @@ data class WriteTastingNote(
                 smellKeywordList = emptyList(),
                 loadSmellKeywordList = emptyList(),
                 addSmellKeywordList = emptyList(),
-                deleteSmellKeywordList = emptyList()
+                deleteSmellKeywordList = emptyList(),
+                directInputSmellKeywordList = emptyList(),
+                loadDirectInputSmellKeywordList = emptyList(),
+                addDirectInputSmellKeywordList = emptyList(),
+                deleteDirectInputSmellKeywordList = emptyList()
             )
         }
     }

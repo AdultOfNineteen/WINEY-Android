@@ -69,7 +69,8 @@ class NoteWriteContract {
                 title = "기타",
                 options = WineSmell.values().filter { it.type == "OTHER" }.map { WineSmellOption(it.korName, it.value) }
             )
-        )
+        ),
+        val wineDirectInputSmellKeywords: List<String> = emptyList()
     ) : UiState
 
     sealed class Event : UiEvent {

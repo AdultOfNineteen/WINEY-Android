@@ -1,6 +1,5 @@
 package com.teamwiney.notewrite
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.toColorInt
@@ -103,8 +102,13 @@ class NoteWriteViewModel @Inject constructor(
                                         }
                                     },
                                     addSmellKeywordList = emptyList(),
-                                    deleteSmellKeywordList = emptyList()
-                                )
+                                    deleteSmellKeywordList = emptyList(),
+                                    directInputSmellKeywordList = result.directKeywordList,
+                                    loadDirectInputSmellKeywordList = result.directKeywordList,
+                                    addDirectInputSmellKeywordList = emptyList(),
+                                    deleteDirectInputSmellKeywordList = emptyList()
+                                ),
+                                wineDirectInputSmellKeywords = result.directKeywordList
                             )
                         )
                         if (currentState.mode == EditMode.UPDATE) {
@@ -176,6 +180,7 @@ class NoteWriteViewModel @Inject constructor(
             buyAgain = wineNote.buyAgain,
             isPublic = wineNote.public,
             smellKeywordList = wineNote.smellKeywordList.map { it.value },
+            directSmellKeywordList = wineNote.addDirectInputSmellKeywordList,
             imgUris = wineNote.selectedImages.map { it.contentUri }
         ).onStart {
             updateState(currentState.copy(isLoading = true))
@@ -219,6 +224,8 @@ class NoteWriteViewModel @Inject constructor(
             isPublic = wineNote.public,
             smellKeywordList = wineNote.addSmellKeywordList.map { it.value },
             deleteSmellKeywordList = wineNote.deleteSmellKeywordList.map { it.value },
+            directSmellKeywordList = wineNote.addDirectInputSmellKeywordList,
+            deleteDirectSmellKeywordList = wineNote.deleteDirectInputSmellKeywordList,
             deleteImgList = wineNote.deleteImages.map { it.imgId },
             imgUris = wineNote.addImages.map { it.contentUri }
         ).onStart {
@@ -290,7 +297,7 @@ class NoteWriteViewModel @Inject constructor(
         )
     }
 
-    private fun addSmellKeyword(smellKeyword: WineSmellOption) {
+    private fun selectSmellKeyword(smellKeyword: WineSmellOption) {
         val wineNote = currentState.writeTastingNote.copy(
             smellKeywordList = currentState.writeTastingNote.smellKeywordList + smellKeyword,
             addSmellKeywordList = currentState.writeTastingNote.addSmellKeywordList + smellKeyword,
@@ -299,7 +306,7 @@ class NoteWriteViewModel @Inject constructor(
         updateState(currentState.copy(writeTastingNote = wineNote))
     }
 
-    private fun removeSmellKeyword(smellKeyword: WineSmellOption) {
+    private fun unselectSmellKeyword(smellKeyword: WineSmellOption) {
         val selectedSmellKeywords = currentState.writeTastingNote.smellKeywordList - smellKeyword
         val addSmellKeywords = currentState.writeTastingNote.addSmellKeywordList - smellKeyword
         val deleteSmellKeywords =
@@ -315,6 +322,47 @@ class NoteWriteViewModel @Inject constructor(
                     smellKeywordList = selectedSmellKeywords,
                     addSmellKeywordList = addSmellKeywords,
                     deleteSmellKeywordList = deleteSmellKeywords
+                )
+            )
+        )
+    }
+
+    fun addDirectInputSmellKeyword(smellKeyword: String) {
+        updateState(
+            currentState.copy(
+                wineDirectInputSmellKeywords = currentState.wineDirectInputSmellKeywords + smellKeyword
+            )
+        )
+    }
+
+    fun selectDirectInputSmellKeyword(smellKeyword: String) {
+        updateState(
+            currentState.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
+                    directInputSmellKeywordList = currentState.writeTastingNote.directInputSmellKeywordList + smellKeyword,
+                    addDirectInputSmellKeywordList = currentState.writeTastingNote.addDirectInputSmellKeywordList + smellKeyword,
+                    deleteDirectInputSmellKeywordList = currentState.writeTastingNote.deleteDirectInputSmellKeywordList - smellKeyword
+                )
+            )
+        )
+    }
+
+    fun unselectDirectInputSmellKeyword(smellKeyword: String) {
+        val selectedSmellKeywords = currentState.writeTastingNote.directInputSmellKeywordList - smellKeyword
+        val addSmellKeywords = currentState.writeTastingNote.addDirectInputSmellKeywordList - smellKeyword
+        val deleteSmellKeywords =
+            currentState.writeTastingNote.deleteDirectInputSmellKeywordList.toMutableList().apply {
+                if (currentState.writeTastingNote.loadDirectInputSmellKeywordList.contains(smellKeyword)) add(
+                    smellKeyword
+                )
+            }
+
+        updateState(
+            currentState.copy(
+                writeTastingNote = currentState.writeTastingNote.copy(
+                    directInputSmellKeywordList = selectedSmellKeywords,
+                    addDirectInputSmellKeywordList = addSmellKeywords,
+                    deleteDirectInputSmellKeywordList = deleteSmellKeywords
                 )
             )
         )
@@ -465,9 +513,17 @@ class NoteWriteViewModel @Inject constructor(
         val wineNote = currentState.writeTastingNote
 
         if (wineNote.smellKeywordList.contains(wineSmellOption)) {
-            removeSmellKeyword(wineSmellOption)
+            unselectSmellKeyword(wineSmellOption)
         } else {
-            addSmellKeyword(wineSmellOption)
+            selectSmellKeyword(wineSmellOption)
+        }
+    }
+
+    fun updateDirectInputWineSmell(smellKeyword: String) {
+        if (currentState.writeTastingNote.directInputSmellKeywordList.contains(smellKeyword)) {
+            unselectDirectInputSmellKeyword(smellKeyword)
+        } else {
+            selectDirectInputSmellKeyword(smellKeyword)
         }
     }
 
@@ -475,5 +531,9 @@ class NoteWriteViewModel @Inject constructor(
         val wineNote = currentState.writeTastingNote
 
         return wineNote.smellKeywordList.contains(wineSmellOption)
+    }
+
+    fun isWineDirectInputSmellSelected(smellKeyword: String): Boolean {
+        return currentState.writeTastingNote.directInputSmellKeywordList.contains(smellKeyword)
     }
 }

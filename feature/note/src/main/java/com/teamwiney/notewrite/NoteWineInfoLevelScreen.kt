@@ -18,6 +18,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -83,12 +84,12 @@ fun NoteWineInfoLevelScreen(
     }
 
     DisposableEffect(key1 = Unit) {
-        systemUiController.setSystemBarsColor(
+        systemUiController.setStatusBarColor(
             color = Color.Transparent
         )
         viewModel.showHintPopup()
         onDispose {
-            systemUiController.setSystemBarsColor(
+            systemUiController.setStatusBarColor(
                 color = Color(0xFF1F2126)
             )
         }

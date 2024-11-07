@@ -174,6 +174,7 @@ fun NoteScreen(
                             name = it.name,
                             origin = it.country,
                             starRating = it.starRating,
+                            thumbnail = it.thumbnail,
                             onClick = {
                                 val isShared = false
                                 appState.navigate("${NoteDestinations.NOTE_DETAIL}?id=${it.id}&isShared=$isShared")

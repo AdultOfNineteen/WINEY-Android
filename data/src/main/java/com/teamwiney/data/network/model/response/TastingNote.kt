@@ -24,6 +24,8 @@ data class TastingNote(
     val userNickname: String,
     @SerializedName("noteDate")
     val noteDate: String,
+    @SerializedName("thumbnail")
+    val thumbnail: String?,
     @SerializedName("public")
     val public: Boolean
 )
@@ -39,6 +41,7 @@ fun TastingNote.toDomain() = TastingNote(
     public = this.public,
     userNickname = this.userNickname,
     noteDate = this.noteDate,
+    thumbnail = this.thumbnail,
     varietal = this.varietal
 )
 

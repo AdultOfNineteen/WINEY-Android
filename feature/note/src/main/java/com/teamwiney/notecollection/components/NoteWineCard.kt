@@ -28,7 +28,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -37,6 +39,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.teamwiney.core.common.model.WineType
 import com.teamwiney.core.common.model.WineType.Companion.convertToNoteType
 import com.teamwiney.core.design.R
@@ -79,8 +83,11 @@ fun NoteWineCard(
     name: String,
     origin: String,
     starRating: Int? = null,
+    thumbnail: String? = null,
     onClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+
     val (wineName, image, borderColor, gradientCircleColor, circleColor, cardColor) = when (color) {
         WineType.RED.type -> CardProperties(
             color,
@@ -163,12 +170,33 @@ fun NoteWineCard(
                 )
                 .background(WineyTheme.colors.background_1)
         ) {
-            NoteCardSurface(
-                modifier = Modifier.fillMaxSize(),
-                gradientCircleColor = gradientCircleColor,
-                cardBackgroundAlpha = cardBackgroundAlpha,
-                circleColor = circleColor
-            )
+            if (thumbnail != null) {
+                Box {
+                    AsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(thumbnail)
+                            .build(),
+                        contentDescription = "NOTE_IMG_URL",
+                        filterQuality = FilterQuality.Low,
+                        contentScale = ContentScale.Crop,
+                    )
+
+                    Box(
+                        modifier = Modifier.background(
+                            color = WineyTheme.colors.gray_900.copy(
+                                alpha = 0.2f
+                            ),
+                        ).matchParentSize()
+                    )
+                }
+            } else {
+                NoteCardSurface(
+                    modifier = Modifier.fillMaxSize(),
+                    gradientCircleColor = gradientCircleColor,
+                    cardBackgroundAlpha = cardBackgroundAlpha,
+                    circleColor = circleColor
+                )
+            }
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -182,15 +210,18 @@ fun NoteWineCard(
                     ),
                     color = WineyTheme.colors.gray_50,
                 )
-                Image(
-                    painter = painterResource(id = image),
-                    contentDescription = "IMG_SPARKL_WINE",
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier
-                        .fillMaxHeight(if (color == WineType.RED.type) 0.9f else 1f)
-                        .align(Alignment.CenterHorizontally)
-                        .offset(y = -10.dp)
-                )
+
+                if (thumbnail == null) {
+                    Image(
+                        painter = painterResource(id = image),
+                        contentDescription = "IMG_WINE",
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier
+                            .fillMaxHeight(if (color == WineType.RED.type) 0.9f else 1f)
+                            .align(Alignment.CenterHorizontally)
+                            .offset(y = -10.dp)
+                    )
+                }
             }
 
         }
