@@ -89,14 +89,14 @@ class NoteWriteViewModel @Inject constructor(
                                     deleteImages = emptyList(),
                                     smellKeywordList = result.smellKeywordList.mapNotNull { smellKeyword ->
                                         val wineSmell = WineSmell.values()
-                                            .firstOrNull { it.korName == smellKeyword }
+                                            .firstOrNull { it.value == smellKeyword }
                                         wineSmell?.let {
                                             WineSmellOption(it.korName, it.value)
                                         }
                                     },
                                     loadSmellKeywordList = result.smellKeywordList.mapNotNull { smellKeyword ->
                                         val wineSmell = WineSmell.values()
-                                            .firstOrNull { it.korName == smellKeyword }
+                                            .firstOrNull { it.value == smellKeyword }
                                         wineSmell?.let {
                                             WineSmellOption(it.korName, it.value)
                                         }
@@ -333,9 +333,10 @@ class NoteWriteViewModel @Inject constructor(
                 wineDirectInputSmellKeywords = currentState.wineDirectInputSmellKeywords + smellKeyword
             )
         )
+        selectDirectInputSmellKeyword(smellKeyword)
     }
 
-    fun selectDirectInputSmellKeyword(smellKeyword: String) {
+    private fun selectDirectInputSmellKeyword(smellKeyword: String) {
         updateState(
             currentState.copy(
                 writeTastingNote = currentState.writeTastingNote.copy(
@@ -347,7 +348,7 @@ class NoteWriteViewModel @Inject constructor(
         )
     }
 
-    fun unselectDirectInputSmellKeyword(smellKeyword: String) {
+    private fun unselectDirectInputSmellKeyword(smellKeyword: String) {
         val selectedSmellKeywords = currentState.writeTastingNote.directInputSmellKeywordList - smellKeyword
         val addSmellKeywords = currentState.writeTastingNote.addDirectInputSmellKeywordList - smellKeyword
         val deleteSmellKeywords =
