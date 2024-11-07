@@ -19,6 +19,7 @@ data class TastingNoteDetail(
     val officialAlcohol: Double?,
     val price: Int?,
     val smellKeywordList: List<String>,
+    val korSmellKeywordList: List<String>,
     val directKeywordList: List<String>,
     val myWineTaste: MyWineTaste,
     val defaultWineTaste: WineTaste,
@@ -46,6 +47,7 @@ data class TastingNoteDetail(
             officialAlcohol = null,
             price = 0,
             smellKeywordList = listOf("-"),
+            korSmellKeywordList = listOf("-"),
             directKeywordList = emptyList(),
             myWineTaste = MyWineTaste(
                 sweetness = 0,

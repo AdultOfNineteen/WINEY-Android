@@ -37,7 +37,7 @@ fun WineInfoTotalBarGraph(
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(WineyTheme.colors.main_2)
+                    .background(labelColor)
                     .size(12.dp)
             )
             Text(

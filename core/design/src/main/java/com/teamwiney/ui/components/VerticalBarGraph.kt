@@ -164,12 +164,12 @@ fun PreviewWineTasteComparisonGraph() {
         VerticalBarGraph(
             data = listOf(
                 VerticalBarGraphData(
-                    label = "와인의 기본맛",
+                    label = "와인의 맛",
                     score = 3,
                     color = WineyTheme.colors.main_2
                 ),
                 VerticalBarGraphData(
-                    label = "취향이 비슷한 사람들이\n느낀 와인의 맛",
+                    label = "나와 취향이 비슷한\n사람들이 느낀 맛",
                     score = 5,
                     color = WineyTheme.colors.point_1
                 )

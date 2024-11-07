@@ -209,11 +209,11 @@ private fun WineInfoTotalBarGraph(
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(WineyTheme.colors.main_2)
+                        .background(WineyTheme.colors.point_1)
                         .size(12.dp)
                 )
                 Text(
-                    text = "취향이 비슷한 사람들이 느낀 와인의 맛",
+                    text = "와인의 맛",
                     style = WineyTheme.typography.captionM2,
                     color = WineyTheme.colors.gray_50
                 )
@@ -227,11 +227,11 @@ private fun WineInfoTotalBarGraph(
                 Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(WineyTheme.colors.point_1)
+                        .background(WineyTheme.colors.main_2)
                         .size(12.dp)
                 )
                 Text(
-                    text = "와인의 기본 맛",
+                    text = "나와 취향이 비슷한 사람들이 느낀 맛",
                     style = WineyTheme.typography.captionM2,
                     color = WineyTheme.colors.gray_50
                 )

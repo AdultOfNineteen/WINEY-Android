@@ -70,7 +70,7 @@ fun WineSmellFeature(noteDetail: TastingNoteDetail) {
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                items(noteDetail.smellKeywordList + noteDetail.directKeywordList) {
+                items(noteDetail.korSmellKeywordList + noteDetail.directKeywordList) {
                     NoteFeatureText(
                         name = it,
                     )

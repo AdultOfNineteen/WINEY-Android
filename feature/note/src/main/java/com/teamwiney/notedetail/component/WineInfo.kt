@@ -48,7 +48,7 @@ fun WineInfo(
                 0 -> {
                     WineInfoTotalBarGraph(
                         progress = animatedProgress.value,
-                        label = userNickname?.let { "${userNickname}가 느낀 와인의 맛" } ?: "내가 느낀 와인의 맛",
+                        label = userNickname?.let { "${userNickname}가 느낀 맛" } ?: "내가 느낀 맛",
                         labelColor = WineyTheme.colors.main_2,
                         data = listOf(
                             Pair("당도", tastingNoteDetail.myWineTaste.sweetness),
@@ -67,7 +67,7 @@ fun WineInfo(
                 else -> {
                     WineInfoTotalBarGraph(
                         progress = animatedProgress.value,
-                        label = "와인의 기본 맛",
+                        label = "와인의 맛",
                         labelColor = WineyTheme.colors.point_1,
                         data = listOf(
                             Pair("당도", tastingNoteDetail.defaultWineTaste.sweetness),
