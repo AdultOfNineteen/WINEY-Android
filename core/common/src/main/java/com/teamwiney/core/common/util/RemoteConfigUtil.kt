@@ -82,7 +82,7 @@ object RemoteConfigUtil {
             currentVersionCode < minimumVersionCode -> {
                 onForceUpdate(latestVersionName, updateContent)
             }
-            currentVersionCode >= latestVersionCode -> return
+            currentVersionCode >= latestVersionCode -> onNormalLaunch()
             else -> {
                 when (updateStrategy) {
                     UpdateStrategy.FORCE -> onForceUpdate(latestVersionName, updateContent)
