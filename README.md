@@ -1,10 +1,20 @@
-# 나만의 와인을 찾는 여행 Winey의 안드로이드 레포지토리입니다.
+<h1 align="middle">나만의 와인을 찾는 여행, WINEY</h1>
+
+<div style="text-align: center;">
+  <img src="https://github.com/user-attachments/assets/33c1e1e4-bf9c-499f-8d94-c7c1386c7859" alt="solution" width="100%">
+</div>
+
+<a href="https://play.google.com/store/apps/details?id=com.teamwiney.winey" target="_blank" rel="noopener noreferrer">
+    <img src="https://github.com/user-attachments/assets/82a6813c-9cb5-4833-a08e-bd9f064c6f90" alt="solution" width="323">
+</a>
 
 ## 구조 설명
 
 기본적으로 멀티모듈을 활용해 앱을 구성하며 [일반적인 모듈화 패턴](https://developer.android.com/topic/modularization/patterns?hl=ko)과 [Now in Android](https://github.com/android/nowinandroid)를 참고하여 구성했습니다.
 
 ![WINEY 의존성 그래프](./images/dependency_graph.png)
+
+<br>
 
 ## 모듈 설명
 
@@ -16,27 +26,42 @@
 
 각 모듈에 대한 DI, 리소스는 해당 모듈에서 관리합니다.
 
-## 깃 컨벤션
+<br>
 
-|접두사|설명|
-|------|---|
-|Feat|새 기능 (new feature)|
-|Fix|버그 수정|
-|Docs|문서 수정|
-|Style|코드 스타일 관련 수정 (포맷팅 등 실제 코드 변화는 아닌 경우)|
-|Refactor|리팩토링 작업|
-|Test|테스트 코드의 추가나 테스트 코드에 대한 리팩토링 작업 (메인 코드는 변경 X)|
-|Chore|빌드와 관련된 것들을 업데이트하는 경우|
-|Design|UI 변경 작업|
-|Comment|주석의 작성이나 변경|
-|Rename|파일, 폴더, 패키지 등의 이름만 수정하거나 옮기기만 한 경우|
-|Remove|파일 삭제만 한 경우|
+## ✨ 핵심 기능
 
-### 개발 환경
+## 홈 화면
+![홈 화면](https://github.com/user-attachments/assets/55f8f9ba-ce8f-4201-915e-8fc162462575)
+- **오늘의 와인**: 사용자가 작성한 테이스팅 노트를 기반으로 매일 와인 3종을 추천합니다.
+- **와인 초보를 위한 TIP!**: 와인 추천과 관련된 유익한 아티클을 제공합니다.
 
-* [사용 라이브러리](./gradle/libs.versions.toml)
+## 와인 지도
+![와인 지도](https://github.com/user-attachments/assets/5cd39a01-7a4b-44aa-aba1-ac5883594fde)
+- **주변 와인 가게 검색**: 사용자의 현재 위치를 기반으로 주변 와인 가게를 검색하고 표시합니다.
 
-### 빌드 조건
+## 테이스팅 노트 작성
+![테이스팅 노트 작성](https://github.com/user-attachments/assets/97851dec-8be7-4a15-805e-6350122fb60c)
+- **노트 작성**: 와인의 도수, 색, 향, 당도 등 세부 정보를 입력해 테이스팅 노트를 작성할 수 있습니다.
 
-* 그래들 버전 8.0.0 이상
-* JDK 17
+## 테이스팅 노트 목록 조회
+![테이스팅 노트 목록 조회](https://github.com/user-attachments/assets/1fe924ae-32e1-4b10-9f4d-12ef847b6b61)
+- **필터링 기능**: 재구매 의사, 와인 타입, 생산지 등의 조건으로 테이스팅 노트를 필터링하여 검색할 수 있습니다.
+
+## 테이스팅 노트 분석하기
+![테이스팅 노트 분석하기](https://github.com/user-attachments/assets/a6a559a5-9396-4741-b089-0a068111270f)
+- **분석 결과 시각화**: 사용자가 작성한 테이스팅 노트를 바탕으로 선호 품종, 국가, 맛, 향 등의 정보를 그래프로 시각화해 제공합니다.
+
+<br>
+
+## 라이브러리 & 프레임워크 🔧
+| 카테고리 | 스택 |
+|:----------|:----------:|
+| Language | Kotlin |
+| Architecture | MVI |
+| DI | Hilt |
+| Networking | Retrofit, OkHttp, GSON |
+| Asynchronous | Coroutine, Flow |
+| JetPack | AAC, ViewModel, Navigation, Repository |
+| Local DB | DataStore |
+| Image | Coil |
+| Map | NaverMap |
